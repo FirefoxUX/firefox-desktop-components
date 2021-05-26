@@ -1,0 +1,58 @@
+
+.proton-button--primary {
+  background: #0061E0;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+.proton-button--primary:hover {
+  background: #0250BB;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+
+.proton-button--primary:active {
+  background: #053E94;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+
+
+.proton-button--secondary {
+  background: #F0F0F4;
+  border-radius: 4px;
+  border: none;
+  color: black;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+.proton-button--secondary:hover {
+  background: #0250BB;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 32px;
+  padding: 4px 16px;
+}
+
+
+.proton-button--secondary:active {
+  background: #053E94;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  height: 32px;
+  padding: 4px 16px;
+}
