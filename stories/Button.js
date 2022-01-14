@@ -1,21 +1,41 @@
-import './button.css';
+const template = document.createElement('template');
+template.innerHTML = `
+<style>
+button {
+  background: rgba(0, 96, 223, 1);
+  border: none;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 13px;
+  weight: 600;
+}
+</style>
+<button class="fds-primary-button"></button>`;
 
-export const Button = ({
-  primary = false,
-  size = 'medium',
-  // backgroundColor,
-  label,
-  onClick,
-}) => {
-  const btn = document.createElement('button');
-  btn.type = 'button';
-  btn.innerText = label;
-  btn.addEventListener('click', onClick);
 
-  const mode = primary ? 'fds-button--primary' : 'fds-button--secondary';
-  btn.className = ['fds-button', `fds-button--${size}`, mode].join(' ');
+class Button extends HTMLElement {
+  set label(value) {
+    this._label = value;
+    if (this.shadowRoot)
+      this.shadowRoot.querySelector('.fds-primary-button').innerHTML = value;
+  }
+  
+  connectedCallback() {
+    this.attachShadow({mode: 'open'});
+    this.shadowRoot.appendChild(template.content.cloneNode(true));
+    const button = this.shadowRoot.querySelector("button");
+    button.addEventListener("click", this.handleClick);
+    this.label = this.getAttribute('label');
+  }
 
-  // btn.style.backgroundColor = backgroundColor;
+  static get observedAttributes() {
+    return ['label']; 
+  }
+  
+  handleClick(e) {
+    alert("Sup?");
+  }
+}
 
-  return btn;
-};
+window.customElements.define('fds-button', Button);
