@@ -6,8 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook",
-    "build-static-webapp": "expo build:web"
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -68,7 +67,6 @@
     "webpack-merge": "^4.2.1"
   },
   "dependencies": {
-    "expo": "^44.0.6",
     "storybook-addon-preview": "^2.1.2"
   }
 }
