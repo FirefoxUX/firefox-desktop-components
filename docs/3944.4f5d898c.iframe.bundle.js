@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[3944],{
+
+/***/ 23944:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\nrestore-page-tab-title = Restore Session\n\n# The title is intended to be apologetic and disarming, expressing dismay\n# and regret that we are unable to restore the session for the user\nrestore-page-error-title = Sorry. We’re having trouble getting your pages back.\nrestore-page-problem-desc = We are having trouble restoring your last browsing session. Select Restore Session to try again.\nrestore-page-try-this = Still not able to restore your session? Sometimes a tab is causing the issue. View previous tabs, remove the checkmark from the tabs you don’t need to recover, and then restore.\n\nrestore-page-hide-tabs = Hide Previous Tabs\nrestore-page-show-tabs = View Previous Tabs\n\n# When tabs are distributed across multiple windows, this message is used as a\n# header above the group of tabs for each window.\n#\n# Variables:\n#    $windowNumber: Progressive number associated to each window\nrestore-page-window-label = Window { $windowNumber }\n\nrestore-page-restore-header =\n    .label = Restore\n\nrestore-page-list-header =\n    .label = Windows and Tabs\n\nrestore-page-try-again-button =\n    .label = Restore Session\n    .accesskey = R\n\nrestore-page-close-button =\n    .label = Start New Session\n    .accesskey = N\n\n## The following strings are used in about:welcomeback\n\nwelcome-back-tab-title = Success!\nwelcome-back-page-title = Success!\nwelcome-back-page-info = { -brand-short-name } is ready to go.\n\nwelcome-back-restore-button =\n    .label = Let’s go!\n    .accesskey = L\n\nwelcome-back-restore-all-label = Restore all windows & tabs\nwelcome-back-restore-some-label = Restore only the ones you want\n\nwelcome-back-page-info-link = Your add-ons and customizations have been removed and your browser settings have been restored to their defaults. If this didn’t fix your issue, <a data-l10n-name=\"link-more\">learn more about what you can do.</a>\n";
+
+/***/ })
+
+}]);

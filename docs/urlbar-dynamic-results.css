@@ -1,0 +1,239 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * UrlbarProviderTabToSearch
+ */
+
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner {
+  min-height: 64px !important; /* Overriding :root:not([uidensity=compact]) .urlbarView-row-inner { min-height } in urlbarView.inc.css */
+  align-items: center;
+}
+
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap {
+  align-items: center;
+}
+
+.urlbarView-row[dynamicType=onboardTabToSearch]:hover > .urlbarView-row-inner {
+  background-color: var(--arrowpanel-dimmed);
+}
+
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner[selected] {
+  background: var(--autocomplete-popup-highlight-background);
+  color: var(--autocomplete-popup-highlight-color);
+  fill-opacity: 1;
+}
+
+/* Icon */
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-favicon {
+  min-width: 32px;
+  height: 32px;
+  color: var(--urlbar-popup-url-color);
+  -moz-context-properties: fill;
+}
+
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner[selected] > .urlbarView-no-wrap > .urlbarView-favicon {
+  color: inherit;
+}
+
+.urlbarView-dynamic-onboardTabToSearch-text-container {
+  display: flex;
+  flex-direction: column;
+}
+
+/* First row of text. */
+.urlbarView-dynamic-onboardTabToSearch-first-row-container {
+  display: flex;
+  align-items: end;
+}
+.urlbarView-results[wrap] > .urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-first-row-container {
+  flex-wrap: wrap;
+}
+.urlbarView-results[wrap] > .urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-first-row-container > * {
+  max-width: 100%;
+  flex-basis: 100%;
+}
+.urlbarView-results[wrap] > .urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-first-row-container > .urlbarView-title-separator {
+  visibility: collapse;
+}
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner[selected] > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-first-row-container > .urlbarView-action {
+  color: var(--autocomplete-popup-highlight-color);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .urlbarView-results:not([wrap]) > .urlbarView-row > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-first-row-container > .urlbarView-action[slide-in] {
+    animation-name: urlbarView-action-slide-in;
+    animation-duration: 350ms;
+    animation-timing-function: var(--animation-easing-function);
+  }
+}
+
+/* Description text. */
+.urlbarView-dynamic-onboardTabToSearch-description {
+  margin-block-start: 2px;
+}
+.urlbarView-results[wrap] > .urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-description {
+  max-width: 100%;
+  flex-basis: 100%;
+}
+.urlbarView-row[dynamicType=onboardTabToSearch] > .urlbarView-row-inner:not([selected]) > .urlbarView-no-wrap > .urlbarView-dynamic-onboardTabToSearch-text-container > .urlbarView-dynamic-onboardTabToSearch-description {
+  opacity: 0.6;
+}
+
+/* CSS for Calculator */
+.urlbarView-row[dynamicType=calculator] > .urlbarView-row-inner[selected] {
+  background-color: var(--autocomplete-popup-highlight-background);
+  color: var(--autocomplete-popup-highlight-color);
+}
+
+.urlbarView-row[dynamicType=calculator] > .urlbarView-row-inner:hover {
+  background: var(--arrowpanel-dimmed);
+}
+
+.urlbarView-dynamic-calculator-action {
+  font-size: .85em;
+  font-weight: normal;
+  visibility: collapse;
+}
+
+.urlbarView-row[dynamicType=calculator] > .urlbarView-row-inner:hover .urlbarView-dynamic-calculator-action,
+.urlbarView-row[dynamicType=calculator] > .urlbarView-row-inner[selected] .urlbarView-dynamic-calculator-action {
+  visibility: visible;
+}
+
+.urlbarView-dynamic-calculator-action::before {
+  content: "\2014";
+  margin: 0 .4em;
+  opacity: 0.6;
+}
+
+/** UrlbarProviderUnitConversion **/
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner:hover {
+  background: var(--autocomplete-popup-hover-background);
+}
+
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner[selected] {
+  background: var(--autocomplete-popup-highlight-background);
+  color: var(--autocomplete-popup-highlight-color);
+  fill-opacity: 1;
+}
+
+.urlbarView-dynamic-unitConversion-action {
+	font-size: .85em;
+	font-weight: normal;
+	visibility: collapse;
+}
+
+.urlbarView-dynamic-unitConversion-action::before {
+	content: "\2014";
+	margin: 0 .4em;
+	opacity: 0.6;
+}
+
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner:hover .urlbarView-dynamic-unitConversion-action,
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner[selected] .urlbarView-dynamic-unitConversion-action {
+	visibility: visible;
+}
+
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner:hover .urlbarView-dynamic-unitConversion-action {
+	color: var(--urlbar-popup-action-color);
+}
+
+.urlbarView-row[dynamicType=unitConversion] > .urlbarView-row-inner[selected] .urlbarView-dynamic-unitConversion-action {
+  color: var(--autocomplete-popup-highlight-color);
+}
+
+.urlbarView-row[dynamicType=quickactions] > .urlbarView-row-inner {
+  align-items: start;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-dynamic-quickactions-buttons {
+  display: flex;
+  flex-grow: 1;
+  gap: 0.9em 1.8em;
+  max-width: 100%;
+}
+
+#urlbar[searchmodesource=actions] .urlbarView-row[dynamicType=quickactions] .urlbarView-dynamic-quickactions-buttons {
+  flex-wrap: wrap;
+}
+
+.urlbarView-results[wrap] > .urlbarView-row[dynamicType=quickactions] > .urlbarView-row-inner {
+  flex-wrap: unset;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-quickaction-row {
+  box-shadow: 0px 0px 1px rgba(128, 128, 142, 0.9), 0px 0px 4px rgba(128, 128, 142, 0.5);
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  padding: .5em;
+  margin-top: 2px;
+  position: relative;
+  overflow: hidden;
+  min-width: 16px;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-quickaction-row[disabled] {
+  opacity: .4;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-label {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 11px;
+  font-weight: 500;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-favicon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-favicon-img {
+  width: 16px;
+  height: 16px;
+}
+
+.urlbarView-row[dynamicType=quickactions][label]::before {
+  top: -1em;
+  margin-inline-start: 6px;
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-quickaction-row:hover:not([disabled]):not([selected]) {
+  background-color: var(--autocomplete-popup-hover-background);
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-quickaction-row[selected] {
+  background-color: var(--autocomplete-popup-highlight-background);
+  color: var(--autocomplete-popup-highlight-color);
+}
+
+.urlbarView-row[dynamicType=quickactions] .urlbarView-title {
+  display: flex;
+}
+
+/**
+ * UrlbarProviderContextualSearch
+ */
+
+.urlbarView-row[dynamicType=contextualSearch] .urlbarView-title[overflow] {
+  mask-image: linear-gradient(to left, transparent, black 2em);
+}
+
+.urlbarView-row[dynamicType=contextualSearch] .urlbarView-title[overflow]:-moz-locale-dir(rtl) {
+  mask-image: linear-gradient(to right, transparent, black 2em);
+}
+
+.urlbarView-row[dynamicType=contextualSearch] > .urlbarView-row-inner > .urlbarView-no-wrap > .urlbarView-title-separator.urlbarView-dynamic-contextualSearch-separator {
+  visibility: visible;
+}
+
+.urlbarView-row[dynamicType=contextualSearch] .urlbarView-dynamic-contextualSearch-description {
+  font-size: 0.85em;
+}
+
+.urlbarView-row[dynamicType=contextualSearch]:hover > .urlbarView-row-inner {
+  background-color: var(--autocomplete-popup-hover-background);
+}
