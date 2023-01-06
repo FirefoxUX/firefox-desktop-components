@@ -687,9 +687,14 @@ this.DateTimeBoxWidget = class {
         break;
       }
       case "Backspace": {
-        // TODO(emilio, bug 1571533): These functions should look at
-        // defaultPrevented.
+        if (aEvent.originalTarget == this.mCalendarButton) {
+          // Do not remove Calendar button
+          aEvent.preventDefault();
+          break;
+        }
         if (this.isEditable()) {
+          // TODO(emilio, bug 1571533): These functions should look at
+          // defaultPrevented.
           let targetField = aEvent.originalTarget;
           this.clearFieldValue(targetField);
           this.setInputValueFromFields();
@@ -714,14 +719,10 @@ this.DateTimeBoxWidget = class {
         break;
       }
       default: {
-        // digits and printable characters
-        const regex = new RegExp("Digit\\d");
-        const isDigit = regex.test(aEvent.code);
-
+        // Handle printable characters (e.g. letters, digits and numpad digits)
         if (
-          isDigit ||
-          (aEvent.key == 0 &&
-            !(aEvent.ctrlKey || aEvent.altKey || aEvent.metaKey))
+          aEvent.key.length === 1 &&
+          !(aEvent.ctrlKey || aEvent.altKey || aEvent.metaKey)
         ) {
           this.handleKeydown(aEvent);
           aEvent.preventDefault();
