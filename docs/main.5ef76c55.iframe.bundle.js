@@ -52690,6 +52690,7 @@ var map = {
 	"./message-bar.stories.mjs": 4268,
 	"./migration-wizard.stories.mjs": 24665,
 	"./named-deck.stories.mjs": 4119,
+	"./panel-list.stories.mjs": 58609,
 	"./toggle.stories.mjs": 72314
 };
 
@@ -53889,6 +53890,603 @@ module.exports = webpackAsyncContext;
     }
   }
   customElements.define("named-deck", NamedDeck);
+}
+
+
+/***/ }),
+
+/***/ 73157:
+/***/ (() => {
+
+"use strict";
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+{
+  class PanelList extends HTMLElement {
+    static get observedAttributes() {
+      return ["open"];
+    }
+
+    static get fragment() {
+      if (!this._template) {
+        let parser = new DOMParser();
+        let doc = parser.parseFromString(
+          `
+          <template>
+            <link rel="stylesheet" href="chrome://global/content/elements/panel-list.css">
+            <div class="arrow top" role="presentation"></div>
+            <div class="list" role="presentation">
+              <slot></slot>
+            </div>
+            <div class="arrow bottom" role="presentation"></div>
+          </template>
+        `,
+          "text/html"
+        );
+        this._template = document.importNode(
+          doc.querySelector("template"),
+          true
+        );
+      }
+      let frag = this._template.content.cloneNode(true);
+      if (window.IS_STORYBOOK) {
+        frag.querySelector("link").href = "./panel-list.css";
+      }
+      return frag;
+    }
+
+    constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+      // Ensure that the element is hidden even if its main stylesheet hasn't
+      // loaded yet. On initial load, or with cache disabled, the element could
+      // briefly flicker before the stylesheet is loaded without this.
+      let style = document.createElement("style");
+      style.textContent = `
+        :host(:not([open])) {
+          display: none;
+        }
+      `;
+      this.shadowRoot.appendChild(style);
+      this.shadowRoot.appendChild(this.constructor.fragment);
+    }
+
+    connectedCallback() {
+      this.setAttribute("role", "menu");
+    }
+
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (name == "open" && newVal != oldVal) {
+        if (this.open) {
+          this.onShow();
+        } else {
+          this.onHide();
+        }
+      }
+    }
+
+    get open() {
+      return this.hasAttribute("open");
+    }
+
+    set open(val) {
+      this.toggleAttribute("open", val);
+    }
+
+    getTargetForEvent(event) {
+      if (!event) {
+        return null;
+      }
+      if (event.composed) {
+        event._savedComposedTarget =
+          event.composedTarget || event.composedPath()[0];
+      }
+      if (event._savedComposedTarget) {
+        return event._savedComposedTarget;
+      }
+      return event.target;
+    }
+
+    show(triggeringEvent) {
+      this.triggeringEvent = triggeringEvent;
+      this.lastAnchorNode = this.getTargetForEvent(this.triggeringEvent);
+      this.wasOpenedByKeyboard =
+        triggeringEvent &&
+        (triggeringEvent.mozInputSource == MouseEvent.MOZ_SOURCE_KEYBOARD ||
+          triggeringEvent.mozInputSource == MouseEvent.MOZ_SOURCE_UNKNOWN);
+      this.open = true;
+    }
+
+    hide(triggeringEvent, { force = false } = {}) {
+      // It's possible this is being used in an unprivileged context, in which
+      // case it won't have access to Services / Services will be undeclared.
+      const autohideDisabled = this.hasServices()
+        ? Services.prefs.getBoolPref("ui.popup.disable_autohide", false)
+        : false;
+
+      if (autohideDisabled && !force) {
+        // Don't hide if this wasn't "forced" (using escape or click in menu).
+        return;
+      }
+      let openingEvent = this.triggeringEvent;
+      this.triggeringEvent = triggeringEvent;
+      this.open = false;
+      let target = this.getTargetForEvent(openingEvent);
+      // Refocus the button that opened the menu if we have one.
+      if (target && this.wasOpenedByKeyboard) {
+        target.focus();
+      }
+    }
+
+    toggle(triggeringEvent) {
+      if (this.open) {
+        this.hide(triggeringEvent, { force: true });
+      } else {
+        this.show(triggeringEvent);
+      }
+    }
+
+    hasServices() {
+      // Safely check for Services without throwing a ReferenceError.
+      return typeof Services !== "undefined";
+    }
+
+    isDocumentRTL() {
+      if (this.hasServices()) {
+        return Services.locale.isAppLocaleRTL;
+      }
+      return document.dir === "rtl";
+    }
+
+    async setAlign() {
+      if (!this.parentElement) {
+        // This could get called before we're added to the DOM.
+        // Nothing to do in that case.
+        return;
+      }
+
+      // Set the showing attribute to hide the panel until its alignment is set.
+      this.setAttribute("showing", "true");
+      // Tell the parent node to hide any overflow in case the panel extends off
+      // the page before the alignment is set.
+      this.parentElement.style.overflow = "hidden";
+
+      // Wait for a layout flush, then find the bounds.
+      let {
+        anchorHeight,
+        anchorLeft,
+        anchorTop,
+        anchorWidth,
+        panelHeight,
+        panelWidth,
+        winHeight,
+        winScrollY,
+        winScrollX,
+        winWidth,
+      } = await new Promise(resolve => {
+        this.style.left = 0;
+        this.style.top = 0;
+
+        requestAnimationFrame(() =>
+          setTimeout(() => {
+            let target = this.getTargetForEvent(this.triggeringEvent);
+            let anchorNode = target || this.parentElement;
+            // It's possible this is being used in a context where windowUtils is
+            // not available. In that case, fallback to using the element.
+            let getBounds = el =>
+              window.windowUtils
+                ? window.windowUtils.getBoundsWithoutFlushing(el)
+                : el.getBoundingClientRect();
+            // Use y since top is reserved.
+            let anchorBounds = getBounds(anchorNode);
+            let panelBounds = getBounds(this);
+            resolve({
+              anchorHeight: anchorBounds.height,
+              anchorLeft: anchorBounds.left,
+              anchorTop: anchorBounds.top,
+              anchorWidth: anchorBounds.width,
+              panelHeight: panelBounds.height,
+              panelWidth: panelBounds.width,
+              winHeight: innerHeight,
+              winWidth: innerWidth,
+              winScrollX: scrollX,
+              winScrollY: scrollY,
+            });
+          }, 0)
+        );
+      });
+
+      // Calculate the left/right alignment.
+      let align;
+      let leftOffset;
+      let leftAlignX = anchorLeft;
+      let rightAlignX = anchorLeft + anchorWidth - panelWidth;
+
+      if (this.isDocumentRTL()) {
+        // Prefer aligning on the right.
+        align = rightAlignX < 0 ? "left" : "right";
+      } else {
+        // Prefer aligning on the left.
+        align = leftAlignX + panelWidth > winWidth ? "right" : "left";
+      }
+      leftOffset = align === "left" ? leftAlignX : rightAlignX;
+
+      let bottomAlignY = anchorTop + anchorHeight;
+      let valign;
+      let topOffset;
+      if (bottomAlignY + panelHeight > winHeight) {
+        topOffset = anchorTop - panelHeight;
+        valign = "top";
+      } else {
+        topOffset = bottomAlignY;
+        valign = "bottom";
+      }
+
+      // Set the alignments and show the panel.
+      this.setAttribute("align", align);
+      this.setAttribute("valign", valign);
+      this.parentElement.style.overflow = "";
+
+      this.style.left = `${leftOffset + winScrollX}px`;
+      this.style.top = `${topOffset + winScrollY}px`;
+
+      this.removeAttribute("showing");
+    }
+
+    addHideListeners() {
+      if (this.hasAttribute("stay-open")) {
+        // This is intended for inspection in Storybook.
+        return;
+      }
+      // Hide when a panel-item is clicked in the list.
+      this.addEventListener("click", this);
+      document.addEventListener("keydown", this);
+      // Hide when a click is initiated outside the panel.
+      document.addEventListener("mousedown", this);
+      // Hide if focus changes and the panel isn't in focus.
+      document.addEventListener("focusin", this);
+      // Reset or focus tracking, we treat the first focusin differently.
+      this.focusHasChanged = false;
+      // Hide on resize, scroll or losing window focus.
+      window.addEventListener("resize", this);
+      window.addEventListener("scroll", this, { capture: true });
+      window.addEventListener("blur", this);
+    }
+
+    removeHideListeners() {
+      this.removeEventListener("click", this);
+      document.removeEventListener("keydown", this);
+      document.removeEventListener("mousedown", this);
+      document.removeEventListener("focusin", this);
+      window.removeEventListener("resize", this);
+      window.removeEventListener("scroll", this, { capture: true });
+      window.removeEventListener("blur", this);
+    }
+
+    handleEvent(e) {
+      // Ignore the event if it caused the panel to open.
+      if (e == this.triggeringEvent) {
+        return;
+      }
+
+      let target = this.getTargetForEvent(e);
+      let inPanelList = e.composed
+        ? e.composedPath().some(el => el == this)
+        : e.target.closest && e.target.closest("panel-list") == this;
+
+      switch (e.type) {
+        case "resize":
+        case "scroll":
+        case "blur":
+          this.hide();
+          break;
+        case "click":
+          if (inPanelList) {
+            this.hide(undefined, { force: true });
+          } else {
+            // Avoid falling through to the default click handler of the parent.
+            e.stopPropagation();
+          }
+          break;
+        case "mousedown":
+          // Close if there's a click started outside the panel.
+          if (!inPanelList) {
+            this.hide();
+          }
+          break;
+        case "keydown":
+          if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Tab") {
+            // Ignore tabbing with a modifer other than shift.
+            if (e.key === "Tab" && (e.altKey || e.ctrlKey || e.metaKey)) {
+              return;
+            }
+
+            // Don't scroll the page or let the regular tab order take effect.
+            e.preventDefault();
+
+            // Keep moving to the next/previous element sibling until we find a
+            // panel-item that isn't hidden.
+            let moveForward =
+              e.key === "ArrowDown" || (e.key === "Tab" && !e.shiftKey);
+
+            // If the menu is opened with the mouse, the active element might be
+            // somewhere else in the document. In that case we should ignore it
+            // to avoid walking unrelated DOM nodes.
+            this.focusWalker.currentNode = this.contains(
+              this.getRootNode().activeElement
+            )
+              ? this.getRootNode().activeElement
+              : this;
+            let nextItem = moveForward
+              ? this.focusWalker.nextNode()
+              : this.focusWalker.previousNode();
+
+            // If the next item wasn't found, try looping to the top/bottom.
+            if (!nextItem) {
+              this.focusWalker.currentNode = this;
+              if (moveForward) {
+                nextItem = this.focusWalker.firstChild();
+              } else {
+                nextItem = this.focusWalker.lastChild();
+              }
+            }
+            break;
+          } else if (e.key === "Escape") {
+            this.hide(undefined, { force: true });
+          } else if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            // Check if any of the children have an accesskey for this letter.
+            let item = this.querySelector(
+              `[accesskey="${e.key.toLowerCase()}"],
+              [accesskey="${e.key.toUpperCase()}"]`
+            );
+            if (item) {
+              item.click();
+            }
+          }
+          break;
+        case "focusin":
+          if (
+            this.triggeringEvent &&
+            target == this.getTargetForEvent(this.triggeringEvent) &&
+            !this.focusHasChanged
+          ) {
+            // There will be a focusin after the mousedown that opens the panel
+            // using the mouse. Ignore the first focusin event if it's on the
+            // triggering target.
+            this.focusHasChanged = true;
+          } else if (!target || !inPanelList) {
+            // If the target isn't in the panel, hide. This will close when focus
+            // moves out of the panel.
+            this.hide();
+          } else {
+            // Just record that there was a focusin event.
+            this.focusHasChanged = true;
+          }
+          break;
+      }
+    }
+
+    /**
+     * A TreeWalker that can be used to focus elements. The returned element will
+     * be the element that has gained focus based on the requested movement
+     * through the tree.
+     *
+     * Example:
+     *
+     *   this.focusWalker.currentNode = this;
+     *   // Focus and get the first focusable child.
+     *   let focused = this.focusWalker.nextNode();
+     *   // Focus the second focusable child.
+     *   this.focusWalker.nextNode();
+     */
+    get focusWalker() {
+      if (!this._focusWalker) {
+        this._focusWalker = document.createTreeWalker(
+          this,
+          NodeFilter.SHOW_ELEMENT,
+          {
+            acceptNode: node => {
+              // No need to look at hidden nodes.
+              if (node.hidden) {
+                return NodeFilter.FILTER_REJECT;
+              }
+
+              // Focus the node, if it worked then this is the node we want.
+              node.focus();
+              if (node === node.getRootNode().activeElement) {
+                return NodeFilter.FILTER_ACCEPT;
+              }
+
+              // Continue into child nodes if the parent couldn't be focused.
+              return NodeFilter.FILTER_SKIP;
+            },
+          }
+        );
+      }
+      return this._focusWalker;
+    }
+
+    async onShow() {
+      this.sendEvent("showing");
+      this.addHideListeners();
+      await this.setAlign();
+
+      // Wait until the next paint for the alignment to be set and panel to be
+      // visible.
+      requestAnimationFrame(() => {
+        if (this.wasOpenedByKeyboard) {
+          // Focus the first focusable panel-item if opened by keyboard.
+          this.focusWalker.currentNode = this;
+          this.focusWalker.nextNode();
+        }
+
+        this.lastAnchorNode?.setAttribute("aria-expanded", "true");
+
+        this.sendEvent("shown");
+      });
+    }
+
+    onHide() {
+      requestAnimationFrame(() => {
+        this.sendEvent("hidden");
+        this.lastAnchorNode?.setAttribute("aria-expanded", "false");
+      });
+      this.removeHideListeners();
+    }
+
+    sendEvent(name, detail) {
+      this.dispatchEvent(new CustomEvent(name, { detail }));
+    }
+  }
+  customElements.define("panel-list", PanelList);
+
+  class PanelItem extends HTMLElement {
+    static get observedAttributes() {
+      return ["accesskey"];
+    }
+
+    constructor() {
+      super();
+      this.attachShadow({ mode: "open" });
+
+      let style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = window.IS_STORYBOOK
+        ? "./panel-item.css"
+        : "chrome://global/content/elements/panel-item.css";
+
+      // When click listeners are added to the panel-item it creates a node in
+      // the a11y tree for this element. This breaks the association between the
+      // menu and the button[role="menuitem"] in this shadow DOM and causes
+      // announcement issues with screen readers. (bug 995064)
+      this.setAttribute("role", "presentation");
+
+      this.button = document.createElement("button");
+      this.button.setAttribute("role", "menuitem");
+      this.button.setAttribute("part", "button");
+
+      // Use a XUL label element if possible to show the accesskey.
+      this.label = document.createXULElement
+        ? document.createXULElement("label")
+        : document.createElement("span");
+      this.button.appendChild(this.label);
+
+      let supportLinkSlot = document.createElement("slot");
+      supportLinkSlot.name = "support-link";
+
+      let defaultSlot = document.createElement("slot");
+      defaultSlot.style.display = "none";
+
+      this.shadowRoot.append(style, this.button, supportLinkSlot, defaultSlot);
+
+      this.setLabelContents = () => {
+        this.label.textContent = defaultSlot
+          .assignedNodes()
+          .map(node => node.textContent)
+          .join("");
+      };
+      this.setLabelContents();
+
+      // When our content changes, move the text into the label. It doesn't work
+      // with a <slot>, unfortunately.
+      new MutationObserver(this.setLabelContents).observe(this, {
+        characterData: true,
+        childList: true,
+        subtree: true,
+      });
+    }
+
+    connectedCallback() {
+      this.panel = this.closest("panel-list");
+
+      if (this.panel) {
+        this.panel.addEventListener("hidden", this);
+        this.panel.addEventListener("shown", this);
+      }
+    }
+
+    disconnectedCallback() {
+      if (this.panel) {
+        this.panel.removeEventListener("hidden", this);
+        this.panel.removeEventListener("shown", this);
+        this.panel = null;
+      }
+    }
+
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (name === "accesskey") {
+        // Bug 1037709 - Accesskey doesn't work in shadow DOM.
+        // Ideally we'd have the accesskey set in shadow DOM, and on
+        // attributeChangedCallback we'd just update the shadow DOM accesskey.
+
+        // Skip this change event if we caused it.
+        if (this._modifyingAccessKey) {
+          this._modifyingAccessKey = false;
+          return;
+        }
+
+        this.label.accessKey = newVal || "";
+
+        // Bug 1588156 - Accesskey is not ignored for hidden non-input elements.
+        // Since the accesskey won't be ignored, we need to remove it ourselves
+        // when the panel is closed, and move it back when it opens.
+        if (!this.panel || !this.panel.open) {
+          // When the panel isn't open, just store the key for later.
+          this._accessKey = newVal || null;
+          this._modifyingAccessKey = true;
+          this.accessKey = "";
+        } else {
+          this._accessKey = null;
+        }
+      }
+    }
+
+    get disabled() {
+      return this.button.hasAttribute("disabled");
+    }
+
+    set disabled(val) {
+      this.button.toggleAttribute("disabled", val);
+    }
+
+    get checked() {
+      return this.hasAttribute("checked");
+    }
+
+    set checked(val) {
+      this.toggleAttribute("checked", val);
+    }
+
+    focus() {
+      this.button.focus();
+    }
+
+    handleEvent(e) {
+      // Bug 1588156 - Accesskey is not ignored for hidden non-input elements.
+      // Since the accesskey won't be ignored, we need to remove it ourselves
+      // when the panel is closed, and move it back when it opens.
+      switch (e.type) {
+        case "shown":
+          if (this._accessKey) {
+            this.accessKey = this._accessKey;
+            this._accessKey = null;
+          }
+          break;
+        case "hidden":
+          if (this.accessKey) {
+            this._accessKey = this.accessKey;
+            this._modifyingAccessKey = true;
+            this.accessKey = "";
+          }
+          break;
+      }
+    }
+  }
+  customElements.define("panel-item", PanelItem);
 }
 
 
@@ -60086,7 +60684,7 @@ ReactiveElement.shadowRootOptions = { mode: 'open' };
 polyfillSupport$2 === null || polyfillSupport$2 === void 0 ? void 0 : polyfillSupport$2({ ReactiveElement });
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for ReactiveElement usage.
-((_d$1 = global$1.reactiveElementVersions) !== null && _d$1 !== void 0 ? _d$1 : (global$1.reactiveElementVersions = [])).push('1.4.2');
+((_d$1 = global$1.reactiveElementVersions) !== null && _d$1 !== void 0 ? _d$1 : (global$1.reactiveElementVersions = [])).push('1.5.0');
 
 /**
  * @license
@@ -61165,7 +61763,7 @@ const polyfillSupport$1 = global.litHtmlPolyfillSupport;
 polyfillSupport$1 === null || polyfillSupport$1 === void 0 ? void 0 : polyfillSupport$1(Template, ChildPart$1);
 // IMPORTANT: do not change the property name or the assignment expression.
 // This line will be used in regexes to search for lit-html usage.
-((_d = global.litHtmlVersions) !== null && _d !== void 0 ? _d : (global.litHtmlVersions = [])).push('2.4.0');
+((_d = global.litHtmlVersions) !== null && _d !== void 0 ? _d : (global.litHtmlVersions = [])).push('2.5.0');
 /**
  * Renders a value, usually a lit-html TemplateResult, to the container.
  *
@@ -63097,31 +63695,13 @@ class StyleMapDirective extends Directive {
     }
     render(styleInfo) {
         return Object.keys(styleInfo).reduce((style, prop) => {
-            const value = styleInfo[prop];
-            if (value == null) {
-                return style;
-            }
-            // Convert property names from camel-case to dash-case, i.e.:
-            //  `backgroundColor` -> `background-color`
-            // Vendor-prefixed names need an extra `-` appended to front:
-            //  `webkitAppearance` -> `-webkit-appearance`
-            // Exception is any property name containing a dash, including
-            // custom properties; we assume these are already dash-cased i.e.:
-            //  `--my-button-color` --> `--my-button-color`
-            prop = prop
-                .replace(/(?:^(webkit|moz|ms|o)|)(?=[A-Z])/g, '-$&')
-                .toLowerCase();
-            return style + `${prop}:${value};`;
+            return style + prop.slice(0, 0);
         }, '');
     }
     update(part, [styleInfo]) {
         const { style } = part.element;
         if (this._previousStyleProperties === undefined) {
             this._previousStyleProperties = new Set();
-            for (const name in styleInfo) {
-                this._previousStyleProperties.add(name);
-            }
-            return this.render(styleInfo);
         }
         // Remove old properties that no longer exist in styleInfo
         // We use forEach() instead of for-of so that re don't require down-level
@@ -66346,6 +66926,92 @@ var __namedExportsOrder = ["Tabs", "ListMenu"];
 
 /***/ }),
 
+/***/ 58609:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Icons": () => (/* binding */ Icons),
+/* harmony export */   "Open": () => (/* binding */ Open),
+/* harmony export */   "Simple": () => (/* binding */ Simple),
+/* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47042);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(21249);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_bind_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(24812);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19601);
+/* harmony import */ var toolkit_widgets_panel_list_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(73157);
+/* harmony import */ var lit__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(85862);
+/* harmony import */ var lit_directives_if_defined_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(13492);
+
+var _templateObject, _templateObject2, _templateObject3;
+
+
+
+function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Design System/Components/Panel Menu",
+  parameters: {
+    actions: {
+      handles: ["click"]
+    }
+  }
+});
+var openMenu = function openMenu(e) {
+  return document.querySelector("panel-list").toggle(e);
+};
+var Template = function Template(_ref) {
+  var open = _ref.open,
+    items = _ref.items;
+  return (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <style>\n      panel-item[icon=\"passwords\"]::part(button) {\n        background-image: url(\"chrome://browser/skin/login.svg\");\n      }\n      panel-item[icon=\"settings\"]::part(button) {\n        background-image: url(\"chrome://global/skin/icons/settings.svg\");\n      }\n      button {\n        position: absolute;\n        background-image: url(\"chrome://global/skin/icons/more.svg\");\n      }\n      .end {\n        inset-inline-end: 30px;\n      }\n\n      .bottom {\n        inset-block-end: 30px;\n      }\n    </style>\n    <button class=\"ghost-button icon-button\" @click=", "></button>\n    <button class=\"ghost-button icon-button end\" @click=", "></button>\n    <button class=\"ghost-button icon-button bottom\" @click=", "></button>\n    <button\n      class=\"ghost-button icon-button bottom end\"\n      @click=", "\n    ></button>\n    <panel-list ?stay-open=", " ?open=", ">\n      ", "\n    </panel-list>\n  "])), openMenu, openMenu, openMenu, openMenu, open, open, items.map(function (i) {
+    var _i$icon, _i$text;
+    return i == "<hr>" ? (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n              <hr />\n            "]))) : (0,lit__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteralLoose(["\n              <panel-item\n                icon=", "\n                ?checked=", "\n                ?badged=", "\n                accesskey=", "\n              >\n                ", "\n              </panel-item>\n            "])), (_i$icon = i.icon) !== null && _i$icon !== void 0 ? _i$icon : "", i.checked, i.badged, (0,lit_directives_if_defined_js__WEBPACK_IMPORTED_MODULE_6__.ifDefined)(i.accesskey), (_i$text = i.text) !== null && _i$text !== void 0 ? _i$text : i);
+  }));
+};
+var Simple = Template.bind({});
+Simple.args = {
+  open: false,
+  items: ["Item One", {
+    text: "Item Two (accesskey w)",
+    accesskey: "w"
+  }, "Item Three", "<hr>", {
+    text: "Checked",
+    checked: true
+  }, {
+    text: "Badged, look at me",
+    badged: true,
+    icon: "settings"
+  }]
+};
+var Icons = Template.bind({});
+Icons.args = {
+  open: false,
+  items: [{
+    text: "Passwords",
+    icon: "passwords"
+  }, {
+    text: "Settings",
+    icon: "settings"
+  }]
+};
+var Open = Template.bind({});
+Open.args = Object.assign({}, Simple.args, {
+  open: true
+});
+var __namedExportsOrder = ["Simple", "Icons", "Open"];
+
+/***/ }),
+
 /***/ 72314:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -66777,6 +67443,28 @@ var o = (0,_directive_js__WEBPACK_IMPORTED_MODULE_1__.directive)( /*#__PURE__*/f
   }]);
   return _class;
 }(_directive_js__WEBPACK_IMPORTED_MODULE_1__.Directive));
+
+
+/***/ }),
+
+/***/ 32089:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ifDefined": () => (/* binding */ l)
+/* harmony export */ });
+/* harmony import */ var _lit_html_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(34680);
+
+/**
+ * @license
+ * Copyright 2018 Google LLC
+ * SPDX-License-Identifier: BSD-3-Clause
+ */
+var l = function l(_l) {
+  return null != _l ? _l : _lit_html_js__WEBPACK_IMPORTED_MODULE_0__.nothing;
+};
 
 
 /***/ }),
@@ -67350,6 +68038,21 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ 13492:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ifDefined": () => (/* reexport safe */ lit_html_directives_if_defined_js__WEBPACK_IMPORTED_MODULE_0__.ifDefined)
+/* harmony export */ });
+/* harmony import */ var lit_html_directives_if_defined_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32089);
+
+//# sourceMappingURL=if-defined.js.map
+
+
+/***/ }),
+
 /***/ 85862:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -67531,7 +68234,7 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"66":"0d07b9af","111":"4dbf76c0","116":"9f24bb29","130":"e26af35b","139":"533f578c","144":"7080a0cd","147":"30210c30","219":"259ccf10","398":"e0f32b80","556":"513a8e48","641":"9494420e","699":"c55d54d4","716":"ac431600","758":"05e3afe5","836":"b7763fba","838":"d6d81fd2","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"30fb3115","902":"d6ed625d","933":"e46fb430","1028":"17564568","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"2fb08e3c","1271":"e332bd71","1324":"77f0940f","1381":"28f20843","1577":"7218fe76","1579":"017121fd","1723":"54a041db","1727":"6cf958c7","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"429868b2","2308":"210c46bf","2356":"fce35adf","2415":"2f7b399c","2422":"0962dda4","2442":"7a524bf1","2463":"a6d3c3ff","2503":"3409e95c","2521":"6c94fd15","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"3f16ab24","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"bfb94da0","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"457b75f5","3117":"9dbe6663","3192":"d7799c05","3281":"08a6c76f","3283":"9d51d416","3320":"77cfac42","3367":"d84742eb","3401":"496dd824","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"fb6a940f","3805":"49a5f02f","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"94981a5f","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"2aa72bdd","4265":"de20e76a","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"3dd5f2c2","4550":"874af5a2","4558":"767caec2","4586":"3b480544","4600":"bbf1043e","4619":"88f4db8e","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"2e568694","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"42a7e34d","5059":"2a49b50d","5124":"eb180580","5137":"f6d04350","5183":"6fd75aa5","5205":"96ea4a7e","5229":"282589ef","5256":"bbae827a","5359":"a4292cee","5388":"bf733b78","5531":"452efda5","5727":"60ebb0e1","5781":"1d738f25","5791":"bca77c2f","5812":"d709a3cf","5819":"0c68047b","5893":"b046f095","5909":"7f4d7582","5935":"af40fff7","6043":"b242779a","6117":"b426c1a7","6176":"517a58b2","6211":"aec977b5","6215":"2fdc63e8","6222":"62bee1a3","6245":"5ec065e7","6272":"fe21945b","6456":"ac84d0c9","6482":"b93508f7","6501":"54b5c84b","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"f16d8c29","6736":"bd4c8a7a","6744":"33d6ee00","6767":"58a07032","6811":"96f1d05e","6826":"cecb1ea3","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"57a96357","7280":"6bf1ddb4","7294":"f7cc014d","7321":"7ba9d878","7322":"f4b54748","7329":"769cf4be","7358":"f7c640b1","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7656":"8cf17891","7700":"19cb385f","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"0e4817c4","7760":"8e383c2c","7797":"d62dc806","7968":"ed450326","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8137":"7db82814","8150":"e30a2443","8245":"cd296c6f","8265":"a99fe6ef","8274":"8d304f55","8293":"15ec1f21","8306":"751de94e","8308":"0ea3dc6b","8314":"acc8f6d8","8360":"e83b4fa6","8392":"751b1942","8452":"122fa6a1","8514":"9f6c91a9","8540":"0de70c56","8542":"52dbe362","8579":"50de369a","8665":"86254386","8672":"d64d761d","8714":"981e9af6","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"412573a7","9084":"42a0b520","9115":"774bc160","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75501f06","9331":"2ab2c438","9360":"0946efeb","9420":"ed9a6614","9438":"5a521f9d","9473":"9b2fe615","9495":"a17ba160","9514":"d7818a2a","9730":"d47aa44a","9753":"beacb25a","9807":"c68ae0f5","9828":"969d1ed4","9923":"d8e024b7","9952":"1445bfed","9977":"b19fd385"}[chunkId] + ".iframe.bundle.js";
+/******/ 			return "" + chunkId + "." + {"66":"0d07b9af","111":"4dbf76c0","116":"9f24bb29","130":"e26af35b","139":"533f578c","144":"7080a0cd","147":"30210c30","219":"f229adbc","398":"e0f32b80","556":"513a8e48","641":"3ec6a8a4","699":"c55d54d4","716":"ac431600","758":"05e3afe5","836":"b7763fba","838":"d6d81fd2","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"30fb3115","902":"d6ed625d","933":"e46fb430","1028":"17564568","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"2fb08e3c","1271":"e332bd71","1324":"77f0940f","1381":"e925e33c","1577":"7218fe76","1579":"017121fd","1723":"54a041db","1727":"6cf958c7","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"429868b2","2308":"210c46bf","2356":"fce35adf","2415":"2f7b399c","2422":"0962dda4","2442":"7a524bf1","2463":"a6d3c3ff","2503":"3409e95c","2521":"6c94fd15","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"3f16ab24","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"bfb94da0","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"457b75f5","3117":"9dbe6663","3192":"d7799c05","3281":"08a6c76f","3283":"9d51d416","3320":"77cfac42","3367":"d84742eb","3401":"496dd824","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"fb6a940f","3805":"49a5f02f","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"94981a5f","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"2aa72bdd","4265":"de20e76a","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"3dd5f2c2","4550":"874af5a2","4558":"767caec2","4586":"3b480544","4600":"bbf1043e","4619":"88f4db8e","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"2e568694","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"42a7e34d","5059":"2a49b50d","5124":"eb180580","5137":"f6d04350","5183":"6fd75aa5","5205":"96ea4a7e","5229":"282589ef","5256":"bbae827a","5359":"a4292cee","5388":"bf733b78","5531":"452efda5","5727":"60ebb0e1","5781":"1d738f25","5791":"bca77c2f","5812":"d709a3cf","5819":"0c68047b","5893":"b046f095","5909":"7f4d7582","5935":"af40fff7","6043":"b242779a","6117":"b426c1a7","6176":"517a58b2","6211":"aec977b5","6215":"2fdc63e8","6222":"62bee1a3","6245":"5ec065e7","6272":"fe21945b","6456":"ac84d0c9","6482":"b93508f7","6501":"54b5c84b","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"f16d8c29","6736":"bd4c8a7a","6744":"33d6ee00","6767":"58a07032","6811":"96f1d05e","6826":"cecb1ea3","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"57a96357","7280":"6bf1ddb4","7294":"f7cc014d","7321":"7ba9d878","7322":"f4b54748","7329":"769cf4be","7358":"f7c640b1","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7656":"8cf17891","7700":"19cb385f","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"0e4817c4","7760":"8e383c2c","7797":"d62dc806","7968":"ed450326","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8137":"7db82814","8150":"c4b17844","8245":"cd296c6f","8265":"a99fe6ef","8274":"8d304f55","8293":"15ec1f21","8306":"751de94e","8308":"0ea3dc6b","8314":"acc8f6d8","8360":"e83b4fa6","8392":"751b1942","8452":"122fa6a1","8514":"9f6c91a9","8540":"0de70c56","8542":"52dbe362","8579":"50de369a","8665":"86254386","8672":"d64d761d","8714":"981e9af6","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"412573a7","9084":"42a0b520","9115":"774bc160","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75501f06","9331":"2ab2c438","9360":"0946efeb","9420":"ed9a6614","9438":"5a521f9d","9473":"9b2fe615","9495":"a17ba160","9514":"d7818a2a","9730":"d47aa44a","9753":"beacb25a","9807":"c68ae0f5","9828":"969d1ed4","9923":"d8e024b7","9952":"1445bfed","9977":"b19fd385"}[chunkId] + ".iframe.bundle.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -67755,4 +68458,4 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=main.7d14b538.iframe.bundle.js.map
+//# sourceMappingURL=main.5ef76c55.iframe.bundle.js.map
