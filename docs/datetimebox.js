@@ -119,8 +119,12 @@ this.DateTimeBoxWidget = class {
     this.buildEditFields();
 
     if (focused) {
-      this.mInputElement.focus();
+      this._focusFirstField();
     }
+  }
+
+  _focusFirstField() {
+    this.shadowRoot.querySelector(".datetime-edit-field")?.focus();
   }
 
   setup() {
@@ -222,13 +226,13 @@ this.DateTimeBoxWidget = class {
     if (this.mInputElement.value) {
       this.setFieldsFromInputValue();
     }
+
+    if (this.mInputElement.matches(":focus")) {
+      this._focusFirstField();
+    }
   }
 
   generateContent() {
-    /*
-     * Pass the markup through XML parser purely for the reason of loading the localization DTD.
-     * Remove it when migrate to Fluent (bug 1504363).
-     */
     const parser = new this.window.DOMParser();
     let parserDoc = parser.parseFromString(
       `<div class="datetimebox" xmlns="http://www.w3.org/1999/xhtml" role="none">
