@@ -3,7 +3,7 @@
 rm -rf docs
 
 pushd ../mozilla-unified
-./mach storybook install
+./mach storybook
 ./mach storybook build
 
 mv browser/components/storybook/storybook-static ../firefox-desktop-components/docs
@@ -11,4 +11,3 @@ mv browser/components/storybook/storybook-static ../firefox-desktop-components/d
 popd
 
 git add docs
-# git commit
