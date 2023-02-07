@@ -1,0 +1,131 @@
+--- moz-toggle.css
++++ moz-toggle.css
+@@ -18,91 +18,96 @@
+   grid-row: 1;
+ }
+ 
+ p {
+   grid-row: 2;
+-  font-size: .85em;
++  font-size: var(--font-size-small);
+   line-height: 1.25;
+-  color: var(--in-content-deemphasized-text);
++  color: var(--text-color-secondary);
+   margin: 0;
+   grid-column: 1 / -1;
+ }
+ 
+ .toggle-button {
+-  --button-height: 16px;
+-  --button-half-height: 8px;
+-  --button-width: 32px;
+-  --button-border-width: 1px;
+-  /* dot-size = button-height - 2*dot-margin - 2*button-border-width */
+-  --dot-size: 12px;
+-  --dot-margin: 1px;
+-  /* --dot-transform-x = button-width - 2*dot-margin - dot-size - 2*button-border-width */
+-  --dot-transform-x: 16px;
+-  --border-color: #8F8F9D;
++  --toggle-color-background: transparent;
++  --toggle-color-background-hover: var(--color-accent-secondary-hover);
++  --toggle-color-background-active: var(--color-accent-secondary-active);
++  --toggle-color-background-checked: var(--color-accent-primary);
++  --toggle-color-background-checked-hover: var(--color-accent-primary-hover);
++  --toggle-color-background-checked-active: var(--color-accent-primary-active);
++  --toggle-border-color: var(--input-border-color);
++  --toggle-border-width: var(--border-width);
++  --toggle-height: var(--size-item-small);
++  --toggle-width: var(--size-item-large);
++  --toggle-dot-color-background: var(--toggle-border-color);
++  --toggle-dot-color-background-checked: var(--color-page-background);
++  --toggle-dot-margin: 1px;
++  --toggle-dot-size: calc(var(--toggle-height) - 2 * var(--toggle-dot-margin) - 2 * var(--toggle-border-width));
++  --toggle-dot-transform-x: calc(var(--toggle-width) - 4 * var(--toggle-dot-margin) - var(--toggle-dot-size));
+ }
+ 
+ .toggle-button {
+   appearance: none;
+   padding: 0;
+   margin: 0;
+-  border: var(--button-border-width) solid var(--border-color);
+-  height: var(--button-height);
+-  width: var(--button-width);
+-  border-radius: var(--button-half-height);
+-  background-color: var(--in-content-button-background);
++  border: var(--toggle-border-width) solid var(--toggle-border-color);
++  height: var(--toggle-height);
++  width: var(--toggle-width);
++  border-radius: var(--border-radius-pill);
++  background: var(--toggle-color-background);
+   box-sizing: border-box;
+ }
+ 
+ .toggle-button:focus-visible {
+-  outline: var(--in-content-focus-outline-width) solid var(--in-content-focus-outline-color);
+-  outline-offset: var(--in-content-focus-outline-offset);
++  outline: var(--focus-outline);
++  outline-offset: var(--focus-outline-offset);
+ }
+ 
+ .toggle-button:enabled:hover {
+-  background-color: var(--in-content-button-background-hover);
+-  border-color: var(--border-color);
++  background: var(--toggle-color-background-hover);
++  border-color: var(--toggle-border-color);
+ }
+ 
+ .toggle-button:enabled:active {
+-  background-color: var(--in-content-button-background-active);
+-  border-color: var(--border-color);
++  background: var(--toggle-color-background-active);
++  border-color: var(--toggle-border-color);
+ }
+ 
+ .toggle-button[aria-pressed="true"] {
+-  background-color: var(--in-content-primary-button-background);
++  background: var(--toggle-color-background-checked);
+   border-color: transparent;
+ }
+ 
+ .toggle-button[aria-pressed="true"]:enabled:hover {
+-  background-color: var(--in-content-primary-button-background-hover);
++  background: var(--toggle-color-background-checked-hover);
+   border-color: transparent;
+ }
+ 
+ .toggle-button[aria-pressed="true"]:enabled:active,
+ .toggle-button[aria-pressed="true"].toggle-button:checked:enabled:hover:active {
+-  background-color: var(--in-content-primary-button-background-active);
++  background: var(--toggle-color-background-checked-active);
+   border-color: transparent;
+ }
+ 
+ .toggle-button::before {
+   display: block;
+   content: "";
+-  background-color: var(--border-color);
+-  height: var(--dot-size);
+-  width: var(--dot-size);
+-  margin: var(--dot-margin);
++  background: var(--toggle-dot-color-background);
++  height: var(--toggle-dot-size);
++  width: var(--toggle-dot-size);
++  margin: var(--toggle-dot-margin);
+   border-radius: 50%;
+   outline: 1px solid transparent;
+   outline-offset: -1px;
+   translate: 0;
+ }
+ 
+ .toggle-button[aria-pressed="true"]::before {
+-  translate: var(--dot-transform-x);
++  translate: var(--toggle-dot-transform-x);
+   /* TODO: Bug 1798404 - This color doesn't match the spec in dark mode. This should
+   be re-visited when we're defining tokens. */
+-  background-color: var(--in-content-box-background);
++  background-color: var(--toggle-dot-color-background-checked);
+ }
+ 
+ .toggle-button[aria-pressed="true"]:not(:active, :hover:active):before {
+   outline-color: var(--in-content-box-background);
+ }
