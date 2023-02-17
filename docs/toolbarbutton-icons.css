@@ -10,7 +10,7 @@
 }
 
 :root:-moz-lwtheme,
-:is(panel, toolbar, #urlbar, #searchbar):-moz-lwtheme {
+:where(panel, toolbar, #urlbar, #searchbar):-moz-lwtheme {
   --toolbarbutton-icon-fill-attention: var(--lwt-toolbarbutton-icon-fill-attention, rgb(0,97,224));
 }
 
@@ -454,12 +454,10 @@ toolbarbutton.bookmark-item {
 
 .bookmark-item[query][tagContainer] {
   list-style-image: url("chrome://browser/skin/places/tag.svg");
-  -moz-image-region: auto;
 }
 
 .bookmark-item[query][dayContainer] {
   list-style-image: url("chrome://browser/skin/history.svg");
-  -moz-image-region: auto;
 }
 
 .bookmark-item[query][hostContainer] {
