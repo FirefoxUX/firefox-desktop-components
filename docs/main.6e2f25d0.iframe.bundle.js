@@ -63674,10 +63674,6 @@ var map = {
 		76872,
 		6872
 	],
-	"./browser/translationNotification.ftl": [
-		43620,
-		8665
-	],
 	"./browser/unifiedExtensions.ftl": [
 		98084,
 		8084
@@ -63854,6 +63850,10 @@ var map = {
 	"./places/editBookmarkPanel.css": [
 		96683,
 		6683
+	],
+	"./places/organizer-shared.css": [
+		90257,
+		257
 	],
 	"./places/sidebar.css": [
 		63805,
@@ -68717,6 +68717,10 @@ class MigrationWizard extends HTMLElement {
                 <span class="success-text">&nbsp;</span>
               </div>
             </div>
+            <moz-button-group class="buttons">
+              <button class="cancel-close" data-l10n-id="migration-cancel-button-label" disabled></button>
+              <button class="primary" id="done-button" data-l10n-id="migration-done-button-label"></button>
+            </moz-button-group>
           </div>
 
           <div name="page-safari-permission">
@@ -68769,6 +68773,9 @@ class MigrationWizard extends HTMLElement {
       button.addEventListener("click", this);
     }
 
+    let doneCloseButtons = shadow.querySelector("#done-button");
+    doneCloseButtons.addEventListener("click", this);
+
     this.#importButton = shadow.querySelector("#import");
     this.#importButton.addEventListener("click", this);
 
@@ -68785,6 +68792,19 @@ class MigrationWizard extends HTMLElement {
     this.dispatchEvent(
       new CustomEvent("MigrationWizard:Init", { bubbles: true })
     );
+  }
+
+  /**
+   * This setter can be used in the event that the MigrationWizard is being
+   * inserted via Lit, and the caller wants to set state declaratively using
+   * a property expression.
+   *
+   * @param {object} state
+   *   The state object to pass to setState.
+   * @see MigrationWizard.setState.
+   */
+  set state(state) {
+    this.setState(state);
   }
 
   /**
@@ -68947,12 +68967,20 @@ class MigrationWizard extends HTMLElement {
       }
     }
 
-    let headerL10nID =
-      remainingProgressGroups > 0
-        ? "migration-wizard-progress-header"
-        : "migration-wizard-progress-done-header";
+    let migrationDone = remainingProgressGroups == 0;
+    let headerL10nID = migrationDone
+      ? "migration-wizard-progress-done-header"
+      : "migration-wizard-progress-header";
     let header = this.#shadowRoot.getElementById("progress-header");
     document.l10n.setAttributes(header, headerL10nID);
+
+    let progressPage = this.#shadowRoot.querySelector(
+      "div[name='page-progress']"
+    );
+    let doneButton = progressPage.querySelector("#done-button");
+    let cancelButton = progressPage.querySelector(".cancel-close");
+    doneButton.hidden = !migrationDone;
+    cancelButton.hidden = migrationDone;
   }
 
   /**
@@ -69012,7 +69040,10 @@ class MigrationWizard extends HTMLElement {
       case "click": {
         if (event.target == this.#importButton) {
           this.#doImport();
-        } else if (event.target.classList.contains("cancel-close")) {
+        } else if (
+          event.target.classList.contains("cancel-close") ||
+          event.target.id == "done-button"
+        ) {
           this.dispatchEvent(
             new CustomEvent("MigrationWizard:Close", { bubbles: true })
           );
@@ -69359,7 +69390,11 @@ class MozLitElement extends toolkit_content_widgets_vendor_lit_all_mjs__WEBPACK_
 
   connectedCallback() {
     super.connectedCallback();
-    if (!this._l10nRootConnected && document.l10n) {
+    if (
+      this.renderRoot == this.shadowRoot &&
+      !this._l10nRootConnected &&
+      document.l10n
+    ) {
       document.l10n.connectRoot(this.renderRoot);
       this._l10nRootConnected = true;
     }
@@ -77719,17 +77754,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_bind_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24812);
-/* harmony import */ var browser_components_migration_content_migration_wizard_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14867);
-/* harmony import */ var browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41198);
-/* harmony import */ var toolkit_widgets_named_deck_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(35069);
-var _progress, _progress2, _progress3;
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47042);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_bind_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24812);
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(79967);
+/* harmony import */ var browser_components_migration_content_migration_wizard_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14867);
+/* harmony import */ var browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(41198);
+/* harmony import */ var toolkit_widgets_named_deck_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(35069);
 
+var _templateObject, _progress, _progress2, _progress3;
+
+function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 // Imported for side-effects.
+
 // eslint-disable-next-line import/no-unassigned-import
 
 
@@ -77810,23 +77850,13 @@ var FAKE_BROWSER_LIST = [{
 var Template = function Template(_ref) {
   var state = _ref.state,
     dialogMode = _ref.dialogMode;
-  var wiz = document.createElement("migration-wizard");
-  wiz.toggleAttribute("dialog-mode", dialogMode);
-  wiz.setState(state);
-  var card = document.createElement("div");
-  card.classList.add("card", "card-no-hover");
-  card.style.width = "fit-content";
-  card.append(wiz);
-  var style = document.createElement("style");
-  style.textContent = "\n    @media (prefers-reduced-motion: no-preference) {\n      migration-wizard::part(progress-spinner) {\n        mask: url(./migration/progress-mask.svg);\n      }\n    }\n  ";
-  card.prepend(style);
-  return card;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  <style>\n    @media (prefers-reduced-motion: no-preference) {\n      migration-wizard::part(progress-spinner) {\n        mask: url(./migration/progress-mask.svg);\n      }\n    }\n  </style>\n\n  <div class=\"card card-no-hover\" style=\"width: fit-content\">\n    <migration-wizard ?dialog-mode=", " .state=", ">\n      <!-- <panel-list></panel-list> -->\n    </migration-wizard>\n  </div>\n"])), dialogMode, state);
 };
 var MainSelectorVariant1 = Template.bind({});
 MainSelectorVariant1.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.SELECTION,
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.SELECTION,
     migrators: FAKE_BROWSER_LIST,
     showImportAll: false
   }
@@ -77835,7 +77865,7 @@ var MainSelectorVariant2 = Template.bind({});
 MainSelectorVariant2.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.SELECTION,
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.SELECTION,
     migrators: FAKE_BROWSER_LIST,
     showImportAll: true
   }
@@ -77844,14 +77874,14 @@ var Progress = Template.bind({});
 Progress.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.PROGRESS,
-    progress: (_progress = {}, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.PROGRESS,
+    progress: (_progress = {}, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: true
-    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
+    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
       inProgress: true
-    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
+    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
       inProgress: true
-    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
+    }, _progress[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
       inProgress: true
     }, _progress)
   }
@@ -77860,15 +77890,15 @@ var PartialProgress = Template.bind({});
 PartialProgress.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.PROGRESS,
-    progress: (_progress2 = {}, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.PROGRESS,
+    progress: (_progress2 = {}, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: true
-    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
+    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
       inProgress: false,
       message: "14 logins and passwords"
-    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
+    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
       inProgress: true
-    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
+    }, _progress2[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
       inProgress: false,
       message: "Addresses, credit cards, form history"
     }, _progress2)
@@ -77878,17 +77908,17 @@ var Success = Template.bind({});
 Success.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.PROGRESS,
-    progress: (_progress3 = {}, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.PROGRESS,
+    progress: (_progress3 = {}, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: false,
       message: "14 bookmarks"
-    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
+    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
       inProgress: false,
       message: "14 logins and passwords"
-    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
+    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.HISTORY] = {
       inProgress: false,
       message: "From the last 180 days"
-    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
+    }, _progress3[browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.FORMDATA] = {
       inProgress: false,
       message: "Addresses, credit cards, form history"
     }, _progress3)
@@ -77898,7 +77928,7 @@ var SafariPermissions = Template.bind({});
 SafariPermissions.args = {
   dialogMode: true,
   state: {
-    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.PAGES.SAFARI_PERMISSION
+    page: browser_components_migration_content_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.MigrationWizardConstants.PAGES.SAFARI_PERMISSION
   }
 };
 var __namedExportsOrder = ["MainSelectorVariant1", "MainSelectorVariant2", "Progress", "PartialProgress", "Success", "SafariPermissions"];
@@ -78031,7 +78061,7 @@ var __namedExportsOrder = ["Simple", "Icons", "Open"];
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"#detectPlatform"},{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"#register","description":"Handles setting up the SUPPORT_URL preference getter.\\nWithout this, the tests for this component may not behave\\nas expected.","privacy":"private"},{"kind":"method","name":"#setHref"}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"name":"data-l10n-id","type":{"text":"string"},"description":"Fluent ID used to generate the text content."}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]}]}');
+module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"#register","description":"Handles setting up the SUPPORT_URL preference getter.\\nWithout this, the tests for this component may not behave\\nas expected.","privacy":"private"},{"kind":"method","name":"#setHref"}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"name":"data-l10n-id","type":{"text":"string"},"description":"Fluent ID used to generate the text content."}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"#detectPlatform"},{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]}]}');
 
 /***/ }),
 
@@ -78180,7 +78210,7 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"66":"cd1e149b","111":"4dbf76c0","116":"58ceced1","130":"e26af35b","139":"533f578c","144":"6d27eed0","147":"30210c30","219":"f229adbc","398":"e0f32b80","556":"513a8e48","641":"622cd2c8","699":"c55d54d4","716":"46dc8d82","758":"05e3afe5","836":"b7763fba","838":"cd9855de","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"4d6648c3","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"ea671a2c","1579":"017121fd","1723":"54a041db","1727":"6cf958c7","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"60e21a49","2356":"fce35adf","2415":"2f7b399c","2422":"0962dda4","2442":"c84fb354","2463":"a6d3c3ff","2503":"3409e95c","2521":"6c94fd15","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"3f16ab24","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"b1ff3725","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3192":"d7799c05","3198":"9eafa48a","3281":"08a6c76f","3283":"9d51d416","3320":"77cfac42","3367":"d84742eb","3401":"496dd824","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"fb6a940f","3805":"49a5f02f","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"2d5f579f","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"658d1dac","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4586":"3b480544","4600":"bbf1043e","4619":"88f4db8e","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"2e568694","4819":"e35b3a92","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"6b2956db","5229":"282589ef","5256":"bbae827a","5359":"a4292cee","5388":"bf733b78","5531":"452efda5","5727":"60ebb0e1","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"0585b54b","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"b426c1a7","6176":"517a58b2","6211":"aec977b5","6215":"8e0c05dc","6222":"62bee1a3","6245":"5ec065e7","6272":"81bc6407","6456":"ac84d0c9","6482":"b93508f7","6501":"7e3b6526","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"595e014e","6736":"9137ff74","6744":"33d6ee00","6767":"57c38096","6826":"393e9c4c","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"2ff7a982","7280":"6bf1ddb4","7294":"f7cc014d","7321":"7ba9d878","7322":"f4b54748","7329":"d34d9bee","7358":"3bc74235","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"08db790d","7760":"8e383c2c","7797":"d62dc806","7968":"675c15ed","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8137":"7db82814","8150":"c4b17844","8245":"cd296c6f","8265":"a99fe6ef","8274":"8d304f55","8293":"15ec1f21","8306":"2b4969e0","8308":"6024c6a0","8314":"acc8f6d8","8360":"c2058323","8392":"e4f6ff57","8452":"578e933c","8514":"9f6c91a9","8540":"0de70c56","8542":"9fd06ff1","8579":"50de369a","8665":"86254386","8672":"d64d761d","8714":"d0ed70b5","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"8a5584c9","9084":"463b114f","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75501f06","9331":"2ab2c438","9360":"0946efeb","9420":"ed9a6614","9438":"5a521f9d","9473":"9b2fe615","9495":"cc3d5fbf","9514":"369b4a0e","9730":"d47aa44a","9753":"beacb25a","9807":"dff98773","9828":"969d1ed4","9923":"d8e024b7","9952":"1445bfed"}[chunkId] + ".iframe.bundle.js";
+/******/ 			return "" + chunkId + "." + {"66":"cd1e149b","111":"4dbf76c0","116":"58ceced1","130":"e26af35b","139":"533f578c","144":"6d27eed0","147":"30210c30","219":"f229adbc","257":"27221689","398":"e0f32b80","556":"513a8e48","641":"622cd2c8","699":"c55d54d4","716":"46dc8d82","758":"05e3afe5","836":"b7763fba","838":"cd9855de","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"4d6648c3","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"ea671a2c","1579":"017121fd","1723":"54a041db","1727":"6cf958c7","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"a3058b03","2356":"fce35adf","2415":"2f7b399c","2422":"0962dda4","2442":"c84fb354","2463":"499c7e79","2503":"3409e95c","2521":"6c94fd15","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"3f16ab24","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"b1ff3725","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3192":"d7799c05","3198":"9eafa48a","3281":"08a6c76f","3283":"9d51d416","3320":"77cfac42","3367":"d84742eb","3401":"e58c1c6a","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"fb6a940f","3805":"49a5f02f","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"c37fbdf3","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"9e1eeb37","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4586":"3b480544","4600":"bbf1043e","4619":"88f4db8e","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"2e568694","4819":"e35b3a92","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"6b2956db","5229":"282589ef","5256":"bbae827a","5359":"a4292cee","5388":"bf733b78","5531":"452efda5","5727":"60ebb0e1","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"736c8c20","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"b426c1a7","6176":"517a58b2","6211":"aec977b5","6215":"8e0c05dc","6222":"62bee1a3","6245":"5ec065e7","6272":"4646f5e3","6456":"ac84d0c9","6482":"b93508f7","6501":"6f35059a","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"595e014e","6736":"9137ff74","6744":"277865f1","6767":"57c38096","6826":"393e9c4c","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"2ff7a982","7280":"6bf1ddb4","7294":"f7cc014d","7321":"7ba9d878","7322":"f4b54748","7329":"d34d9bee","7358":"3bc74235","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"08db790d","7760":"8e383c2c","7797":"d62dc806","7968":"675c15ed","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8137":"7db82814","8150":"c4b17844","8245":"cd296c6f","8265":"1ba95f6a","8274":"8d304f55","8293":"15ec1f21","8306":"2b4969e0","8308":"6024c6a0","8314":"acc8f6d8","8360":"c2058323","8392":"e4f6ff57","8452":"8337ec23","8514":"9f6c91a9","8540":"0de70c56","8542":"0e939651","8579":"50de369a","8672":"d64d761d","8714":"d0ed70b5","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"8a5584c9","9084":"130fca92","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75501f06","9331":"2ab2c438","9360":"0946efeb","9420":"ed9a6614","9438":"5a521f9d","9473":"9b2fe615","9495":"cc3d5fbf","9514":"fbe1c307","9730":"d47aa44a","9753":"beacb25a","9807":"dff98773","9828":"969d1ed4","9923":"d8e024b7","9952":"1445bfed"}[chunkId] + ".iframe.bundle.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -78401,4 +78431,4 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=main.e0514ef7.iframe.bundle.js.map
+//# sourceMappingURL=main.6e2f25d0.iframe.bundle.js.map
