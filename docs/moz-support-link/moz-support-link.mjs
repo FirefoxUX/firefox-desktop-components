@@ -17,7 +17,7 @@ MozXULElement.insertFTLIfNeeded("browser/components/mozSupportLink.ftl");
 export default class MozSupportLink extends HTMLAnchorElement {
   static SUPPORT_URL = "https://www.mozilla.org/";
   static get observedAttributes() {
-    return ["support-page", "utm-content", "data-l10n-id"];
+    return ["support-page", "utm-content"];
   }
 
   /**
@@ -29,6 +29,7 @@ export default class MozSupportLink extends HTMLAnchorElement {
    */
   #register() {
     if (!window.IS_STORYBOOK) {
+      // eslint-disable-next-line no-shadow
       let { XPCOMUtils } = window.XPCOMUtils
         ? window
         : ChromeUtils.importESModule(
@@ -55,8 +56,8 @@ export default class MozSupportLink extends HTMLAnchorElement {
     }
   }
 
-  attributeChangedCallback(name, oldVal, newVal) {
-    if (name === "support-page" || name === "utm-content") {
+  attributeChangedCallback(attrName, oldVal, newVal) {
+    if (attrName === "support-page" || attrName === "utm-content") {
       this.#setHref();
     }
   }
