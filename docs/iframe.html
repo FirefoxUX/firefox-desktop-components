@@ -347,6 +347,12 @@
    /* Ensure WithCommonStyles can grow to fit the page */
    #root-inner {
       height: 100vh;
+   }
+
+   /* Docs stories are being given unnecessary height, possibly because we
+   turned off certain controls */
+   .docs-story div div {
+      height: unset;
    }</style><style>#root[hidden],
       #docs-root[hidden] {
         display: none !important;
@@ -370,4 +376,4 @@
           
       
           
-            window['STORIES'] = [{"titlePrefix":"","directory":".","files":"**/*.stories.md","importPathMatcher":"^\\.(?:(?:^|\\/|(?:(?:(?!(?:^|\\/)\\.).)*?)\\/)(?!\\.)(?=.)[^/]*?\\.stories\\.md)$"},{"titlePrefix":"","directory":"./stories","files":"**/*.stories.mdx","importPathMatcher":"^\\.[\\\\/](?:stories(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.mdx)$"},{"titlePrefix":"","directory":"./stories","files":"**/*.stories.@(js|jsx|mjs|ts|tsx|md)","importPathMatcher":"^\\.[\\\\/](?:stories(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx|md))$"},{"titlePrefix":"","directory":"../../../toolkit","files":"**/*.stories.@(js|jsx|mjs|ts|tsx)","importPathMatcher":"^(?:\\.\\.\\/\\.\\.\\/\\.\\.\\/toolkit(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx))$"}];</script><script src="main.a7a80f4d.iframe.bundle.js"></script></body></html>
+            window['STORIES'] = [{"titlePrefix":"","directory":".","files":"**/*.stories.md","importPathMatcher":"^\\.(?:(?:^|\\/|(?:(?:(?!(?:^|\\/)\\.).)*?)\\/)(?!\\.)(?=.)[^/]*?\\.stories\\.md)$"},{"titlePrefix":"","directory":"./stories","files":"**/*.stories.mdx","importPathMatcher":"^\\.[\\\\/](?:stories(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.mdx)$"},{"titlePrefix":"","directory":"./stories","files":"**/*.stories.@(js|jsx|mjs|ts|tsx|md)","importPathMatcher":"^\\.[\\\\/](?:stories(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx|md))$"},{"titlePrefix":"","directory":"../../../toolkit","files":"**/*.stories.@(js|jsx|mjs|ts|tsx|md)","importPathMatcher":"^(?:\\.\\.\\/\\.\\.\\/\\.\\.\\/toolkit(?:\\/(?!\\.)(?:(?:(?!(?:^|\\/)\\.).)*?)\\/|\\/|$)(?!\\.)(?=.)[^/]*?\\.stories\\.(js|jsx|mjs|ts|tsx|md))$"}];</script><script src="main.f5d5060a.iframe.bundle.js"></script></body></html>
