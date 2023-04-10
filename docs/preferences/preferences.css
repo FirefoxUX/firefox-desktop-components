@@ -246,6 +246,12 @@ checkbox {
   font-weight: 600;
 }
 
+@supports not -moz-bool-pref("browser.migrate.preferences-entrypoint.enabled") {
+  #dataMigrationGroup {
+    display: none;
+  }
+}
+
 #browserContainersExtensionContent {
   padding-block: 5px;
 }
@@ -465,6 +471,11 @@ richlistitem[selected] .actionsMenu:focus-visible {
 
 .addon-with-favicon .menu-iconic-icon {
   margin-inline-start: 0;
+}
+
+a[is="moz-support-link"] {
+  display: inline-block;
+  white-space: initial;
 }
 
 /* Search Pane */
@@ -1029,6 +1040,7 @@ dialog > .sync-engines-list + hbox {
   border-top-color: #d7b600;
   top: 100%;
   inset-inline-start: calc(50% - 7px);
+  forced-color-adjust: none;
 }
 
 .search-tooltip::after {
@@ -1038,6 +1050,17 @@ dialog > .sync-engines-list + hbox {
   border-top-color: #ffe900;
   top: 100%;
   inset-inline-start: calc(50% - 6px);
+  forced-color-adjust: none;
+}
+
+@media (forced-colors: active) {
+  .search-tooltip::before {
+    border-top-color: CanvasText;
+  }
+
+  .search-tooltip::after {
+    border-top-color: Canvas;
+  }
 }
 
 .search-tooltip-parent {

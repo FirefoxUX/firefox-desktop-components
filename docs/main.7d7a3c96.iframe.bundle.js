@@ -63536,10 +63536,6 @@ webpackContext.id = 37398;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var map = {
-	"./migrationWizard.ftl": [
-		38452,
-		8452
-	],
 	"./moz-support-link-storybook.ftl": [
 		35893,
 		5893
@@ -63704,6 +63700,10 @@ var map = {
 	"./browser/migration.ftl": [
 		36211,
 		6211
+	],
+	"./browser/migrationWizard.ftl": [
+		57587,
+		7587
 	],
 	"./browser/newtab/asrouter.ftl": [
 		21577,
@@ -68843,6 +68843,17 @@ const MigrationWizardConstants = Object.freeze({
 
     // We don't yet show OTHERDATA or SESSION resources.
   }),
+
+  /**
+   * The set of keys that maps to migrators that use the term "favorites"
+   * in the place of "bookmarks". This tends to be browsers from Microsoft.
+   */
+  USES_FAVORITES: Object.freeze([
+    "chromium-edge",
+    "chromium-edge-beta",
+    "edge",
+    "ie",
+  ]),
 });
 
 
@@ -68882,6 +68893,9 @@ class MigrationWizard extends HTMLElement {
   #shadowRoot = null;
   #importButton = null;
   #safariPermissionButton = null;
+  #selectAllCheckbox = null;
+  #resourceSummary = null;
+  #expandedDetails = false;
 
   static get markup() {
     return `
@@ -68911,9 +68925,13 @@ class MigrationWizard extends HTMLElement {
               </div>
               <span class="dropdown-icon"></span>
             </button>
-            <div data-l10n-id="migration-wizard-selection-list" class="resource-selection-preamble deemphasized-text"></div>
-            <details class="resource-selection-details">
-              <summary>
+            <div class="no-resources-found error-message">
+              <span class="error-icon" role="img"></span>
+              <div data-l10n-id="migration-wizard-import-browser-no-resources"></div>
+            </div>
+            <div data-l10n-id="migration-wizard-selection-list" class="resource-selection-preamble deemphasized-text hide-on-error"></div>
+            <details class="resource-selection-details hide-on-error">
+              <summary id="resource-selection-summary">
                 <div class="selected-data-header" data-l10n-id="migration-all-available-data-label"></div>
                 <div class="selected-data deemphasized-text">&nbsp;</div>
                 <span class="expand-collapse-icon" role="img"></span>
@@ -68923,7 +68941,7 @@ class MigrationWizard extends HTMLElement {
                   <input type="checkbox" class="select-all-checkbox"/><span data-l10n-id="migration-select-all-option-label"></span>
                 </label>
                 <label id="bookmarks" data-resource-type="BOOKMARKS"/>
-                  <input type="checkbox"/><span data-l10n-id="migration-bookmarks-option-label"></span>
+                  <input type="checkbox"/><span default-data-l10n-id="migration-bookmarks-option-label" ie-edge-data-l10n-id="migration-favorites-option-label"></span>
                 </label>
                 <label id="logins-and-passwords" data-resource-type="PASSWORDS">
                   <input type="checkbox"/><span data-l10n-id="migration-logins-and-passwords-option-label"></span>
@@ -68948,7 +68966,7 @@ class MigrationWizard extends HTMLElement {
             <div class="resource-progress">
               <div data-resource-type="BOOKMARKS" class="resource-progress-group">
                 <span class="progress-icon-parent"><span class="progress-icon" role="img"></span></span>
-                <span data-l10n-id="migration-bookmarks-option-label"></span>
+                <span default-data-l10n-id="migration-bookmarks-option-label" ie-edge-data-l10n-id="migration-favorites-option-label"></span>
                 <span class="success-text deemphasized-text">&nbsp;</span>
               </div>
 
@@ -68977,7 +68995,7 @@ class MigrationWizard extends HTMLElement {
           </div>
 
           <div name="page-safari-password-permission">
-            <h1 data-l10n-id="migration-safari-password-import-header"></h1>  
+            <h1 data-l10n-id="migration-safari-password-import-header"></h1>
             <span data-l10n-id="migration-safari-password-import-steps-header"></span>
             <ol>
               <li data-l10n-id="migration-safari-password-import-step1"></li>
@@ -69009,7 +69027,7 @@ class MigrationWizard extends HTMLElement {
 
           <div name="page-no-browsers-found">
             <h1 data-l10n-id="migration-wizard-selection-header"></h1>
-            <div class="no-browsers-found">
+            <div class="no-browsers-found error-message">
               <span class="error-icon" role="img"></span>
               <div class="no-browsers-found-message" data-l10n-id="migration-wizard-import-browser-no-browsers"></div>
             </div>
@@ -69048,9 +69066,7 @@ class MigrationWizard extends HTMLElement {
 
     if (window.MozXULElement) {
       window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
-      window.MozXULElement.insertFTLIfNeeded(
-        "locales-preview/migrationWizard.ftl"
-      );
+      window.MozXULElement.insertFTLIfNeeded("browser/migrationWizard.ftl");
     }
     document.l10n.connectRoot(shadow);
 
@@ -69060,6 +69076,8 @@ class MigrationWizard extends HTMLElement {
     this.#browserProfileSelector = shadow.querySelector(
       "#browser-profile-selector"
     );
+    this.#resourceSummary = shadow.querySelector("#resource-selection-summary");
+    this.#resourceSummary.addEventListener("click", this);
 
     let cancelCloseButtons = shadow.querySelectorAll(".cancel-close");
     for (let button of cancelCloseButtons) {
@@ -69080,6 +69098,8 @@ class MigrationWizard extends HTMLElement {
       "#safari-request-permissions"
     );
     this.#safariPermissionButton.addEventListener("click", this);
+
+    this.#selectAllCheckbox = shadow.querySelector("#select-all").control;
 
     this.#shadowRoot = shadow;
   }
@@ -69155,6 +69175,10 @@ class MigrationWizard extends HTMLElement {
       true
     );
     this.#browserProfileSelectorList.addEventListener("click", this);
+    // Until bug 1823489 is fixed, this is the easiest way for the
+    // migration wizard to style the selector dropdown so that it more
+    // closely lines up with the edges of the selector button.
+    this.#browserProfileSelectorList.style.boxSizing = "border-box";
   }
 
   /**
@@ -69171,6 +69195,17 @@ class MigrationWizard extends HTMLElement {
     this.#browserProfileSelector.querySelector(".profile-name").textContent =
       panelItem.profile?.name || "";
 
+    if (panelItem.brandImage) {
+      this.#browserProfileSelector.querySelector(
+        ".migrator-icon"
+      ).style.content = `url(${panelItem.brandImage})`;
+    } else {
+      this.#browserProfileSelector.querySelector(
+        ".migrator-icon"
+      ).style.content = "url(chrome://global/skin/icons/defaultFavicon.svg)";
+    }
+
+    let key = panelItem.getAttribute("key");
     let resourceTypes = panelItem.resourceTypes;
     for (let child of this.#resourceTypeList.children) {
       child.hidden = true;
@@ -69184,12 +69219,34 @@ class MigrationWizard extends HTMLElement {
       if (resourceLabel) {
         resourceLabel.hidden = false;
         resourceLabel.control.checked = true;
+
+        let labelSpan = resourceLabel.querySelector(
+          "span[default-data-l10n-id]"
+        );
+        if (labelSpan) {
+          if (chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.USES_FAVORITES.includes(key)) {
+            document.l10n.setAttributes(
+              labelSpan,
+              labelSpan.getAttribute("ie-edge-data-l10n-id")
+            );
+          } else {
+            document.l10n.setAttributes(
+              labelSpan,
+              labelSpan.getAttribute("default-data-l10n-id")
+            );
+          }
+        }
       }
     }
     let selectAll = this.#shadowRoot.querySelector("#select-all").control;
     selectAll.checked = true;
     this.#displaySelectedResources();
     this.#browserProfileSelector.selectedPanelItem = panelItem;
+
+    let selectionPage = this.#shadowRoot.querySelector(
+      "div[name='page-selection']"
+    );
+    selectionPage.toggleAttribute("no-resources", !resourceTypes.length);
   }
 
   /**
@@ -69213,6 +69270,8 @@ class MigrationWizard extends HTMLElement {
     selectionPage.toggleAttribute("show-import-all", state.showImportAll);
     details.open = !state.showImportAll;
 
+    this.#expandedDetails = false;
+
     for (let migrator of state.migrators) {
       let opt = document.createElement("panel-item");
       opt.setAttribute("key", migrator.key);
@@ -69220,6 +69279,7 @@ class MigrationWizard extends HTMLElement {
       opt.displayName = migrator.displayName;
       opt.resourceTypes = migrator.resourceTypes;
       opt.hasPermissions = migrator.hasPermissions;
+      opt.brandImage = migrator.brandImage;
 
       // Bug 1823489 - since the panel-list and panel-items are slotted, we
       // cannot style them directly from migration-wizard.css. We use inline
@@ -69229,7 +69289,11 @@ class MigrationWizard extends HTMLElement {
       // stylesheet instead.
       let button = opt.shadowRoot.querySelector("button");
       button.style.minHeight = "40px";
-      button.style.backgroundImage = `url("chrome://global/skin/icons/defaultFavicon.svg")`;
+      if (migrator.brandImage) {
+        button.style.backgroundImage = `url(${migrator.brandImage})`;
+      } else {
+        button.style.backgroundImage = `url("chrome://global/skin/icons/defaultFavicon.svg")`;
+      }
 
       if (migrator.profile) {
         document.l10n.setAttributes(
@@ -69277,6 +69341,8 @@ class MigrationWizard extends HTMLElement {
    * @param {object} state
    *   The state object passed into setState. The following properties are
    *   used:
+   * @param {string} state.key
+   *   The key of the migrator being used.
    * @param {Object<string, ProgressState>} state.progress
    *   An object whose keys match one of DISPLAYED_RESOURCE_TYPES.
    *
@@ -69300,6 +69366,21 @@ class MigrationWizard extends HTMLElement {
 
       let progressIcon = group.querySelector(".progress-icon");
       let successText = group.querySelector(".success-text");
+
+      let labelSpan = group.querySelector("span[default-data-l10n-id]");
+      if (labelSpan) {
+        if (chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.USES_FAVORITES.includes(state.key)) {
+          document.l10n.setAttributes(
+            labelSpan,
+            labelSpan.getAttribute("ie-edge-data-l10n-id")
+          );
+        } else {
+          document.l10n.setAttributes(
+            labelSpan,
+            labelSpan.getAttribute("default-data-l10n-id")
+          );
+        }
+      }
 
       if (state.progress[resourceType].inProgress) {
         document.l10n.setAttributes(
@@ -69386,6 +69467,9 @@ class MigrationWizard extends HTMLElement {
    *   True if this MigrationWizardChild told us that the associated
    *   MigratorBase subclass for the key has enough permission to read
    *   the requested resources.
+   * @property {boolean} expandedDetails
+   *   True if the user clicked on the <summary> element to expand the resource
+   *   type list.
    */
 
   /**
@@ -69416,6 +69500,7 @@ class MigrationWizard extends HTMLElement {
       profile,
       resourceTypes,
       hasPermissions,
+      expandedDetails: this.#expandedDetails,
     };
   }
 
@@ -69442,13 +69527,15 @@ class MigrationWizard extends HTMLElement {
     let resourceTypeLabels = this.#resourceTypeList.querySelectorAll(
       "label:not([hidden])[data-resource-type]"
     );
+    let panelItem = this.#browserProfileSelector.selectedPanelItem;
+    let key = panelItem.getAttribute("key");
 
     let totalResources = resourceTypeLabels.length;
     let checkedResources = 0;
 
     let selectedData = this.#shadowRoot.querySelector(".selected-data");
     let selectedDataArray = [];
-    const RESOURCE_TYPE_TO_LABEL_IDS = {
+    let resourceTypeToLabelIDs = {
       [chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS]:
         "migration-list-bookmark-label",
       [chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS]:
@@ -69459,8 +69546,14 @@ class MigrationWizard extends HTMLElement {
         "migration-list-autofill-label",
     };
 
-    let resourceTypes = Object.keys(RESOURCE_TYPE_TO_LABEL_IDS);
-    let labelIds = Object.values(RESOURCE_TYPE_TO_LABEL_IDS).map(id => {
+    if (chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.USES_FAVORITES.includes(key)) {
+      resourceTypeToLabelIDs[
+        chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_1__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS
+      ] = "migration-list-favorites-label";
+    }
+
+    let resourceTypes = Object.keys(resourceTypeToLabelIDs);
+    let labelIds = Object.values(resourceTypeToLabelIDs).map(id => {
       return { id };
     });
     let labels = await document.l10n.formatValues(labelIds);
@@ -69545,21 +69638,32 @@ class MigrationWizard extends HTMLElement {
           this.#onBrowserProfileSelectionChanged(event.target);
         } else if (event.target == this.#safariPermissionButton) {
           this.#requestSafariPermissions();
+        } else if (event.currentTarget == this.#resourceSummary) {
+          this.#expandedDetails = true;
         }
         break;
       }
       case "change": {
         if (event.target == this.#browserProfileSelector) {
           this.#onBrowserProfileSelectionChanged();
-        } else if (event.target.classList.contains("select-all-checkbox")) {
+        } else if (event.target == this.#selectAllCheckbox) {
           let checkboxes = this.#shadowRoot.querySelectorAll(
-            'label[data-resource-type] > input[type="checkbox"]'
+            'label[data-resource-type]:not([hidden]) > input[type="checkbox"]'
           );
           for (let checkbox of checkboxes) {
-            checkbox.checked = event.target.checked;
+            checkbox.checked = this.#selectAllCheckbox.checked;
           }
           this.#displaySelectedResources();
         } else {
+          let checkboxes = this.#shadowRoot.querySelectorAll(
+            'label[data-resource-type]:not([hidden]) > input[type="checkbox"]'
+          );
+
+          let allVisibleChecked = Array.from(checkboxes).every(checkbox => {
+            return checkbox.checked;
+          });
+
+          this.#selectAllCheckbox.checked = allVisibleChecked;
           this.#displaySelectedResources();
         }
         break;
@@ -71830,6 +71934,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "ADDON_ID": () => (/* binding */ ADDON_ID),
 /* harmony export */   "DIRECTIONS": () => (/* binding */ DIRECTIONS),
 /* harmony export */   "DIRECTION_BY_STRATEGY": () => (/* binding */ DIRECTION_BY_STRATEGY),
+/* harmony export */   "FLUENT_CHANGED": () => (/* binding */ FLUENT_CHANGED),
+/* harmony export */   "FLUENT_SET_STRINGS": () => (/* binding */ FLUENT_SET_STRINGS),
+/* harmony export */   "PANEL_ID": () => (/* binding */ PANEL_ID),
 /* harmony export */   "PSEUDO_STRATEGIES": () => (/* binding */ PSEUDO_STRATEGIES),
 /* harmony export */   "STRATEGY_ACCENTED": () => (/* binding */ STRATEGY_ACCENTED),
 /* harmony export */   "STRATEGY_BIDI": () => (/* binding */ STRATEGY_BIDI),
@@ -71844,6 +71951,7 @@ var _DIRECTION_BY_STRATEG;
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 var ADDON_ID = "addon-pseudo-localization";
+var PANEL_ID = ADDON_ID + "/fluentPanel";
 var TOOL_ID = ADDON_ID + "/toolbarButton";
 var STRATEGY_DEFAULT = "default";
 var STRATEGY_ACCENTED = "accented";
@@ -71855,7 +71963,9 @@ var DIRECTIONS = {
 };
 var DIRECTION_BY_STRATEGY = (_DIRECTION_BY_STRATEG = {}, _DIRECTION_BY_STRATEG[STRATEGY_DEFAULT] = DIRECTIONS.ltr, _DIRECTION_BY_STRATEG[STRATEGY_ACCENTED] = DIRECTIONS.ltr, _DIRECTION_BY_STRATEG[STRATEGY_BIDI] = DIRECTIONS.rtl, _DIRECTION_BY_STRATEG);
 var UPDATE_STRATEGY_EVENT = "update-strategy";
-var __namedExportsOrder = ["ADDON_ID", "TOOL_ID", "STRATEGY_DEFAULT", "STRATEGY_ACCENTED", "STRATEGY_BIDI", "PSEUDO_STRATEGIES", "DIRECTIONS", "DIRECTION_BY_STRATEGY", "UPDATE_STRATEGY_EVENT"];
+var FLUENT_SET_STRINGS = "fluent-set-strings";
+var FLUENT_CHANGED = "fluent-changed";
+var __namedExportsOrder = ["ADDON_ID", "PANEL_ID", "TOOL_ID", "STRATEGY_DEFAULT", "STRATEGY_ACCENTED", "STRATEGY_BIDI", "PSEUDO_STRATEGIES", "DIRECTIONS", "DIRECTION_BY_STRATEGY", "UPDATE_STRATEGY_EVENT", "FLUENT_SET_STRINGS", "FLUENT_CHANGED"];
 
 /***/ }),
 
@@ -71880,12 +71990,17 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 
-var decorators = [_withPseudoLocalization_mjs__WEBPACK_IMPORTED_MODULE_0__.withPseudoLocalization];
+var decorators = [_withPseudoLocalization_mjs__WEBPACK_IMPORTED_MODULE_0__.withPseudoLocalization, _withPseudoLocalization_mjs__WEBPACK_IMPORTED_MODULE_0__.withFluentStrings];
 var globalTypes = {
   pseudoStrategy: {
     name: "Pseudo l10n strategy",
     description: "Provides text variants for testing different locales.",
     defaultValue: "default"
+  },
+  fluentStrings: {
+    name: "Fluent string map for components",
+    description: "Mapping of component to fluent strings.",
+    defaultValue: {}
   }
 };
 var __namedExportsOrder = ["decorators", "globalTypes"];
@@ -71899,23 +72014,40 @@ var __namedExportsOrder = ["decorators", "globalTypes"];
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
+/* harmony export */   "withFluentStrings": () => (/* binding */ withFluentStrings),
 /* harmony export */   "withPseudoLocalization": () => (/* binding */ withPseudoLocalization)
 /* harmony export */ });
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(89554);
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54747);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_is_array_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(79753);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82526);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(41817);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41539);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_iterator_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(32165);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(78783);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(66992);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(33948);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(47042);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(68309);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_from_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(91038);
-/* harmony import */ var _storybook_addons__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(77428);
-/* harmony import */ var _constants_mjs__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(11218);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_assign_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(19601);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_join_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(69600);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_concat_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(92222);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_map_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(21249);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_entries_js__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(69720);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_is_array_js__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(79753);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(82526);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(41817);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(41539);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_iterator_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(32165);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_string_iterator_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(78783);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_iterator_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(66992);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_web_dom_collections_iterator_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(33948);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(47042);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(68309);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_from_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(91038);
+/* harmony import */ var _storybook_addons__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(77428);
+/* harmony import */ var _constants_mjs__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(11218);
+/* harmony import */ var _fluent_utils_mjs__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(71353);
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+
+
+
+
 
 
 
@@ -71942,6 +72074,7 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
 
 
+
 /**
  * withPseudoLocalization is a Storybook decorator that handles emitting an
  * event to update translations when a new pseudo localization strategy is
@@ -71953,20 +72086,20 @@ function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
  * @returns {Function} StoryFn with a modified "dir" attr set.
  */
 var withPseudoLocalization = function withPseudoLocalization(StoryFn, context) {
-  var _useGlobals = (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_13__.useGlobals)(),
+  var _useGlobals = (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_18__.useGlobals)(),
     _useGlobals2 = _slicedToArray(_useGlobals, 1),
     pseudoStrategy = _useGlobals2[0].pseudoStrategy;
-  var direction = _constants_mjs__WEBPACK_IMPORTED_MODULE_14__.DIRECTION_BY_STRATEGY[pseudoStrategy] || _constants_mjs__WEBPACK_IMPORTED_MODULE_14__.DIRECTIONS.ltr;
+  var direction = _constants_mjs__WEBPACK_IMPORTED_MODULE_19__.DIRECTION_BY_STRATEGY[pseudoStrategy] || _constants_mjs__WEBPACK_IMPORTED_MODULE_19__.DIRECTIONS.ltr;
   var isInDocs = context.viewMode === "docs";
-  var channel = _storybook_addons__WEBPACK_IMPORTED_MODULE_13__.addons.getChannel();
-  (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_13__.useEffect)(function () {
+  var channel = _storybook_addons__WEBPACK_IMPORTED_MODULE_18__.addons.getChannel();
+  (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_18__.useEffect)(function () {
     if (pseudoStrategy) {
-      channel.emit(_constants_mjs__WEBPACK_IMPORTED_MODULE_14__.UPDATE_STRATEGY_EVENT, pseudoStrategy);
+      channel.emit(_constants_mjs__WEBPACK_IMPORTED_MODULE_19__.UPDATE_STRATEGY_EVENT, pseudoStrategy);
     }
   }, [pseudoStrategy]);
-  (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_13__.useEffect)(function () {
+  (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_18__.useEffect)(function () {
     if (isInDocs) {
-      document.documentElement.setAttribute("dir", _constants_mjs__WEBPACK_IMPORTED_MODULE_14__.DIRECTIONS.ltr);
+      document.documentElement.setAttribute("dir", _constants_mjs__WEBPACK_IMPORTED_MODULE_19__.DIRECTIONS.ltr);
       var storyElements = document.querySelectorAll(".docs-story");
       storyElements.forEach(function (element) {
         return element.setAttribute("dir", direction);
@@ -71977,7 +72110,56 @@ var withPseudoLocalization = function withPseudoLocalization(StoryFn, context) {
   }, [direction, isInDocs]);
   return StoryFn();
 };
-var __namedExportsOrder = ["withPseudoLocalization"];
+
+/**
+ * withFluentStrings is a Storybook decorator that handles emitting an
+ * event to update the Fluent strings shown in the Fluent panel.
+ *
+ * @param {Function} StoryFn - Provided by Storybook, used to render the story.
+ * @param {Object} context - Provided by Storybook, data about the story.
+ * @returns {Function} StoryFn unmodified.
+ */
+var withFluentStrings = function withFluentStrings(StoryFn, context) {
+  var _context$parameters;
+  var _useGlobals3 = (0,_storybook_addons__WEBPACK_IMPORTED_MODULE_18__.useGlobals)(),
+    _useGlobals4 = _slicedToArray(_useGlobals3, 2),
+    fluentStrings = _useGlobals4[0].fluentStrings,
+    updateGlobals = _useGlobals4[1];
+  var channel = _storybook_addons__WEBPACK_IMPORTED_MODULE_18__.addons.getChannel();
+  var fileName = context.component + ".ftl";
+  var strings = [];
+  if ((_context$parameters = context.parameters) !== null && _context$parameters !== void 0 && _context$parameters.fluent && fileName) {
+    if (fluentStrings.hasOwnProperty(fileName)) {
+      strings = fluentStrings[fileName];
+    } else {
+      var _Object$assign;
+      var resource = (0,_fluent_utils_mjs__WEBPACK_IMPORTED_MODULE_20__.provideFluent)(context.parameters.fluent, fileName);
+      var _iterator = _createForOfIteratorHelper(resource.body),
+        _step;
+      try {
+        for (_iterator.s(); !(_step = _iterator.n()).done;) {
+          var message = _step.value;
+          strings.push([message.id, [message.value].concat(_toConsumableArray(Object.entries(message.attributes).map(function (_ref) {
+            var _ref2 = _slicedToArray(_ref, 2),
+              key = _ref2[0],
+              value = _ref2[1];
+            return "  ." + key + " = " + value;
+          }))).join("\n")]);
+        }
+      } catch (err) {
+        _iterator.e(err);
+      } finally {
+        _iterator.f();
+      }
+      updateGlobals({
+        fluentStrings: Object.assign({}, fluentStrings, (_Object$assign = {}, _Object$assign[fileName] = strings, _Object$assign))
+      });
+    }
+  }
+  channel.emit(_constants_mjs__WEBPACK_IMPORTED_MODULE_19__.FLUENT_CHANGED, strings);
+  return StoryFn();
+};
+var __namedExportsOrder = ["withPseudoLocalization", "withFluentStrings"];
 
 /***/ }),
 
@@ -71989,7 +72171,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
 /* harmony export */   "connectFluent": () => (/* binding */ connectFluent),
-/* harmony export */   "insertFTLIfNeeded": () => (/* binding */ insertFTLIfNeeded)
+/* harmony export */   "insertFTLIfNeeded": () => (/* binding */ insertFTLIfNeeded),
+/* harmony export */   "provideFluent": () => (/* binding */ provideFluent)
 /* harmony export */ });
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_map_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(51532);
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_to_string_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(41539);
@@ -72002,23 +72185,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_string_split_js__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(23123);
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_regexp_exec_js__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(74916);
 /* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(47042);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_define_property_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(69070);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(82526);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(41817);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_iterator_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(32165);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(72443);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_to_string_tag_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(39341);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(10408);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(73706);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_create_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(78011);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_get_prototype_of_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(30489);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(89554);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(54747);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(68309);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_set_prototype_of_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(68304);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_reverse_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(65069);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_is_array_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(79753);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_from_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(91038);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_name_js__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(68309);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_from_js__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(91038);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_js__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(82526);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_description_js__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(41817);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_iterator_js__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(32165);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_is_array_js__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(79753);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_define_property_js__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(69070);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_async_iterator_js__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(72443);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_symbol_to_string_tag_js__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(39341);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_math_to_string_tag_js__WEBPACK_IMPORTED_MODULE_20__ = __webpack_require__(10408);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_json_to_string_tag_js__WEBPACK_IMPORTED_MODULE_21__ = __webpack_require__(73706);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_create_js__WEBPACK_IMPORTED_MODULE_22__ = __webpack_require__(78011);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_get_prototype_of_js__WEBPACK_IMPORTED_MODULE_23__ = __webpack_require__(30489);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_for_each_js__WEBPACK_IMPORTED_MODULE_24__ = __webpack_require__(89554);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_web_dom_collections_for_each_js__WEBPACK_IMPORTED_MODULE_25__ = __webpack_require__(54747);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_object_set_prototype_of_js__WEBPACK_IMPORTED_MODULE_26__ = __webpack_require__(68304);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_reverse_js__WEBPACK_IMPORTED_MODULE_27__ = __webpack_require__(65069);
 /* harmony import */ var _fluent_dom__WEBPACK_IMPORTED_MODULE_28__ = __webpack_require__(45907);
 /* harmony import */ var _fluent_bundle__WEBPACK_IMPORTED_MODULE_29__ = __webpack_require__(51330);
 /* harmony import */ var _storybook_addons__WEBPACK_IMPORTED_MODULE_30__ = __webpack_require__(77428);
@@ -72026,14 +72209,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _addon_pseudo_localization_constants_mjs__WEBPACK_IMPORTED_MODULE_32__ = __webpack_require__(11218);
 function _toArray(arr) { return _arrayWithHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableRest(); }
 function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return exports; }; var exports = {}, Op = Object.prototype, hasOwn = Op.hasOwnProperty, defineProperty = Object.defineProperty || function (obj, key, desc) { obj[key] = desc.value; }, $Symbol = "function" == typeof Symbol ? Symbol : {}, iteratorSymbol = $Symbol.iterator || "@@iterator", asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator", toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag"; function define(obj, key, value) { return Object.defineProperty(obj, key, { value: value, enumerable: !0, configurable: !0, writable: !0 }), obj[key]; } try { define({}, ""); } catch (err) { define = function define(obj, key, value) { return obj[key] = value; }; } function wrap(innerFn, outerFn, self, tryLocsList) { var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator, generator = Object.create(protoGenerator.prototype), context = new Context(tryLocsList || []); return defineProperty(generator, "_invoke", { value: makeInvokeMethod(innerFn, self, context) }), generator; } function tryCatch(fn, obj, arg) { try { return { type: "normal", arg: fn.call(obj, arg) }; } catch (err) { return { type: "throw", arg: err }; } } exports.wrap = wrap; var ContinueSentinel = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var IteratorPrototype = {}; define(IteratorPrototype, iteratorSymbol, function () { return this; }); var getProto = Object.getPrototypeOf, NativeIteratorPrototype = getProto && getProto(getProto(values([]))); NativeIteratorPrototype && NativeIteratorPrototype !== Op && hasOwn.call(NativeIteratorPrototype, iteratorSymbol) && (IteratorPrototype = NativeIteratorPrototype); var Gp = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(IteratorPrototype); function defineIteratorMethods(prototype) { ["next", "throw", "return"].forEach(function (method) { define(prototype, method, function (arg) { return this._invoke(method, arg); }); }); } function AsyncIterator(generator, PromiseImpl) { function invoke(method, arg, resolve, reject) { var record = tryCatch(generator[method], generator, arg); if ("throw" !== record.type) { var result = record.arg, value = result.value; return value && "object" == typeof value && hasOwn.call(value, "__await") ? PromiseImpl.resolve(value.__await).then(function (value) { invoke("next", value, resolve, reject); }, function (err) { invoke("throw", err, resolve, reject); }) : PromiseImpl.resolve(value).then(function (unwrapped) { result.value = unwrapped, resolve(result); }, function (error) { return invoke("throw", error, resolve, reject); }); } reject(record.arg); } var previousPromise; defineProperty(this, "_invoke", { value: function value(method, arg) { function callInvokeWithMethodAndArg() { return new PromiseImpl(function (resolve, reject) { invoke(method, arg, resolve, reject); }); } return previousPromise = previousPromise ? previousPromise.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(innerFn, self, context) { var state = "suspendedStart"; return function (method, arg) { if ("executing" === state) throw new Error("Generator is already running"); if ("completed" === state) { if ("throw" === method) throw arg; return doneResult(); } for (context.method = method, context.arg = arg;;) { var delegate = context.delegate; if (delegate) { var delegateResult = maybeInvokeDelegate(delegate, context); if (delegateResult) { if (delegateResult === ContinueSentinel) continue; return delegateResult; } } if ("next" === context.method) context.sent = context._sent = context.arg;else if ("throw" === context.method) { if ("suspendedStart" === state) throw state = "completed", context.arg; context.dispatchException(context.arg); } else "return" === context.method && context.abrupt("return", context.arg); state = "executing"; var record = tryCatch(innerFn, self, context); if ("normal" === record.type) { if (state = context.done ? "completed" : "suspendedYield", record.arg === ContinueSentinel) continue; return { value: record.arg, done: context.done }; } "throw" === record.type && (state = "completed", context.method = "throw", context.arg = record.arg); } }; } function maybeInvokeDelegate(delegate, context) { var methodName = context.method, method = delegate.iterator[methodName]; if (undefined === method) return context.delegate = null, "throw" === methodName && delegate.iterator["return"] && (context.method = "return", context.arg = undefined, maybeInvokeDelegate(delegate, context), "throw" === context.method) || "return" !== methodName && (context.method = "throw", context.arg = new TypeError("The iterator does not provide a '" + methodName + "' method")), ContinueSentinel; var record = tryCatch(method, delegate.iterator, context.arg); if ("throw" === record.type) return context.method = "throw", context.arg = record.arg, context.delegate = null, ContinueSentinel; var info = record.arg; return info ? info.done ? (context[delegate.resultName] = info.value, context.next = delegate.nextLoc, "return" !== context.method && (context.method = "next", context.arg = undefined), context.delegate = null, ContinueSentinel) : info : (context.method = "throw", context.arg = new TypeError("iterator result is not an object"), context.delegate = null, ContinueSentinel); } function pushTryEntry(locs) { var entry = { tryLoc: locs[0] }; 1 in locs && (entry.catchLoc = locs[1]), 2 in locs && (entry.finallyLoc = locs[2], entry.afterLoc = locs[3]), this.tryEntries.push(entry); } function resetTryEntry(entry) { var record = entry.completion || {}; record.type = "normal", delete record.arg, entry.completion = record; } function Context(tryLocsList) { this.tryEntries = [{ tryLoc: "root" }], tryLocsList.forEach(pushTryEntry, this), this.reset(!0); } function values(iterable) { if (iterable) { var iteratorMethod = iterable[iteratorSymbol]; if (iteratorMethod) return iteratorMethod.call(iterable); if ("function" == typeof iterable.next) return iterable; if (!isNaN(iterable.length)) { var i = -1, next = function next() { for (; ++i < iterable.length;) if (hasOwn.call(iterable, i)) return next.value = iterable[i], next.done = !1, next; return next.value = undefined, next.done = !0, next; }; return next.next = next; } } return { next: doneResult }; } function doneResult() { return { value: undefined, done: !0 }; } return GeneratorFunction.prototype = GeneratorFunctionPrototype, defineProperty(Gp, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), defineProperty(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, toStringTagSymbol, "GeneratorFunction"), exports.isGeneratorFunction = function (genFun) { var ctor = "function" == typeof genFun && genFun.constructor; return !!ctor && (ctor === GeneratorFunction || "GeneratorFunction" === (ctor.displayName || ctor.name)); }, exports.mark = function (genFun) { return Object.setPrototypeOf ? Object.setPrototypeOf(genFun, GeneratorFunctionPrototype) : (genFun.__proto__ = GeneratorFunctionPrototype, define(genFun, toStringTagSymbol, "GeneratorFunction")), genFun.prototype = Object.create(Gp), genFun; }, exports.awrap = function (arg) { return { __await: arg }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, asyncIteratorSymbol, function () { return this; }), exports.AsyncIterator = AsyncIterator, exports.async = function (innerFn, outerFn, self, tryLocsList, PromiseImpl) { void 0 === PromiseImpl && (PromiseImpl = Promise); var iter = new AsyncIterator(wrap(innerFn, outerFn, self, tryLocsList), PromiseImpl); return exports.isGeneratorFunction(outerFn) ? iter : iter.next().then(function (result) { return result.done ? result.value : iter.next(); }); }, defineIteratorMethods(Gp), define(Gp, toStringTagSymbol, "Generator"), define(Gp, iteratorSymbol, function () { return this; }), define(Gp, "toString", function () { return "[object Generator]"; }), exports.keys = function (val) { var object = Object(val), keys = []; for (var key in object) keys.push(key); return keys.reverse(), function next() { for (; keys.length;) { var key = keys.pop(); if (key in object) return next.value = key, next.done = !1, next; } return next.done = !0, next; }; }, exports.values = values, Context.prototype = { constructor: Context, reset: function reset(skipTempReset) { if (this.prev = 0, this.next = 0, this.sent = this._sent = undefined, this.done = !1, this.delegate = null, this.method = "next", this.arg = undefined, this.tryEntries.forEach(resetTryEntry), !skipTempReset) for (var name in this) "t" === name.charAt(0) && hasOwn.call(this, name) && !isNaN(+name.slice(1)) && (this[name] = undefined); }, stop: function stop() { this.done = !0; var rootRecord = this.tryEntries[0].completion; if ("throw" === rootRecord.type) throw rootRecord.arg; return this.rval; }, dispatchException: function dispatchException(exception) { if (this.done) throw exception; var context = this; function handle(loc, caught) { return record.type = "throw", record.arg = exception, context.next = loc, caught && (context.method = "next", context.arg = undefined), !!caught; } for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i], record = entry.completion; if ("root" === entry.tryLoc) return handle("end"); if (entry.tryLoc <= this.prev) { var hasCatch = hasOwn.call(entry, "catchLoc"), hasFinally = hasOwn.call(entry, "finallyLoc"); if (hasCatch && hasFinally) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } else if (hasCatch) { if (this.prev < entry.catchLoc) return handle(entry.catchLoc, !0); } else { if (!hasFinally) throw new Error("try statement without catch or finally"); if (this.prev < entry.finallyLoc) return handle(entry.finallyLoc); } } } }, abrupt: function abrupt(type, arg) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc <= this.prev && hasOwn.call(entry, "finallyLoc") && this.prev < entry.finallyLoc) { var finallyEntry = entry; break; } } finallyEntry && ("break" === type || "continue" === type) && finallyEntry.tryLoc <= arg && arg <= finallyEntry.finallyLoc && (finallyEntry = null); var record = finallyEntry ? finallyEntry.completion : {}; return record.type = type, record.arg = arg, finallyEntry ? (this.method = "next", this.next = finallyEntry.finallyLoc, ContinueSentinel) : this.complete(record); }, complete: function complete(record, afterLoc) { if ("throw" === record.type) throw record.arg; return "break" === record.type || "continue" === record.type ? this.next = record.arg : "return" === record.type ? (this.rval = this.arg = record.arg, this.method = "return", this.next = "end") : "normal" === record.type && afterLoc && (this.next = afterLoc), ContinueSentinel; }, finish: function finish(finallyLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.finallyLoc === finallyLoc) return this.complete(entry.completion, entry.afterLoc), resetTryEntry(entry), ContinueSentinel; } }, "catch": function _catch(tryLoc) { for (var i = this.tryEntries.length - 1; i >= 0; --i) { var entry = this.tryEntries[i]; if (entry.tryLoc === tryLoc) { var record = entry.completion; if ("throw" === record.type) { var thrown = record.arg; resetTryEntry(entry); } return thrown; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(iterable, resultName, nextLoc) { return this.delegate = { iterator: values(iterable), resultName: resultName, nextLoc: nextLoc }, "next" === this.method && (this.arg = undefined), ContinueSentinel; } }, exports; }
 var _marked = /*#__PURE__*/_regeneratorRuntime().mark(generateBundles);
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 
 
 
@@ -72085,6 +72269,24 @@ var storybookBundle = new _fluent_bundle__WEBPACK_IMPORTED_MODULE_29__.FluentBun
 // Listen for update events from addon-pseudo-localization.
 var channel = _storybook_addons__WEBPACK_IMPORTED_MODULE_30__.addons.getChannel();
 channel.on(_addon_pseudo_localization_constants_mjs__WEBPACK_IMPORTED_MODULE_32__.UPDATE_STRATEGY_EVENT, updatePseudoStrategy);
+channel.on(_addon_pseudo_localization_constants_mjs__WEBPACK_IMPORTED_MODULE_32__.FLUENT_SET_STRINGS, function (ftlContents) {
+  var resource = new _fluent_bundle__WEBPACK_IMPORTED_MODULE_29__.FluentResource(ftlContents);
+  var _iterator = _createForOfIteratorHelper(resource.body),
+    _step;
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
+      var message = _step.value;
+      var existingMessage = storybookBundle.getMessage(message.id);
+      existingMessage.value = message.value;
+      existingMessage.attributes = message.attributes;
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+  document.l10n.translateRoots();
+});
 
 /**
  * Updates "currentStrategy" when the selected pseudo localization strategy
@@ -72121,7 +72323,7 @@ function insertFTLIfNeeded(_x) {
 }
 function _insertFTLIfNeeded() {
   _insertFTLIfNeeded = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(fileName) {
-    var _fileName$split, _fileName$split2, root, rest, ftlContents, imported, _imported, _imported2, _imported3, ftlResource;
+    var _fileName$split, _fileName$split2, root, rest, ftlContents, imported, _imported, _imported2, _imported3;
     return _regeneratorRuntime().wrap(function _callee$(_context2) {
       while (1) switch (_context2.prev = _context2.next) {
         case 0:
@@ -72185,11 +72387,8 @@ function _insertFTLIfNeeded() {
           }
           return _context2.abrupt("return");
         case 31:
-          ftlResource = new _fluent_bundle__WEBPACK_IMPORTED_MODULE_29__.FluentResource(ftlContents);
-          storybookBundle.addResource(ftlResource);
-          loadedResources.set(fileName, ftlResource);
-          document.l10n.translateRoots();
-        case 35:
+          provideFluent(ftlContents, fileName);
+        case 32:
         case "end":
           return _context2.stop();
       }
@@ -72197,7 +72396,16 @@ function _insertFTLIfNeeded() {
   }));
   return _insertFTLIfNeeded.apply(this, arguments);
 }
-var __namedExportsOrder = ["connectFluent", "insertFTLIfNeeded"];
+function provideFluent(ftlContents, fileName) {
+  var ftlResource = new _fluent_bundle__WEBPACK_IMPORTED_MODULE_29__.FluentResource(ftlContents);
+  storybookBundle.addResource(ftlResource);
+  if (fileName) {
+    loadedResources.set(fileName, ftlResource);
+  }
+  document.l10n.translateRoots();
+  return ftlResource;
+}
+var __namedExportsOrder = ["connectFluent", "insertFTLIfNeeded", "provideFluent"];
 
 /***/ }),
 
@@ -72542,6 +72750,7 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Widgets/Functional/Button Group",
+  component: "button-group",
   argTypes: {
     orientation: {
       options: ["horizontal", "vertical"],
@@ -72549,11 +72758,14 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
         type: "radio"
       }
     }
+  },
+  parameters: {
+    fluent: "\nbutton-group-one = One\nbutton-group-two = Two\nbutton-group-three = Three\nbutton-group-four = Four\n    "
   }
 });
 var Template = function Template(_ref) {
   var orientation = _ref.orientation;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  <button-group orientation=", ">\n    <button>One</button>\n    <button>Two</button>\n    <button>Three</button>\n    <button>Four</button>\n  </button-group>\n\n  <p>\n    The <code>button-group</code> element will group focus to the buttons,\n    requiring left/right or up/down to switch focus between its child elements.\n    It accepts an <code>orientation</code> property, which determines if\n    left/right or up/down are used to change the focused button.\n  </p>\n"])), orientation);
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  <button-group orientation=", ">\n    <button data-l10n-id=\"button-group-one\"></button>\n    <button data-l10n-id=\"button-group-two\"></button>\n    <button data-l10n-id=\"button-group-three\"></button>\n    <button data-l10n-id=\"button-group-four\"></button>\n  </button-group>\n\n  <p>\n    The <code>button-group</code> element will group focus to the buttons,\n    requiring left/right or up/down to switch focus between its child elements.\n    It accepts an <code>orientation</code> property, which determines if\n    left/right or up/down are used to change the focused button.\n  </p>\n"])), orientation);
 };
 var ButtonGroup = Template.bind({});
 ButtonGroup.args = {
@@ -72569,6 +72781,7 @@ var __namedExportsOrder = ["ButtonGroup"];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DangerButton": () => (/* binding */ DangerButton),
 /* harmony export */   "DisabledButton": () => (/* binding */ DisabledButton),
 /* harmony export */   "GhostIconButton": () => (/* binding */ GhostIconButton),
 /* harmony export */   "PrimaryButton": () => (/* binding */ PrimaryButton),
@@ -72589,46 +72802,58 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Design System/Atoms/Button"
+  title: "Design System/Atoms/Button",
+  component: "button",
+  parameters: {
+    fluent: "\nbutton-regular = Regular\nbutton-primary = Primary\nbutton-disabled = Disabled\nbutton-danger = Danger\n    "
+  }
 });
 var Template = function Template(_ref) {
   var disabled = _ref.disabled,
     primary = _ref.primary,
-    text = _ref.text,
+    l10nId = _ref.l10nId,
     ghostButton = _ref.ghostButton,
-    icon = _ref.icon;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <style>\n      .icon-button {\n        background-image: url(\"", "\");\n      }\n    </style>\n    <button\n      ?disabled=", "\n      class=", "\n    >\n      ", "\n    </button>\n  "])), icon, disabled, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
+    icon = _ref.icon,
+    dangerButton = _ref.dangerButton;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <style>\n      .icon-button {\n        background-image: url(\"", "\");\n      }\n    </style>\n    <button\n      ?disabled=", "\n      class=", "\n      data-l10n-id=", "\n    ></button>\n  "])), icon, disabled, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
     primary: primary,
     "ghost-button": ghostButton,
-    "icon-button": icon
-  }), text);
+    "icon-button": icon,
+    "danger-button": dangerButton
+  }), l10nId);
 };
 var RegularButton = Template.bind({});
 RegularButton.args = {
-  text: "Regular",
+  l10nId: "button-regular",
   primary: false,
   disabled: false
 };
 var PrimaryButton = Template.bind({});
 PrimaryButton.args = {
-  text: "Primary",
+  l10nId: "button-primary",
   primary: true,
   disabled: false
 };
 var DisabledButton = Template.bind({});
 DisabledButton.args = {
-  text: "Disabled",
+  l10nId: "button-disabled",
   primary: false,
   disabled: true
 };
+var DangerButton = Template.bind({});
+DangerButton.args = {
+  l10nId: "button-danger",
+  primary: true,
+  disabled: false,
+  dangerButton: true
+};
 var GhostIconButton = Template.bind({});
 GhostIconButton.args = {
-  text: "",
   icon: "chrome://browser/skin/login.svg",
   disabled: false,
   ghostButton: true
 };
-var __namedExportsOrder = ["RegularButton", "PrimaryButton", "DisabledButton", "GhostIconButton"];
+var __namedExportsOrder = ["RegularButton", "PrimaryButton", "DisabledButton", "DangerButton", "GhostIconButton"];
 
 /***/ }),
 
@@ -72661,7 +72886,8 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 // eslint-disable-next-line import/no-unassigned-import
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Widgets/Credential Management/Timeline"
+  title: "Widgets/Credential Management/Timeline",
+  component: "login-timeline"
 });
 window.MozXULElement.insertFTLIfNeeded("browser/aboutLogins.ftl");
 var Template = function Template(_ref) {
@@ -72742,6 +72968,7 @@ var MESSAGE_TYPES = {
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Design System/Components/Message Bar",
+  component: "message-bar",
   argTypes: {
     type: {
       options: Object.keys(MESSAGE_TYPES),
@@ -72750,12 +72977,15 @@ var MESSAGE_TYPES = {
         type: "select"
       }
     }
+  },
+  parameters: {
+    fluent: "\nmessage-bar-text = A very expressive and slightly whimsical message goes here.\nmessage-bar-button = Click me, please!\n    "
   }
 });
 var Template = function Template(_ref) {
   var dismissable = _ref.dismissable,
     type = _ref.type;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <message-bar type=", " ?dismissable=", ">\n      <span>A very expressive and slightly whimsical message goes here.</span>\n      <button>Click me, please!</button>\n    </message-bar>\n  "])), type, dismissable);
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <message-bar type=", " ?dismissable=", ">\n      <span data-l10n-id=\"message-bar-text\"></span>\n      <button data-l10n-id=\"message-bar-button\"></button>\n    </message-bar>\n  "])), type, dismissable);
 };
 var Basic = Template.bind({});
 Basic.args = {
@@ -72816,7 +73046,8 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 // eslint-disable-next-line import/no-unassigned-import
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Design System/Components/Migration Wizard"
+  title: "Design System/Components/Migration Wizard",
+  component: "migration-wizard"
 });
 var FAKE_BROWSER_LIST = [{
   key: "chrome",
@@ -72825,7 +73056,8 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "Default",
     name: "Default"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/chrome.png"
 }, {
   key: "chrome",
   displayName: "Chrome",
@@ -72833,11 +73065,18 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "person-2",
     name: "Person 2"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/chrome.png"
 }, {
   key: "ie",
   displayName: "Microsoft Internet Explorer",
   resourceTypes: ["HISTORY", "BOOKMARKS"],
+  profile: null,
+  brandImage: "chrome://browser/content/migration/brands/ie.png"
+}, {
+  key: "edge",
+  displayName: "Microsoft Edge Legacy",
+  resourceTypes: ["HISTORY", "FORMDATA", "PASSWORDS", "BOOKMARKS"],
   profile: null
 }, {
   key: "chromium-edge",
@@ -72846,7 +73085,8 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "Default",
     name: "Default"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/edge.png"
 }, {
   key: "brave",
   displayName: "Brave",
@@ -72854,12 +73094,19 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "Default",
     name: "Default"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/brave.png"
+}, {
+  key: "internal-testing",
+  displayName: "Internal Testing Migrator",
+  resourceTypes: ["HISTORY", "PASSWORDS", "BOOKMARKS"],
+  profile: null
 }, {
   key: "safari",
   displayName: "Safari",
   resourceTypes: ["HISTORY", "PASSWORDS", "BOOKMARKS"],
-  profile: null
+  profile: null,
+  brandImage: "chrome://browser/content/migration/brands/safari.png"
 }, {
   key: "opera",
   displayName: "Opera",
@@ -72867,7 +73114,8 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "Default",
     name: "Default"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/opera.png"
 }, {
   key: "opera-gx",
   displayName: "Opera GX",
@@ -72875,11 +73123,21 @@ var FAKE_BROWSER_LIST = [{
   profile: {
     id: "Default",
     name: "Default"
-  }
+  },
+  brandImage: "chrome://browser/content/migration/brands/operagx.png"
 }, {
   key: "vivaldi",
   displayName: "Vivaldi",
   resourceTypes: ["HISTORY"],
+  profile: {
+    id: "Default",
+    name: "Default"
+  },
+  brandImage: "chrome://browser/content/migration/brands/vivaldi.png"
+}, {
+  key: "no-resources-browser",
+  displayName: "Browser with no resources",
+  resourceTypes: [],
   profile: {
     id: "Default",
     name: "Default"
@@ -72920,6 +73178,7 @@ Progress.args = {
   dialogMode: true,
   state: {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.PAGES.PROGRESS,
+    key: "chrome",
     progress: (_progress = {}, _progress[chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: true
     }, _progress[chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
@@ -72936,6 +73195,7 @@ PartialProgress.args = {
   dialogMode: true,
   state: {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.PAGES.PROGRESS,
+    key: "chrome",
     progress: (_progress2 = {}, _progress2[chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: true
     }, _progress2[chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS] = {
@@ -72954,6 +73214,7 @@ Success.args = {
   dialogMode: true,
   state: {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.PAGES.PROGRESS,
+    key: "chrome",
     progress: (_progress3 = {}, _progress3[chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.BOOKMARKS] = {
       inProgress: false,
       message: "14 bookmarks"
@@ -73020,10 +73281,14 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 // eslint-disable-next-line import/no-unassigned-import
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Widgets/Functional/Named Deck"
+  title: "Widgets/Functional/Named Deck",
+  component: "named-deck",
+  parameters: {
+    fluent: "\nnamed-deck-tab-one = Tab 1\nnamed-deck-tab-two = Tab 2\nnamed-deck-tab-three = Tab 3\nnamed-deck-content-one = This is tab 1\nnamed-deck-content-two = This is tab 2\nnamed-deck-content-three = This is tab 3\n    "
+  }
 });
 var Tabs = function Tabs() {
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  <style>\n    button[selected] {\n      outline: 2px dashed var(--in-content-primary-button-background);\n    }\n  </style>\n  <button-group>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-1\">Tab 1</button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-2\">Tab 2</button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-3\">Tab 3</button>\n  </button-group>\n  <named-deck id=\"tabs-deck\" is-tabbed>\n    <p name=\"tab-1\">This is tab 1</p>\n    <p name=\"tab-2\">This is tab 2</p>\n    <p name=\"tab-3\">This is tab 3</p>\n  </named-deck>\n\n  <hr>\n\n  <p>\n    The dashed outline is added for emphasis here. It applies to the button with\n    the <code>selected</code> attribute, but matches the deck's\n    <code>selected-view</code> name.\n  </p>\n\n  <p>\n    These tabs are a combination of <code>button-group</code>,\n    <code>named-deck-button</code>, and <code>named-deck</code>.\n    <ul>\n      <li>\n        <code>button-group</code> makes the tabs a single focusable group,\n        using left/right to switch between focused buttons.\n      </li>\n      <li>\n        <code>named-deck-button</code>s are <code>button</code> subclasses\n        that are used to control the <code>named-deck</code>.\n      </li>\n      <li>\n        <code>named-deck</code> show only one selected child at a time.\n      </li>\n    </ul>\n  </p>\n"])));
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n  <style>\n    button[selected] {\n      outline: 2px dashed var(--in-content-primary-button-background);\n    }\n  </style>\n  <button-group>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-1\" data-l10n-id=\"named-deck-tab-one\"></button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-2\" data-l10n-id=\"named-deck-tab-two\"></button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-3\" data-l10n-id=\"named-deck-tab-three\"></button>\n  </button-group>\n  <named-deck id=\"tabs-deck\" is-tabbed>\n    <p name=\"tab-1\" data-l10n-id=\"named-deck-content-one\"></p>\n    <p name=\"tab-2\" data-l10n-id=\"named-deck-content-two\"></p>\n    <p name=\"tab-3\" data-l10n-id=\"named-deck-content-three\"></p>\n  </named-deck>\n\n  <hr>\n\n  <p>\n    The dashed outline is added for emphasis here. It applies to the button with\n    the <code>selected</code> attribute, but matches the deck's\n    <code>selected-view</code> name.\n  </p>\n\n  <p>\n    These tabs are a combination of <code>button-group</code>,\n    <code>named-deck-button</code>, and <code>named-deck</code>.\n    <ul>\n      <li>\n        <code>button-group</code> makes the tabs a single focusable group,\n        using left/right to switch between focused buttons.\n      </li>\n      <li>\n        <code>named-deck-button</code>s are <code>button</code> subclasses\n        that are used to control the <code>named-deck</code>.\n      </li>\n      <li>\n        <code>named-deck</code> show only one selected child at a time.\n      </li>\n    </ul>\n  </p>\n"])));
 };
 var ListMenu = function ListMenu() {
   return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n  <style>\n    .icon-button {\n      background-image: url(\"chrome://global/skin/icons/arrow-left.svg\");\n    }\n\n    .vertical-group {\n      display: flex;\n      flex-direction: column;\n      width: 200px;\n    }\n  </style>\n  <named-deck id=\"list-deck\" is-tabbed>\n    <section name=\"list\">\n      <button-group orientation=\"vertical\" class=\"vertical-group\">\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-1\">\n          Tab 1\n        </button>\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-2\">\n          Tab 2\n        </button>\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-3\">\n          Tab 3\n        </button>\n      </button-group>\n    </section>\n    <section name=\"tab-1\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 1</p>\n    </section>\n    <section name=\"tab-2\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 2</p>\n    </section>\n    <section name=\"tab-3\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 3</p>\n    </section>\n  </named-deck>\n\n  <hr />\n\n  <p>\n    This is an alternate layout for creating a menu navigation. In this case,\n    the first view in the <code>named-deck</code> is the list view which\n    contains the <code>named-deck-button</code>s to link to the other views.\n    Each view then includes a back <code>named-deck-button</code> which is used\n    to navigate back to the first view.\n  </p>\n"])));
@@ -73066,10 +73331,12 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Design System/Components/Panel Menu",
+  component: "panel-list",
   parameters: {
     actions: {
       handles: ["click"]
-    }
+    },
+    fluent: "\npanel-list-item-one = Item One\npanel-list-item-two = Item Two (accesskey w)\npanel-list-item-three = Item Three\npanel-list-checked = Checked\npanel-list-badged = Badged, look at me\npanel-list-passwords = Passwords\npanel-list-settings = Settings\n    "
   }
 });
 var openMenu = function openMenu(e) {
@@ -73080,22 +73347,22 @@ var Template = function Template(_ref) {
     items = _ref.items,
     wideAnchor = _ref.wideAnchor;
   return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose(["\n    <style>\n      panel-item[icon=\"passwords\"]::part(button) {\n        background-image: url(\"chrome://browser/skin/login.svg\");\n      }\n      panel-item[icon=\"settings\"]::part(button) {\n        background-image: url(\"chrome://global/skin/icons/settings.svg\");\n      }\n      button {\n        position: absolute;\n        background-image: url(\"chrome://global/skin/icons/more.svg\");\n      }\n      button[wide] {\n        width: 400px !important;\n      }\n      .end {\n        inset-inline-end: 30px;\n      }\n\n      .bottom {\n        inset-block-end: 30px;\n      }\n    </style>\n    <button\n      class=\"ghost-button icon-button\"\n      @click=", "\n      ?wide=\"", "\"\n    ></button>\n    <button\n      class=\"ghost-button icon-button end\"\n      @click=", "\n      ?wide=\"", "\"\n    ></button>\n    <button\n      class=\"ghost-button icon-button bottom\"\n      @click=", "\n      ?wide=\"", "\"\n    ></button>\n    <button\n      class=\"ghost-button icon-button bottom end\"\n      @click=", "\n      ?wide=\"", "\"\n    ></button>\n    <panel-list\n      ?stay-open=", "\n      ?open=", "\n      ?min-width-from-anchor=", "\n    >\n      ", "\n    </panel-list>\n  "])), openMenu, wideAnchor, openMenu, wideAnchor, openMenu, wideAnchor, openMenu, wideAnchor, isOpen, isOpen, wideAnchor, items.map(function (i) {
-    var _i$icon, _i$text;
-    return i == "<hr>" ? (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n              <hr />\n            "]))) : (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteralLoose(["\n              <panel-item\n                icon=", "\n                ?checked=", "\n                ?badged=", "\n                accesskey=", "\n              >\n                ", "\n              </panel-item>\n            "])), (_i$icon = i.icon) !== null && _i$icon !== void 0 ? _i$icon : "", i.checked, i.badged, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.ifDefined)(i.accesskey), (_i$text = i.text) !== null && _i$text !== void 0 ? _i$text : i);
+    var _i$icon, _i$l10nId;
+    return i == "<hr>" ? (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteralLoose(["\n              <hr />\n            "]))) : (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteralLoose(["\n              <panel-item\n                icon=", "\n                ?checked=", "\n                ?badged=", "\n                accesskey=", "\n                data-l10n-id=", "\n              ></panel-item>\n            "])), (_i$icon = i.icon) !== null && _i$icon !== void 0 ? _i$icon : "", i.checked, i.badged, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_5__.ifDefined)(i.accesskey), (_i$l10nId = i.l10nId) !== null && _i$l10nId !== void 0 ? _i$l10nId : i);
   }));
 };
 var Simple = Template.bind({});
 Simple.args = {
   isOpen: false,
   wideAnchor: false,
-  items: ["Item One", {
-    text: "Item Two (accesskey w)",
+  items: ["panel-list-item-one", {
+    l10nId: "panel-list-item-two",
     accesskey: "w"
-  }, "Item Three", "<hr>", {
-    text: "Checked",
+  }, "panel-list-item-three", "<hr>", {
+    l10nId: "panel-list-checked",
     checked: true
   }, {
-    text: "Badged, look at me",
+    l10nId: "panel-list-badged",
     badged: true,
     icon: "settings"
   }]
@@ -73105,10 +73372,10 @@ Icons.args = {
   isOpen: false,
   wideAnchor: false,
   items: [{
-    text: "Passwords",
+    l10nId: "panel-list-passwords",
     icon: "passwords"
   }, {
-    text: "Settings",
+    l10nId: "panel-list-settings",
     icon: "settings"
   }]
 };
@@ -73602,14 +73869,21 @@ __webpack_require__.r(__webpack_exports__);
       control: { type: "select" },
     },
   },
+  parameters: {
+    fluent: `
+moz-button-group-p = The button group is below. Card for emphasis.
+moz-button-group-ok = OK
+moz-button-group-cancel = Cancel
+    `,
+  },
 });
 
 const Template = ({ platform }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <div class="card card-no-hover" style="max-width: 400px">
-    <p>The button group is below. Card for emphasis.</p>
+    <p data-l10n-id="moz-button-group-p"></p>
     <moz-button-group .platform=${platform}>
-      <button class="primary">OK</button>
-      <button>Cancel</button>
+      <button class="primary" data-l10n-id="moz-button-group-ok"></button>
+      <button data-l10n-id="moz-button-group-cancel"></button>
     </moz-button-group>
   </div>
 `;
@@ -74023,6 +74297,15 @@ __webpack_require__.r(__webpack_exports__);
     actions: {
       handles: ["toggle"],
     },
+    fluent: `
+moz-toggle-aria-label =
+  .aria-label = This is the aria-label
+moz-toggle-label =
+  .label = This is the label
+moz-toggle-description =
+  .label = This is the label
+  .description = This is the description.
+    `,
   },
 });
 
@@ -74032,6 +74315,7 @@ const Template = ({
   label,
   description,
   ariaLabel,
+  l10nId,
   hasSupportLink,
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <div style="max-width: 400px">
@@ -74041,6 +74325,8 @@ const Template = ({
       label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(label)}
       description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(description)}
       aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(ariaLabel)}
+      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
+      data-l10n-attrs="aria-label, description, label"
     >
       ${hasSupportLink
         ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
@@ -74059,7 +74345,7 @@ const Toggle = Template.bind({});
 Toggle.args = {
   pressed: true,
   disabled: false,
-  ariaLabel: "This is the aria-label",
+  l10nId: "moz-toggle-aria-label",
 };
 
 const ToggleDisabled = Template.bind({});
@@ -74072,14 +74358,14 @@ const WithLabel = Template.bind({});
 WithLabel.args = {
   pressed: true,
   disabled: false,
-  label: "This is the label",
+  l10nId: "moz-toggle-label",
   hasSupportLink: false,
 };
 
 const WithDescription = Template.bind({});
 WithDescription.args = {
   ...WithLabel.args,
-  description: "This is the description.",
+  l10nId: "moz-toggle-description",
 };
 
 const WithSupportLink = Template.bind({});
@@ -78637,7 +78923,7 @@ const svg = withStatic(svg$1);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"#register","description":"Handles setting up the SUPPORT_URL preference getter.\\nWithout this, the tests for this component may not behave\\nas expected.","privacy":"private"},{"kind":"method","name":"handleEvent","parameters":[{"name":"e"}]},{"kind":"method","name":"#setHref"}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"type":{"text":"string"},"description":"Fluent ID used to generate the text content.","name":"data-l10n-id"}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"#detectPlatform"},{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]}]}');
+module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"#detectPlatform"},{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"#register","description":"Handles setting up the SUPPORT_URL preference getter.\\nWithout this, the tests for this component may not behave\\nas expected.","privacy":"private"},{"kind":"method","name":"handleEvent","parameters":[{"name":"e"}]},{"kind":"method","name":"#setHref"}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"type":{"text":"string"},"description":"Fluent ID used to generate the text content.","name":"data-l10n-id"}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]}]}');
 
 /***/ }),
 
@@ -78786,7 +79072,7 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"66":"cd1e149b","111":"4dbf76c0","116":"6b99dfe5","130":"e26af35b","139":"533f578c","144":"2c6ed4cb","147":"30210c30","219":"e2b6c6f6","257":"c3c6ef9b","398":"e0f32b80","556":"513a8e48","641":"d6a527ad","699":"c55d54d4","716":"46dc8d82","758":"05e3afe5","836":"ef583803","838":"4f196cf9","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"4d6648c3","1266":"da61f305","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"505db915","1579":"017121fd","1723":"54a041db","1727":"3b11e9ff","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"8f594ef9","2356":"fce35adf","2415":"2f7b399c","2422":"c76dd30a","2442":"7b9a9e5f","2463":"499c7e79","2503":"3409e95c","2521":"99252414","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"6312b50a","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"b1ff3725","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3198":"9eafa48a","3281":"08a6c76f","3283":"39724189","3320":"272d94c7","3367":"d84742eb","3401":"e58c1c6a","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"39a5f79c","3805":"b2b928d9","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"c37fbdf3","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"c1f5c51a","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4563":"3cc0040c","4586":"3b480544","4600":"bbf1043e","4619":"850a9e43","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"40081395","4819":"4c83c758","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"607a87e8","5229":"282589ef","5256":"21625790","5359":"a4292cee","5388":"73c35b55","5531":"452efda5","5727":"e4d54756","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"34104465","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"6d802ec5","6176":"517a58b2","6211":"e6bbb9d5","6215":"2f22d6be","6222":"62bee1a3","6245":"5ec065e7","6272":"4646f5e3","6456":"ac84d0c9","6482":"b93508f7","6501":"6f35059a","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"595e014e","6736":"399da042","6744":"277865f1","6767":"7da6f3e2","6826":"393e9c4c","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"8394deff","7280":"6bf1ddb4","7294":"f7cc014d","7321":"3de427c1","7322":"f4b54748","7329":"616c5c59","7358":"3bc74235","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"08db790d","7760":"8e383c2c","7797":"d62dc806","7968":"b688d22e","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8094":"e3cb5382","8137":"7db82814","8150":"c4b17844","8245":"cd296c6f","8265":"1ba95f6a","8274":"fff995a8","8293":"15ec1f21","8306":"2b4969e0","8308":"6024c6a0","8314":"acc8f6d8","8360":"aa185e2c","8392":"e4f6ff57","8452":"33ba162a","8514":"9f6c91a9","8540":"0de70c56","8542":"57010622","8579":"a2f180c4","8672":"d64d761d","8714":"d0ed70b5","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"bf273fec","9084":"e26c52df","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"8d56872e","9331":"b10b21f8","9360":"0946efeb","9420":"ed9a6614","9438":"0e8f2225","9473":"9b2fe615","9495":"cc3d5fbf","9514":"265ef77e","9730":"d47aa44a","9753":"53cb0712","9807":"dff98773","9828":"f44b69b7","9923":"d8e024b7","9952":"045e0742"}[chunkId] + ".iframe.bundle.js";
+/******/ 			return "" + chunkId + "." + {"66":"cd1e149b","111":"4dbf76c0","116":"6b99dfe5","130":"e26af35b","139":"533f578c","144":"2c6ed4cb","147":"30210c30","219":"e2b6c6f6","257":"c3c6ef9b","398":"e0f32b80","556":"513a8e48","641":"bee71c0e","699":"c55d54d4","716":"46dc8d82","758":"05e3afe5","836":"ef583803","838":"4f196cf9","848":"7bd178e1","853":"87b7ad8f","886":"c66c8a03","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"760ce18a","1266":"da61f305","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"c37f5c50","1579":"017121fd","1723":"54a041db","1727":"3b11e9ff","1850":"6c9ecbb8","2010":"9e8e14af","2065":"221378a0","2071":"eb154f55","2082":"8f594ef9","2356":"fce35adf","2415":"2f7b399c","2422":"c76dd30a","2442":"a5e0bf22","2463":"499c7e79","2503":"3409e95c","2521":"99252414","2522":"c3463d1b","2551":"faf03d35","2575":"22db630f","2576":"4c6c6f38","2586":"4cea79d4","2589":"6312b50a","2732":"6f4e3fb3","2882":"3821c9d5","2883":"bf5ef7de","2897":"269a0b90","2914":"b1ff3725","2949":"ca00bf6a","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3198":"9eafa48a","3281":"08a6c76f","3283":"39724189","3320":"272d94c7","3367":"d84742eb","3401":"e58c1c6a","3620":"fa94cdd9","3635":"457c5358","3653":"973fe595","3674":"39a5f79c","3805":"b2b928d9","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"c37fbdf3","3958":"14ba332a","3964":"1117759e","3965":"7efa9acf","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"c1f5c51a","4279":"3500b49a","4337":"c60b3a55","4467":"2b6f37ba","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4563":"3cc0040c","4586":"3b480544","4600":"bbf1043e","4619":"850a9e43","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"40081395","4819":"4c83c758","4821":"38e78299","4916":"610dc336","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"607a87e8","5229":"282589ef","5256":"21625790","5359":"a4292cee","5388":"73c35b55","5531":"452efda5","5727":"e4d54756","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"620feb6a","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"6d802ec5","6176":"517a58b2","6211":"e6bbb9d5","6215":"2f22d6be","6222":"62bee1a3","6245":"5ec065e7","6272":"d645faf0","6456":"ac84d0c9","6482":"b93508f7","6501":"6f35059a","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6657":"6da502ea","6683":"595e014e","6736":"399da042","6744":"277865f1","6767":"7fdccb5b","6826":"393e9c4c","6872":"1d7afcb9","7050":"ae2ed093","7092":"9f441bca","7095":"e7a6dd70","7160":"b10a1c66","7195":"f05fc1d4","7222":"2ad52a64","7238":"8394deff","7280":"6bf1ddb4","7294":"f7cc014d","7321":"3de427c1","7322":"f4b54748","7329":"616c5c59","7358":"3bc74235","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7587":"085984c2","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"37cefeb7","7760":"c950a471","7797":"d62dc806","7968":"b688d22e","7976":"127fd229","8083":"b18b9b0f","8084":"dc8fe470","8094":"2394477f","8137":"7db82814","8150":"c72f07fb","8245":"cd296c6f","8265":"1ba95f6a","8274":"fff995a8","8293":"15ec1f21","8306":"32fccaae","8308":"6024c6a0","8314":"acc8f6d8","8360":"aa185e2c","8392":"e4f6ff57","8514":"9f6c91a9","8540":"0de70c56","8542":"57010622","8579":"a2f180c4","8672":"d64d761d","8714":"d0ed70b5","8848":"e82eb5e6","8850":"32d7ea2e","8907":"2018a07e","9055":"bf273fec","9084":"e26c52df","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"8d56872e","9331":"b10b21f8","9360":"0946efeb","9420":"ed9a6614","9438":"0e8f2225","9473":"9b2fe615","9495":"cc3d5fbf","9514":"0bb52317","9730":"d47aa44a","9753":"53cb0712","9807":"dff98773","9828":"f44b69b7","9923":"d8e024b7","9952":"045e0742"}[chunkId] + ".iframe.bundle.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -79007,4 +79293,4 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=main.f5d5060a.iframe.bundle.js.map
+//# sourceMappingURL=main.7d7a3c96.iframe.bundle.js.map
