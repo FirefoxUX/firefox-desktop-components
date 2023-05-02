@@ -404,10 +404,6 @@
       return document.getElementById(this.getAttribute("autocompletepopup"));
     }
 
-    get dateTimePicker() {
-      return document.getElementById(this.getAttribute("datetimepicker"));
-    }
-
     set suspendMediaWhenInactive(val) {
       this.browsingContext.suspendMediaWhenInactive = val;
     }
@@ -993,6 +989,21 @@
         !this.isNavigating &&
         this.urlbarChangeTracker._startedLoadSinceLastUserTyping
       );
+    }
+
+    constrainPopup(popup) {
+      if (this.getAttribute("constrainpopups") != "false") {
+        let constraintRect = this.getBoundingClientRect();
+        constraintRect = new DOMRect(
+          constraintRect.left + window.mozInnerScreenX,
+          constraintRect.top + window.mozInnerScreenY,
+          constraintRect.width,
+          constraintRect.height
+        );
+        popup.setConstraintRect(constraintRect);
+      } else {
+        popup.setConstraintRect(new DOMRect(0, 0, 0, 0));
+      }
     }
 
     construct() {
