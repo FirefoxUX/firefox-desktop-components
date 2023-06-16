@@ -267,13 +267,15 @@
     }
 
     _removeNotificationElement(aChild) {
+      let hadFocus = aChild.matches(":focus-within");
+
       if (aChild.eventCallback) {
         aChild.eventCallback("removed");
       }
       aChild.remove();
 
-      // make sure focus doesn't get lost (workaround for bug 570835)
-      if (!Services.focus.getFocusedElementForWindow(window, false, {})) {
+      // Make sure focus doesn't get lost (workaround for bug 570835).
+      if (hadFocus) {
         Services.focus.moveFocus(
           window,
           this.stack,
@@ -485,7 +487,7 @@
         }
 
         if (localeId) {
-          buttonElem.setAttribute("data-l10n-id", localeId);
+          document.l10n.setAttributes(buttonElem, localeId);
         } else {
           buttonElem.setAttribute(link ? "value" : "label", button.label);
           if (typeof button.accessKey == "string") {

@@ -3,19 +3,25 @@
 # file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 browser.jar:
+    content/browser/firefoxview/card-container.css
+    content/browser/firefoxview/card-container.mjs
     content/browser/firefoxview/firefoxview.html
     content/browser/firefoxview/firefoxview-next.html
     content/browser/firefoxview/firefoxview.mjs
     content/browser/firefoxview/firefoxview-next.mjs
     content/browser/firefoxview/history.mjs
     content/browser/firefoxview/opentabs.mjs
+    content/browser/firefoxview/view-opentabs.css
     content/browser/firefoxview/overview.mjs
     content/browser/firefoxview/firefoxview.css
     content/browser/firefoxview/firefoxview-next.css
+    content/browser/firefoxview/fxview-category-button.css
+    content/browser/firefoxview/fxview-category-navigation.css
+    content/browser/firefoxview/fxview-category-navigation.mjs
     content/browser/firefoxview/helpers.mjs
-    content/browser/firefoxview/moz-tab-list.css
-    content/browser/firefoxview/moz-tab-list.mjs
-    content/browser/firefoxview/moz-tab-row.css
+    content/browser/firefoxview/fxview-tab-list.css
+    content/browser/firefoxview/fxview-tab-list.mjs
+    content/browser/firefoxview/fxview-tab-row.css
     content/browser/firefoxview/tab-pickup-container.mjs
     content/browser/firefoxview/tab-pickup-list.mjs
     content/browser/firefoxview/recently-closed-tabs.mjs

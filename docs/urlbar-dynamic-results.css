@@ -159,7 +159,7 @@
 .urlbarView-row[dynamicType=quickactions] .urlbarView-label {
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 11px;
+  font-size: .8em;
   font-weight: 500;
 }
 
@@ -489,12 +489,13 @@
 
 .urlbarView-dynamic-addons-header {
   grid-area: header;
+  display: flex;
 }
 
 .urlbarView-dynamic-addons-description {
   grid-area: description;
   font-size: 0.85em;
-  color: var(--panel-description-color);
+  color: var(--text-color-deemphasized);
   margin-block: 2px 9px;
 }
 
@@ -508,6 +509,10 @@
   width: calc(16px * 5);
   height: 16px;
   margin-inline-end: 9px;
+}
+
+.urlbarView-dynamic-addons-content[treatment=b] > .urlbarView-dynamic-addons-footer > .urlbarView-dynamic-addons-ratingContainer {
+  display: none;
 }
 
 .urlbarView-dynamic-addons-rating {
@@ -526,7 +531,7 @@
 .urlbarView-dynamic-addons-rating[fill="half"] {
   background-image: url("chrome://mozapps/skin/extensions/rating-star.svg#half");
 }
-.urlbarView-dynamic-addons-rating[fill="half"]:dir(rtl) {
+.urlbarView-dynamic-addons-rating[fill="half"]:-moz-locale-dir(rtl) {
   transform: scaleX(-1);
 }
 .urlbarView-dynamic-addons-rating[fill="full"] {
@@ -535,5 +540,5 @@
 
 .urlbarView-dynamic-addons-reviews {
   font-size: 0.85em;
-  color: var(--panel-description-color);
+  color: var(--text-color-deemphasized);
 }

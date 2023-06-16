@@ -4,6 +4,8 @@
 
 import { html } from "chrome://global/content/vendor/lit.all.mjs";
 import { ViewPage } from "./viewpage.mjs";
+// eslint-disable-next-line import/no-unassigned-import
+import "chrome://browser/content/firefoxview/card-container.mjs";
 
 class HistoryInView extends ViewPage {
   constructor() {
@@ -24,17 +26,19 @@ class HistoryInView extends ViewPage {
     const itemTemplates = [];
 
     for (let i = 1; i <= numRows; i++) {
-      itemTemplates.push(
-        html`
-          <p>History Row ${i}</p>
-        `
-      );
+      itemTemplates.push(html` <p>History Row ${i}</p> `);
     }
 
     return html`
-      <ul>
-        ${itemTemplates}
-      </ul>
+      <card-container
+        .viewAllPage=${this.overview ? "history" : null}
+        ?preserveCollapseState=${this.overview ? true : null}
+      >
+        <h2 slot="header" data-l10n-id="firefoxview-history-header"></h2>
+        <ul slot="main">
+          ${itemTemplates}
+        </ul>
+      </card-container>
     `;
   }
 }

@@ -80,6 +80,8 @@
   --urlbar-icon-border-radius: calc(var(--toolbarbutton-border-radius) - 1px);
   --urlbar-popup-url-color: -moz-nativehyperlinktext;
 
+  --pocket-icon-fill: #ef4056;
+
   --lwt-additional-images: none;
   --lwt-background-alignment: right top;
   --lwt-background-tiling: no-repeat;
@@ -699,13 +701,6 @@ menupopup::part(drop-indicator) {
   overflow: hidden;
 }
 
-/* ENABLE DEVTOOLS POPUP */
-@media (-moz-platform: macos), (-moz-platform: windows) {
-  #enable-devtools-popup {
-    font-size: 1.18em;
-  }
-}
-
 #sharing-tabs-warning-panel > hbox[type="window"] > vbox > label > #sharing-warning-screen-panel-header,
 #sharing-tabs-warning-panel > hbox[type="screen"] > vbox > label > #sharing-warning-window-panel-header {
   display: none;
@@ -1035,4 +1030,28 @@ popupnotificationcontent {
   .swipe-nav-icon.will-navigate > .swipe-nav-icon-circle {
     fill: var(--swipe-nav-icon-primary-color);
   }
+}
+
+panel toolbarseparator {
+  appearance: none;
+  min-height: 0;
+  border-top: 1px solid var(--panel-separator-color);
+  border-bottom: none;
+  margin: var(--panel-separator-margin);
+  padding: 0;
+}
+
+/* Picture-in-Picture panel */
+#PictureInPicturePanel {
+  width: var(--menu-panel-width-wide);
+  font: caption;
+}
+
+#PictureInPicturePanelBody {
+  gap: 8px;
+  padding: 8px 16px;
+}
+
+#PictureInPicturePanelFooter {
+  margin: 8px 16px 16px;
 }
