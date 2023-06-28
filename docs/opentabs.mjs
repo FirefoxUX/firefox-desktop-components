@@ -11,10 +11,6 @@ import {
 } from "chrome://global/content/vendor/lit.all.mjs";
 import { MozLitElement } from "chrome://global/content/lit-utils.mjs";
 import { ViewPage } from "./viewpage.mjs";
-// eslint-disable-next-line import/no-unassigned-import
-import "chrome://browser/content/firefoxview/card-container.mjs";
-// eslint-disable-next-line import/no-unassigned-import
-import "chrome://browser/content/firefoxview/fxview-tab-list.mjs";
 
 const { XPCOMUtils } = ChromeUtils.importESModule(
   "resource://gre/modules/XPCOMUtils.sys.mjs"
@@ -307,12 +303,17 @@ function getTabListItems(tabs) {
     ?.filter(tab => !tab.closing && !tab.hidden && !tab.pinned)
     .map(tab => ({
       icon: tab.getAttribute("image"),
-      title: tab.label,
-      time: tab.lastAccessed,
-      url: tab.linkedBrowser?.currentURI?.spec,
       primaryL10nId: "firefoxview-opentabs-focus-tab",
+      tabElement: tab,
+      time: tab.lastAccessed,
+      title: tab.label,
+      url: tab.linkedBrowser?.currentURI?.spec,
     }));
 }
 
-// TODO: Bug 1831118 - Open tabs additional functionality
-function onTabListRowClick(event) {}
+function onTabListRowClick(event) {
+  const tab = event.originalTarget.tabElement;
+  const browserWindow = tab.ownerGlobal;
+  browserWindow.focus();
+  browserWindow.gBrowser.selectedTab = tab;
+}
