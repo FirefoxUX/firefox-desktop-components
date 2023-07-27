@@ -443,6 +443,10 @@ richlistitem[selected] .actionsMenu:focus-visible {
   direction: rtl;
 }
 
+.homepage-buttons > .homepage-button {
+  flex: 1 auto;
+}
+
 .homepage-button:first-of-type {
   margin-inline-start: 0;
 }
@@ -569,14 +573,6 @@ a[is="moz-support-link"]:not(.sidebar-footer-link) {
 
 #showUpdateHistory {
   margin-inline-start: 0;
-}
-
-@media (-moz-platform: windows-win7),
-       (-moz-platform: windows-win8) {
-  #windows-sso,
-  #windows-sso-caption {
-    display: none;
-  }
 }
 
 /**

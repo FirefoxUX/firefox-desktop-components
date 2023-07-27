@@ -31,6 +31,7 @@ const { TelemetryTestUtils } = ChromeUtils.importESModule(
 );
 
 ChromeUtils.defineESModuleGetters(this, {
+  BrowserWindowTracker: "resource:///modules/BrowserWindowTracker.sys.mjs",
   SyncedTabs: "resource://services-sync/SyncedTabs.sys.mjs",
 });
 
@@ -242,7 +243,7 @@ function setupRecentDeviceListMocks() {
 }
 
 function getMockTabData(clients) {
-  return SyncedTabs._internal._createRecentTabsList(clients, 3);
+  return SyncedTabs._internal._createRecentTabsList(clients, 10);
 }
 
 async function setupListState(browser) {
@@ -335,6 +336,12 @@ function setupMocks({ fxaDevices = null, state, syncEnabled = true }) {
       }),
     };
   });
+  sandbox.stub(SyncedTabs, "getTabClients").callsFake(() => {
+    // The real getTabClients does not return the current device
+    return Promise.resolve(
+      fxaDevices.filter(device => !device.isCurrentDevice)
+    );
+  });
   return sandbox;
 }
 
@@ -343,6 +350,22 @@ async function tearDown(sandbox) {
   Services.prefs.clearUserPref("services.sync.lastTabFetch");
   Services.prefs.clearUserPref(MOBILE_PROMO_DISMISSED_PREF);
 }
+
+const featureTourPref = "browser.firefox-view.feature-tour";
+const launchFeatureTourIn = win => {
+  const { FeatureCallout } = ChromeUtils.importESModule(
+    "resource:///modules/FeatureCallout.sys.mjs"
+  );
+  let callout = new FeatureCallout({
+    win,
+    pref: { name: featureTourPref },
+    location: "about:firefoxview",
+    context: "content",
+    theme: { preset: "themed-content" },
+  });
+  callout.showFeatureCallout();
+  return callout;
+};
 
 /**
  * Returns a value that can be used to set
@@ -501,9 +524,9 @@ class TelemetrySpy {
  * @return {Promise} Promise that resolves when the session store
  * has been updated after closing the tab.
  */
-async function open_then_close(url) {
+async function open_then_close(url, win = window) {
   let { updatePromise } = await BrowserTestUtils.withNewTab(
-    url,
+    { url, gBrowser: win.gBrowser },
     async browser => {
       return {
         updatePromise: BrowserTestUtils.waitForSessionStoreUpdate({
@@ -538,13 +561,28 @@ function isFirefoxViewTabSelected(win = window) {
   return isFirefoxViewTabSelectedInWindow(win);
 }
 
+function promiseAllButPrimaryWindowClosed() {
+  let windows = [];
+  for (let win of BrowserWindowTracker.orderedWindows) {
+    if (win != window) {
+      windows.push(win);
+    }
+  }
+  return Promise.all(windows.map(BrowserTestUtils.closeWindow));
+}
+
 registerCleanupFunction(() => {
-  is(
-    typeof SyncedTabs._internal?._createRecentTabsList,
-    "function",
-    "in firefoxview/head.js, SyncedTabs._internal._createRecentTabsList is a function"
-  );
   // ensure all the stubs are restored, regardless of any exceptions
   // that might have prevented it
   gSandbox?.restore();
 });
+
+function navigateToCategory(document, category) {
+  const navigation = document.querySelector("fxview-category-navigation");
+  let navButton = Array.from(navigation.categoryButtons).filter(
+    categoryButton => {
+      return categoryButton.name === category;
+    }
+  )[0];
+  navButton.buttonEl.click();
+}

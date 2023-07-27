@@ -12,17 +12,10 @@ import {
 import { MozLitElement } from "chrome://global/content/lit-utils.mjs";
 import { ViewPage } from "./viewpage.mjs";
 
-const { XPCOMUtils } = ChromeUtils.importESModule(
-  "resource://gre/modules/XPCOMUtils.sys.mjs"
-);
-
 const lazy = {};
 
-XPCOMUtils.defineLazyModuleGetters(lazy, {
-  EveryWindow: "resource:///modules/EveryWindow.jsm",
-});
-
 ChromeUtils.defineESModuleGetters(lazy, {
+  EveryWindow: "resource:///modules/EveryWindow.sys.mjs",
   PrivateBrowsingUtils: "resource://gre/modules/PrivateBrowsingUtils.sys.mjs",
 });
 
@@ -113,13 +106,20 @@ class OpenTabsInView extends ViewPage {
         rel="stylesheet"
         href="chrome://browser/content/firefoxview/view-opentabs.css"
       />
+      <link
+        rel="stylesheet"
+        href="chrome://browser/content/firefoxview/firefoxview-next.css"
+      />
+      <div class="sticky-container bottom-fade">
+        <h2 class="page-header" data-l10n-id="firefoxview-opentabs-header"></h2>
+      </div>
       <div
-        class=${classMap({
+        class="${classMap({
           "view-opentabs-card-container": true,
           "one-column": this.windows.size <= 1,
           "two-columns": this.windows.size === 2,
           "three-columns": this.windows.size >= 3,
-        })}
+        })} cards-container"
       >
         ${when(
           currentWindowIndex && currentWindowTabs,

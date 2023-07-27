@@ -12,8 +12,13 @@
     />
     <meta name="color-scheme" content="light dark" />
     <title data-l10n-id="firefoxview-page-title"></title>
+    <link rel="localization" href="branding/brand.ftl" />
+    <link rel="localization" href="toolkit/branding/accounts.ftl" />
     <link rel="localization" href="browser/firefoxView.ftl" />
+    <link rel="localization" href="branding/brand.ftl" />
+    <link rel="localization" href="toolkit/branding/accounts.ftl" />
     <link rel="localization" href="toolkit/branding/brandings.ftl" />
+    <link rel="localization" href="browser/migrationWizard.ftl" />
     <link
       rel="stylesheet"
       href="chrome://browser/content/firefoxview/firefoxview-next.css"
@@ -32,7 +37,15 @@
     ></script>
     <script
       type="module"
+      src="chrome://browser/content/firefoxview/recentlyclosed.mjs"
+    ></script>
+    <script
+      type="module"
       src="chrome://browser/content/firefoxview/fxview-category-navigation.mjs"
+    ></script>
+    <script
+      type="module"
+      src="chrome://browser/content/firefoxview/syncedtabs.mjs"
     ></script>
     <script src="chrome://browser/content/contentTheme.js"></script>
   </head>
@@ -57,14 +70,14 @@
       <fxview-category-button
         class="category"
         slot="category-button"
-        name="recently-closed"
+        name="recentlyclosed"
         data-l10n-id="firefoxview-recently-closed-nav"
       >
       </fxview-category-button>
       <fxview-category-button
         class="category"
         slot="category-button"
-        name="synced-tabs"
+        name="syncedtabs"
         data-l10n-id="firefoxview-synced-tabs-nav"
       >
       </fxview-category-button>
@@ -80,14 +93,16 @@
       <named-deck>
         <view-overview name="overview">
           <div>
-            <view-history slot="history"></view-history>
+            <view-opentabs slot="opentabs"></view-opentabs>
           </div>
           <div>
-            <view-opentabs slot="opentabs"></view-opentabs>
+            <view-recentlyclosed slot="recentlyclosed"></view-recentlyclosed>
           </div>
         </view-overview>
         <view-history name="history"></view-history>
         <view-opentabs name="opentabs"></view-opentabs>
+        <view-recentlyclosed name="recentlyclosed"></view-recentlyclosed>
+        <view-syncedtabs name="syncedtabs"></view-syncedtabs>
       </named-deck>
     </main>
     <script src="chrome://browser/content/firefoxview/firefoxview-next.mjs"></script>
