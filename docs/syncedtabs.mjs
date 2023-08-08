@@ -15,7 +15,11 @@ const { TabsSetupFlowManager } = ChromeUtils.importESModule(
   "resource:///modules/firefox-view-tabs-setup-manager.sys.mjs"
 );
 
-import { html, ifDefined } from "chrome://global/content/vendor/lit.all.mjs";
+import {
+  html,
+  ifDefined,
+  when,
+} from "chrome://global/content/vendor/lit.all.mjs";
 import { ViewPage } from "./viewpage.mjs";
 
 const SYNCED_TABS_CHANGED = "services.sync.tabs.changed";
@@ -31,12 +35,13 @@ class SyncedTabsInView extends ViewPage {
     this._id = Math.floor(Math.random() * 10e6);
     this.currentSyncedTabs = [];
     if (this.overview) {
-      this.maxTabsLength = 5;
+      this.maxTabsLength = 6; // 5 tabs plus the device row
     } else {
       // Setting maxTabsLength to -1 for no max
       this.maxTabsLength = -1;
     }
     this.devices = [];
+    this.fullyUpdated = false;
   }
 
   static properties = {
@@ -130,17 +135,17 @@ class SyncedTabsInView extends ViewPage {
 
   async observe(subject, topic, errorState) {
     if (topic == TOPIC_SETUPSTATE_CHANGED) {
-      this.updateStates({ errorState });
+      this.updateStates(errorState);
     }
     if (topic == SYNCED_TABS_CHANGED) {
       this.getSyncedTabData();
     }
   }
 
-  updateStates({
-    stateIndex = TabsSetupFlowManager.uiStateIndex,
-    errorState = SyncedTabsErrorHandler.getErrorType(),
-  } = {}) {
+  updateStates(errorState) {
+    let stateIndex = TabsSetupFlowManager.uiStateIndex;
+    errorState = errorState || SyncedTabsErrorHandler.getErrorType();
+
     if (stateIndex == 4 && this._currentSetupStateIndex !== stateIndex) {
       // trigger an initial request for the synced tabs list
       this.getSyncedTabData();
@@ -217,6 +222,7 @@ class SyncedTabsInView extends ViewPage {
         .descriptionLink=${ifDefined(descriptionLink)}
         class="empty-state synced-tabs"
         ?isSelectedTab=${this.selectedTab}
+        ?isInnerCard=${this.overview}
         mainImageUrl="${ifDefined(mainImageUrl)}"
         headerIconUrl="${ifDefined(headerIconUrl)}"
       >
@@ -283,74 +289,160 @@ class SyncedTabsInView extends ViewPage {
   }
 
   noDeviceTabsTemplate(deviceName, deviceType) {
+    if (this.overview) {
+      return html` ${this.deviceTemplate(deviceName, deviceType, [])}
+        <div
+          class="blackbox notabs"
+          data-l10n-id="firefoxview-syncedtabs-device-notabs"
+        ></div>`;
+    }
     return html`<card-container>
       <h2 slot="header">
-        <div class="icon ${deviceType}" role="presentation"></div>
+        <span class="icon ${deviceType}" role="presentation"></span>
         ${deviceName}
       </h2>
-      <div slot="main" class="blackbox notabs">No tabs open on this device</div>
+      <div
+        slot="main"
+        class="blackbox notabs"
+        data-l10n-id="firefoxview-syncedtabs-device-notabs"
+      ></div>
     </card-container>`;
+  }
+
+  deviceTemplate(deviceName, deviceType, tabs) {
+    let tabItems = this.getTabItems(tabs);
+    if (this.overview) {
+      /* Insert device at the beginning of the tabs array */
+      let icon;
+      switch (deviceType) {
+        case "phone":
+          icon = "chrome://browser/skin/device-phone.svg";
+          break;
+        case "desktop":
+          icon = "chrome://browser/skin/device-desktop.svg";
+          break;
+        case "tablet":
+          icon = "chrome://browser/skin/device-tablet.svg";
+          break;
+      }
+      tabItems.unshift({
+        icon,
+        title: deviceName,
+      });
+    }
+    return html`${when(
+        !this.overview,
+        () => html`<h2 slot="header">
+          <span class="icon ${deviceType}" role="presentation"></span>
+          ${deviceName}
+        </h2>`
+      )}
+      <fxview-tab-list
+        slot="main"
+        class="syncedtabs"
+        hasPopup="menu"
+        .tabItems=${ifDefined(tabItems)}
+        maxTabsLength=${this.maxTabsLength}
+        @fxview-tab-list-primary-action=${this.onOpenLink}
+        @fxview-tab-list-secondary-action=${this.onContextMenu}
+      >
+        ${when(
+          this.overview,
+          () => html`<h2 slot="header">
+            <span class="icon ${deviceType}" role="presentation"></span>
+            ${deviceName}
+          </h2>`
+        )}
+        ${this.panelListTemplate()}
+      </fxview-tab-list>`;
   }
 
   generateTabList() {
     let renderArray = [];
     let renderInfo = {};
     for (let tab of this.currentSyncedTabs) {
-      if (!(tab.device in renderInfo)) {
-        renderInfo[tab.device] = {
+      if (!(tab.client in renderInfo)) {
+        renderInfo[tab.client] = {
+          name: tab.device,
           deviceType: tab.deviceType,
           tabs: [],
         };
       }
-      renderInfo[tab.device].tabs.push(tab);
+      renderInfo[tab.client].tabs.push(tab);
     }
+
     // Add devices without tabs
     for (let device of this.devices) {
-      if (!(device.name in renderInfo)) {
-        renderInfo[device.name] = {
-          deviceType: device.type,
+      if (!(device.id in renderInfo)) {
+        renderInfo[device.id] = {
+          name: device.name,
+          deviceType: device.clientType,
           tabs: [],
         };
       }
     }
-    for (let deviceName in renderInfo) {
-      if (renderInfo[deviceName].tabs.length) {
-        renderArray.push(html`<card-container>
-          <h2 slot="header">
-            <div
-              class="icon ${renderInfo[deviceName].deviceType}"
-              role="presentation"
-            ></div>
-            ${deviceName}
-          </h2>
-          <fxview-tab-list
-            slot="main"
-            class="syncedtabs"
-            hasPopup="menu"
-            .tabItems=${ifDefined(
-              this.getTabItems(renderInfo[deviceName].tabs)
-            )}
-            maxTabsLength=${this.maxTabsLength}
-            @fxview-tab-list-primary-action=${this.onOpenLink}
-            @fxview-tab-list-secondary-action=${this.onContextMenu}
-          >
-            ${this.panelListTemplate()}
-          </fxview-tab-list>
-        </card-container>`);
+
+    for (let id in renderInfo) {
+      if (renderInfo[id].tabs.length) {
+        if (this.overview) {
+          renderArray.push(
+            this.deviceTemplate(
+              renderInfo[id].name,
+              renderInfo[id].deviceType,
+              renderInfo[id].tabs
+            )
+          );
+        } else {
+          renderArray.push(
+            html`<card-container
+              >${this.deviceTemplate(
+                renderInfo[id].name,
+                renderInfo[id].deviceType,
+                renderInfo[id].tabs
+              )}</card-container
+            >`
+          );
+        }
       } else {
         renderArray.push(
           this.noDeviceTabsTemplate(
-            deviceName,
-            renderInfo[deviceName].deviceType
+            renderInfo[id].name,
+            renderInfo[id].deviceType
           )
         );
       }
     }
     return renderArray;
   }
-  render() {
-    const stateIndex = this._currentSetupStateIndex;
 
+  generateCardContent() {
+    switch (this._currentSetupStateIndex) {
+      case 0 /* error-state */:
+        if (this.errorState) {
+          return this.generateMessageCard({ error: true });
+        }
+        break;
+      case 1 /* not-signed-in */:
+        if (Services.prefs.prefHasUserValue("services.sync.lastversion")) {
+          // If this pref is set, the user has signed out of sync.
+          // This path is also taken if we are disconnected from sync. See bug 1784055
+          return this.generateMessageCard({
+            error: true,
+            errorState: "signed-out",
+          });
+        }
+        return this.generateMessageCard({ action: "sign-in" });
+      case 2 /* connect-secondary-device*/:
+        return this.generateMessageCard({ action: "add-device" });
+      case 3 /* disabled-tab-sync */:
+        return this.generateMessageCard({ action: "sync-tabs-disabled" });
+      case 4 /* synced-tabs-loaded*/:
+        return this.generateTabList();
+    }
+    return html``;
+  }
+
+  render() {
     this.open =
       !TabsSetupFlowManager.isTabSyncSetupComplete ||
       Services.prefs.getBoolPref(UI_OPEN_STATE, true);
@@ -373,34 +465,23 @@ class SyncedTabsInView extends ViewPage {
       </div>`);
     }
 
-    switch (stateIndex) {
-      case 0 /* error-state */:
-        if (this.errorState) {
-          renderArray.push(this.generateMessageCard({ error: true }));
-        }
-        break;
-      case 1 /* not-signed-in */:
-        if (Services.prefs.prefHasUserValue("services.sync.lastversion")) {
-          // If this pref is set, the user has signed out of sync.
-          // This path is also taken if we are disconnected from sync. See bug 1784055
-          renderArray.push(
-            this.generateMessageCard({ error: true, errorState: "signed-out" })
-          );
-        } else {
-          renderArray.push(this.generateMessageCard({ action: "sign-in" }));
-        }
-        break;
-      case 2 /* connect-secondary-device*/:
-        renderArray.push(this.generateMessageCard({ action: "add-device" }));
-        break;
-      case 3 /* disabled-tab-sync */:
-        renderArray.push(
-          this.generateMessageCard({ action: "sync-tabs-disabled" })
-        );
-        break;
-      case 4 /* synced-tabs-loaded*/:
-        renderArray = renderArray.concat(this.generateTabList());
-        break;
+    if (this.overview) {
+      renderArray.push(
+        html`<card-container
+          preserveCollapseState
+          viewAllPage=${this._currentSetupStateIndex == 4 ? "syncedtabs" : null}
+        >
+          >
+          <h2
+            slot="header"
+            data-l10n-id="firefoxview-synced-tabs-header"
+            class="overview-header"
+          ></h2>
+          <div slot="main">${this.generateCardContent()}</div>
+        </card-container>`
+      );
+    } else {
+      renderArray.push(this.generateCardContent());
     }
     return renderArray;
   }
@@ -450,6 +531,10 @@ class SyncedTabsInView extends ViewPage {
     });
 
     this.updateTabsList(tabs);
+  }
+
+  updated() {
+    this.fullyUpdated = true;
   }
 
   sendTabTelemetry(numTabs) {

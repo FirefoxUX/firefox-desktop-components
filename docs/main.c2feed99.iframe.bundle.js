@@ -29247,22 +29247,13 @@ function MDXContent(_ref) {
     "href": "https://bugzilla.mozilla.org/show_bug.cgi?id=1828181",
     "target": "_blank",
     "rel": "nofollow noopener noreferrer"
-  }, "See Bug 1828181 for more details on supporting this case"), ".\nInstead, you will need to do two things to have your new story appear in Storybook:"), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("ol", null, (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("li", {
-    parentName: "ol"
-  }, "Create ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
-    parentName: "li"
-  }, "<your-team-or-project>/<your-widget>.stories.mjs"), " in ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
-    parentName: "li"
-  }, "browser/components/storybook/stories")), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("li", {
-    parentName: "ol"
-  }, "In this newly created story file, add the following default export:", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("pre", {
-    parentName: "li"
-  }, (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("code", {
-    parentName: "pre",
-    "className": "language-js"
-  }, "  export default {\n    title: \"Domain-specific UI Widgets/<your-team-or-project>/<your-widget>\"\n    component: \"<your-widget>\"\n  };\n")), "The next time you run ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
-    parentName: "li"
-  }, "./mach storybook"), ", a blank story entry for your widget should appear in your local Storybook.")), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("p", null, "Since Storybook is unaware of how the actual code is added or built, we won't go into detail about adding your new widget to the codebase.\nIt's recommended to have a ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "See Bug 1828181 for more details on supporting this case"), ".\nInstead, you will need to use ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+    parentName: "p"
+  }, "./mach addstory your-widget \"your-project-or-team-name\""), " to create a new story in ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+    parentName: "p"
+  }, "browser/components/storybook/stories"), ".\nYou can also use ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+    parentName: "p"
+  }, "./mach addstory your-widget \"your-project-or-team-name\" --path <your-widget-path>/<widget-source>"), " so that your widget's source is imported correctly."), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("p", null, "If you specified a path and have Storybook running, a blank story entry for your widget will appear under the Domain-Specific UI Widgets/your-project section.\nOtherwise, if you have not added a path, Storybook will throw an error saying that it \"Can't resolve 'None'\" in the newly added story.\nThis is expected and serves as a reminder that you need to update the newly created story with the widget source import."), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("p", null, "Since Storybook is unaware of how the actual code is added or built, we won't go into detail about adding your new widget to the codebase.\nIt's recommended to have a ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "p"
   }, ".html"), " test for your new widget since this lets you unit test the component directly rather than using integration tests with the domain.\nTo see what kind of files you may need for your widget, please refer back to ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
     parentName: "p",
@@ -29813,15 +29804,15 @@ function MDXContent(_ref) {
     parentName: "p"
   }, "./mach addwidget"), " correctly, there is no additional setup needed to view your newly created story in Storybook."), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("p", null, "Stories in ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "p"
-  }, "browser/components/storybook/stories"), " are used for non-design system components, also called domain-specific UI widgets.\nThe easiest way to use Storybook for non-design system elements is\nto add a new ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "browser/components/storybook/stories"), " are used for non-design system components, also called domain-specific UI widgets.\nThe easiest way to use Storybook for non-design system element is to use ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "p"
-  }, ".stories.mjs"), " file to ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "./mach addstory new-component \"Your Project\""), ".\nYou can also use ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "p"
-  }, "browser/components/storybook/stories"), ".\nYou will also need to set the title of your widget to be: ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "./mach addstory new-component \"Your Project\" --path browser/components/new-component.mjs"), " where ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "p"
-  }, "Domain-specific UI Widgets/<team-or-project-name>/<widget-name>"), " in the default exported object.\n", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
+  }, "--path"), " is the path to your new components' source.\n", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
     parentName: "p",
-    "href": "https://searchfox.org/mozilla-central/rev/2c11f18f89056a806c299a9d06bfa808718c2e84/browser/components/storybook/stories/credential-management.stories.mjs#11",
+    "href": "https://searchfox.org/mozilla-central/rev/2c11f18f89056a806c299a9d06bfa808718c2e84/browser/components/storybook/stories/login-timeline.stories.mjs#11",
     "target": "_blank",
     "rel": "nofollow noopener noreferrer"
   }, "See the Credential Management/Timeline widget for an example.")), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("p", null, "If you want to colocate your story with the code it is documenting you will need\nto add to the ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
@@ -29865,10 +29856,10 @@ function MDXContent(_ref) {
     "rel": "nofollow noopener noreferrer"
   }, "See the Credential Management folder as an example of a domain specific folder"), " and ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
     parentName: "p",
-    "href": "https://searchfox.org/mozilla-central/source/browser/components/storybook/stories/credential-management.stories.mjs",
+    "href": "https://searchfox.org/mozilla-central/source/browser/components/storybook/stories/login-timeline.stories.mjs",
     "target": "_blank",
     "rel": "nofollow noopener noreferrer"
-  }, "see the credential-management.stories.mjs for how to make a domain specific folder in Storybook"), ".\n", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
+  }, "see the login-timeline.stories.mjs for how to make a domain specific folder in Storybook"), ".\n", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("a", {
     parentName: "p",
     "href": "https://searchfox.org/mozilla-central/source/browser/components/storybook/stories/migration-wizard.stories.mjs",
     "target": "_blank",
@@ -30098,7 +30089,7 @@ function MDXContent(_ref) {
     parentName: "ul"
   }, "The component is expecting to receive the following properties within each ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "li"
-  }, "tabItems"), " object (you may need to do some normalizing for this):", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("ul", {
+  }, "tabItems"), " object (you may need to do some normalizing for this). If you just pass a title and an icon, it creates a header row that is not clickable.", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("ul", {
     parentName: "li"
   }, (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("li", {
     parentName: "ul"
@@ -30112,7 +30103,7 @@ function MDXContent(_ref) {
     parentName: "li"
   }, "primaryL10nId"), " (", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("strong", {
     parentName: "li"
-  }, "Required"), ") - The l10n id to be used for the primary action element. This fluent string should ONLY define a ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "Optional"), ") - The l10n id to be used for the primary action element. This fluent string should ONLY define a ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "li"
   }, ".title"), " attribute to describe the link element in each row."), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("li", {
     parentName: "ul"
@@ -30152,7 +30143,7 @@ function MDXContent(_ref) {
     parentName: "li"
   }, "time"), " (", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("strong", {
     parentName: "li"
-  }, "Required"), ") - The time in milliseconds for expected last interaction with the tab (Ex: ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
+  }, "Optional"), ") - The time in milliseconds for expected last interaction with the tab (Ex: ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "li"
   }, "lastUsed"), " for SyncedTabs tabs, ", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("inlineCode", {
     parentName: "li"
@@ -30168,7 +30159,7 @@ function MDXContent(_ref) {
     parentName: "li"
   }, "url"), " (", (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("strong", {
     parentName: "li"
-  }, "Required"), ") - The full URL for the tab")))))), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("h3", {
+  }, "Optional"), ") - The full URL for the tab")))))), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("h3", {
     "id": "notes"
   }, "Notes"), (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("ul", null, (0,_mdx_js_react__WEBPACK_IMPORTED_MODULE_6__.mdx)("li", {
     parentName: "ul"
@@ -65233,12 +65224,12 @@ module.exports = v4;
 
 var map = {
 	"./button.stories.mjs": 93010,
-	"./credential-management.stories.mjs": 75346,
 	"./fxview-category-navigation.stories.mjs": 4501,
 	"./fxview-tab-list.stories.md": 19473,
 	"./fxview-tab-list.stories.mjs": 74088,
 	"./letter-grade.stories.mjs": 85084,
 	"./login-command-button.stories.mjs": 51582,
+	"./login-timeline.stories.mjs": 36850,
 	"./message-bar.stories.mjs": 10080,
 	"./migration-wizard.stories.mjs": 25127,
 	"./named-deck.stories.mjs": 86379,
@@ -65645,6 +65636,10 @@ var map = {
 		9229,
 		9229
 	],
+	"./browser/siteProtections.ftl": [
+		89466,
+		9466
+	],
 	"./browser/speechDispatcher.ftl": [
 		56686,
 		6686
@@ -66012,7 +66007,9 @@ module.exports = webpackAsyncContext;
     constructor() {
       super();
       const shadowRoot = this.attachShadow({ mode: "open" });
-      MozXULElement.insertFTLIfNeeded("toolkit/global/notification.ftl");
+      window.MozXULElement?.insertFTLIfNeeded(
+        "toolkit/global/notification.ftl"
+      );
       document.l10n.connectRoot(this.shadowRoot);
       const content = this.constructor.template.content.cloneNode(true);
       shadowRoot.append(content);
@@ -71070,7 +71067,12 @@ class FxviewCategoryButton extends chrome_global_content_lit_utils_mjs__WEBPACK_
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       <link rel="stylesheet" href=${this.constructor.stylesheetUrl} />
-      <button tabindex="-1" ?selected=${this.selected} @click=${this.activate}>
+      <button
+        aria-hidden="true"
+        tabindex="-1"
+        ?selected=${this.selected}
+        @click=${this.activate}
+      >
         <span class="category-icon" part="icon"></span>
         <slot></slot>
       </button>
@@ -71113,7 +71115,7 @@ if (!window.IS_STORYBOOK) {
   XPCOMUtils = ChromeUtils.importESModule(
     "resource://gre/modules/XPCOMUtils.sys.mjs"
   ).XPCOMUtils;
-  XPCOMUtils.defineLazyGetter(lazy, "relativeTimeFormat", () => {
+  ChromeUtils.defineLazyGetter(lazy, "relativeTimeFormat", () => {
     return new Services.intl.RelativeTimeFormat(undefined, {
       style: "narrow",
     });
@@ -71121,7 +71123,6 @@ if (!window.IS_STORYBOOK) {
 
   ChromeUtils.defineESModuleGetters(lazy, {
     BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs",
-    PlacesUIUtils: "resource:///modules/PlacesUIUtils.sys.mjs",
   });
 }
 
@@ -71309,35 +71310,42 @@ class FxviewTabList extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         role="list"
         @keydown=${this.handleFocusElementInRow}
       >
-        ${tabItems.map(
-          (tabItem, i) =>
-            chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-              <fxview-tab-row
-                exportparts="secondary-button"
-                ?active=${i == activeIndex}
-                ?compact=${this.compactRows}
-                .hasPopup=${hasPopup}
-                .currentActiveElementId=${currentActiveElementId}
-                .dateTimeFormat=${dateTimeFormat}
-                .favicon=${tabItem.icon}
-                .primaryL10nId=${tabItem.primaryL10nId}
-                .primaryL10nArgs=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.primaryL10nArgs)}
-                role="listitem"
-                .secondaryL10nId=${tabItem.secondaryL10nId}
-                .secondaryL10nArgs=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.secondaryL10nArgs)}
-                .closedId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.closedId || tabItem.closedId)}
-                .tabElement=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.tabElement)}
-                .time=${(tabItem.time || tabItem.closedAt).toString().length ===
-                16
-                  ? (tabItem.time || tabItem.closedAt) / 1000
-                  : tabItem.time || tabItem.closedAt}
-                .timeMsPref=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.timeMsPref)}
-                .title=${tabItem.title}
-                .url=${tabItem.url}
-              >
-              </fxview-tab-row>
-            `
-        )}
+        ${tabItems.map((tabItem, i) => {
+          let time;
+          if (tabItem.time || tabItem.closedAt) {
+            let stringTime = (tabItem.time || tabItem.closedAt).toString();
+            // Different APIs return time in different units, so we use
+            // the length to decide if it's milliseconds or nanoseconds.
+            if (stringTime.length === 16) {
+              time = (tabItem.time || tabItem.closedAt) / 1000;
+            } else {
+              time = tabItem.time || tabItem.closedAt;
+            }
+          }
+          return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+            <fxview-tab-row
+              exportparts="secondary-button"
+              ?active=${i == activeIndex}
+              ?compact=${this.compactRows}
+              .hasPopup=${hasPopup}
+              .currentActiveElementId=${currentActiveElementId}
+              .dateTimeFormat=${dateTimeFormat}
+              .favicon=${tabItem.icon}
+              .primaryL10nId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.primaryL10nId)}
+              .primaryL10nArgs=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.primaryL10nArgs)}
+              role="listitem"
+              .secondaryL10nId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.secondaryL10nId)}
+              .secondaryL10nArgs=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.secondaryL10nArgs)}
+              .closedId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.closedId || tabItem.closedId)}
+              .tabElement=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.tabElement)}
+              .time=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(time)}
+              .timeMsPref=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.timeMsPref)}
+              .title=${tabItem.title}
+              .url=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(tabItem.url)}
+            >
+            </fxview-tab-row>
+          `;
+        })}
       </div>
       <slot name="menu"></slot>
     `;
@@ -71432,7 +71440,7 @@ class FxviewTabRow extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
 
   dateFluentId(timestamp, dateTimeFormat, _nowThresholdMs = NOW_THRESHOLD_MS) {
     if (!timestamp) {
-      return "";
+      return null;
     }
     if (dateTimeFormat === "relative") {
       const elapsed = Date.now() - timestamp;
@@ -71471,12 +71479,23 @@ class FxviewTabRow extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   }
 
   getImageUrl(icon, targetURI) {
-    if (!window.IS_STORYBOOK) {
-      return icon
-        ? lazy.PlacesUIUtils.getImageURL(icon)
-        : `page-icon:${targetURI}`;
+    if (window.IS_STORYBOOK) {
+      return `chrome://global/skin/icons/defaultFavicon.svg`;
     }
-    return `chrome://global/skin/icons/defaultFavicon.svg`;
+    if (!icon) {
+      if (targetURI?.startsWith("moz-extension")) {
+        return "chrome://mozapps/skin/extensions/extension.svg";
+      }
+      return `chrome://global/skin/icons/defaultFavicon.svg`;
+    }
+    // If the icon is not for website (doesn't begin with http), we
+    // display it directly. Otherwise we go through the page-icon
+    // protocol to try to get a cached version. We don't load
+    // favicons directly.
+    if (icon.startsWith("http")) {
+      return `page-icon:${targetURI}`;
+    }
+    return icon;
   }
 
   primaryActionHandler(event) {
@@ -71538,14 +71557,17 @@ class FxviewTabRow extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       />
       <link rel="stylesheet" href=${this.constructor.stylesheetUrl} />
       <a
-        href=${this.url}
-        class="fxview-tab-row-main"
+        .href=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.url)}
+        class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+          "fxview-tab-row-main": true,
+          "fxview-tab-row-header": !this.url,
+        })}
         id="fxview-tab-row-main"
         tabindex=${this.active &&
         this.currentActiveElementId === "fxview-tab-row-main"
           ? "0"
           : "-1"}
-        data-l10n-id=${this.primaryL10nId}
+        data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.primaryL10nId)}
         data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.primaryL10nArgs)}
         @click=${this.primaryActionHandler}
         @keydown=${this.primaryActionHandler}
@@ -71583,9 +71605,9 @@ class FxviewTabRow extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
           class="fxview-tab-row-time"
           id="fxview-tab-row-time"
           ?hidden=${this.compact || !timeString}
-          data-timestamp=${this.time}
+          data-timestamp=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.time)}
           data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(timeString)}
-          data-l10n-args=${timeArgs}
+          data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(timeArgs)}
         >
         </span>
       </a>
@@ -73167,8 +73189,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.MozXULElement.insertFTLIfNeeded("preview/shopping.ftl");
-
 /**
  * A card container to be used in the shopping sidebar. There are three card types.
  * The default type where no type attribute is required and the card will have no extra functionality.
@@ -73274,6 +73294,8 @@ __webpack_require__.r(__webpack_exports__);
 class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   #MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING = new Map([
     ["stale", this.getStaleWarningTemplate()],
+    ["generic-error", this.getGenericErrorTemplate()],
+    ["not-enough-reviews", this.getNotEnoughReviewsTemplate()],
   ]);
 
   static properties = {
@@ -73300,6 +73322,32 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     </message-bar>`;
   }
 
+  getGenericErrorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html` <message-bar type="error">
+      <article id="message-bar-container" aria-labelledby="header">
+        <strong
+          id="header"
+          data-l10n-id="shopping-message-bar-generic-error-title"
+        ></strong>
+        <span data-l10n-id="shopping-message-bar-generic-error-message"></span>
+      </article>
+    </message-bar>`;
+  }
+
+  getNotEnoughReviewsTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html` <message-bar type="warning">
+      <article id="message-bar-container" aria-labelledby="header">
+        <strong
+          id="header"
+          data-l10n-id="shopping-message-bar-warning-not-enough-reviews-title"
+        ></strong>
+        <span
+          data-l10n-id="shopping-message-bar-warning-not-enough-reviews-message"
+        ></span>
+      </article>
+    </message-bar>`;
+  }
+
   render() {
     let messageBarTemplate = this.#MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING.get(
       this.type
@@ -73316,7 +73364,7 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return null;
   }
 
-  firstUpdated() {
+  updated() {
     // message-bar does not support adding a header and does not align it with the icon.
     // Override styling to make them align.
     let messageBar = this.renderRoot.querySelector("message-bar");
@@ -76512,80 +76560,6 @@ var __namedExportsOrder = ["RegularButton", "PrimaryButton", "DisabledButton", "
 
 /***/ }),
 
-/***/ 75346:
-/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "AllSameDayTimeline": () => (/* binding */ AllSameDayTimeline),
-/* harmony export */   "EmptyTimeline": () => (/* binding */ EmptyTimeline),
-/* harmony export */   "TypicalTimeline": () => (/* binding */ TypicalTimeline),
-/* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47042);
-/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_bind_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24812);
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17874);
-/* harmony import */ var _aboutlogins_content_components_login_timeline_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(39048);
-
-var _templateObject;
-
-function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-// Imported for side-effects.
-// eslint-disable-next-line import/no-unassigned-import
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Credential Management/Timeline",
-  component: "login-timeline"
-});
-window.MozXULElement.insertFTLIfNeeded("browser/aboutLogins.ftl");
-var Template = function Template(_ref) {
-  var historyItems = _ref.historyItems;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose([" <login-timeline .history=", "></login-timeline> "])), historyItems);
-};
-var ACTION_ID_CREATED = "login-item-timeline-action-created";
-var ACTION_ID_UPDATED = "login-item-timeline-action-updated";
-var ACTION_ID_USED = "login-item-timeline-action-used";
-var EmptyTimeline = Template.bind({});
-EmptyTimeline.args = {
-  historyItems: []
-};
-var TypicalTimeline = Template.bind({});
-TypicalTimeline.args = {
-  historyItems: [{
-    actionId: ACTION_ID_CREATED,
-    time: 1463526500267
-  }, {
-    actionId: ACTION_ID_UPDATED,
-    time: 1653621219569
-  }, {
-    actionId: ACTION_ID_USED,
-    time: 1561813190300
-  }]
-};
-var AllSameDayTimeline = Template.bind({});
-AllSameDayTimeline.args = {
-  historyItems: [{
-    actionId: ACTION_ID_CREATED,
-    time: 1463526500267
-  }, {
-    actionId: ACTION_ID_UPDATED,
-    time: 1463526500267
-  }, {
-    actionId: ACTION_ID_USED,
-    time: 1463526500267
-  }]
-};
-var __namedExportsOrder = ["EmptyTimeline", "TypicalTimeline", "AllSameDayTimeline"];
-
-/***/ }),
-
 /***/ 4501:
 /***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
 
@@ -77003,6 +76977,80 @@ DisabledButton.args = {
   tooltip: "Lorem ipsum dolor"
 };
 var __namedExportsOrder = ["WorkingButton", "DisabledButton"];
+
+/***/ }),
+
+/***/ 36850:
+/***/ ((__unused_webpack___webpack_module__, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AllSameDayTimeline": () => (/* binding */ AllSameDayTimeline),
+/* harmony export */   "EmptyTimeline": () => (/* binding */ EmptyTimeline),
+/* harmony export */   "TypicalTimeline": () => (/* binding */ TypicalTimeline),
+/* harmony export */   "__namedExportsOrder": () => (/* binding */ __namedExportsOrder),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_array_slice_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(47042);
+/* harmony import */ var _Users_mark_projects_mozilla_unified_browser_components_storybook_node_modules_core_js_modules_es_function_bind_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(24812);
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(17874);
+/* harmony import */ var _aboutlogins_content_components_login_timeline_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(39048);
+
+var _templateObject;
+
+function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.slice(0); } strings.raw = raw; return strings; }
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+// Imported for side-effects.
+// eslint-disable-next-line import/no-unassigned-import
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Credential Management/Timeline",
+  component: "login-timeline"
+});
+window.MozXULElement.insertFTLIfNeeded("browser/aboutLogins.ftl");
+var Template = function Template(_ref) {
+  var historyItems = _ref.historyItems;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)(_templateObject || (_templateObject = _taggedTemplateLiteralLoose([" <login-timeline .history=", "></login-timeline> "])), historyItems);
+};
+var ACTION_ID_CREATED = "login-item-timeline-action-created";
+var ACTION_ID_UPDATED = "login-item-timeline-action-updated";
+var ACTION_ID_USED = "login-item-timeline-action-used";
+var EmptyTimeline = Template.bind({});
+EmptyTimeline.args = {
+  historyItems: []
+};
+var TypicalTimeline = Template.bind({});
+TypicalTimeline.args = {
+  historyItems: [{
+    actionId: ACTION_ID_CREATED,
+    time: 1463526500267
+  }, {
+    actionId: ACTION_ID_UPDATED,
+    time: 1653621219569
+  }, {
+    actionId: ACTION_ID_USED,
+    time: 1561813190300
+  }]
+};
+var AllSameDayTimeline = Template.bind({});
+AllSameDayTimeline.args = {
+  historyItems: [{
+    actionId: ACTION_ID_CREATED,
+    time: 1463526500267
+  }, {
+    actionId: ACTION_ID_UPDATED,
+    time: 1463526500267
+  }, {
+    actionId: ACTION_ID_USED,
+    time: 1463526500267
+  }]
+};
+var __namedExportsOrder = ["EmptyTimeline", "TypicalTimeline", "AllSameDayTimeline"];
 
 /***/ }),
 
@@ -77596,9 +77644,6 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
 
 // eslint-disable-next-line import/no-unassigned-import
 
-
-// window.MozXULElement.insertFTLIfNeeded("preview/shopping.ftl");
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Shopping/Shopping Card",
   component: "shopping-card",
@@ -77669,13 +77714,13 @@ function _taggedTemplateLiteralLoose(strings, raw) { if (!raw) { raw = strings.s
     type: {
       control: {
         type: "select",
-        options: ["stale"]
+        options: ["stale", "generic-error", "not-enough-reviews"]
       }
     }
   },
   parameters: {
     status: "in-development",
-    fluent: "\nshopping-message-bar-warning-stale-analysis-title = Updates available\nshopping-message-bar-warning-stale-analysis-message = Re-analyze the reviews for this product, so you have the latest info.\nshopping-message-bar-warning-stale-analysis-link = Re-analyze reviews\n    "
+    fluent: "\nshopping-message-bar-warning-stale-analysis-title = Updates available\nshopping-message-bar-warning-stale-analysis-message = Re-analyze the reviews for this product, so you have the latest info.\nshopping-message-bar-warning-stale-analysis-link = Re-analyze reviews\nshopping-message-bar-generic-error-title = Something went wrong\nshopping-message-bar-generic-error-message = Couldn't load information. Please try again later.\nshopping-message-bar-warning-not-enough-reviews-title = Not enough reviews yet\nshopping-message-bar-warning-not-enough-reviews-message = When this product has more reviews, we\u2019ll be able to analyze them.\n    "
   }
 });
 var Template = function Template(_ref) {
@@ -78244,7 +78289,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-MozXULElement.insertFTLIfNeeded("toolkit/global/mozFiveStar.ftl");
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozFiveStar.ftl");
 
 /**
  * The visual representation is five stars, each of them either empty,
@@ -78819,7 +78864,7 @@ const messageTypeToIconData = {
     l10nId: "moz-message-bar-icon-warning",
   },
   success: {
-    iconSrc: "chrome://global/skin/icons/check.svg",
+    iconSrc: "chrome://global/skin/icons/check-filled.svg",
     l10nId: "moz-message-bar-icon-success",
   },
   error: {
@@ -78834,8 +78879,9 @@ const messageTypeToIconData = {
  *
  * @tagname moz-message-bar
  * @property {string} type - The type of the displayed message.
- * @property {string} header - The header of the message.
+ * @property {string} heading - The heading of the message.
  * @property {string} message - The message text.
+ * @property {boolean} dismissable - Whether or not the element is dismissable.
  * @fires message-bar:close
  *  Custom event indicating that message bar was closed.
  *  @fires message-bar:user-dismissed
@@ -78843,10 +78889,16 @@ const messageTypeToIconData = {
  */
 
 class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static queries = {
+    actionsSlotEl: "slot[name=actions]",
+    actionsEl: ".actions",
+  };
+
   static properties = {
     type: { type: String },
-    header: { type: String },
+    heading: { type: String },
     message: { type: String },
+    dismissable: { type: Boolean },
   };
 
   // Use a relative URL in storybook to get faster reloads on style changes.
@@ -78859,6 +78911,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     MozXULElement.insertFTLIfNeeded("toolkit/global/mozMessageBar.ftl");
     this.type = "info";
     this.role = "status";
+    this.dismissable = false;
+  }
+
+  onSlotchange(e) {
+    let actions = this.actionsSlotEl.assignedNodes();
+    this.actionsEl.classList.toggle("active", actions.length);
   }
 
   disconnectedCallback() {
@@ -78870,45 +78928,57 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     if (iconData) {
       let { iconSrc, l10nId } = iconData;
       return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-        <img
-          class="icon"
-          src=${iconSrc}
-          data-l10n-id=${l10nId}
-          data-l10n-attrs="alt"
-        />
+        <div class="icon-container">
+          <img
+            class="icon"
+            src=${iconSrc}
+            data-l10n-id=${l10nId}
+            data-l10n-attrs="alt"
+          />
+        </div>
       `;
     }
     return "";
   }
 
-  headerTemplate() {
-    if (this.header) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<strong class="header">${this.header}</strong>`;
+  headingTemplate() {
+    if (this.heading) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<strong class="heading">${this.heading}</strong>`;
+    }
+    return "";
+  }
+
+  closeButtonTemplate() {
+    if (this.dismissable) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+        <button
+          class="close ghost-button"
+          data-l10n-id="moz-message-bar-close-button"
+          @click=${this.dismiss}
+        ></button>
+      `;
     }
     return "";
   }
 
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-      <link
-        rel="stylesheet"
-        href="chrome://global/skin/in-content/common.css"
-      />
       <link rel="stylesheet" href=${this.constructor.stylesheetUrl} />
       <div class="container">
-        ${this.iconTemplate()}
         <div class="content">
-          ${this.headerTemplate()}
-          <span class="message">${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.message)}</span>
-          <slot name="support-link"></slot>
+          <div class="text-container">
+            ${this.iconTemplate()}
+            <div class="text-content">
+              ${this.headingTemplate()}
+              <span class="message">${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.message)}</span>
+              <slot name="support-link"></slot>
+            </div>
+          </div>
+          <span class="actions">
+            <slot name="actions" @slotchange=${this.onSlotchange}></slot>
+          </span>
         </div>
-        <slot name="actions"></slot>
-        <span class="spacer"></span>
-        <button
-          class="close ghost-button"
-          data-l10n-id="moz-message-bar-close-button"
-          @click=${this.dismiss}
-        ></button>
+        ${this.closeButtonTemplate()}
       </div>
     `;
   }
@@ -78954,7 +79024,8 @@ __webpack_require__.r(__webpack_exports__);
 
 const fluentStrings = [
   "moz-message-bar-message",
-  "moz-message-bar-message-header",
+  "moz-message-bar-message-heading",
+  "moz-message-bar-message-heading-long",
 ];
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -78966,10 +79037,10 @@ const fluentStrings = [
       control: { type: "select" },
     },
     l10nId: {
-      options: [fluentStrings[0], fluentStrings[1]],
+      options: fluentStrings,
       control: { type: "select" },
     },
-    header: {
+    heading: {
       table: {
         disable: true,
       },
@@ -78985,9 +79056,12 @@ const fluentStrings = [
     fluent: `
 moz-message-bar-message =
   .message = For your information message
-moz-message-bar-message-header =
-  .header = Header
+moz-message-bar-message-heading =
+  .heading = Heading
   .message = For your information message
+moz-message-bar-message-heading-long =
+  .heading = A longer heading to check text wrapping in the message bar
+  .message = Some message that we use to check text wrapping. Some message that we use to check text wrapping.
 moz-message-bar-button = Click me!
     `,
   },
@@ -78995,7 +79069,7 @@ moz-message-bar-button = Click me!
 
 const Template = ({
   type,
-  header,
+  heading,
   message,
   l10nId,
   dismissable,
@@ -79004,10 +79078,10 @@ const Template = ({
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-message-bar
     type=${type}
-    header=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(header)}
+    heading=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(heading)}
     message=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(message)}
     data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-    data-l10n-attrs="header, message"
+    data-l10n-attrs="heading, message"
     ?dismissable=${dismissable}
   >
     ${hasSupportLink
@@ -79079,7 +79153,9 @@ __webpack_require__.r(__webpack_exports__);
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-MozXULElement.insertFTLIfNeeded("browser/components/mozSupportLink.ftl");
+window.MozXULElement?.insertFTLIfNeeded(
+  "browser/components/mozSupportLink.ftl"
+);
 
 /**
  * An extension of the anchor element that helps create links to Mozilla's
@@ -79105,7 +79181,7 @@ class MozSupportLink extends HTMLAnchorElement {
    * @memberof MozSupportLink
    */
   #register() {
-    if (!window.IS_STORYBOOK) {
+    if (window.document.nodePrincipal?.isSystemPrincipal) {
       // eslint-disable-next-line no-shadow
       let { XPCOMUtils } = window.XPCOMUtils
         ? window
@@ -79119,6 +79195,10 @@ class MozSupportLink extends HTMLAnchorElement {
         "",
         null,
         val => Services.urlFormatter.formatURL(val)
+      );
+    } else if (!window.IS_STORYBOOK) {
+      MozSupportLink.SUPPORT_URL = window.RPMGetFormatURLPref(
+        "app.support.baseURL"
       );
     }
   }
@@ -84264,7 +84344,7 @@ const svg = withStatic(svg$1);
 /***/ ((module) => {
 
 "use strict";
-module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs","declarations":[{"kind":"class","description":"The visual representation is five stars, each of them either empty,\\nhalf-filled or full. The fill state is derived from the rating,\\nrounded to the nearest half.","name":"MozFiveStar","members":[{"kind":"method","name":"getStarsFill"},{"kind":"field","name":"rating","privacy":"public","type":{"text":"number"},"description":"The rating out of 5.","attribute":"rating","reflects":true},{"kind":"field","name":"title","privacy":"public","type":{"text":"string"},"description":"The title text.","attribute":"title"}],"attributes":[{"name":"rating","type":{"text":"number"},"description":"The rating out of 5.","fieldName":"rating"},{"name":"title","type":{"text":"string"},"description":"The title text.","fieldName":"title"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-five-star","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozFiveStar","module":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs"}},{"kind":"custom-element-definition","name":"moz-five-star","declaration":{"name":"MozFiveStar","module":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"handleEvent","parameters":[{"name":"e"}]}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"type":{"text":"string"},"description":"Fluent ID used to generate the text content.","name":"data-l10n-id"}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs","declarations":[{"kind":"class","description":"A simple message bar element that can be used to display\\nimportant information to users.","name":"MozMessageBar","members":[{"kind":"method","name":"iconTemplate"},{"kind":"method","name":"headerTemplate"},{"kind":"method","name":"dismiss"},{"kind":"method","name":"close"},{"kind":"field","name":"type","privacy":"public","type":{"text":"string"},"default":"\\"info\\"","description":"The type of the displayed message.","attribute":"type"},{"kind":"field","name":"role","type":{"text":"string"},"default":"\\"status\\""},{"kind":"field","name":"header","privacy":"public","type":{"text":"string"},"description":"The header of the message.","attribute":"header"},{"kind":"field","name":"message","privacy":"public","type":{"text":"string"},"description":"The message text.","attribute":"message"}],"events":[{"name":"message-bar:close","type":{"text":"CustomEvent"},"description":"Custom event indicating that message bar was closed."},{"name":"message-bar:user-dismissed","type":{"text":"CustomEvent"},"description":"Custom event indicating that message bar was dismissed by the user."}],"attributes":[{"name":"type","type":{"text":"string"},"default":"\\"info\\"","description":"The type of the displayed message.","fieldName":"type"},{"name":"header","type":{"text":"string"},"description":"The header of the message.","fieldName":"header"},{"name":"message","type":{"text":"string"},"description":"The message text.","fieldName":"message"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-message-bar","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozMessageBar","module":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs"}},{"kind":"custom-element-definition","name":"moz-message-bar","declaration":{"name":"MozMessageBar","module":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"},{"kind":"field","name":"accessKey","privacy":"public","attribute":"accesskey"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"},{"name":"accesskey","fieldName":"accessKey"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-label/moz-label.mjs","declarations":[{"kind":"class","description":"An extension of the label element that provides accesskey styling and\\nformatting as well as click handling logic.","name":"MozTextLabel","members":[{"kind":"field","name":"textContent"},{"kind":"method","name":"_onClick","parameters":[{"name":"event"}]},{"kind":"field","name":"accessKey"},{"kind":"field","name":"labeledControlElement"},{"kind":"field","name":"control"},{"kind":"method","name":"formatAccessKey"}],"attributes":[{"name":"accesskey","type":{"text":"string"},"description":"Key used for keyboard access."}],"superclass":{"name":"HTMLLabelElement","module":"../../../toolkit/content/widgets/moz-label/moz-label.mjs"},"tagName":"moz-label","customElement":true}],"exports":[{"kind":"custom-element-definition","name":"moz-label","declaration":{"name":"MozTextLabel","module":"../../../toolkit/content/widgets/moz-label/moz-label.mjs"}}]}]}');
+module.exports = JSON.parse('{"schemaVersion":"1.0.0","readme":"","modules":[{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs","declarations":[{"kind":"class","description":"The visual representation is five stars, each of them either empty,\\nhalf-filled or full. The fill state is derived from the rating,\\nrounded to the nearest half.","name":"MozFiveStar","members":[{"kind":"method","name":"getStarsFill"},{"kind":"field","name":"rating","privacy":"public","type":{"text":"number"},"description":"The rating out of 5.","attribute":"rating","reflects":true},{"kind":"field","name":"title","privacy":"public","type":{"text":"string"},"description":"The title text.","attribute":"title"}],"attributes":[{"name":"rating","type":{"text":"number"},"description":"The rating out of 5.","fieldName":"rating"},{"name":"title","type":{"text":"string"},"description":"The title text.","fieldName":"title"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-five-star","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozFiveStar","module":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs"}},{"kind":"custom-element-definition","name":"moz-five-star","declaration":{"name":"MozFiveStar","module":"../../../toolkit/content/widgets/moz-five-star/moz-five-star.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-label/moz-label.mjs","declarations":[{"kind":"class","description":"An extension of the label element that provides accesskey styling and\\nformatting as well as click handling logic.","name":"MozTextLabel","members":[{"kind":"field","name":"textContent"},{"kind":"method","name":"_onClick","parameters":[{"name":"event"}]},{"kind":"field","name":"accessKey"},{"kind":"field","name":"labeledControlElement"},{"kind":"field","name":"control"},{"kind":"method","name":"formatAccessKey"}],"attributes":[{"name":"accesskey","type":{"text":"string"},"description":"Key used for keyboard access."}],"superclass":{"name":"HTMLLabelElement","module":"../../../toolkit/content/widgets/moz-label/moz-label.mjs"},"tagName":"moz-label","customElement":true}],"exports":[{"kind":"custom-element-definition","name":"moz-label","declaration":{"name":"MozTextLabel","module":"../../../toolkit/content/widgets/moz-label/moz-label.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs","declarations":[{"kind":"class","description":"A simple message bar element that can be used to display\\nimportant information to users.","name":"MozMessageBar","members":[{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"method","name":"iconTemplate"},{"kind":"method","name":"headingTemplate"},{"kind":"method","name":"closeButtonTemplate"},{"kind":"method","name":"dismiss"},{"kind":"method","name":"close"},{"kind":"field","name":"type","privacy":"public","type":{"text":"string"},"default":"\\"info\\"","description":"The type of the displayed message.","attribute":"type"},{"kind":"field","name":"role","type":{"text":"string"},"default":"\\"status\\""},{"kind":"field","name":"dismissable","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is dismissable.","attribute":"dismissable"},{"kind":"field","name":"heading","privacy":"public","type":{"text":"string"},"description":"The heading of the message.","attribute":"heading"},{"kind":"field","name":"message","privacy":"public","type":{"text":"string"},"description":"The message text.","attribute":"message"}],"events":[{"name":"message-bar:close","type":{"text":"CustomEvent"},"description":"Custom event indicating that message bar was closed."},{"name":"message-bar:user-dismissed","type":{"text":"CustomEvent"},"description":"Custom event indicating that message bar was dismissed by the user."}],"attributes":[{"name":"type","type":{"text":"string"},"default":"\\"info\\"","description":"The type of the displayed message.","fieldName":"type"},{"name":"heading","type":{"text":"string"},"description":"The heading of the message.","fieldName":"heading"},{"name":"message","type":{"text":"string"},"description":"The message text.","fieldName":"message"},{"name":"dismissable","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is dismissable.","fieldName":"dismissable"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-message-bar","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozMessageBar","module":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs"}},{"kind":"custom-element-definition","name":"moz-message-bar","declaration":{"name":"MozMessageBar","module":"../../../toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs","declarations":[{"kind":"variable","name":"PLATFORM_LINUX","type":{"text":"string"},"default":"\\"linux\\""},{"kind":"variable","name":"PLATFORM_MACOS","type":{"text":"string"},"default":"\\"macosx\\""},{"kind":"variable","name":"PLATFORM_WINDOWS","type":{"text":"string"},"default":"\\"win\\""},{"kind":"class","description":"A grouping of buttons. Primary button order will be set automatically based\\non class=\\"primary\\", type=\\"submit\\" or autofocus attribute. Set slot=\\"primary\\"\\non a primary button that does not have primary styling to set its position.","name":"MozButtonGroup","members":[{"kind":"method","name":"onSlotchange","parameters":[{"name":"e"}]},{"kind":"field","name":"platform","privacy":"public","type":{"text":"string"},"description":"The detected platform, set automatically.","attribute":"platform"}],"attributes":[{"name":"platform","type":{"text":"string"},"description":"The detected platform, set automatically.","fieldName":"platform"}],"superclass":{"name":"MozLitElement","package":"chrome://global/content/lit-utils.mjs"},"tagName":"moz-button-group","customElement":true}],"exports":[{"kind":"js","name":"PLATFORM_LINUX","declaration":{"name":"PLATFORM_LINUX","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_MACOS","declaration":{"name":"PLATFORM_MACOS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"PLATFORM_WINDOWS","declaration":{"name":"PLATFORM_WINDOWS","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"js","name":"default","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}},{"kind":"custom-element-definition","name":"moz-button-group","declaration":{"name":"MozButtonGroup","module":"../../../toolkit/content/widgets/moz-button-group/moz-button-group.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs","declarations":[{"kind":"class","description":"An extension of the anchor element that helps create links to Mozilla\'s\\nsupport documentation. This should be used for SUMO links only - other \\"Learn\\nmore\\" links can use the regular anchor element.","name":"MozSupportLink","members":[{"kind":"method","name":"handleEvent","parameters":[{"name":"e"}]}],"attributes":[{"name":"support-page","type":{"text":"string"},"description":"Short-hand string from SUMO to the specific support page."},{"name":"utm-content","type":{"text":"string"},"description":"UTM parameter for a URL, if it is an AMO URL."},{"type":{"text":"string"},"description":"Fluent ID used to generate the text content.","name":"data-l10n-id"}],"superclass":{"name":"HTMLAnchorElement","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"},"tagName":"moz-support-link","customElement":true},{"kind":"function","name":"formatUTMParams","parameters":[{"name":"contentAttribute","description":"       Identifies the part of the UI with which the link is associated.","type":{"text":"string"}},{"name":"url","type":{"text":"string"}}],"description":"Adds UTM parameters to a given URL, if it is an AMO URL.","return":{"type":{"text":"string"}}}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"custom-element-definition","name":"moz-support-link","declaration":{"name":"MozSupportLink","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}},{"kind":"js","name":"formatUTMParams","declaration":{"name":"formatUTMParams","module":"../../../toolkit/content/widgets/moz-support-link/moz-support-link.mjs"}}]},{"kind":"javascript-module","path":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs","declarations":[{"kind":"class","description":"A simple toggle element that can be used to switch between two states.","name":"MozToggle","slots":[{"description":"Used to append a moz-support-link to the description.","name":"support-link"}],"members":[{"kind":"method","name":"handleClick"},{"kind":"method","name":"click"},{"kind":"method","name":"labelTemplate"},{"kind":"method","name":"descriptionTemplate"},{"kind":"method","name":"supportLinkTemplate"},{"kind":"field","name":"pressed","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","attribute":"pressed","reflects":true},{"kind":"field","name":"disabled","privacy":"public","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","attribute":"disabled","reflects":true},{"kind":"field","name":"label","privacy":"public","type":{"text":"string"},"description":"The label text.","attribute":"label"},{"kind":"field","name":"description","privacy":"public","type":{"text":"string"},"description":"The description text.","attribute":"description"},{"kind":"field","name":"ariaLabel","privacy":"public","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","attribute":"aria-label"},{"kind":"field","name":"accessKey","privacy":"public","attribute":"accesskey"}],"events":[{"description":"Custom event indicating that the toggle\'s pressed state has changed.","name":"toggle"}],"attributes":[{"name":"pressed","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is pressed.","fieldName":"pressed"},{"name":"disabled","type":{"text":"boolean"},"default":"false","description":"Whether or not the element is disabled.","fieldName":"disabled"},{"name":"label","type":{"text":"string"},"description":"The label text.","fieldName":"label"},{"name":"description","type":{"text":"string"},"description":"The description text.","fieldName":"description"},{"name":"aria-label","type":{"text":"string"},"description":"The aria-label text for cases where there is no visible label.","fieldName":"ariaLabel"},{"name":"accesskey","fieldName":"accessKey"}],"superclass":{"name":"MozLitElement","module":"/toolkit/content/widgets/lit-utils.mjs"},"tagName":"moz-toggle","customElement":true}],"exports":[{"kind":"js","name":"default","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}},{"kind":"custom-element-definition","name":"moz-toggle","declaration":{"name":"MozToggle","module":"../../../toolkit/content/widgets/moz-toggle/moz-toggle.mjs"}}]}]}');
 
 /***/ }),
 
@@ -84413,7 +84493,7 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 		// This function allow to reference async chunks
 /******/ 		__webpack_require__.u = (chunkId) => {
 /******/ 			// return url for filenames based on template
-/******/ 			return "" + chunkId + "." + {"30":"9fd5fbbf","66":"90e5b14d","111":"4dbf76c0","116":"6b99dfe5","130":"e26af35b","139":"c3b354d8","144":"d10ff133","147":"30210c30","219":"e2b6c6f6","257":"c3c6ef9b","398":"e0f32b80","556":"da2eb1ae","641":"b4d88370","699":"c55d54d4","716":"75040caa","766":"05128aa2","836":"b5eeeb13","838":"1c28bc34","848":"d31f91d8","853":"87b7ad8f","886":"c66c8a03","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"760ce18a","1237":"d92a8c2f","1266":"2145305a","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"48b2abed","1579":"017121fd","1723":"54a041db","1727":"4a9155b5","1850":"1991b3bb","1860":"ab47cbc2","1964":"b53a7553","2010":"9e8e14af","2065":"221378a0","2071":"7d32f44d","2082":"8f594ef9","2148":"d87bd627","2200":"b5e5c36d","2218":"be07d36e","2280":"bf2ccfc6","2356":"fce35adf","2415":"2f7b399c","2422":"c76dd30a","2442":"acee973b","2463":"499c7e79","2503":"3409e95c","2521":"99252414","2522":"4aefc722","2551":"faf03d35","2575":"1ef92293","2576":"4c6c6f38","2586":"4cea79d4","2589":"6312b50a","2732":"6f4e3fb3","2750":"908f4ce5","2882":"3821c9d5","2883":"ac2a6661","2897":"269a0b90","2914":"b1ff3725","2949":"dd09adda","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3198":"9eafa48a","3281":"08a6c76f","3283":"c3f95a2e","3320":"272d94c7","3367":"d84742eb","3401":"e58c1c6a","3579":"0b5ca821","3620":"f13b6cd0","3635":"457c5358","3653":"973fe595","3674":"68d09e4c","3805":"da7919ae","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"8bb460a6","3958":"14ba332a","3964":"1117759e","3965":"aa806f05","3974":"2fe4e2fb","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"1d372782","4279":"3500b49a","4337":"c60b3a55","4467":"6966e90e","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4563":"3cc0040c","4586":"6a8ebe15","4600":"bbf1043e","4619":"850a9e43","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"40081395","4821":"38e78299","4916":"b874d9eb","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5054":"866dd20a","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"c62965aa","5229":"282589ef","5256":"ef5e0826","5359":"2d04cd3d","5388":"ec3dcebc","5531":"51ae45c5","5727":"e4d54756","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"f62c62f3","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"6d802ec5","6176":"517a58b2","6211":"5494e9a0","6215":"2f22d6be","6222":"62bee1a3","6245":"5ec065e7","6272":"598aef43","6456":"ac84d0c9","6482":"b93508f7","6501":"6f35059a","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"3a4fbbfc","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6683":"3454143a","6686":"7fc08a31","6736":"399da042","6744":"dac4975b","6757":"52c8f10f","6767":"d46d0277","6776":"23718285","6826":"393e9c4c","6872":"1d7afcb9","6939":"ac1a0d82","7050":"ae2ed093","7092":"2323f9a4","7095":"e7a6dd70","7160":"b10a1c66","7195":"72e5ddef","7238":"01b6366c","7280":"0dd4d97d","7294":"f7cc014d","7321":"244c339c","7322":"f4b54748","7329":"e11afe00","7358":"67d40afd","7382":"cc9c99dd","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7587":"7e3f2dce","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"4169db3c","7739":"8576dab9","7760":"996f8452","7797":"d62dc806","7811":"849c155e","7822":"3be598f0","7968":"3f41ec74","7976":"127fd229","8018":"e07bcdb6","8083":"b18b9b0f","8084":"a34d48f9","8094":"2394477f","8137":"6c5b2050","8150":"0a7840f8","8245":"cd296c6f","8265":"1ba95f6a","8274":"fff995a8","8284":"0d6bbec4","8293":"15ec1f21","8306":"161aaca5","8308":"c94a066e","8314":"acc8f6d8","8360":"aa185e2c","8392":"e4f6ff57","8514":"f13a93b3","8525":"42d8d2c6","8540":"0de70c56","8542":"ee7260da","8579":"a2f180c4","8672":"d64d761d","8714":"61b0cd2a","8747":"bf74861f","8848":"e82eb5e6","8850":"45ccc8d6","8907":"2018a07e","9055":"b526cecd","9084":"694a7143","9098":"305017a3","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75e1a869","9331":"b10b21f8","9360":"0946efeb","9420":"ed9a6614","9438":"0e8f2225","9441":"1190c924","9473":"e3d361b8","9495":"5e0f2018","9514":"39193d6a","9547":"05a6fb25","9730":"d47aa44a","9753":"53cb0712","9807":"dff98773","9828":"6a440432","9923":"d8e024b7","9952":"de77e250"}[chunkId] + ".iframe.bundle.js";
+/******/ 			return "" + chunkId + "." + {"30":"9fd5fbbf","66":"90e5b14d","111":"4dbf76c0","116":"6b99dfe5","130":"e26af35b","139":"c3b354d8","144":"773d7221","147":"30210c30","219":"e2b6c6f6","257":"c3c6ef9b","398":"e0f32b80","556":"da2eb1ae","641":"b4d88370","699":"c55d54d4","716":"75040caa","766":"05128aa2","836":"b5eeeb13","838":"1c28bc34","848":"d31f91d8","853":"87b7ad8f","886":"d49f6b2a","896":"e35d20f3","902":"d6ed625d","933":"e46fb430","1028":"cd7ac632","1060":"62476ea4","1077":"6ab97682","1084":"2505a0d6","1126":"6d9705b6","1170":"acd2df60","1201":"6cfc269e","1219":"760ce18a","1237":"d92a8c2f","1266":"2145305a","1271":"e332bd71","1324":"77f0940f","1381":"b4d905a3","1577":"48b2abed","1579":"017121fd","1723":"54a041db","1727":"4a9155b5","1850":"1991b3bb","1860":"ab47cbc2","1964":"b53a7553","2010":"9e8e14af","2065":"221378a0","2071":"7d32f44d","2082":"8f594ef9","2148":"d87bd627","2200":"b5e5c36d","2218":"be07d36e","2280":"bf2ccfc6","2356":"fce35adf","2415":"2f7b399c","2422":"c76dd30a","2442":"acee973b","2463":"499c7e79","2503":"3409e95c","2521":"99252414","2522":"4aefc722","2551":"faf03d35","2575":"1ef92293","2576":"4c6c6f38","2586":"4cea79d4","2589":"6312b50a","2732":"6f4e3fb3","2750":"908f4ce5","2882":"3821c9d5","2883":"ac2a6661","2897":"269a0b90","2914":"b1ff3725","2949":"dd09adda","2969":"43116dd5","2998":"135e676c","3005":"95dacac7","3117":"9dbe6663","3198":"9eafa48a","3281":"08a6c76f","3283":"68a29a57","3320":"272d94c7","3367":"d84742eb","3401":"e58c1c6a","3579":"0b5ca821","3620":"f13b6cd0","3635":"457c5358","3653":"973fe595","3674":"68d09e4c","3805":"da7919ae","3866":"6c38f8cb","3905":"66caefbd","3944":"4f5d898c","3951":"8bb460a6","3958":"14ba332a","3964":"1117759e","3965":"aa806f05","3974":"2fe4e2fb","3983":"967083c0","4012":"1cc30b21","4026":"0882359e","4175":"d75481cd","4214":"72556a17","4265":"1d372782","4279":"3500b49a","4337":"c60b3a55","4467":"6966e90e","4471":"892c4ed3","4550":"39414022","4558":"767caec2","4563":"3cc0040c","4586":"6a8ebe15","4600":"bbf1043e","4619":"850a9e43","4718":"b0c91090","4754":"3ef4a24b","4767":"93416af1","4788":"40081395","4821":"38e78299","4916":"b874d9eb","4931":"b89cc22f","4956":"4b95e5ea","4978":"2a842dca","5051":"c8fde7b2","5054":"866dd20a","5059":"2a49b50d","5124":"eb180580","5137":"2bc662b8","5183":"6fd75aa5","5205":"c62965aa","5229":"282589ef","5256":"ef5e0826","5359":"c4a5602f","5388":"ec3dcebc","5531":"51ae45c5","5727":"e4d54756","5781":"3b43fe9e","5791":"bca77c2f","5812":"d709a3cf","5819":"af388655","5893":"b046f095","5909":"5b4fe4b7","5935":"af40fff7","6117":"6d802ec5","6176":"517a58b2","6211":"5494e9a0","6215":"2f22d6be","6222":"62bee1a3","6245":"5ec065e7","6272":"598aef43","6456":"ac84d0c9","6482":"b93508f7","6501":"6f35059a","6503":"ced6ef51","6537":"332dcff6","6544":"2bccec18","6588":"416ca97c","6600":"ec4a4a76","6607":"685b6785","6630":"cb1f7b7b","6683":"3454143a","6686":"7fc08a31","6736":"399da042","6744":"dac4975b","6757":"52c8f10f","6767":"6f4030e6","6776":"23718285","6826":"393e9c4c","6872":"1d7afcb9","6939":"ac1a0d82","7050":"ae2ed093","7092":"2323f9a4","7095":"e7a6dd70","7160":"b10a1c66","7195":"72e5ddef","7238":"01b6366c","7280":"0dd4d97d","7294":"f7cc014d","7321":"244c339c","7322":"f4b54748","7329":"e11afe00","7358":"d6bbc07a","7382":"cc9c99dd","7404":"a1c14f70","7493":"15af389f","7578":"39872f9f","7587":"7e3f2dce","7656":"8cf17891","7700":"9dbcdf59","7713":"d92aa86f","7716":"ebec96a7","7732":"b0231e64","7735":"4169db3c","7739":"478d0bfc","7760":"996f8452","7797":"d62dc806","7811":"849c155e","7822":"3be598f0","7968":"3f41ec74","7976":"127fd229","8018":"18d9770f","8083":"b18b9b0f","8084":"a34d48f9","8094":"2394477f","8137":"6c5b2050","8150":"0a7840f8","8245":"cd296c6f","8265":"1ba95f6a","8274":"fff995a8","8284":"0d6bbec4","8293":"15ec1f21","8306":"161aaca5","8308":"c94a066e","8314":"acc8f6d8","8360":"aa185e2c","8392":"e4f6ff57","8514":"f13a93b3","8525":"42d8d2c6","8540":"0de70c56","8542":"ee7260da","8579":"a2f180c4","8672":"d64d761d","8714":"61b0cd2a","8747":"bf74861f","8848":"e82eb5e6","8850":"45ccc8d6","8907":"2018a07e","9055":"b526cecd","9084":"694a7143","9098":"305017a3","9115":"006f4336","9182":"65f516d4","9229":"4d10a976","9285":"2e0c1adf","9290":"75e1a869","9331":"b10b21f8","9360":"0946efeb","9420":"ed9a6614","9438":"0e8f2225","9441":"1190c924","9466":"c8c8e211","9473":"e3d361b8","9495":"5e0f2018","9514":"39193d6a","9547":"05a6fb25","9730":"d47aa44a","9753":"53cb0712","9807":"dff98773","9828":"e9a659a5","9923":"d8e024b7","9952":"de77e250"}[chunkId] + ".iframe.bundle.js";
 /******/ 		};
 /******/ 	})();
 /******/ 	
@@ -84635,4 +84715,4 @@ module.exports = JSON.parse('{"amp":"&","apos":"\'","gt":">","lt":"<","quot":"\\
 /******/ 	
 /******/ })()
 ;
-//# sourceMappingURL=main.93a8100c.iframe.bundle.js.map
+//# sourceMappingURL=main.c2feed99.iframe.bundle.js.map

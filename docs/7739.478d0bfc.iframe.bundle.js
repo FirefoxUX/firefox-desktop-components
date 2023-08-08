@@ -1,24 +1,23 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[886],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7739],{
 
-/***/ 32106:
+/***/ 80308:
 /***/ ((module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(94015);
-/* harmony import */ var _components_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23645);
-/* harmony import */ var _components_storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_components_storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(94015);
+/* harmony import */ var _storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(23645);
+/* harmony import */ var _storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1__);
 // Imports
 
 
-var ___CSS_LOADER_EXPORT___ = _components_storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_components_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
-___CSS_LOADER_EXPORT___.push([module.id, "@import url(chrome://browser/skin/tab-list-tree.css);"]);
+var ___CSS_LOADER_EXPORT___ = _storybook_node_modules_css_loader_dist_runtime_api_js__WEBPACK_IMPORTED_MODULE_1___default()((_storybook_node_modules_css_loader_dist_runtime_cssWithMappingToString_js__WEBPACK_IMPORTED_MODULE_0___default()));
 // Module
-___CSS_LOADER_EXPORT___.push([module.id, "/* This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */\n\n#tabsToggle {\n  cursor: pointer;\n  /* Override button background-color and color from common.css */\n  background-color: transparent;\n  color: var(--in-content-link-color);\n  -moz-context-properties: fill;\n  fill: currentColor;\n  border: none;\n  padding: 0;\n  margin: 0;\n  padding-inline-end: 45px;\n  position: relative;\n}\n\n#tabsToggle::after {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  inset-inline-start: 0;\n  background-image: url(\"chrome://global/skin/icons/arrow-down.svg\");\n  background-repeat: no-repeat;\n  background-size: 20px;\n  background-position: right center;\n}\n\n#tabsToggle:dir(rtl)::after {\n  background-position-x: left;\n}\n\n#tabsToggle:not(.tabs-hidden)::after {\n  background-image: url(\"chrome://global/skin/icons/arrow-up.svg\");\n}\n\n#tabsToggle.tabs-hidden > #hideTabs,\n#tabsToggle:not(.tabs-hidden) > #showTabs {\n  display: none;\n}\n\n#tabList {\n  flex: 1;\n  min-height: 12em;\n  margin-top: 1.2em;\n}\n\n.button-container {\n  text-align: end;\n}\n", "",{"version":3,"sources":["webpack://./../../themes/shared/aboutSessionRestore.css"],"names":[],"mappings":"AAAA;;6DAE6D;;AAI7D;EACE,eAAe;EACf,+DAA+D;EAC/D,6BAA6B;EAC7B,mCAAmC;EACnC,6BAA6B;EAC7B,kBAAkB;EAClB,YAAY;EACZ,UAAU;EACV,SAAS;EACT,wBAAwB;EACxB,kBAAkB;AACpB;;AAEA;EACE,WAAW;EACX,kBAAkB;EAClB,WAAW;EACX,YAAY;EACZ,MAAM;EACN,qBAAqB;EACrB,kEAAkE;EAClE,4BAA4B;EAC5B,qBAAqB;EACrB,iCAAiC;AACnC;;AAEA;EACE,2BAA2B;AAC7B;;AAEA;EACE,gEAAgE;AAClE;;AAEA;;EAEE,aAAa;AACf;;AAEA;EACE,OAAO;EACP,gBAAgB;EAChB,iBAAiB;AACnB;;AAEA;EACE,eAAe;AACjB","sourcesContent":["/* This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */\n\n@import url(\"chrome://browser/skin/tab-list-tree.css\");\n\n#tabsToggle {\n  cursor: pointer;\n  /* Override button background-color and color from common.css */\n  background-color: transparent;\n  color: var(--in-content-link-color);\n  -moz-context-properties: fill;\n  fill: currentColor;\n  border: none;\n  padding: 0;\n  margin: 0;\n  padding-inline-end: 45px;\n  position: relative;\n}\n\n#tabsToggle::after {\n  content: \"\";\n  position: absolute;\n  width: 100%;\n  height: 100%;\n  top: 0;\n  inset-inline-start: 0;\n  background-image: url(\"chrome://global/skin/icons/arrow-down.svg\");\n  background-repeat: no-repeat;\n  background-size: 20px;\n  background-position: right center;\n}\n\n#tabsToggle:dir(rtl)::after {\n  background-position-x: left;\n}\n\n#tabsToggle:not(.tabs-hidden)::after {\n  background-image: url(\"chrome://global/skin/icons/arrow-up.svg\");\n}\n\n#tabsToggle.tabs-hidden > #hideTabs,\n#tabsToggle:not(.tabs-hidden) > #showTabs {\n  display: none;\n}\n\n#tabList {\n  flex: 1;\n  min-height: 12em;\n  margin-top: 1.2em;\n}\n\n.button-container {\n  text-align: end;\n}\n"],"sourceRoot":""}]);
+___CSS_LOADER_EXPORT___.push([module.id, "/* This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */\n\n:host {\n  border-radius: 4px;\n}\n\nbutton {\n  background-color: initial;\n  border: 1px solid var(--in-content-primary-button-border-color);\n  -moz-context-properties: fill, fill-opacity;\n  fill: currentColor;\n  display: grid;\n  grid-template-columns: min-content 1fr;\n  gap: 12px;\n  align-items: center;\n  font-size: inherit;\n  width: 100%;\n  font-weight: normal;\n  border-radius: 4px;\n  color: inherit;\n  text-align: start;\n  transition: background-color 150ms;\n  padding: var(--fxviewcategorynav-button-padding);\n}\n\nbutton:hover {\n  cursor: pointer;\n}\n\nbutton[selected] {\n  text-decoration: underline;\n  color: var(--in-content-accent-color);\n}\n\nbutton:focus-visible {\n  outline: var(--focus-outline);\n  outline-offset: var(--focus-outline-offset);\n}\n\n.category-icon {\n  background-color: initial;\n  background-size: 20px;\n  background-repeat: no-repeat;\n  background-position: center;\n  height: 20px;\n  width: 20px;\n  -moz-context-properties: fill;\n  fill: currentColor;\n}\n\n@media (prefers-contrast) {\n  button {\n    transition: none;\n    border-color: ButtonText;\n    background-color: var(--in-content-button-background);\n  }\n\n  button:hover {\n    color: SelectedItem;\n  }\n\n  button[selected] {\n    color: SelectedItemText;\n    background-color: SelectedItem;\n    border-color: SelectedItem;\n  }\n}\n\n@media not (prefers-contrast) {\n  button:hover {\n    background-color: var(--in-content-button-background-hover);\n    border-color: var(--in-content-button-border-color-hover);\n  }\n}\n\nslot {\n  font-size: 1.13em;\n  line-height: 1.4;\n  margin: 0;\n  padding-inline-start: 0;\n  user-select: none;\n}\n\n@media (max-width: 52rem) {\n  button {\n    grid-template-columns: min-content;\n    justify-content: center;\n    margin-inline: 0;\n  }\n\n  slot {\n    display: none;\n  }\n}\n", "",{"version":3,"sources":["webpack://./../firefoxview/fxview-category-button.css"],"names":[],"mappings":"AAAA;;6DAE6D;;AAE7D;EACE,kBAAkB;AACpB;;AAEA;EACE,yBAAyB;EACzB,+DAA+D;EAC/D,2CAA2C;EAC3C,kBAAkB;EAClB,aAAa;EACb,sCAAsC;EACtC,SAAS;EACT,mBAAmB;EACnB,kBAAkB;EAClB,WAAW;EACX,mBAAmB;EACnB,kBAAkB;EAClB,cAAc;EACd,iBAAiB;EACjB,kCAAkC;EAClC,gDAAgD;AAClD;;AAEA;EACE,eAAe;AACjB;;AAEA;EACE,0BAA0B;EAC1B,qCAAqC;AACvC;;AAEA;EACE,6BAA6B;EAC7B,2CAA2C;AAC7C;;AAEA;EACE,yBAAyB;EACzB,qBAAqB;EACrB,4BAA4B;EAC5B,2BAA2B;EAC3B,YAAY;EACZ,WAAW;EACX,6BAA6B;EAC7B,kBAAkB;AACpB;;AAEA;EACE;IACE,gBAAgB;IAChB,wBAAwB;IACxB,qDAAqD;EACvD;;EAEA;IACE,mBAAmB;EACrB;;EAEA;IACE,uBAAuB;IACvB,8BAA8B;IAC9B,0BAA0B;EAC5B;AACF;;AAEA;EACE;IACE,2DAA2D;IAC3D,yDAAyD;EAC3D;AACF;;AAEA;EACE,iBAAiB;EACjB,gBAAgB;EAChB,SAAS;EACT,uBAAuB;EACvB,iBAAiB;AACnB;;AAEA;EACE;IACE,kCAAkC;IAClC,uBAAuB;IACvB,gBAAgB;EAClB;;EAEA;IACE,aAAa;EACf;AACF","sourcesContent":["/* This Source Code Form is subject to the terms of the Mozilla Public\n * License, v. 2.0. If a copy of the MPL was not distributed with this\n * file, You can obtain one at http://mozilla.org/MPL/2.0/. */\n\n:host {\n  border-radius: 4px;\n}\n\nbutton {\n  background-color: initial;\n  border: 1px solid var(--in-content-primary-button-border-color);\n  -moz-context-properties: fill, fill-opacity;\n  fill: currentColor;\n  display: grid;\n  grid-template-columns: min-content 1fr;\n  gap: 12px;\n  align-items: center;\n  font-size: inherit;\n  width: 100%;\n  font-weight: normal;\n  border-radius: 4px;\n  color: inherit;\n  text-align: start;\n  transition: background-color 150ms;\n  padding: var(--fxviewcategorynav-button-padding);\n}\n\nbutton:hover {\n  cursor: pointer;\n}\n\nbutton[selected] {\n  text-decoration: underline;\n  color: var(--in-content-accent-color);\n}\n\nbutton:focus-visible {\n  outline: var(--focus-outline);\n  outline-offset: var(--focus-outline-offset);\n}\n\n.category-icon {\n  background-color: initial;\n  background-size: 20px;\n  background-repeat: no-repeat;\n  background-position: center;\n  height: 20px;\n  width: 20px;\n  -moz-context-properties: fill;\n  fill: currentColor;\n}\n\n@media (prefers-contrast) {\n  button {\n    transition: none;\n    border-color: ButtonText;\n    background-color: var(--in-content-button-background);\n  }\n\n  button:hover {\n    color: SelectedItem;\n  }\n\n  button[selected] {\n    color: SelectedItemText;\n    background-color: SelectedItem;\n    border-color: SelectedItem;\n  }\n}\n\n@media not (prefers-contrast) {\n  button:hover {\n    background-color: var(--in-content-button-background-hover);\n    border-color: var(--in-content-button-border-color-hover);\n  }\n}\n\nslot {\n  font-size: 1.13em;\n  line-height: 1.4;\n  margin: 0;\n  padding-inline-start: 0;\n  user-select: none;\n}\n\n@media (max-width: 52rem) {\n  button {\n    grid-template-columns: min-content;\n    justify-content: center;\n    margin-inline: 0;\n  }\n\n  slot {\n    display: none;\n  }\n}\n"],"sourceRoot":""}]);
 // Exports
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (___CSS_LOADER_EXPORT___);
 
@@ -139,16 +138,16 @@ module.exports = function cssWithMappingToString(item) {
 
 /***/ }),
 
-/***/ 60886:
+/***/ 17739:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _components_storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(93379);
-/* harmony import */ var _components_storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_components_storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _components_storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_aboutSessionRestore_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(32106);
+/* harmony import */ var _storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(93379);
+/* harmony import */ var _storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_fxview_category_button_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(80308);
 
             
 
@@ -157,11 +156,11 @@ var options = {};
 options.insert = "head";
 options.singleton = false;
 
-var update = _components_storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_components_storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_aboutSessionRestore_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
+var update = _storybook_node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js__WEBPACK_IMPORTED_MODULE_0___default()(_storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_fxview_category_button_css__WEBPACK_IMPORTED_MODULE_1__["default"], options);
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_components_storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_aboutSessionRestore_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (_storybook_node_modules_css_loader_dist_cjs_js_ruleSet_1_rules_8_use_1_fxview_category_button_css__WEBPACK_IMPORTED_MODULE_1__["default"].locals || {});
 
 /***/ }),
 
@@ -441,4 +440,4 @@ module.exports = function (list, options) {
 /***/ })
 
 }]);
-//# sourceMappingURL=886.c66c8a03.iframe.bundle.js.map
+//# sourceMappingURL=7739.478d0bfc.iframe.bundle.js.map
