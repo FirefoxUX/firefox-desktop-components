@@ -17,6 +17,8 @@ ChromeUtils.defineESModuleGetters(lazy, {
 const SS_NOTIFY_CLOSED_OBJECTS_CHANGED = "sessionstore-closed-objects-changed";
 const SS_NOTIFY_BROWSER_SHUTDOWN_FLUSH = "sessionstore-browser-shutdown-flush";
 const NEVER_REMEMBER_HISTORY_PREF = "browser.privatebrowsing.autostart";
+const INCLUDE_CLOSED_TABS_FROM_CLOSED_WINDOWS =
+  "browser.sessionstore.closedTabsFromClosedWindows";
 
 function getWindow() {
   return window.browsingContext.embedderWindowGlobal.browsingContext.window;
@@ -27,13 +29,14 @@ class RecentlyClosedTabsInView extends ViewPage {
     super();
     this.boundObserve = (...args) => this.observe(...args);
     this.fullyUpdated = false;
-    this.maxTabsLength = this.overview ? 5 : 25;
+    this.maxTabsLength = this.recentBrowsing ? 5 : 25;
     this.recentlyClosedTabs = [];
   }
 
   static queries = {
     cardEl: "card-container",
     emptyState: "fxview-empty-state",
+    tabList: "fxview-tab-list",
   };
 
   observe(subject, topic, data) {
@@ -121,12 +124,17 @@ class RecentlyClosedTabsInView extends ViewPage {
     let recentlyClosedTabsData = lazy.SessionStore.getClosedTabData(
       getWindow()
     );
+    if (Services.prefs.getBoolPref(INCLUDE_CLOSED_TABS_FROM_CLOSED_WINDOWS)) {
+      recentlyClosedTabsData.push(
+        ...lazy.SessionStore.getClosedTabDataFromClosedWindows()
+      );
+    }
+    // sort the aggregated list to most-recently-closed first
+    recentlyClosedTabsData.sort((a, b) => a.closedAt < b.closedAt);
     this.recentlyClosedTabs = recentlyClosedTabsData.slice(
       0,
       this.maxTabsLength
     );
-    // sort the aggregated list to most-recently-closed first
-    this.recentlyClosedTabs.sort((a, b) => a.closedAt < b.closedAt);
     this.normalizeRecentlyClosedData();
     this.requestUpdate();
   }
@@ -152,12 +160,68 @@ class RecentlyClosedTabsInView extends ViewPage {
 
   onReopenTab(e) {
     const closedId = parseInt(e.originalTarget.closedId, 10);
-    lazy.SessionStore.undoCloseById(closedId);
+    const sourceClosedId = parseInt(e.originalTarget.sourceClosedId, 10);
+    if (isNaN(sourceClosedId)) {
+      lazy.SessionStore.undoCloseById(closedId, getWindow());
+    } else {
+      lazy.SessionStore.undoClosedTabFromClosedWindow(
+        { sourceClosedId },
+        closedId,
+        getWindow()
+      );
+    }
+
+    // Record telemetry
+    let tabClosedAt = parseInt(e.originalTarget.time);
+    const position =
+      Array.from(this.tabList.rowEls).indexOf(e.originalTarget) + 1;
+
+    let now = Date.now();
+    let deltaSeconds = (now - tabClosedAt) / 1000;
+    Services.telemetry.recordEvent(
+      "firefoxview_next",
+      "recently_closed",
+      "tabs",
+      null,
+      {
+        position: position.toString(),
+        delta: deltaSeconds.toString(),
+        page: this.recentBrowsing ? "recentbrowsing" : "recentlyclosed",
+      }
+    );
   }
 
   onDismissTab(e) {
     const closedId = parseInt(e.originalTarget.closedId, 10);
-    lazy.SessionStore.forgetClosedTabById(closedId);
+    const sourceClosedId = parseInt(e.originalTarget.sourceClosedId, 10);
+    const sourceWindowId = e.originalTarget.souceWindowId;
+    if (sourceWindowId || !isNaN(sourceClosedId)) {
+      lazy.SessionStore.forgetClosedTabById(closedId, {
+        sourceClosedId,
+        sourceWindowId,
+      });
+    } else {
+      lazy.SessionStore.forgetClosedTabById(closedId);
+    }
+
+    // Record telemetry
+    let tabClosedAt = parseInt(e.originalTarget.time);
+    const position =
+      Array.from(this.tabList.rowEls).indexOf(e.originalTarget) + 1;
+
+    let now = Date.now();
+    let deltaSeconds = (now - tabClosedAt) / 1000;
+    Services.telemetry.recordEvent(
+      "firefoxview_next",
+      "dismiss_closed_tab",
+      "tabs",
+      null,
+      {
+        position: position.toString(),
+        delta: deltaSeconds.toString(),
+        page: this.recentBrowsing ? "recentbrowsing" : "recentlyclosed",
+      }
+    );
   }
 
   willUpdate() {
@@ -201,7 +265,7 @@ class RecentlyClosedTabsInView extends ViewPage {
         .descriptionLabels=${descriptionLabels}
         .descriptionLink=${descriptionLink}
         class="empty-state recentlyclosed"
-        ?isInnerCard=${this.overview}
+        ?isInnerCard=${this.recentBrowsing}
         ?isSelectedTab=${this.selectedTab}
         mainImageUrl="chrome://browser/content/firefoxview/recentlyclosed-empty.svg"
       >
@@ -210,7 +274,7 @@ class RecentlyClosedTabsInView extends ViewPage {
   }
 
   render() {
-    if (!this.selectedTab && !this.overview) {
+    if (!this.selectedTab && !this.recentBrowsing) {
       return null;
     }
     return html`
@@ -226,17 +290,16 @@ class RecentlyClosedTabsInView extends ViewPage {
       </div>
       <div class=${classMap({ "cards-container": this.selectedTab })}>
         <card-container
-          .viewAllPage=${this.overview && this.recentlyClosedTabs.length
-            ? "recentlyclosed"
-            : null}
-          ?preserveCollapseState=${this.overview ? true : null}
+          shortPageName=${this.recentBrowsing ? "recentlyclosed" : null}
+          ?showViewAll=${this.recentBrowsing && this.recentlyClosedTabs.length}
+          ?preserveCollapseState=${this.recentBrowsing ? true : null}
           ?hideHeader=${this.selectedTab}
-          ?hidden=${!this.recentlyClosedTabs.length && !this.overview}
+          ?hidden=${!this.recentlyClosedTabs.length && !this.recentBrowsing}
         >
-          <h2
+          <h3
             slot="header"
             data-l10n-id="firefoxview-recently-closed-header"
-          ></h2>
+          ></h3>
           <fxview-tab-list
             class="with-dismiss-button"
             ?hidden=${!this.recentlyClosedTabs.length}
@@ -246,7 +309,7 @@ class RecentlyClosedTabsInView extends ViewPage {
             @fxview-tab-list-secondary-action=${this.onDismissTab}
             @fxview-tab-list-primary-action=${this.onReopenTab}
           ></fxview-tab-list>
-          ${this.overview
+          ${this.recentBrowsing
             ? html`
                 <div slot="main" ?hidden=${this.recentlyClosedTabs.length}>
                   ${this.emptyMessageTemplate()}

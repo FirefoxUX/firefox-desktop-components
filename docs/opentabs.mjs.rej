@@ -1,0 +1,16 @@
+--- opentabs.mjs
++++ opentabs.mjs
+@@ -310,11 +331,12 @@
+         href="chrome://browser/content/firefoxview/firefoxview-next.css"
+       />
+       <card-container
+         preserveCollapseState=${this.overview}
+         shortPageName="opentabs"
+-        showViewAll=${this.overview}>
++        showViewAll=${this.overview}
++      >
+         ${this.overview
+           ? html`<h3
+               slot="header"
+               data-l10n-id=${"firefoxview-opentabs-header"}
+             ></h3>`
