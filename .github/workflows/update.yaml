@@ -1,0 +1,42 @@
+name: Update
+on:
+  schedule:
+    - cron: "0 6 * * *" # Daily at 6AM UTC
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout main branch
+        uses: actions/checkout@v3
+      - name: Checkout git-cinnabar
+        uses: actions/checkout@v3
+        with:
+          repository: glandium/git-cinnabar
+          path: git-cinnabar
+      - name: Main steps
+        run: |
+          cd git-cinnabar
+          ./download.py
+          PATH="$GITHUB_WORKSPACE/git-cinnabar:$PATH"
+          git-cinnabar --version
+          cd ..
+          git clone hg::https://hg.mozilla.org/mozilla-unified gecko && cd gecko
+          ./mach --no-interactive bootstrap
+          ./mach --no-interactive build
+          ./mach storybook build
+      - name: Delete old docs
+        run: |
+          rm -rf docs
+      - name: Move built Storybook
+        run: >
+          mv gecko/browser/components/storybook/storybook-static docs
+      - name: Commit changes
+        run: |
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add .
+          git commit -m "$(git -C ../gecko-dev show -s --format=%cs)"
+          git push
