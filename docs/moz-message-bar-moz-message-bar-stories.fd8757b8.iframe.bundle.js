@@ -33,8 +33,11 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} titleAttribute - Internal, map title attribute to the title JS property.
  * @property {string} tooltipText - Set the title property, the title attribute will be used first.
  * @property {string} ariaLabel - The button's arial-label attribute, used in shadow DOM and therefore not as an attribute on moz-button.
+ * @property {string} iconSrc - Path to the icon that should be displayed in the button.
  * @property {string} ariaLabelAttribute - Internal, map aria-label attribute to the ariaLabel JS property.
+ * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {HTMLButtonElement} buttonEl - The internal button element in the shadow DOM.
+ * @property {HTMLButtonElement} slotEl - The internal slot element in the shadow DOM.
  * @slot default - The button's content, overrides label property.
  * @fires click - The click event.
  */
@@ -80,16 +83,25 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     ariaLabel: {
       type: String,
       state: true
+    },
+    iconSrc: {
+      type: String
+    },
+    hasVisibleLabel: {
+      type: Boolean,
+      state: true
     }
   };
   static queries = {
-    buttonEl: "button"
+    buttonEl: "button",
+    slotEl: "slot"
   };
   constructor() {
     super();
     this.type = "default";
     this.size = "default";
     this.disabled = false;
+    this.hasVisibleLabel = !!this.label;
   }
   willUpdate(changes) {
     if (changes.has("titleAttribute")) {
@@ -106,6 +118,11 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   click() {
     this.buttonEl.click();
   }
+  handleSlotchange() {
+    if (this.slotEl?.assignedNodes()?.length) {
+      this.hasVisibleLabel = true;
+    }
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -119,8 +136,12 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         part="button"
+        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      labelled: this.label || this.hasVisibleLabel
+    })}
       >
-        <slot>${this.label}</slot>
+        ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
+        <slot @slotchange=${this.handleSlotchange}>${this.label}</slot>
       </button>
     `;
   }
@@ -580,7 +601,7 @@ function formatUTMParams(contentAttribute, url) {
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.6a7c9143e30f24a9bedd.css";
+module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
 
 /***/ }),
 
@@ -592,4 +613,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.f3aa7d1c.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.fd8757b8.iframe.bundle.js.map

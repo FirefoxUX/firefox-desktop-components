@@ -33,8 +33,11 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} titleAttribute - Internal, map title attribute to the title JS property.
  * @property {string} tooltipText - Set the title property, the title attribute will be used first.
  * @property {string} ariaLabel - The button's arial-label attribute, used in shadow DOM and therefore not as an attribute on moz-button.
+ * @property {string} iconSrc - Path to the icon that should be displayed in the button.
  * @property {string} ariaLabelAttribute - Internal, map aria-label attribute to the ariaLabel JS property.
+ * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {HTMLButtonElement} buttonEl - The internal button element in the shadow DOM.
+ * @property {HTMLButtonElement} slotEl - The internal slot element in the shadow DOM.
  * @slot default - The button's content, overrides label property.
  * @fires click - The click event.
  */
@@ -80,16 +83,25 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     ariaLabel: {
       type: String,
       state: true
+    },
+    iconSrc: {
+      type: String
+    },
+    hasVisibleLabel: {
+      type: Boolean,
+      state: true
     }
   };
   static queries = {
-    buttonEl: "button"
+    buttonEl: "button",
+    slotEl: "slot"
   };
   constructor() {
     super();
     this.type = "default";
     this.size = "default";
     this.disabled = false;
+    this.hasVisibleLabel = !!this.label;
   }
   willUpdate(changes) {
     if (changes.has("titleAttribute")) {
@@ -106,6 +118,11 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   click() {
     this.buttonEl.click();
   }
+  handleSlotchange() {
+    if (this.slotEl?.assignedNodes()?.length) {
+      this.hasVisibleLabel = true;
+    }
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -119,8 +136,12 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         part="button"
+        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      labelled: this.label || this.hasVisibleLabel
+    })}
       >
-        <slot>${this.label}</slot>
+        ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
+        <slot @slotchange=${this.handleSlotchange}>${this.label}</slot>
       </button>
     `;
   }
@@ -140,6 +161,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Icon": () => (/* binding */ Icon),
 /* harmony export */   "IconGhost": () => (/* binding */ IconGhost),
 /* harmony export */   "IconSmall": () => (/* binding */ IconSmall),
+/* harmony export */   "IconText": () => (/* binding */ IconText),
 /* harmony export */   "Primary": () => (/* binding */ Primary),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -167,6 +189,12 @@ __webpack_require__.r(__webpack_exports__);
       control: {
         type: "radio"
       }
+    },
+    type: {
+      options: ["default", "primary", "destructive", "icon", "icon ghost"],
+      control: {
+        type: "select"
+      }
     }
   },
   parameters: {
@@ -189,19 +217,15 @@ const Template = ({
   type,
   size,
   l10nId,
-  iconUrl,
+  iconSrc,
   disabled
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <style>
-    moz-button[type~="icon"]::part(button) {
-      background-image: url("${iconUrl}");
-    }
-  </style>
   <moz-button
     data-l10n-id=${l10nId}
     type=${type}
     size=${size}
     ?disabled=${disabled}
+    iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
   ></moz-button>
 `;
 const Default = Template.bind({});
@@ -209,7 +233,7 @@ Default.args = {
   type: "default",
   size: "default",
   l10nId: "moz-button-labelled",
-  iconUrl: "chrome://global/skin/icons/more.svg",
+  iconSrc: "",
   disabled: false
 };
 const DefaultSmall = Template.bind({});
@@ -217,7 +241,7 @@ DefaultSmall.args = {
   type: "default",
   size: "small",
   l10nId: "moz-button-labelled",
-  iconUrl: "chrome://global/skin/icons/more.svg",
+  iconSrc: "",
   disabled: false
 };
 const Primary = Template.bind({});
@@ -235,7 +259,7 @@ Destructive.args = {
 const Icon = Template.bind({});
 Icon.args = {
   ...Default.args,
-  type: "icon",
+  iconSrc: "chrome://global/skin/icons/more.svg",
   l10nId: "moz-button-titled"
 };
 const IconSmall = Template.bind({});
@@ -246,7 +270,14 @@ IconSmall.args = {
 const IconGhost = Template.bind({});
 IconGhost.args = {
   ...Icon.args,
-  type: "icon ghost"
+  type: "ghost"
+};
+const IconText = Template.bind({});
+IconText.args = {
+  type: "default",
+  size: "default",
+  iconSrc: "chrome://global/skin/icons/edit-copy.svg",
+  l10nId: "moz-button-labelled"
 };
 
 /***/ }),
@@ -254,9 +285,9 @@ IconGhost.args = {
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.6a7c9143e30f24a9bedd.css";
+module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-moz-button-stories.7c7cacd6.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-moz-button-stories.172e7ba8.iframe.bundle.js.map

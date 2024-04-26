@@ -64,9 +64,17 @@ class MozButtonGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         // Text nodes won't support classList or getAttribute.
         continue;
       }
-      // Bug 1791816: These should check moz-button instead of button.
-      if (child.localName == "button" && (child.classList.contains("primary") || child.getAttribute("type") == "submit" || child.hasAttribute("autofocus") || child.hasAttribute("default"))) {
-        child.slot = "primary";
+      switch (child.localName) {
+        case "button":
+          if (child.classList.contains("primary") || child.getAttribute("type") == "submit" || child.hasAttribute("autofocus") || child.hasAttribute("default")) {
+            child.slot = "primary";
+          }
+          break;
+        case "moz-button":
+          if (child.type == "primary" || child.type == "destructive") {
+            child.slot = "primary";
+          }
+          break;
       }
     }
     this.#reorderLightDom();
@@ -180,9 +188,9 @@ Linux.args = {
 /***/ 29827:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button-group.f14579caa4f84c627bf1.css";
+module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-group-moz-button-group-stories.65513694.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-group-moz-button-group-stories.9280e465.iframe.bundle.js.map
