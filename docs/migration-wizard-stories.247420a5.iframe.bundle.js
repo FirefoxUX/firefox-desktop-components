@@ -452,6 +452,7 @@ class MigrationWizard extends HTMLElement {
     this.#getPermissionsButton = shadow.querySelector("#get-permissions");
     this.#getPermissionsButton.addEventListener("click", this);
     this.#browserProfileSelector.addEventListener("click", this);
+    this.#browserProfileSelector.addEventListener("mousedown", this);
     this.#resourceTypeList = shadow.querySelector("#resource-type-list");
     this.#resourceTypeList.addEventListener("change", this);
     this.#safariPermissionButton = shadow.querySelector("#safari-request-permissions");
@@ -1273,82 +1274,90 @@ class MigrationWizard extends HTMLElement {
       }
     }
   }
+  #handleClickEvent(event) {
+    if (event.target == this.#importButton || event.target == this.#importFromFileButton) {
+      this.#doImport();
+    } else if (event.target.classList.contains("cancel-close") || event.target.classList.contains("finish-button")) {
+      this.dispatchEvent(new CustomEvent("MigrationWizard:Close", {
+        bubbles: true
+      }));
+    } else if (event.currentTarget == this.#browserProfileSelectorList && event.target != this.#browserProfileSelectorList) {
+      this.#onBrowserProfileSelectionChanged(event.target);
+      // If the user selected a file migration type from the selector, we'll
+      // help the user out by immediately starting the file migration flow,
+      // rather than waiting for them to click the "Select File".
+      if (event.target.getAttribute("type") == chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.MIGRATOR_TYPES.FILE) {
+        this.#doImport();
+      }
+    } else if (event.target == this.#safariPermissionButton) {
+      this.#requestSafariPermissions();
+    } else if (event.currentTarget == this.#resourceSummary) {
+      this.#expandedDetails = true;
+    } else if (event.target == this.#chooseImportFromFile) {
+      this.dispatchEvent(new CustomEvent("MigrationWizard:RequestState", {
+        bubbles: true,
+        detail: {
+          allowOnlyFileMigrators: true
+        }
+      }));
+    } else if (event.target == this.#safariPasswordImportSkipButton) {
+      // If the user chose to skip importing passwords from Safari, we
+      // programmatically uncheck the PASSWORDS resource type and re-request
+      // import.
+      let checkbox = this.#shadowRoot.querySelector(`label[data-resource-type="${chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS}"]`).control;
+      checkbox.checked = false;
+
+      // If there are no other checked checkboxes, go back to the selection
+      // screen.
+      let checked = this.#shadowRoot.querySelectorAll(`label[data-resource-type] > input:checked`).length;
+      if (!checked) {
+        this.requestState();
+      } else {
+        this.#doImport();
+      }
+    } else if (event.target == this.#safariPasswordImportSelectButton) {
+      this.#selectSafariPasswordFile();
+    } else if (event.target == this.#extensionsSuccessLink) {
+      this.dispatchEvent(new CustomEvent("MigrationWizard:OpenAboutAddons", {
+        bubbles: true
+      }));
+      event.preventDefault();
+    } else if (event.target == this.#getPermissionsButton) {
+      this.#getPermissions();
+    }
+  }
+  #handleChangeEvent(event) {
+    if (event.target == this.#browserProfileSelector) {
+      this.#onBrowserProfileSelectionChanged();
+    } else if (event.target == this.#selectAllCheckbox) {
+      let checkboxes = this.#shadowRoot.querySelectorAll('label[data-resource-type]:not([hidden]) > input[type="checkbox"]');
+      for (let checkbox of checkboxes) {
+        checkbox.checked = this.#selectAllCheckbox.checked;
+      }
+      this.#displaySelectedResources();
+    } else {
+      let checkboxes = this.#shadowRoot.querySelectorAll('label[data-resource-type]:not([hidden]) > input[type="checkbox"]');
+      let allVisibleChecked = Array.from(checkboxes).every(checkbox => {
+        return checkbox.checked;
+      });
+      this.#selectAllCheckbox.checked = allVisibleChecked;
+      this.#displaySelectedResources();
+    }
+  }
   handleEvent(event) {
+    if (event.target == this.#browserProfileSelector && (event.type == "mousedown" || event.type == "click" && event.mozInputSource == MouseEvent.MOZ_SOURCE_KEYBOARD)) {
+      this.#browserProfileSelectorList.toggle(event);
+      return;
+    }
     switch (event.type) {
       case "click":
         {
-          if (event.target == this.#importButton || event.target == this.#importFromFileButton) {
-            this.#doImport();
-          } else if (event.target.classList.contains("cancel-close") || event.target.classList.contains("finish-button")) {
-            this.dispatchEvent(new CustomEvent("MigrationWizard:Close", {
-              bubbles: true
-            }));
-          } else if (event.target == this.#browserProfileSelector) {
-            this.#browserProfileSelectorList.show(event);
-          } else if (event.currentTarget == this.#browserProfileSelectorList && event.target != this.#browserProfileSelectorList) {
-            this.#onBrowserProfileSelectionChanged(event.target);
-            // If the user selected a file migration type from the selector, we'll
-            // help the user out by immediately starting the file migration flow,
-            // rather than waiting for them to click the "Select File".
-            if (event.target.getAttribute("type") == chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.MIGRATOR_TYPES.FILE) {
-              this.#doImport();
-            }
-          } else if (event.target == this.#safariPermissionButton) {
-            this.#requestSafariPermissions();
-          } else if (event.currentTarget == this.#resourceSummary) {
-            this.#expandedDetails = true;
-          } else if (event.target == this.#chooseImportFromFile) {
-            this.dispatchEvent(new CustomEvent("MigrationWizard:RequestState", {
-              bubbles: true,
-              detail: {
-                allowOnlyFileMigrators: true
-              }
-            }));
-          } else if (event.target == this.#safariPasswordImportSkipButton) {
-            // If the user chose to skip importing passwords from Safari, we
-            // programmatically uncheck the PASSWORDS resource type and re-request
-            // import.
-            let checkbox = this.#shadowRoot.querySelector(`label[data-resource-type="${chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS}"]`).control;
-            checkbox.checked = false;
-
-            // If there are no other checked checkboxes, go back to the selection
-            // screen.
-            let checked = this.#shadowRoot.querySelectorAll(`label[data-resource-type] > input:checked`).length;
-            if (!checked) {
-              this.requestState();
-            } else {
-              this.#doImport();
-            }
-          } else if (event.target == this.#safariPasswordImportSelectButton) {
-            this.#selectSafariPasswordFile();
-          } else if (event.target == this.#extensionsSuccessLink) {
-            this.dispatchEvent(new CustomEvent("MigrationWizard:OpenAboutAddons", {
-              bubbles: true
-            }));
-            event.preventDefault();
-          } else if (event.target == this.#getPermissionsButton) {
-            this.#getPermissions();
-          }
+          this.#handleClickEvent(event);
           break;
         }
       case "change":
         {
-          if (event.target == this.#browserProfileSelector) {
-            this.#onBrowserProfileSelectionChanged();
-          } else if (event.target == this.#selectAllCheckbox) {
-            let checkboxes = this.#shadowRoot.querySelectorAll('label[data-resource-type]:not([hidden]) > input[type="checkbox"]');
-            for (let checkbox of checkboxes) {
-              checkbox.checked = this.#selectAllCheckbox.checked;
-            }
-            this.#displaySelectedResources();
-          } else {
-            let checkboxes = this.#shadowRoot.querySelectorAll('label[data-resource-type]:not([hidden]) > input[type="checkbox"]');
-            let allVisibleChecked = Array.from(checkboxes).every(checkbox => {
-              return checkbox.checked;
-            });
-            this.#selectAllCheckbox.checked = allVisibleChecked;
-            this.#displaySelectedResources();
-          }
+          this.#handleChangeEvent(event);
           break;
         }
     }
@@ -2224,10 +2233,6 @@ __webpack_require__.r(__webpack_exports__);
             // using the mouse. Ignore the first focusin event if it's on the
             // triggering target.
             this.focusHasChanged = true;
-          } else if (!target || !inPanelList) {
-            // If the target isn't in the panel, hide. This will close when focus
-            // moves out of the panel.
-            this.hide();
           } else {
             // Just record that there was a focusin event.
             this.focusHasChanged = true;
@@ -3117,4 +3122,4 @@ module.exports = __webpack_require__.p + "panel-list.f6288da5b73816352518.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.9653b17c.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.247420a5.iframe.bundle.js.map

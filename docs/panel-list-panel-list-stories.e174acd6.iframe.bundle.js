@@ -376,10 +376,6 @@ __webpack_require__.r(__webpack_exports__);
             // using the mouse. Ignore the first focusin event if it's on the
             // triggering target.
             this.focusHasChanged = true;
-          } else if (!target || !inPanelList) {
-            // If the target isn't in the panel, hide. This will close when focus
-            // moves out of the panel.
-            this.hide();
           } else {
             // Just record that there was a focusin event.
             this.focusHasChanged = true;
@@ -900,4 +896,4 @@ module.exports = __webpack_require__.p + "panel-list.f6288da5b73816352518.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-panel-list-stories.62f190c8.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.e174acd6.iframe.bundle.js.map

@@ -1,4 +1,4 @@
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5797,9433],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7741,9433],{
 
 /***/ 63349:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -749,6 +749,707 @@ var Wrapper=_storybook_theming__WEBPACK_IMPORTED_MODULE_1__.styled.div(_storyboo
 
 /***/ }),
 
+/***/ 10815:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var toolkit_content_widgets_panel_list_panel_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38732);
+/* harmony import */ var toolkit_content_widgets_panel_list_panel_list_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(73326);
+
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+"use strict";
+{
+  class PanelList extends HTMLElement {
+    static get observedAttributes() {
+      return ["open"];
+    }
+    static get fragment() {
+      if (!this._template) {
+        let parser = new DOMParser();
+        let cssPath = toolkit_content_widgets_panel_list_panel_list_css__WEBPACK_IMPORTED_MODULE_1__;
+        let doc = parser.parseFromString(`
+          <template>
+            <link rel="stylesheet" href=${cssPath}>
+            <div class="arrow top" role="presentation"></div>
+            <div class="list" role="presentation">
+              <slot></slot>
+            </div>
+            <div class="arrow bottom" role="presentation"></div>
+          </template>
+        `, "text/html");
+        this._template = document.importNode(doc.querySelector("template"), true);
+      }
+      return this._template.content.cloneNode(true);
+    }
+    constructor() {
+      super();
+      this.attachShadow({
+        mode: "open"
+      });
+      this.shadowRoot.appendChild(this.constructor.fragment);
+    }
+    connectedCallback() {
+      this.setAttribute("role", "menu");
+    }
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (name == "open" && newVal != oldVal) {
+        if (this.open) {
+          this.onShow();
+        } else {
+          this.onHide();
+        }
+      }
+    }
+    get open() {
+      return this.hasAttribute("open");
+    }
+    set open(val) {
+      this.toggleAttribute("open", val);
+    }
+    get stayOpen() {
+      return this.hasAttribute("stay-open");
+    }
+    set stayOpen(val) {
+      this.toggleAttribute("stay-open", val);
+    }
+    getTargetForEvent(event) {
+      if (!event) {
+        return null;
+      }
+      if (event._savedComposedTarget) {
+        return event._savedComposedTarget;
+      }
+      if (event.composed) {
+        event._savedComposedTarget = event.composedTarget || event.composedPath()[0];
+      }
+      return event._savedComposedTarget || event.target;
+    }
+    show(triggeringEvent, target) {
+      this.triggeringEvent = triggeringEvent;
+      this.lastAnchorNode = target || this.getTargetForEvent(this.triggeringEvent);
+      this.wasOpenedByKeyboard = triggeringEvent && (triggeringEvent.inputSource == MouseEvent.MOZ_SOURCE_KEYBOARD || triggeringEvent.inputSource == MouseEvent.MOZ_SOURCE_UNKNOWN || triggeringEvent.code == "ArrowRight" || triggeringEvent.code == "ArrowLeft");
+      this.open = true;
+      if (this.parentIsXULPanel()) {
+        this.toggleAttribute("inxulpanel", true);
+        let panel = this.parentElement;
+        panel.hidden = false;
+        // Bug 1842070 - There appears to be a race here where panel-lists
+        // embedded in XUL panels won't appear during the first call to show()
+        // without waiting for a mix of rAF and another tick of the event
+        // loop.
+        requestAnimationFrame(() => {
+          setTimeout(() => {
+            panel.openPopup(this.lastAnchorNode, "after_start", 0, 0, false, false, this.triggeringEvent);
+          }, 0);
+        });
+      } else {
+        this.toggleAttribute("inxulpanel", false);
+      }
+    }
+    hide(triggeringEvent, {
+      force = false
+    } = {}, eventTarget) {
+      // It's possible this is being used in an unprivileged context, in which
+      // case it won't have access to Services / Services will be undeclared.
+      const autohideDisabled = this.hasServices() ? Services.prefs.getBoolPref("ui.popup.disable_autohide", false) : false;
+      if (autohideDisabled && !force) {
+        // Don't hide if this wasn't "forced" (using escape or click in menu).
+        return;
+      }
+      let openingEvent = this.triggeringEvent;
+      this.triggeringEvent = triggeringEvent;
+      this.open = false;
+      if (this.parentIsXULPanel()) {
+        // It's possible that we're being programattically hidden, in which
+        // case, we need to hide the XUL panel we're embedded in. If, however,
+        // we're being hidden because the XUL panel is being hidden, calling
+        // hidePopup again on it is a no-op.
+        let panel = this.parentElement;
+        panel.hidePopup();
+      }
+      let target = eventTarget || this.getTargetForEvent(openingEvent);
+      // Refocus the button that opened the menu if we have one.
+      if (target && this.wasOpenedByKeyboard) {
+        target.focus();
+      }
+    }
+    toggle(triggeringEvent, target = null) {
+      if (this.open) {
+        this.hide(triggeringEvent, {
+          force: true
+        }, target);
+      } else {
+        this.show(triggeringEvent, target);
+      }
+    }
+    hasServices() {
+      // Safely check for Services without throwing a ReferenceError.
+      return typeof Services !== "undefined";
+    }
+    isDocumentRTL() {
+      if (this.hasServices()) {
+        return Services.locale.isAppLocaleRTL;
+      }
+      return document.dir === "rtl";
+    }
+    parentIsXULPanel() {
+      const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+      return this.parentElement?.namespaceURI == XUL_NS && this.parentElement?.localName == "panel";
+    }
+    async setAlign() {
+      const hostElement = this.parentElement || this.getRootNode().host;
+      if (!hostElement) {
+        // This could get called before we're added to the DOM.
+        // Nothing to do in that case.
+        return;
+      }
+
+      // Set the showing attribute to hide the panel until its alignment is set.
+      this.setAttribute("showing", "true");
+      // Tell the host element to hide any overflow in case the panel extends off
+      // the page before the alignment is set.
+      hostElement.style.overflow = "hidden";
+
+      // Wait for a layout flush, then find the bounds.
+      let {
+        anchorBottom,
+        // distance from the bottom of the anchor el to top of viewport.
+        anchorLeft,
+        anchorTop,
+        anchorWidth,
+        panelHeight,
+        panelWidth,
+        winHeight,
+        winScrollY,
+        winScrollX,
+        clientWidth
+      } = await new Promise(resolve => {
+        this.style.left = 0;
+        this.style.top = 0;
+        requestAnimationFrame(() => setTimeout(() => {
+          let target = this.getTargetForEvent(this.triggeringEvent);
+          let anchorElement = target || hostElement;
+          // It's possible this is being used in a context where windowUtils is
+          // not available. In that case, fallback to using the element.
+          let getBounds = el => window.windowUtils ? window.windowUtils.getBoundsWithoutFlushing(el) : el.getBoundingClientRect();
+          // Use y since top is reserved.
+          let anchorBounds = getBounds(anchorElement);
+          let panelBounds = getBounds(this);
+          let clientWidth = document.scrollingElement.clientWidth;
+          resolve({
+            anchorBottom: anchorBounds.bottom,
+            anchorHeight: anchorBounds.height,
+            anchorLeft: anchorBounds.left,
+            anchorTop: anchorBounds.top,
+            anchorWidth: anchorBounds.width,
+            panelHeight: panelBounds.height,
+            panelWidth: panelBounds.width,
+            winHeight: innerHeight,
+            winScrollX: scrollX,
+            winScrollY: scrollY,
+            clientWidth
+          });
+        }, 0));
+      });
+
+      // If we're embedded in a XUL panel, let it handle alignment.
+      if (!this.parentIsXULPanel()) {
+        // Calculate the left/right alignment.
+        let align;
+        let leftOffset;
+        let leftAlignX = anchorLeft;
+        let rightAlignX = anchorLeft + anchorWidth - panelWidth;
+        if (this.isDocumentRTL()) {
+          // Prefer aligning on the right.
+          align = rightAlignX < 0 ? "left" : "right";
+        } else {
+          // Prefer aligning on the left.
+          align = leftAlignX + panelWidth > clientWidth ? "right" : "left";
+        }
+        leftOffset = align === "left" ? leftAlignX : rightAlignX;
+        let bottomSpaceY = winHeight - anchorBottom;
+        let valign;
+        let topOffset;
+        const VIEWPORT_PANEL_MIN_MARGIN = 10; // 10px ensures that the panel is not flush with the viewport.
+
+        // Only want to valign top when there's more space between the bottom of the anchor element and the top of the viewport.
+        // If there's more space between the bottom of the anchor element and the bottom of the viewport, we valign bottom.
+        if (anchorBottom > bottomSpaceY && anchorBottom + panelHeight > winHeight) {
+          // Never want to have a negative value for topOffset, so ensure it's at least 10px.
+          topOffset = Math.max(anchorTop - panelHeight, VIEWPORT_PANEL_MIN_MARGIN);
+          // Provide a max-height for larger elements which will provide scrolling as needed.
+          this.style.maxHeight = `${anchorTop + VIEWPORT_PANEL_MIN_MARGIN}px`;
+          valign = "top";
+        } else {
+          topOffset = anchorBottom;
+          this.style.maxHeight = `${bottomSpaceY - VIEWPORT_PANEL_MIN_MARGIN}px`;
+          valign = "bottom";
+        }
+
+        // Set the alignments and show the panel.
+        this.setAttribute("align", align);
+        this.setAttribute("valign", valign);
+        hostElement.style.overflow = "";
+        this.style.left = `${leftOffset + winScrollX}px`;
+        this.style.top = `${topOffset + winScrollY}px`;
+      }
+      this.style.minWidth = this.hasAttribute("min-width-from-anchor") ? `${anchorWidth}px` : "";
+      this.removeAttribute("showing");
+    }
+    addHideListeners() {
+      if (this.hasAttribute("stay-open") && !this.lastAnchorNode?.hasSubmenu) {
+        // This is intended for inspection in Storybook.
+        return;
+      }
+      // Hide when a panel-item is clicked in the list.
+      this.addEventListener("click", this);
+      // Allows submenus to stopPropagation when focus is already in the menu
+      this.addEventListener("keydown", this);
+      // We need Escape/Tab/ArrowDown to work when opened with the mouse.
+      document.addEventListener("keydown", this);
+      // Hide when a click is initiated outside the panel.
+      document.addEventListener("mousedown", this);
+      // Hide if focus changes and the panel isn't in focus.
+      document.addEventListener("focusin", this);
+      // Reset or focus tracking, we treat the first focusin differently.
+      this.focusHasChanged = false;
+      // Hide on resize, scroll or losing window focus.
+      window.addEventListener("resize", this);
+      window.addEventListener("scroll", this, {
+        capture: true
+      });
+      window.addEventListener("blur", this);
+      if (this.parentIsXULPanel()) {
+        this.parentElement.addEventListener("popuphidden", this);
+      }
+    }
+    removeHideListeners() {
+      this.removeEventListener("click", this);
+      this.removeEventListener("keydown", this);
+      document.removeEventListener("keydown", this);
+      document.removeEventListener("mousedown", this);
+      document.removeEventListener("focusin", this);
+      window.removeEventListener("resize", this);
+      window.removeEventListener("scroll", this, {
+        capture: true
+      });
+      window.removeEventListener("blur", this);
+      if (this.parentIsXULPanel()) {
+        this.parentElement.removeEventListener("popuphidden", this);
+      }
+    }
+    handleEvent(e) {
+      // Ignore the event if it caused the panel to open.
+      if (e == this.triggeringEvent) {
+        return;
+      }
+      let target = this.getTargetForEvent(e);
+      let inPanelList = e.composed ? e.composedPath().some(el => el == this) : e.target.closest && e.target.closest("panel-list") == this;
+      switch (e.type) {
+        case "resize":
+        case "scroll":
+          if (inPanelList) {
+            break;
+          }
+        // Intentional fall-through
+        case "blur":
+        case "popuphidden":
+          this.hide();
+          break;
+        case "click":
+          if (inPanelList) {
+            this.hide(undefined, {
+              force: true
+            });
+          } else {
+            // Avoid falling through to the default click handler of the parent.
+            e.stopPropagation();
+          }
+          break;
+        case "mousedown":
+          // Close if there's a click started outside the panel.
+          if (!inPanelList) {
+            this.hide();
+          }
+          break;
+        case "keydown":
+          if (e.key === "ArrowDown" || e.key === "ArrowUp" || e.key === "Tab") {
+            // Ignore tabbing with a modifer other than shift.
+            if (e.key === "Tab" && (e.altKey || e.ctrlKey || e.metaKey)) {
+              return;
+            }
+
+            // Don't scroll the page or let the regular tab order take effect.
+            e.preventDefault();
+
+            // Prevents the host panel list from responding to these events while
+            // the submenu is active.
+            e.stopPropagation();
+
+            // Keep moving to the next/previous element sibling until we find a
+            // panel-item that isn't hidden.
+            let moveForward = e.key === "ArrowDown" || e.key === "Tab" && !e.shiftKey;
+            let nextItem = moveForward ? this.focusWalker.nextNode() : this.focusWalker.previousNode();
+
+            // If the next item wasn't found, try looping to the top/bottom.
+            if (!nextItem) {
+              this.focusWalker.currentNode = this;
+              if (moveForward) {
+                nextItem = this.focusWalker.firstChild();
+              } else {
+                nextItem = this.focusWalker.lastChild();
+              }
+            }
+            break;
+          } else if (e.key === "Escape") {
+            this.hide(undefined, {
+              force: true
+            });
+          } else if (!e.metaKey && !e.ctrlKey && !e.shiftKey && !e.altKey) {
+            // Check if any of the children have an accesskey for this letter.
+            let item = this.querySelector(`[accesskey="${e.key.toLowerCase()}"],
+              [accesskey="${e.key.toUpperCase()}"]`);
+            if (item) {
+              item.click();
+            }
+          }
+          break;
+        case "focusin":
+          if (this.triggeringEvent && target == this.getTargetForEvent(this.triggeringEvent) && !this.focusHasChanged) {
+            // There will be a focusin after the mousedown that opens the panel
+            // using the mouse. Ignore the first focusin event if it's on the
+            // triggering target.
+            this.focusHasChanged = true;
+          } else {
+            // Just record that there was a focusin event.
+            this.focusHasChanged = true;
+          }
+          break;
+      }
+    }
+
+    /**
+     * A TreeWalker that can be used to focus elements. The returned element will
+     * be the element that has gained focus based on the requested movement
+     * through the tree.
+     *
+     * Example:
+     *
+     *   this.focusWalker.currentNode = this;
+     *   // Focus and get the first focusable child.
+     *   let focused = this.focusWalker.nextNode();
+     *   // Focus the second focusable child.
+     *   this.focusWalker.nextNode();
+     */
+    get focusWalker() {
+      if (!this._focusWalker) {
+        this._focusWalker = document.createTreeWalker(this, NodeFilter.SHOW_ELEMENT, {
+          acceptNode: node => {
+            // No need to look at hidden nodes.
+            if (node.hidden) {
+              return NodeFilter.FILTER_REJECT;
+            }
+
+            // Focus the node, if it worked then this is the node we want.
+            node.focus();
+            if (node === node.getRootNode().activeElement) {
+              return NodeFilter.FILTER_ACCEPT;
+            }
+
+            // Continue into child nodes if the parent couldn't be focused.
+            return NodeFilter.FILTER_SKIP;
+          }
+        });
+      }
+      return this._focusWalker;
+    }
+    async setSubmenuAlign() {
+      const hostElement = this.lastAnchorNode.parentElement || this.getRootNode().host;
+      // The showing attribute allows layout of the panel while remaining hidden
+      // from the user until alignment is set.
+      this.setAttribute("showing", "true");
+
+      // Wait for a layout flush, then find the bounds.
+      let {
+        anchorLeft,
+        anchorWidth,
+        anchorTop,
+        parentPanelTop,
+        panelWidth,
+        clientWidth
+      } = await new Promise(resolve => {
+        requestAnimationFrame(() => {
+          // It's possible this is being used in a context where windowUtils is
+          // not available. In that case, fallback to using the element.
+          let getBounds = el => window.windowUtils ? window.windowUtils.getBoundsWithoutFlushing(el) : el.getBoundingClientRect();
+          // submenu item in the parent panel list
+          let anchorBounds = getBounds(this.lastAnchorNode);
+          let parentPanelBounds = getBounds(hostElement);
+          let panelBounds = getBounds(this);
+          let clientWidth = document.scrollingElement.clientWidth;
+          resolve({
+            anchorLeft: anchorBounds.left,
+            anchorWidth: anchorBounds.width,
+            anchorTop: anchorBounds.top,
+            parentPanelTop: parentPanelBounds.top,
+            panelWidth: panelBounds.width,
+            clientWidth
+          });
+        });
+      });
+      let align = hostElement.getAttribute("align");
+
+      // we use document.scrollingElement.clientWidth to exclude the width
+      // of vertical scrollbars, because its inclusion can cause the submenu
+      // to open to the wrong side and be overlapped by the scrollbar.
+      if (align == "left" && anchorLeft + anchorWidth + panelWidth < clientWidth) {
+        this.style.left = `${anchorWidth}px`;
+        this.style.right = "";
+      } else {
+        this.style.right = `${anchorWidth}px`;
+        this.style.left = "";
+      }
+      let topOffset = anchorTop - parentPanelTop - (parseFloat(window.getComputedStyle(this)?.paddingTop) || 0);
+      this.style.top = `${topOffset}px`;
+      this.removeAttribute("showing");
+    }
+    async onShow() {
+      this.sendEvent("showing");
+      this.addHideListeners();
+      if (this.lastAnchorNode?.hasSubmenu) {
+        await this.setSubmenuAlign();
+      } else {
+        await this.setAlign();
+      }
+
+      // Always reset this regardless of how the panel list is opened
+      // so the first child will be focusable.
+      this.focusWalker.currentNode = this;
+
+      // Wait until the next paint for the alignment to be set and panel to be
+      // visible.
+      requestAnimationFrame(() => {
+        if (this.wasOpenedByKeyboard) {
+          // Focus the first focusable panel-item if opened by keyboard.
+          this.focusWalker.nextNode();
+        }
+        this.lastAnchorNode?.setAttribute("aria-expanded", "true");
+        this.sendEvent("shown");
+      });
+    }
+    onHide() {
+      requestAnimationFrame(() => {
+        this.sendEvent("hidden");
+        this.lastAnchorNode?.setAttribute("aria-expanded", "false");
+      });
+      this.removeHideListeners();
+    }
+    sendEvent(name, detail) {
+      this.dispatchEvent(new CustomEvent(name, {
+        detail,
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  customElements.define("panel-list", PanelList);
+  class PanelItem extends HTMLElement {
+    #initialized = false;
+    #defaultSlot;
+    static get observedAttributes() {
+      return ["accesskey"];
+    }
+    constructor() {
+      super();
+      this.attachShadow({
+        mode: "open"
+      });
+      let style = document.createElement("link");
+      style.rel = "stylesheet";
+      style.href = toolkit_content_widgets_panel_list_panel_item_css__WEBPACK_IMPORTED_MODULE_0__;
+      this.button = document.createElement("button");
+      this.button.setAttribute("role", "menuitem");
+      this.button.setAttribute("part", "button");
+      // Use a XUL label element if possible to show the accesskey.
+      this.label = document.createXULElement ? document.createXULElement("label") : document.createElement("span");
+      this.button.appendChild(this.label);
+      let supportLinkSlot = document.createElement("slot");
+      supportLinkSlot.name = "support-link";
+      this.#defaultSlot = document.createElement("slot");
+      this.#defaultSlot.style.display = "none";
+      this.shadowRoot.append(style, this.button, supportLinkSlot, this.#defaultSlot);
+    }
+    connectedCallback() {
+      if (!this._l10nRootConnected && document.l10n) {
+        document.l10n.connectRoot(this.shadowRoot);
+        this._l10nRootConnected = true;
+      }
+      this.panel = this.getRootNode()?.host?.closest("panel-list") || this.closest("panel-list");
+      if (!this.#initialized) {
+        this.#initialized = true;
+        // When click listeners are added to the panel-item it creates a node in
+        // the a11y tree for this element. This breaks the association between the
+        // menu and the button[role="menuitem"] in this shadow DOM and causes
+        // announcement issues with screen readers. (bug 995064)
+        this.setAttribute("role", "presentation");
+        this.#setLabelContents();
+
+        // When our content changes, move the text into the label. It doesn't work
+        // with a <slot>, unfortunately.
+        new MutationObserver(() => this.#setLabelContents()).observe(this, {
+          characterData: true,
+          childList: true,
+          subtree: true
+        });
+        if (this.hasSubmenu) {
+          this.panel.setAttribute("has-submenu", "");
+          this.icon = document.createElement("div");
+          this.icon.setAttribute("class", "submenu-icon");
+          this.label.setAttribute("class", "submenu-label");
+          this.button.setAttribute("class", "submenu-container");
+          this.button.appendChild(this.icon);
+          this.submenuSlot = document.createElement("slot");
+          this.submenuSlot.name = "submenu";
+          this.shadowRoot.append(this.submenuSlot);
+          this.setSubmenuContents();
+        }
+      }
+      if (this.panel) {
+        this.panel.addEventListener("hidden", this);
+        this.panel.addEventListener("shown", this);
+      }
+      if (this.hasSubmenu) {
+        this.addEventListener("mouseenter", this);
+        this.addEventListener("mouseleave", this);
+        this.addEventListener("keydown", this);
+      }
+    }
+    disconnectedCallback() {
+      if (this._l10nRootConnected) {
+        document.l10n.disconnectRoot(this.shadowRoot);
+        this._l10nRootConnected = false;
+      }
+      if (this.panel) {
+        this.panel.removeEventListener("hidden", this);
+        this.panel.removeEventListener("shown", this);
+        this.panel = null;
+      }
+      if (this.hasSubmenu) {
+        this.removeEventListener("mouseenter", this);
+        this.removeEventListener("mouseleave", this);
+        this.removeEventListener("keydown", this);
+      }
+    }
+    get hasSubmenu() {
+      return this.hasAttribute("submenu");
+    }
+    attributeChangedCallback(name, oldVal, newVal) {
+      if (name === "accesskey") {
+        // Bug 1037709 - Accesskey doesn't work in shadow DOM.
+        // Ideally we'd have the accesskey set in shadow DOM, and on
+        // attributeChangedCallback we'd just update the shadow DOM accesskey.
+
+        // Skip this change event if we caused it.
+        if (this._modifyingAccessKey) {
+          this._modifyingAccessKey = false;
+          return;
+        }
+        this.label.accessKey = newVal || "";
+
+        // Bug 1588156 - Accesskey is not ignored for hidden non-input elements.
+        // Since the accesskey won't be ignored, we need to remove it ourselves
+        // when the panel is closed, and move it back when it opens.
+        if (!this.panel || !this.panel.open) {
+          // When the panel isn't open, just store the key for later.
+          this._accessKey = newVal || null;
+          this._modifyingAccessKey = true;
+          this.accessKey = "";
+        } else {
+          this._accessKey = null;
+        }
+      }
+    }
+    #setLabelContents() {
+      this.label.textContent = this.#defaultSlot.assignedNodes().map(node => node.textContent).join("");
+    }
+    setSubmenuContents() {
+      this.submenuPanel = this.submenuSlot.assignedNodes()[0];
+      if (this.submenuPanel) {
+        this.shadowRoot.append(this.submenuPanel);
+      }
+    }
+    get disabled() {
+      return this.button.hasAttribute("disabled");
+    }
+    set disabled(val) {
+      this.button.toggleAttribute("disabled", val);
+    }
+    get checked() {
+      return this.hasAttribute("checked");
+    }
+    set checked(val) {
+      this.toggleAttribute("checked", val);
+    }
+    focus() {
+      this.button.focus();
+    }
+    setArrowKeyRTL() {
+      let arrowOpenKey = "ArrowRight";
+      let arrowCloseKey = "ArrowLeft";
+      if (this.submenuPanel.isDocumentRTL()) {
+        arrowOpenKey = "ArrowLeft";
+        arrowCloseKey = "ArrowRight";
+      }
+      return [arrowOpenKey, arrowCloseKey];
+    }
+    handleEvent(e) {
+      // Bug 1588156 - Accesskey is not ignored for hidden non-input elements.
+      // Since the accesskey won't be ignored, we need to remove it ourselves
+      // when the panel is closed, and move it back when it opens.
+      switch (e.type) {
+        case "shown":
+          if (this._accessKey) {
+            this.accessKey = this._accessKey;
+            this._accessKey = null;
+          }
+          break;
+        case "hidden":
+          if (this.accessKey) {
+            this._accessKey = this.accessKey;
+            this._modifyingAccessKey = true;
+            this.accessKey = "";
+          }
+          break;
+        case "mouseenter":
+        case "mouseleave":
+          this.submenuPanel.toggle(e);
+          break;
+        case "keydown":
+          let [arrowOpenKey, arrowCloseKey] = this.setArrowKeyRTL();
+          if (e.key === arrowOpenKey) {
+            this.submenuPanel.show(e, e.target);
+            e.stopPropagation();
+          }
+          if (e.key === arrowCloseKey) {
+            this.submenuPanel.hide(e, {
+              force: true
+            }, e.target);
+            e.stopPropagation();
+          }
+          break;
+      }
+    }
+  }
+  customElements.define("panel-item", PanelItem);
+}
+
+/***/ }),
+
 /***/ 52740:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1461,7 +2162,7 @@ ${input}`);let match=input.match(firstLineRegex);if(!match)return react__WEBPACK
 
 /***/ }),
 
-/***/ 81657:
+/***/ 61743:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1473,7 +2174,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(67294);
 /* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38155);
 /* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(54557);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(85893);
+/* harmony import */ var toolkit_widgets_panel_list_panel_list_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(10815);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(85893);
+
 
 
 
@@ -1485,19 +2188,18 @@ __webpack_require__.r(__webpack_exports__);
 function _createMdxContent(props) {
   const _components = Object.assign({
     h1: "h1",
-    h2: "h2",
     p: "p",
-    a: "a",
-    h3: "h3",
     code: "code",
-    pre: "pre",
-    strong: "strong",
+    h2: "h2",
     ul: "ul",
-    li: "li"
+    li: "li",
+    a: "a",
+    pre: "pre",
+    h3: "h3"
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "Docs/Reusable Widgets",
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
+      title: "UI Widgets/Panel List/README",
       parameters: {
         previewTabs: {
           canvas: {
@@ -1506,284 +2208,354 @@ function _createMdxContent(props) {
         },
         viewMode: "docs"
       }
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h1, {
-      id: "reusable-ui-widgets",
-      children: "Reusable UI widgets"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
-      id: "background",
-      children: "Background"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "Different Firefox surfaces make use of similar UI elements such as cards, menus,\ntoggles, and message bars. A group of designers and developers have started\nworking together to create standardized versions of these elements in the form\nof new web components. The intention is for these components to encapsulate our\ndesign system, ensure accessibility and usability across the application, and\nreduce the maintenance burden associated with supporting multiple different\nimplementations of the same UI patterns."
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["Many of these components are being built using the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://lit.dev/",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Lit\nlibrary"
-      }), " to take advantage of its templating syntax and\nre-rendering logic. All new components are being documented in Storybook in an\neffort to create a catalog that engineers and designers can use to see which\ncomponents can be easily lifted off the shelf for use throughout Firefox."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
-      id: "designing-new-reusable-widgets",
-      children: "Designing new reusable widgets"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "Widgets that live at the global level, \"UI Widgets\", should be created in collaboration with the Design System team.\nThis ensures consistency with the rest of the elements in the Design System and the existing UI elements.\nOtherwise, you should consult with your team and the appropriate designer to create domain-specific UI widgets.\nIdeally, these domain widgets should be consistent with the rest of the UI patterns established in Firefox."
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
-      id: "does-an-existing-widget-cover-the-use-case-you-need",
-      children: "Does an existing widget cover the use case you need?"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["Before creating a new reusable widget, make sure there isn't a widget you could use already.\nWhen designing a new reusable widget, ensure it is designed for all users.\nHere are some questions you can use to help include all users: how will people perceive, operate, and understand this widget? Will the widget use standards proven technology.\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://wiki.mozilla.org/Accessibility/Guidelines#General_Considerations",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Please refer to the \"General Considerations\" section of the Mozilla Accessibility Release Guidelines document"
-      }), " for more details to ensure your widget adheres to accessibility standards."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
-      id: "supporting-widget-use-in-different-processes",
-      children: "Supporting widget use in different processes"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["A newly designed widget may need to work in the parent process, the content process, or both depending on your use case.\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://firefox-source-docs.mozilla.org/dom/ipc/process_model.html",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "See the Process Model document for more information about these different processes"
-      }), ".\nYou will likely be using your widget in a privileged process (such as the parent or privileged content) with access to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "Services"
-      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "XPCOMUtils"
-      }), ", and other globals.\nStorybook and other web content do not have access to these privileged globals, so you will need to write workarounds for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "Services"
-      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "XPCOMUtils"
-      }), ", chrome URIs for CSS files and assets, etc.\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/search?q=moz-support-link&path=&case=false&regexp=false",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: ["Check out moz-support-link.mjs and moz-support-link.stories.mjs for an example of a widget being used in the parent/chrome and needing to handle ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-          children: "XPCOMUtils"
-        }), " in Storybook"]
-      }), ".\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-toggle/moz-toggle.mjs",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "See moz-toggle.mjs for handling chrome URIs for CSS in Storybook"
-      }), ".\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-label/moz-label.mjs",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: ["See moz-label.mjs for an example of handling ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-          children: "Services"
-        }), " in Storybook"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
+      id: "panel-menu",
+      children: "Panel Menu"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), " components work together to create a menu for\nin-content contexts. The basic structure is a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), "\nchildren and optional ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "hr"
+      }), " elements as separators. The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " will anchor\nitself to the target of the initiating event when opened with\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panelList.toggle(event)"
       }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
-      id: "autonomous-or-customized-built-in-custom-elements",
-      children: "Autonomous or Customized built-in Custom Elements"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["There are two types of custom elements, autonomous elements that extend ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "HTMLElement"
-      }), " and customized built-in elements that extend basic HTML elements.\nIf you use autonomous elements, you can use Shadow DOM and/or the Lit library.\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://github.com/lit/lit-element/issues/879",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Lit does not support customized built-in custom elements"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Note: XUL is currently required to\nsupport accesskey underlining (although using ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-label"
+      }), " could change that).\nShortcuts are not displayed automatically in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
       }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["In some cases, you may want to provide some functionality on top of a built-in HTML element, ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/3563da061ca2b32f7f77f5f68088dbf9b5332a9f/toolkit/content/widgets/moz-support-link/moz-support-link.mjs#83-89",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: ["like how ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-          children: "moz-support-link"
-        }), " prepares the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-          children: "href"
-        }), " value for anchor elements"]
-      }), ".\nIn other cases, you may want to focus on creating markup and reacting to changes on the element.\nThis is where Lit can be useful for declaritively defining the markup and reacting to changes when attributes are updated."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
-      id: "how-will-developers-use-your-widget",
-      children: "How will developers use your widget?"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["What does the interface to your widget look like?\nDo you expect developers to use reactive attributes or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_templates_and_slots#adding_flexibility_with_slots",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "slots"
-      }), "?\nIf there are many ways to accomplish the same end result, this could result in future confusion and increase the maintainance cost."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "You should write stories for your widget to demonstrate how it can be used.\nThese stories can be used as guides for new use cases that may appear in the future.\nThis can also help draw the line for the responsibilities of your widget."
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
-      id: "adding-new-design-system-components",
-      children: "Adding new design system components"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["We have a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "./mach addwidget"
-      }), " scaffold command to make it easier to create new\nreusable components and hook them up to Storybook. Currently this command can\nonly be used to add a new Lit based web component to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "toolkit/content/widgets"
-      }), ".\nIn the future we may expand it to support options for creating components\nwithout using Lit and for adding components to different directories.\nSee ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1803677",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Bug 1803677"
-      }), " for more details on these future use cases."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "To create a new component, you run:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-sh",
-        children: "# Component names should be in kebab-case and contain at least 1 -.\n./mach addwidget component-name\n"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><panel-list stay-open open><panel-item action=\"new\" accesskey=\"N\">{\"New\"}</panel-item><panel-item accesskey=\"O\">{\"Open\"}</panel-item><hr /><panel-item action=\"save\" accesskey=\"S\">{\"Save\"}</panel-item><hr /><panel-item accesskey=\"Q\">{\"Quit\"}</panel-item></panel-list></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("panel-list", {
+          "stay-open": true,
+          open: true,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            action: "new",
+            accesskey: "N",
+            children: "New"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            accesskey: "O",
+            children: "Open"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            action: "save",
+            accesskey: "S",
+            children: "Save"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("hr", {}), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            accesskey: "Q",
+            children: "Quit"
+          })]
+        })
       })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "The scaffold command will generate the following files:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-sh",
-        children: "└── toolkit\n    └── content\n        ├── tests\n        │   └── widgets\n        │       └── test_component_name.html # chrome test\n        └── widgets\n            └── component-name # new folder for component code\n                ├── component-name.css # component specific CSS\n                ├── component-name.mjs # Lit based component\n                └── component-name.stories.mjs # component stories\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["It will also make modifications to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "toolkit/content/jar.mn"
-      }), " to add ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "chrome://"
-      }), "\nURLs for the new files, and to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "toolkit/content/tests/widgets/chrome.ini"
-      }), " to\nenable running the newly added test."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "After running the scaffold command you can start Storybook and you will see\nplaceholder content that has been generated for your component. You can then\nstart altering the generated files and see your changes reflected in Storybook."
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.h3, {
-      id: "known-browser_all_files_referencedjs-issue",
-      children: ["Known ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "browser_all_files_referenced.js"
-      }), " issue"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["Unfortunately for now ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/base/content/test/static/browser_all_files_referenced.js",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "the\nbrowser_all_files_referenced.js test"
-      }), "\nwill fail unless your new component is immediately used somewhere outside\nof Storybook. We have plans to fix this issue, ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1806002",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "see Bug 1806002 for more details"
-      }), ", but for now you can get around it\nby updating ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/5c922d8b93b43c18bf65539bfc72a30f84989003/browser/base/content/test/static/browser_all_files_referenced.js#113",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "this array"
-      }), " to include your new chrome filepath."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
-      id: "using-new-design-system-components",
-      children: "Using new design system components"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["Once you've added a new component to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "toolkit/content/widgets"
-      }), " and created\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "chrome://"
-      }), " URLs via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "toolkit/content/jar.mn"
-      }), " you should be able to start using it\nthroughout Firefox. In most cases, you should be able to rely on your custom element getting lazy loaded at the time of first use, provided you are working in a privileged context where ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "customElements.js"
-      }), " is available."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["You can import the component directly into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "html"
-      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "xhtml"
-      }), " files via a\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "script"
-      }), " tag with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "type=\"module\""
-      }), ":"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<script type=\"module\" src=\"chrome://global/content/elements/your-component-name.mjs\"></script>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.strong, {
-        children: "Note"
-      }), " you will need to add your new widget to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/cde3d4a8d228491e8b7f1bd94c63bbe039850696/toolkit/content/customElements.js#791-810",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "this array in customElements.js"
-      }), " to ensure it gets lazy loaded on creation."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
-      id: "common-pitfalls",
-      children: "Common pitfalls"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "If you're trying to use a reusable widget but nothing is appearing on the\npage it may be due to one of the following issues:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Omitting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "type=\"module\""
-          }), " in your ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "script"
-          }), " tag."]
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Wrong file path for the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "src"
-          }), " of your imported module."]
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Widget is not declared or incorrectly declared in the correct ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "jar.mn"
-          }), " file."]
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Not specifying the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "html:"
-          }), " namespace when using a custom HTML element in an\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "xhtml"
-          }), " file. For example the tag should look something like this:"]
-        }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            className: "language-html",
-            children: "<html:your-component-name></html:your-component-name>\n"
-          })
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Adding a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "script"
-          }), " tag to an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "inc.xhtml"
-          }), " file. For example when using a new\ncomponent in the privacy section of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "about:preferences"
-          }), " the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "script"
-          }), " tag needs\nto be added to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "preferences.xhtml"
-          }), " rather than to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "privacy.inc.xhtml"
-          }), "."]
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Trying to extend a built-in HTML element in Lit. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-            href: "https://github.com/lit/lit-element/issues/879#issuecomment-1061892879",
-            target: "_blank",
-            rel: "nofollow noopener noreferrer",
-            children: "Because Webkit never\nimplemented support for customized built-ins, Lit doesn't support it either."
-          }), "\nThat means if you want to do something like:"]
-        }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            className: "language-js",
-            children: "customElements.define(\"cool-button\", CoolButton, { extends: \"button\" });\n"
-          })
-        }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["you will need to make a vanilla custom element, you cannot use Lit.\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.a, {
-            href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-support-link/moz-support-link.mjs",
-            target: "_blank",
-            rel: "nofollow noopener noreferrer",
-            children: ["For an example of extending an HTML element, see ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-              children: "moz-support-link"
-            })]
-          }), "."]
-        }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "status",
+      children: "Status"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Current status is listed as in-development since this is only intended for use\nwithin in-content contexts. XUL is still required for accesskey underlining, but\ncould be migrated to use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-label"
+      }), " component. This is a useful but\nhistorical element that could likely use some attention at the API level and to\nbe brought up to our design systems standards."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-to-use",
+      children: "When to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "When there are multiple options for something that would take too\nmuch space with individual buttons."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "When the actions are not frequently needed."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "When you are within an in-content context."
       }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-not-to-use",
+      children: "When not to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "When there is only one action."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "When the actions are frequently needed."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["In the browser chrome, you probably want to use\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+          href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/menupopup.js",
+          target: "_blank",
+          rel: "nofollow noopener noreferrer",
+          children: "menupopup"
+        }), "\nor\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+          href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/panel.js",
+          target: "_blank",
+          rel: "nofollow noopener noreferrer",
+          children: "panel"
+        }), "\ninstead."]
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "basic-usage",
+      children: "Basic usage"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/panel-list.js",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "toolkit/content/widgets/panel-list.js"
+      }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html#87,102,114",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:addons"
+      }), "\nand the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/browser/components/migration/content/migration-dialog-window.html#18",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "migration-wizard"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " will automatically be imported in chrome documents, both through\nmarkup and through JS with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "document.createElement(\"panel-list\")"
+      }), " or by cloning\na template."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<!-- This will import `panel-list` if needed in most cases. -->\n<panel-list></panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["In non-chrome documents it can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".html"
+      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".xhtml"
+      }), " files:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<script src=\"chrome://global/content/elements/panel-list.js\"></script>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "And used as follows:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<panel-list>\n  <panel-item accesskey=\"N\">New</panel-item>\n  <panel-item accesskey=\"O\">Open</panel-item>\n  <hr />\n  <panel-item accesskey=\"S\">Save</panel-item>\n  <hr />\n  <panel-item accesskey=\"Q\">Quit</panel-item>\n</panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "toggle"
+      }), " method takes the event you received on your anchor button and opens\nthe menu attached to that element."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-js",
+        children: "anchorButton.addEventListener(\"mousedown\", e => panelList.toggle(e));\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Accesskeys are activated with the bare accesskey letter when the menu is opened.\nSo for this example after opening the menu pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "s"
+      }), " will fire a click event\non the Save ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Note: XUL is currently required for accesskey underlining, but can be ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.a, {
+        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1828741",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: ["replaced\nwith ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-label"
+        })]
+      }), " later."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "fluent-usage",
+      children: "Fluent usage"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), " expects to have text content set by fluent."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<panel-list>\n  <panel-item data-l10n-id=\"menu-new\"></panel-item>\n  <panel-item data-l10n-id=\"menu-save\"></panel-item>\n</panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "In which case your Fluent messages will look something like this:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "menu-new = New\n    .accesskey = N\nmenu-save = Save\n    .accesskey = S\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "advanced-usage",
+      children: "Advanced usage"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "showing-the-menu",
+      children: "Showing the menu"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["By default the menu will be hidden. It is shown when the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "open"
+      }), " attribute is\nset, but that won't position the menu by default."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["To trigger the auto-positioning of the menu, it should be opened or closed using\nthe ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "toggle(event)"
+      }), " method."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-js",
+        children: "function onMenuButton(event) {\n  document.querySelector(\"panel-list\").toggle(event);\n}\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "toggle(event)"
+      }), " method will use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "event.target"
+      }), " as the anchor for the menu."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["To achieve the expected behaviour, the menu should open on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "mousedown"
+      }), " for mouse\nevents, and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "click"
+      }), " for keyboard events. This can be accomplished by checking\nthe ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "event.inputSource"
+      }), " property in chrome contexts or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "event.detail"
+      }), " in\nnon-chrome contexts (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "event.detail"
+      }), " will be the click count which is ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "0"
+      }), " when a\nclick is from the keyboard)."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-js",
+        children: "function openMenu(event) {\n  if (\n    event.type == \"mousedown\" ||\n    event.inputSource == MouseEvent.MOZ_SOURCE_KEYBOARD ||\n    !event.detail\n  ) {\n    document.querySelector(\"panel-list\").toggle(event);\n  }\n}\n\nlet menuButton = document.getElementById(\"open-menu-button\");\nmenuButton.addEventListener(\"mousedown\", openMenu);\nmenuButton.addEventListener(\"click\", openMenu);\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "icons",
+      children: "Icons"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Icons can be added to the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), "s by setting a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "background-image"
+      }), " on\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item::part(button)"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-css",
+        children: "panel-item[action=\"new\"]::part(button) {\n  background-image: url(\"./new.svg\");\n}\n\npanel-item[action=\"save\"]::part(button) {\n  background-image: url(\"./save.svg\");\n}\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "badging",
+      children: "Badging"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Icons may be badged by setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "badged"
+      }), " attribute. This adds a dot next to\nthe icon."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<panel-list>\n  <panel-item action=\"new\">New</panel-item>\n  <panel-item action=\"save\" badged>Save</panel-item>\n</panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><panel-list stay-open open><panel-item action=\"new\">{\"New\"}</panel-item><panel-item action=\"save\" badged>{\"Save\"}</panel-item></panel-list></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("panel-list", {
+          "stay-open": true,
+          open: true,
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            action: "new",
+            children: "New"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("panel-item", {
+            action: "save",
+            badged: true,
+            children: "Save"
+          })]
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "matching-anchor-width",
+      children: "Matching anchor width"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["When using the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " like a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "select"
+      }), " dropdown, it's nice to have it match\nthe size of the anchor button. You can see this in practice in the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "?path=/story/ui-widgets-panel-list--wide",
+        children: "Wide variant"
+      }), " and the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "migration-wizard"
+      }), ". Setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "min-width-from-anchor"
+      }), " attribute will cause the\nmenu to match its anchor's width when it is opened."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<button class=\"current-selection\">Apples</button>\n<panel-list min-width-from-anchor>\n  <panel-item>Apples</panel-list>\n  <panel-item>Bananas</panel-list>\n</panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
+      id: "usage-in-a-xul-panel",
+      children: ["Usage in a XUL ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel"
+      })]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The \"new\" (as of early 2023) migration wizard uses the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " inside of a\nXUL ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel"
+      }), " element to let its contents escape its container dialog by creating\nan OS-level window. This can be useful if the menu could be larger than its\ncontainer, however in chrome contexts you are likely better off using\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "menupopup"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["By placing a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " inside of a XUL ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel"
+      }), " it will automatically defer\nits positioning responsibilities to the XUL ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel"
+      }), " and it will then be able to\ngrow larger than its containing window if needed."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<!-- Assuming we're in a XUL document. -->\n<panel>\n  <html:panel-list>\n    <html:panel-item>Apples</html:panel-item>\n    <html:panel-item>Apples</html:panel-item>\n    <html:panel-item>Apples</html:panel-item>\n  </html:panel-list>\n</panel>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "submenus",
+      children: "Submenus"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " supports nested submenus. Submenus can be created by nesting a second ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " in a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), "'s ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "submenu"
+      }), " slot and specifying a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "submenu"
+      }), " attribute on that ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-item"
+      }), " that points to the nested list's ID. For example:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<panel-list>\n  <panel-item>No submenu</panel-item>\n  <panel-item>No submenu</panel-item>\n  <panel-item submenu=\"example-submenu\">\n    Has a submenu\n    <panel-list slot=\"submenu\" id=\"example-submenu\">\n      <panel-item>I'm a submenu item!</panel-item>\n      <panel-item>I'm also a submenu item!</panel-item>\n    </panel-list>\n  </panel-item>\n</panel-list>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "As of February 2024 submenus are only in use in Firefox View and support for nesting beyond one submenu may be limited."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "args-table",
+      children: "Args Table"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
+      of: "panel-list"
     })]
   });
 }
@@ -1791,9 +2563,9 @@ function MDXContent(props = {}) {
   const {
     wrapper: MDXLayout
   } = Object.assign({}, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(MDXLayout, {
+  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(MDXLayout, {
     ...props,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_createMdxContent, {
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_createMdxContent, {
       ...props
     })
   }) : _createMdxContent(props);
@@ -1806,7 +2578,7 @@ __page.parameters = {
   docsOnly: true
 };
 const componentMeta = {
-  title: 'Docs/Reusable Widgets',
+  title: 'UI Widgets/Panel List/README',
   parameters: {
     previewTabs: {
       canvas: {
@@ -11505,7 +12277,23 @@ function useResizeObserver(opts) {
 
 
 
+/***/ }),
+
+/***/ 38732:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "panel-item.98d428cf11dad2e93843.css";
+
+/***/ }),
+
+/***/ 73326:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "panel-list.f6288da5b73816352518.css";
+
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-reusable-widgets-stories-md.53c0bca0.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.51091249.iframe.bundle.js.map
