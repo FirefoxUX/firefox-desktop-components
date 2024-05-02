@@ -118,8 +118,10 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   click() {
     this.buttonEl.click();
   }
-  checkForLabelText() {
-    this.hasVisibleLabel = this.slotEl.assignedNodes().some(node => node.textContent.trim());
+  handleSlotchange() {
+    if (this.slotEl?.assignedNodes()?.length) {
+      this.hasVisibleLabel = true;
+    }
   }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -139,7 +141,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     })}
       >
         ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <slot @slotchange=${this.checkForLabelText}>${this.label}</slot>
+        <slot @slotchange=${this.handleSlotchange}>${this.label}</slot>
       </button>
     `;
   }
@@ -611,4 +613,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.8fbdd847.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.fd8757b8.iframe.bundle.js.map
