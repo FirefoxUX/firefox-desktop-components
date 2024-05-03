@@ -999,7 +999,7 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
   }
   connectedCallback() {
     super.connectedCallback();
-    this.setAttribute("role", "status");
+    this.setAttribute("role", "alert");
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -11716,4 +11716,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.7ba87332.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-README-stories-md.626bea73.iframe.bundle.js.map

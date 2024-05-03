@@ -2452,7 +2452,7 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
   }
   connectedCallback() {
     super.connectedCallback();
-    this.setAttribute("role", "status");
+    this.setAttribute("role", "alert");
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -3210,4 +3210,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.ed47c4e5.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.940fea4a.iframe.bundle.js.map
