@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[3029],{
+
+/***/ 83029:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at https://mozilla.org/MPL/2.0/.\n\n\n# Text displayed in the right-click context menu for translating\n# selected text to a yet-to-be-determined language.\nmain-context-menu-translate-selection =\n    .label = Translate Selection…\n\n# Text displayed in the right-click context menu for translating\n# selected text to a target language.\n#\n# Variables:\n#   $language (string) - The localized display name of the target language\nmain-context-menu-translate-selection-to-language =\n    .label = Translate Selection to { $language }\n\n# Text displayed in the right-click context menu for translating\n# the text of a hyperlink to a yet-to-be-determined language.\nmain-context-menu-translate-link-text =\n    .label = Translate Link Text…\n\n# Text displayed in the right-click context menu for translating\n# the text of a hyperlink to a target language.\n#\n# Variables:\n#   $language (string) - The localized display name of the target language\nmain-context-menu-translate-link-text-to-language =\n    .label = Translate Link Text to { $language }\n\n# Text displayed in the select translations panel header.\nselect-translations-panel-header = Translation\n\n# Text displayed above the from-language dropdown menu.\nselect-translations-panel-from-label = From\n\n# Text displayed above the to-language dropdown menu.\nselect-translations-panel-to-label = To\n\n# Text displayed on the copy button.\nselect-translations-panel-copy-button = Copy\n\n# Text displayed on the done button.\nselect-translations-panel-done-button = Done\n\n# Text displayed on translate-full-page button.\nselect-translations-panel-translate-full-page-button = Translate full page\n\n# Text displayed as a placeholder when the panel is idle.\nselect-translations-panel-idle-placeholder-text = Translated text will appear here.\n\n# Text displayed as a placeholder when the panel is actively translating.\nselect-translations-panel-translating-placeholder-text = Translating…\n";
+
+/***/ })
+
+}]);
