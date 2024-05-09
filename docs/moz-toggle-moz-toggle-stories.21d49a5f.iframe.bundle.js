@@ -291,6 +291,10 @@ class MozSupportLink extends HTMLAnchorElement {
    */
   #register() {
     if (window.document.nodePrincipal?.isSystemPrincipal) {
+      ChromeUtils.defineESModuleGetters(MozSupportLink, {
+        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
+      });
+
       // eslint-disable-next-line no-shadow
       let {
         XPCOMUtils
@@ -316,7 +320,7 @@ class MozSupportLink extends HTMLAnchorElement {
   handleEvent(e) {
     if (e.type == "click") {
       if (window.openTrustedLinkIn) {
-        let where = whereToOpenLink(e, false, true);
+        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
         if (where == "current") {
           where = "tab";
         }
@@ -645,4 +649,4 @@ module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.c8b062b7.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.21d49a5f.iframe.bundle.js.map

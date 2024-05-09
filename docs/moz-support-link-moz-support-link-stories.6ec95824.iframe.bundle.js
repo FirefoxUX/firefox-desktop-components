@@ -40,6 +40,10 @@ class MozSupportLink extends HTMLAnchorElement {
    */
   #register() {
     if (window.document.nodePrincipal?.isSystemPrincipal) {
+      ChromeUtils.defineESModuleGetters(MozSupportLink, {
+        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
+      });
+
       // eslint-disable-next-line no-shadow
       let {
         XPCOMUtils
@@ -65,7 +69,7 @@ class MozSupportLink extends HTMLAnchorElement {
   handleEvent(e) {
     if (e.type == "click") {
       if (window.openTrustedLinkIn) {
-        let where = whereToOpenLink(e, false, true);
+        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
         if (where == "current") {
           where = "tab";
         }
@@ -192,4 +196,4 @@ withFluentId.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-support-link-moz-support-link-stories.08665cd1.iframe.bundle.js.map
+//# sourceMappingURL=moz-support-link-moz-support-link-stories.6ec95824.iframe.bundle.js.map
