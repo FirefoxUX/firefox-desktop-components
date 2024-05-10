@@ -54,7 +54,6 @@ if (!window.IS_STORYBOOK) {
  * @property {number} maxTabsLength - The max number of tabs for the list
  * @property {Array} tabItems - Items to show in the tab list
  * @property {string} searchQuery - The query string to highlight, if provided.
- * @property {string} searchInProgress - Whether a search has been initiated.
  * @property {string} secondaryActionClass - The class used to style the secondary action element
  * @property {string} tertiaryActionClass - The class used to style the tertiary action element
  */
@@ -70,7 +69,6 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.maxTabsLength = 25;
     this.tabItems = [];
     this.compactRows = false;
-    this.searchInProgress = false;
     this.updatesPaused = true;
     this.#register();
   }
@@ -102,9 +100,6 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     searchQuery: {
       type: String
     },
-    searchInProgress: {
-      type: Boolean
-    },
     secondaryActionClass: {
       type: String
     },
@@ -113,6 +108,7 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }
   };
   static queries = {
+    emptyState: "fxview-empty-state",
     rowEls: {
       all: "fxview-tab-row"
     },
@@ -297,7 +293,7 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     />`;
   }
   render() {
-    if (this.searchQuery && this.tabItems.length === 0 && !this.searchInProgress) {
+    if (this.searchQuery && !this.tabItems.length) {
       return this.emptySearchResultsTemplate();
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
@@ -1271,4 +1267,4 @@ module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.0b6daddb.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.c680a1a5.iframe.bundle.js.map
