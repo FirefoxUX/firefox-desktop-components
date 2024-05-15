@@ -87,6 +87,7 @@ class MozSlider extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       let tickList = [];
       let value = this.min;
       let stepSize = this.getStepSize();
+      let className = "";
       for (let i = 0; i < this.ticks; i++) {
         let optionId = "";
         let label = "";
@@ -98,6 +99,8 @@ class MozSlider extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             optionId = "inline-end-label";
             label = this.tickLabels[1];
           }
+        } else {
+          className = "no-tick-labels";
         }
         tickList.push(chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<option
             id=${optionId}
@@ -106,7 +109,9 @@ class MozSlider extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
           ></option>`);
         value += stepSize;
       }
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <datalist id="slider-ticks">${tickList}</datalist> `;
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+        <datalist id="slider-ticks" class=${className}>${tickList}</datalist>
+      `;
     }
     return "";
   }
@@ -123,9 +128,9 @@ class MozSlider extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
         href="${toolkit_components_reader_moz_slider_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="container">
+        <label class="slider-label" for="inputSlider">${this.label}</label>
         ${this.setupIcon()}
         <div class="slider-container">
-          <label class="slider-label" for="inputSlider">${this.label}</label>
           <input
             id="inputSlider"
             max=${this.max}
@@ -208,9 +213,9 @@ Default.args = {
 /***/ 38924:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-slider.c1a3728668f23ce9145c.css";
+module.exports = __webpack_require__.p + "moz-slider.778e481cb08524067aab.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-slider-stories.6413a59f.iframe.bundle.js.map
+//# sourceMappingURL=moz-slider-stories.38eef353.iframe.bundle.js.map

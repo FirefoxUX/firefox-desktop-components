@@ -283,9 +283,9 @@ IconText.args = {
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
+module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-moz-button-stories.6d62a05d.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-moz-button-stories.66a55323.iframe.bundle.js.map

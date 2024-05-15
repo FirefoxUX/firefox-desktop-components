@@ -672,7 +672,7 @@ module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
+module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 
 /***/ }),
 
@@ -684,4 +684,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-message-bar-stories.389a311b.iframe.bundle.js.map
+//# sourceMappingURL=shopping-message-bar-stories.5000660a.iframe.bundle.js.map

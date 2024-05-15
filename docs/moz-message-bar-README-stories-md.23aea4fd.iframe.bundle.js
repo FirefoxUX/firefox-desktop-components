@@ -11701,7 +11701,7 @@ function useResizeObserver(opts) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
+module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 
 /***/ }),
 
@@ -11714,4 +11714,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.f56cee7b.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-README-stories-md.23aea4fd.iframe.bundle.js.map

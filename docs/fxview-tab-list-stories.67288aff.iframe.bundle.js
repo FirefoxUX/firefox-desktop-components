@@ -1262,9 +1262,9 @@ module.exports = __webpack_require__.p + "fxview-tab-row.0ce8377734774925c278.cs
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
+module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.c680a1a5.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.67288aff.iframe.bundle.js.map

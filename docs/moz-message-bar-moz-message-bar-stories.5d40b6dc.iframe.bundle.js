@@ -603,7 +603,7 @@ function formatUTMParams(contentAttribute, url) {
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.d6b64fd1e1ad2d134414.css";
+module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 
 /***/ }),
 
@@ -615,4 +615,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.a29152a2.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.5d40b6dc.iframe.bundle.js.map
