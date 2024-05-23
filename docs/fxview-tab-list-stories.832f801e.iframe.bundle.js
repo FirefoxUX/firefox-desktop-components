@@ -1006,6 +1006,10 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     this.disabled = false;
     this.hasVisibleLabel = !!this.label;
   }
+  connectedCallback() {
+    super.connectedCallback();
+    this.dataset.l10nAttrs = "label";
+  }
   willUpdate(changes) {
     if (changes.has("titleAttribute")) {
       this.title = this.titleAttribute;
@@ -1023,6 +1027,12 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   }
   checkForLabelText() {
     this.hasVisibleLabel = this.slotEl.assignedNodes().some(node => node.textContent.trim());
+  }
+  labelTemplate() {
+    if (this.label) {
+      return this.label;
+    }
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot @slotchange=${this.checkForLabelText}></slot>`;
   }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -1042,7 +1052,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     })}
       >
         ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <slot @slotchange=${this.checkForLabelText}>${this.label}</slot>
+        ${this.labelTemplate()}
       </button>
     `;
   }
@@ -1266,4 +1276,4 @@ module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.27a0acaa.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.832f801e.iframe.bundle.js.map
