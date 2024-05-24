@@ -24,6 +24,7 @@ jobs:
           git-cinnabar --version
           cd ..
           git clone hg::https://hg.mozilla.org/mozilla-unified gecko && cd gecko
+          git log -1 --format='%H'
           ./mach --no-interactive bootstrap
           ./mach --no-interactive build
           ./mach storybook build
