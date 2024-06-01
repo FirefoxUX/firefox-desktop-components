@@ -37,6 +37,9 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     label: {
       type: String
     },
+    iconSrc: {
+      type: String
+    },
     checked: {
       type: Boolean,
       reflect: true
@@ -49,7 +52,8 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   static get queries() {
     return {
       checkboxEl: "#moz-checkbox",
-      labelEl: "label"
+      labelEl: "label",
+      icon: ".icon"
     };
   }
   constructor() {
@@ -86,6 +90,12 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     let newEvent = new Event(event.type, event);
     this.dispatchEvent(newEvent);
   }
+  iconTemplate() {
+    if (this.iconSrc) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" class="icon" />`;
+    }
+    return "";
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -101,7 +111,10 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
           @change=${this.redispatchEvent}
           .disabled=${this.disabled}
         />
-        ${this.label}
+        <span class="label-content">
+          ${this.iconTemplate()}
+          <span class="text">${this.label}</span>
+        </span>
       </label>
     `;
   }
@@ -118,6 +131,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "CheckedByDefault": () => (/* binding */ CheckedByDefault),
 /* harmony export */   "Default": () => (/* binding */ Default),
 /* harmony export */   "Disabled": () => (/* binding */ Disabled),
+/* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -144,13 +158,15 @@ const Template = ({
   l10nId,
   checked,
   label,
-  disabled
+  disabled,
+  iconSrc
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-checkbox
     ?checked=${checked}
     .label=${label}
     data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
     data-l10n-attrs="label"
+    .iconSrc=${iconSrc}
     ?disabled=${disabled}
   ></moz-checkbox>
 `;
@@ -159,7 +175,13 @@ Default.args = {
   l10nId: "moz-checkbox-label",
   checked: false,
   label: "",
-  disabled: false
+  disabled: false,
+  iconSrc: ""
+};
+const WithIcon = Template.bind({});
+WithIcon.args = {
+  ...Default.args,
+  iconSrc: "chrome://global/skin/icons/highlights.svg"
 };
 const CheckedByDefault = Template.bind({});
 CheckedByDefault.args = {
@@ -428,7 +450,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 95412:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-checkbox.277e450241241490bc0d.css";
+module.exports = __webpack_require__.p + "moz-checkbox.82fa879bc70a449723a2.css";
 
 /***/ }),
 
@@ -440,4 +462,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.33fee014.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.0ad375a5.iframe.bundle.js.map

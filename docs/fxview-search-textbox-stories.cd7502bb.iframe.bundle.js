@@ -1,40 +1,6 @@
 "use strict";
 (self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[273],{
 
-/***/ 25067:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ADDON_ID": () => (/* binding */ ADDON_ID),
-/* harmony export */   "CLEAR_ID": () => (/* binding */ CLEAR_ID),
-/* harmony export */   "CYCLIC_KEY": () => (/* binding */ CYCLIC_KEY),
-/* harmony export */   "EVENT_ID": () => (/* binding */ EVENT_ID),
-/* harmony export */   "PANEL_ID": () => (/* binding */ PANEL_ID),
-/* harmony export */   "PARAM_KEY": () => (/* binding */ PARAM_KEY),
-/* harmony export */   "action": () => (/* binding */ action),
-/* harmony export */   "actions": () => (/* binding */ actions),
-/* harmony export */   "config": () => (/* binding */ config),
-/* harmony export */   "configureActions": () => (/* binding */ configureActions)
-/* harmony export */ });
-/* harmony import */ var uuid__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48422);
-/* harmony import */ var _storybook_preview_api__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(59149);
-/* harmony import */ var _storybook_preview_api__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_storybook_preview_api__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _storybook_global__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(37279);
-/* harmony import */ var _storybook_global__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(_storybook_global__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _storybook_core_events_preview_errors__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(33149);
-
-
-
-
-
-var PARAM_KEY="actions",ADDON_ID="storybook/actions",PANEL_ID=`${ADDON_ID}/panel`,EVENT_ID=`${ADDON_ID}/action-event`,CLEAR_ID=`${ADDON_ID}/action-clear`,CYCLIC_KEY="$___storybook.isCyclic";var config={depth:10,clearOnStoryChange:!0,limit:50},configureActions=(options={})=>{Object.assign(config,options);};var findProto=(obj,callback)=>{let proto=Object.getPrototypeOf(obj);return !proto||callback(proto)?proto:findProto(proto,callback)},isReactSyntheticEvent=e=>!!(typeof e=="object"&&e&&findProto(e,proto=>/^Synthetic(?:Base)?Event$/.test(proto.constructor.name))&&typeof e.persist=="function"),serializeArg=a=>{if(isReactSyntheticEvent(a)){let e=Object.create(a.constructor.prototype,Object.getOwnPropertyDescriptors(a));e.persist();let viewDescriptor=Object.getOwnPropertyDescriptor(e,"view"),view=viewDescriptor?.value;return typeof view=="object"&&view?.constructor.name==="Window"&&Object.defineProperty(e,"view",{...viewDescriptor,value:Object.create(view.constructor.prototype)}),e}return a},generateId=()=>typeof crypto=="object"&&typeof crypto.getRandomValues=="function"?(0,uuid__WEBPACK_IMPORTED_MODULE_0__.v4)():Date.now().toString(36)+Math.random().toString(36).substring(2);function action(name,options={}){let actionOptions={...config,...options},handler=function(...args){if(options.implicit){let storyRenderer=("__STORYBOOK_PREVIEW__" in _storybook_global__WEBPACK_IMPORTED_MODULE_2__.global?_storybook_global__WEBPACK_IMPORTED_MODULE_2__.global.__STORYBOOK_PREVIEW__:void 0)?.storyRenders.find(render=>render.phase==="playing"||render.phase==="rendering");if(storyRenderer){let deprecated=!window?.FEATURES?.disallowImplicitActionsInRenderV8,error=new _storybook_core_events_preview_errors__WEBPACK_IMPORTED_MODULE_3__.ImplicitActionsDuringRendering({phase:storyRenderer.phase,name,deprecated});if(deprecated)console.warn(error);else throw error}}let channel=_storybook_preview_api__WEBPACK_IMPORTED_MODULE_1__.addons.getChannel(),id=generateId(),minDepth=5,serializedArgs=args.map(serializeArg),normalizedArgs=args.length>1?serializedArgs:serializedArgs[0],actionDisplayToEmit={id,count:0,data:{name,args:normalizedArgs},options:{...actionOptions,maxDepth:minDepth+(actionOptions.depth||3),allowFunction:actionOptions.allowFunction||!1}};channel.emit(EVENT_ID,actionDisplayToEmit);};return handler.isAction=!0,handler}var actions=(...args)=>{let options=config,names=args;names.length===1&&Array.isArray(names[0])&&([names]=names),names.length!==1&&typeof names[names.length-1]!="string"&&(options={...config,...names.pop()});let namesObject=names[0];(names.length!==1||typeof namesObject=="string")&&(namesObject={},names.forEach(name=>{namesObject[name]=name;}));let actionsObject={};return Object.keys(namesObject).forEach(name=>{actionsObject[name]=action(namesObject[name],options);}),actionsObject};
-
-
-
-
-/***/ }),
-
 /***/ 90430:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -254,4 +220,4 @@ module.exports = __webpack_require__.p + "fxview-search-textbox.7d089b33a0a9fa74
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-search-textbox-stories.5fb3c074.iframe.bundle.js.map
+//# sourceMappingURL=fxview-search-textbox-stories.cd7502bb.iframe.bundle.js.map
