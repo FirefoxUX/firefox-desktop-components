@@ -271,9 +271,9 @@ CardWithHeadingIcon.args = {
 /***/ 48058:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-card.a11b60fd25ab6480bd49.css";
+module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-card-moz-card-stories.6d86210d.iframe.bundle.js.map
+//# sourceMappingURL=moz-card-moz-card-stories.2b0b3312.iframe.bundle.js.map
