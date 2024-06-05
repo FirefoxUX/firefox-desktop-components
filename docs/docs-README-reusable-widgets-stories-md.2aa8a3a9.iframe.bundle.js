@@ -1685,9 +1685,18 @@ function _createMdxContent(props) {
         children: "chrome://"
       }), " URLs via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "toolkit/content/jar.mn"
-      }), " you should be able to start using it\nthroughout Firefox. In most cases, you should be able to rely on your custom element getting lazy loaded at the time of first use, provided you are working in a privileged context where ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+      }), " you should be able to start using it\nthroughout Firefox. In most cases, you should be able to rely on your custom\nelement getting lazy loaded at the time of first use, provided you are working\nin a privileged context where ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "customElements.js"
       }), " is available."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.strong, {
+        children: "Note"
+      }), " Since ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1896837",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "bug 1896837"
+      }), "\nlazy loaded UI widgets are loaded at the DOMContentLoaded event. Please notify\nthe Reusable Components team if you see weirdness due to this."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["You can import the component directly into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "html"
@@ -11515,4 +11524,4 @@ function useResizeObserver(opts) {
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-reusable-widgets-stories-md.99656e4f.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-reusable-widgets-stories-md.2aa8a3a9.iframe.bundle.js.map
