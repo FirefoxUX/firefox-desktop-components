@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7033],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5604],{
 
 /***/ 58825:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -252,7 +252,7 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 48960:
+/***/ 75295:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -260,8 +260,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "MozRadio": () => (/* binding */ MozRadio),
 /* harmony export */   "MozRadioGroup": () => (/* binding */ MozRadioGroup)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_radio_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(50463);
-/* harmony import */ var toolkit_content_widgets_moz_radio_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36009);
+/* harmony import */ var toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(73681);
+/* harmony import */ var toolkit_content_widgets_moz_radio_group_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25286);
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
 /* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
 /* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(58825);
@@ -299,6 +299,7 @@ const NAVIGATION_DIRECTIONS = {
  * as a single form-control element.
  *
  * @tagname moz-radio-group
+ * @property {boolean} disabled - Whether or not the fieldset is disabled.
  * @property {string} label - Label for the group of moz-radio elements.
  * @property {string} name
  *  Input name of the radio group. Propagates to moz-radio children.
@@ -311,6 +312,10 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   #radioButtons = [];
   #value;
   static properties = {
+    disabled: {
+      type: Boolean,
+      reflect: true
+    },
     label: {
       type: String
     },
@@ -320,27 +325,28 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   };
   static queries = {
     defaultSlot: "slot:not([name])",
+    fieldset: "fieldset",
     legend: "legend"
   };
   set value(newValue) {
     this.#value = newValue;
-    let focusableIndex = this.focusableIndex;
-    this.#radioButtons.forEach((button, index) => {
+    this.#radioButtons.forEach(button => {
       button.checked = this.value === button.value;
-      button.inputTabIndex = focusableIndex === index ? 0 : -1;
     });
+    this.syncFocusState();
   }
   get value() {
     return this.#value;
   }
   get focusableIndex() {
     if (!this.#value) {
-      return 0;
+      return this.#radioButtons.findIndex(button => !button.disabled);
     }
-    return this.#radioButtons.findIndex(button => button.value === this.#value);
+    return this.#radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
   }
   constructor() {
     super();
+    this.disabled = false;
     this.addEventListener("keydown", e => this.handleKeydown(e));
   }
   connectedCallback() {
@@ -356,12 +362,17 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   }
   syncStateToRadioButtons() {
     this.#radioButtons = this.defaultSlot?.assignedElements().filter(el => el.localName === "moz-radio");
-    let focusableIndex = this.focusableIndex;
-    this.#radioButtons.forEach((button, index) => {
+    this.#radioButtons.forEach(button => {
       if (button.checked && this.value == undefined) {
         this.value = button.value;
       }
       button.name = this.name;
+    });
+    this.syncFocusState();
+  }
+  syncFocusState() {
+    let focusableIndex = this.focusableIndex;
+    this.#radioButtons.forEach((button, index) => {
       button.inputTabIndex = focusableIndex === index ? 0 : -1;
     });
   }
@@ -404,18 +415,24 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
     return document.dir === "rtl";
   }
   navigate(direction) {
-    let nextIndex = this.focusableIndex + NAVIGATION_VALUE[direction];
-    if (nextIndex < 0) {
-      nextIndex = this.#radioButtons.length - 1;
-    } else if (nextIndex >= this.#radioButtons.length) {
-      nextIndex = 0;
+    let currentIndex = this.focusableIndex;
+    let indexStep = this.#radioButtons.length + NAVIGATION_VALUE[direction];
+    for (let i = 1; i < this.#radioButtons.length; i++) {
+      let nextIndex = (currentIndex + indexStep * i) % this.#radioButtons.length;
+      if (!this.#radioButtons[nextIndex].disabled) {
+        this.#radioButtons[nextIndex].click();
+        return;
+      }
     }
-    let nextButton = this.#radioButtons[nextIndex];
-    nextButton.click();
   }
   willUpdate(changedProperties) {
     if (changedProperties.has("name")) {
       this.handleSetName();
+    }
+    if (changedProperties.has("disabled")) {
+      this.#radioButtons.forEach(button => {
+        button.requestUpdate();
+      });
     }
   }
   handleSetName() {
@@ -433,9 +450,9 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_content_widgets_moz_radio_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__}"
+        href="${toolkit_content_widgets_moz_radio_group_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
-      <fieldset role="radiogroup">
+      <fieldset role="radiogroup" ?disabled=${this.disabled}>
         <legend class="heading-medium">${this.label}</legend>
         <slot
           @slotchange=${this.syncStateToRadioButtons}
@@ -452,6 +469,7 @@ customElements.define("moz-radio-group", MozRadioGroup);
  *
  * @tagname moz-radio
  * @property {boolean} checked - Whether or not the input is selected.
+ * @property {boolean} disabled - Whether or not the input is disabled.
  * @property {string} label - Label for the radio input.
  * @property {string} name
  *  Name of the input control, set by the associated moz-radio-group element.
@@ -462,6 +480,10 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
   #controller;
   static properties = {
     checked: {
+      type: Boolean,
+      reflect: true
+    },
+    disabled: {
       type: Boolean,
       reflect: true
     },
@@ -491,6 +513,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
   constructor() {
     super();
     this.checked = false;
+    this.disabled = false;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -510,6 +533,15 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
     // the value of the associated moz-radio-group needs to be un-set.
     if (changedProperties.has("checked") && !this.checked && this.#controller.value && this.value === this.#controller.value) {
       this.#controller.value = "";
+    }
+    if (changedProperties.has("disabled")) {
+      // Prevent enabling a radio button if containing radio-group is disabled.
+      if (this.disabled === false && this.#controller.disabled) {
+        this.disabled = true;
+      } else if (this.checked || !this.#controller.value) {
+        // Update buttons via moz-radio-group for proper keyboard nav behavior.
+        this.#controller.syncFocusState();
+      }
     }
   }
   handleClick() {
@@ -542,7 +574,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_content_widgets_moz_radio_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <label is="moz-label" for="radio-button">
         <input
@@ -553,6 +585,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
           .checked=${this.checked}
           aria-checked=${this.checked}
           tabindex=${this.inputTabIndex}
+          ?disabled=${this.disabled || this.#controller.disabled}
           @click=${this.handleClick}
           @change=${this.handleChange}
         />
@@ -568,27 +601,39 @@ customElements.define("moz-radio", MozRadio);
 
 /***/ }),
 
-/***/ 65727:
+/***/ 44134:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "AllUnchecked": () => (/* binding */ AllUnchecked),
 /* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "DisabledRadioButton": () => (/* binding */ DisabledRadioButton),
+/* harmony export */   "DisabledRadioGroup": () => (/* binding */ DisabledRadioGroup),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _moz_radio_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48960);
+/* harmony import */ var _moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(75295);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
+let greetings = ["hello", "howdy", "hola"];
+let icons = ["chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/delete.svg", "chrome://global/skin/icons/defaultFavicon.svg"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Radio",
-  component: "moz-radio",
+  title: "UI Widgets/Radio Group",
+  component: "moz-radio-group",
+  argTypes: {
+    disabledButtons: {
+      options: greetings,
+      control: {
+        type: "check"
+      }
+    }
+  },
   parameters: {
     actions: {
       handles: ["click", "input", "change"]
@@ -606,18 +651,23 @@ moz-radio-group =
     `
   }
 });
-let greetings = ["hello", "howdy", "hola"];
-let icons = ["chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/delete.svg", "chrome://global/skin/icons/defaultFavicon.svg"];
 const Template = ({
   groupL10nId = "moz-radio-group",
   groupName,
   unchecked,
-  showIcons
+  showIcons,
+  disabled,
+  disabledButtons
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <moz-radio-group name=${groupName} data-l10n-id=${groupL10nId}>
+  <moz-radio-group
+    name=${groupName}
+    data-l10n-id=${groupL10nId}
+    ?disabled=${disabled}
+  >
     ${greetings.map((greeting, i) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
         <moz-radio
           ?checked=${i == 0 && !unchecked}
+          ?disabled=${disabledButtons.includes(greeting)}
           value=${greeting}
           data-l10n-id=${`moz-radio-${i}`}
           iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showIcons ? icons[i] : "")}
@@ -627,19 +677,32 @@ const Template = ({
 `;
 const Default = Template.bind({});
 Default.args = {
+  label: "",
   groupName: "greeting",
   unchecked: false,
-  showIcons: false
+  showIcons: false,
+  disabled: false,
+  disabledButtons: []
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
-  groupName: "greeting",
+  ...Default.args,
   unchecked: true
 };
 const WithIcon = Template.bind({});
 WithIcon.args = {
   ...Default.args,
   showIcons: true
+};
+const DisabledRadioGroup = Template.bind({});
+DisabledRadioGroup.args = {
+  ...Default.args,
+  disabled: true
+};
+const DisabledRadioButton = Template.bind({});
+DisabledRadioButton.args = {
+  ...Default.args,
+  disabledButtons: ["hello"]
 };
 
 /***/ }),
@@ -651,14 +714,14 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
 /***/ }),
 
-/***/ 36009:
+/***/ 25286:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-radio-group.bdfe9818aabd09a5c9d8.css";
 
 /***/ }),
 
-/***/ 50463:
+/***/ 73681:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-radio.52ba4fda1399c2f5cca8.css";
@@ -666,4 +729,4 @@ module.exports = __webpack_require__.p + "moz-radio.52ba4fda1399c2f5cca8.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-moz-radio-stories.ffa6a8d1.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.32d1c54d.iframe.bundle.js.map
