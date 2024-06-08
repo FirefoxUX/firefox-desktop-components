@@ -165,6 +165,7 @@ class MigrationWizard extends HTMLElement {
   #resourceSummary = null;
   #expandedDetails = false;
   #extensionsSuccessLink = null;
+  #supportTextLinks = null;
   static get markup() {
     return `
       <template>
@@ -464,6 +465,8 @@ class MigrationWizard extends HTMLElement {
     this.#safariPasswordImportSelectButton.addEventListener("click", this);
     this.#extensionsSuccessLink = shadow.querySelector("#extensions-success-link");
     this.#extensionsSuccessLink.addEventListener("click", this);
+    this.#supportTextLinks = shadow.querySelectorAll(".support-text");
+    this.#supportTextLinks.forEach(link => link.addEventListener("click", this));
     this.#shadowRoot = shadow;
   }
   connectedCallback() {
@@ -1320,6 +1323,18 @@ class MigrationWizard extends HTMLElement {
     } else if (event.target == this.#extensionsSuccessLink) {
       this.dispatchEvent(new CustomEvent("MigrationWizard:OpenAboutAddons", {
         bubbles: true
+      }));
+      event.preventDefault();
+    } else if ([...this.#supportTextLinks].includes(event.target) && this.hasAttribute("in-aboutwelcome-bundle")) {
+      // When we're running in the context of a spotlight
+      // the click events for standard anchors are being gobbled up by spotlight,
+      // so we're also firing a custom event to handle those clicks when in that context
+      this.dispatchEvent(new CustomEvent("MigrationWizard:OpenURL", {
+        bubbles: true,
+        detail: {
+          url: event.target.href,
+          where: "tabshifted"
+        }
       }));
       event.preventDefault();
     } else if (event.target == this.#getPermissionsButton) {
@@ -3119,4 +3134,4 @@ module.exports = __webpack_require__.p + "panel-list.f6288da5b73816352518.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.2e0b1c0c.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.365687fd.iframe.bundle.js.map
