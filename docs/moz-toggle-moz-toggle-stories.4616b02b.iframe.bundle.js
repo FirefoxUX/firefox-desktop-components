@@ -409,6 +409,10 @@ __webpack_require__.r(__webpack_exports__);
  *  Custom event indicating that the toggle's pressed state has changed.
  */
 class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static shadowRootOptions = {
+    ..._lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
   static properties = {
     pressed: {
       type: Boolean,
@@ -456,11 +460,6 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   // Delegate clicks on the host to the input element
   click() {
     this.buttonEl.click();
-  }
-
-  // Delegate focus to the input element
-  focus() {
-    this.buttonEl.focus();
   }
   descriptionTemplate() {
     if (this.description) {
@@ -649,4 +648,4 @@ module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.54b586ff.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.4616b02b.iframe.bundle.js.map
