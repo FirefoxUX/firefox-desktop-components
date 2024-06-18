@@ -51,7 +51,7 @@ class AdjustedRating extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         ></moz-five-star>
         <div slot="content">
           <span
-            data-l10n-id="shopping-adjusted-rating-unreliable-reviews"
+            data-l10n-id="shopping-adjusted-rating-based-reliable-reviews"
           ></span>
         </div>
       </shopping-card>
@@ -3218,4 +3218,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.f5388f87.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.0f966269.iframe.bundle.js.map
