@@ -11,7 +11,6 @@ input {
   min-height: var(--radio-size);
   min-width: var(--radio-size);
   flex-shrink: 0;
-  font-family: inherit;
 }
 
 input,

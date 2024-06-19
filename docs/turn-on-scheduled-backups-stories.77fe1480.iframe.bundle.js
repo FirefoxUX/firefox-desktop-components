@@ -24,34 +24,11 @@ __webpack_require__.r(__webpack_exports__);
  * scheduled backups.
  */
 class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #placeholderIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
-    defaultIconURL: {
-      type: String,
-      reflect: true
-    },
-    defaultLabel: {
-      type: String,
-      reflect: true
-    },
-    defaultPath: {
-      type: String,
-      reflect: true
-    },
-    _newIconURL: {
-      type: String
-    },
-    _newLabel: {
-      type: String
-    },
-    _newPath: {
+    backupFilePath: {
       type: String
     },
     showPasswordOptions: {
-      type: Boolean,
-      reflect: true
-    },
-    passwordsMatch: {
       type: Boolean,
       reflect: true
     }
@@ -60,25 +37,15 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     return {
       cancelButtonEl: "#backup-turn-on-scheduled-cancel-button",
       confirmButtonEl: "#backup-turn-on-scheduled-confirm-button",
-      filePathButtonEl: "#backup-location-filepicker-button",
-      filePathInputCustomEl: "#backup-location-filepicker-input-custom",
-      filePathInputDefaultEl: "#backup-location-filepicker-input-default",
       passwordOptionsCheckboxEl: "#sensitive-data-checkbox-input",
       passwordOptionsExpandedEl: "#passwords",
-      inputNewPasswordEl: "#new-password-input",
-      inputRepeatPasswordEl: "#repeat-password-input"
+      recommendedFolderInputEl: "#backup-location-filepicker-input"
     };
   }
   constructor() {
     super();
-    this.defaultIconURL = "";
-    this.defaultLabel = "";
-    this.defaultPath = "";
-    this._newIconURL = "";
-    this._newLabel = "";
-    this._newPath = "";
+    this.backupFilePath = null;
     this.showPasswordOptions = false;
-    this.passwordsMatch = false;
   }
 
   /**
@@ -90,108 +57,34 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
       bubbles: true
     }));
-    this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
   }
-  handleEvent(event) {
-    if (event.type == "BackupUI:SelectNewFilepickerPath") {
-      let {
-        path,
-        filename,
-        iconURL
-      } = event.detail;
-      this._newPath = path;
-      this._newLabel = filename;
-      this._newIconURL = iconURL;
-    }
-  }
-  async handleChooseLocation() {
-    this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
-      bubbles: true,
-      detail: {
-        win: window.browsingContext
-      }
-    }));
+  handleChooseLocation() {
+    // TODO: show file picker (bug 1895943)
   }
   handleCancel() {
-    this.dispatchEvent(new CustomEvent("dialogCancel", {
+    this.dispatchEvent(new CustomEvent("scheduledBackupsCancel", {
       bubbles: true,
       composed: true
     }));
-    this.resetChanges();
+    this.showPasswordOptions = false;
+    this.passwordOptionsCheckboxEl.checked = false;
   }
   handleConfirm() {
     /**
      * TODO:
+     * We should pass save location to BackupUIParent here (bug 1895943).
      * If encryption is enabled via this dialog, ensure a password is set and pass it to BackupUIParent (bug 1895981).
      * Before confirmation, verify passwords match and FxA format rules (bug 1896772).
      */
-    let detail = {
-      parentDirPath: this._newPath || this.defaultPath
-    };
-    if (this.showPasswordOptions && this.passwordsMatch) {
-      detail.password = this.inputNewPasswordEl.value;
-    }
-    this.dispatchEvent(new CustomEvent("turnOnScheduledBackups", {
+    this.dispatchEvent(new CustomEvent("scheduledBackupsConfirm", {
       bubbles: true,
-      composed: true,
-      detail
+      composed: true
     }));
-    this.resetChanges();
+    this.showPasswordOptions = false;
+    this.passwordOptionsCheckboxEl.checked = false;
   }
   handleTogglePasswordOptions() {
     this.showPasswordOptions = this.passwordOptionsCheckboxEl?.checked;
-    this.passwordsMatch = false;
-  }
-  handleChangeNewPassword() {
-    this.updatePasswordValidity();
-  }
-  handleChangeRepeatPassword() {
-    this.updatePasswordValidity();
-  }
-  updatePasswordValidity() {
-    let isNewPasswordInputValid = this.inputNewPasswordEl?.checkValidity();
-    let isRepeatPasswordInputValid = this.inputRepeatPasswordEl?.checkValidity();
-    this.passwordsMatch = isNewPasswordInputValid && isRepeatPasswordInputValid && this.inputNewPasswordEl.value == this.inputRepeatPasswordEl.value;
-  }
-  resetChanges() {
-    this._newPath = "";
-    this._newIconURL = "";
-    this._newLabel = "";
-    this.showPasswordOptions = false;
-    this.passwordOptionsCheckboxEl.checked = false;
-    this.passwordsMatch = false;
-  }
-  defaultFilePathInputTemplate() {
-    let filename = this.defaultLabel;
-    let iconURL = this.defaultIconURL || this.#placeholderIconURL;
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <input
-        id="backup-location-filepicker-input-default"
-        class="backup-location-filepicker-input"
-        type="text"
-        readonly
-        data-l10n-id="turn-on-scheduled-backups-location-default-folder"
-        data-l10n-args=${JSON.stringify({
-      recommendedFolder: filename
-    })}
-        data-l10n-attrs="value"
-        style=${`background-image: url(${iconURL})`}
-      />
-    `;
-  }
-  customFilePathInputTemplate() {
-    let filename = this._newLabel;
-    let iconURL = this._newIconURL || this.#placeholderIconURL;
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <input
-        id="backup-location-filepicker-input-custom"
-        class="backup-location-filepicker-input"
-        type="text"
-        readonly
-        value=${filename}
-        style=${`background-image: url(${iconURL})`}
-      />
-    `;
   }
   allOptionsTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -202,8 +95,18 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             for="backup-location-filepicker-input"
             data-l10n-id="turn-on-scheduled-backups-location-label"
           ></label>
+          <!-- TODO: show folder icon (bug 1895943) -->
           <div id="backup-location-filepicker">
-            ${!this._newPath ? this.defaultFilePathInputTemplate() : this.customFilePathInputTemplate()}
+            <input
+              id="backup-location-filepicker-input"
+              type="text"
+              readonly
+              data-l10n-id="turn-on-scheduled-backups-location-default-folder"
+              data-l10n-args=${JSON.stringify({
+      recommendedFolder: this.backupFilePath
+    })}
+              data-l10n-attrs="value"
+            />
             <moz-button
               id="backup-location-filepicker-button"
               @click=${this.handleChooseLocation}
@@ -248,25 +151,24 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     <fieldset id="passwords">
       <label id="new-password-label" for="new-password-input">
         <span id="new-password-span" data-l10n-id="turn-on-scheduled-backups-encryption-create-password-label"></span>
-        <input type="password" id="new-password-input" required @input=${this.handleChangeNewPassword}/>
+        <input type="password" id="new-password-input"/>
     </label>
       <label id="repeat-password-label" for="repeat-password-input">
         <span id="repeat-password-span" data-l10n-id="turn-on-scheduled-backups-encryption-repeat-password-label"></span>
-        <input type="password" id="repeat-password-input" required @input=${this.handleChangeRepeatPassword}/>
+        <input type="password" id="repeat-password-input"/>
       </label>
     </fieldset>
   </fieldset>`;
   }
   contentTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <form
+      <div
         id="backup-turn-on-scheduled-wrapper"
         aria-labelledby="backup-turn-on-scheduled-header"
         aria-describedby="backup-turn-on-scheduled-description"
       >
         <h1
           id="backup-turn-on-scheduled-header"
-          class="heading-medium"
           data-l10n-id="turn-on-scheduled-backups-header"
         ></h1>
         <main id="backup-turn-on-scheduled-content">
@@ -275,7 +177,6 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
               id="backup-turn-on-scheduled-description-span"
               data-l10n-id="turn-on-scheduled-backups-description"
             ></span>
-            <!--TODO: finalize support page links (bug 1900467)-->
             <a
               id="backup-turn-on-scheduled-learn-more-link"
               is="moz-support-link"
@@ -294,14 +195,12 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
           ></moz-button>
           <moz-button
             id="backup-turn-on-scheduled-confirm-button"
-            form="backup-turn-on-scheduled-wrapper"
             @click=${this.handleConfirm}
             type="primary"
             data-l10n-id="turn-on-scheduled-backups-confirm-button"
-            ?disabled=${this.showPasswordOptions && !this.passwordsMatch}
           ></moz-button>
         </moz-button-group>
-      </form>
+      </div>
     `;
   }
   render() {
@@ -323,8 +222,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CustomLocation": () => (/* binding */ CustomLocation),
-/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "RecommendedFolder": () => (/* binding */ RecommendedFolder),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -346,30 +244,17 @@ window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
   argTypes: {}
 });
 const Template = ({
-  defaultPath,
-  _newPath,
-  defaultLabel,
-  _newLabel
+  backupFilePath
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-card style="width: 27.8rem;">
     <turn-on-scheduled-backups
-      defaultPath=${defaultPath}
-      _newPath=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(_newPath)}
-      defaultLabel=${defaultLabel}
-      _newLabel=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(_newLabel)}
+      .backupFilePath=${backupFilePath}
     ></turn-on-scheduled-backups>
   </moz-card>
 `;
-const Default = Template.bind({});
-Default.args = {
-  defaultPath: "/Some/User/Documents",
-  defaultLabel: "Documents"
-};
-const CustomLocation = Template.bind({});
-CustomLocation.args = {
-  ...Default.args,
-  _newPath: "/Some/Test/Custom/Dir",
-  _newLabel: "Dir"
+const RecommendedFolder = Template.bind({});
+RecommendedFolder.args = {
+  backupFilePath: "Documents"
 };
 
 /***/ }),
@@ -513,7 +398,7 @@ customElements.define("moz-card", MozCard);
 /***/ 95010:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "turn-on-scheduled-backups.114c0e550abcd7aec1af.css";
+module.exports = __webpack_require__.p + "turn-on-scheduled-backups.cd47b47dfacf92e7bd47.css";
 
 /***/ }),
 
@@ -525,4 +410,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.dec43718.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.77fe1480.iframe.bundle.js.map
