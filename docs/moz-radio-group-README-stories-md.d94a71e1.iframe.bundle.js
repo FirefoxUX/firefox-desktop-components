@@ -749,6 +749,67 @@ var Wrapper=_storybook_theming__WEBPACK_IMPORTED_MODULE_1__.styled.div(_storyboo
 
 /***/ }),
 
+/***/ 46570:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozFieldset)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12876);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Fieldset wrapper to lay out form inputs consistently.
+ *
+ * @tagname moz-fieldset
+ * @property {string} label - The label for the fieldset's legend.
+ * @property {string} description - The description for the fieldset.
+ */
+class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    description: {
+      type: String,
+      fluent: true
+    }
+  };
+  render() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <fieldset
+        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
+      >
+        <legend class="heading-medium">${this.label}</legend>
+        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
+              ${this.description}
+            </p>` : ""}
+        <div id="inputs">
+          <slot></slot>
+        </div>
+      </fieldset>
+    `;
+  }
+}
+customElements.define("moz-fieldset", MozFieldset);
+
+/***/ }),
+
 /***/ 58825:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1011,17 +1072,18 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "MozRadioGroup": () => (/* binding */ MozRadioGroup)
 /* harmony export */ });
 /* harmony import */ var toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(73681);
-/* harmony import */ var toolkit_content_widgets_moz_radio_group_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(25286);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(58825);
-
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(58825);
+/* harmony import */ var chrome_global_content_elements_moz_fieldset_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46570);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+
+// eslint-disable-next-line import/no-unassigned-import
 
 // eslint-disable-next-line import/no-unassigned-import
 
@@ -1058,7 +1120,7 @@ const NAVIGATION_DIRECTIONS = {
  *  state of moz-radio children and vice versa.
  * @slot default - The radio group's content, intended for moz-radio elements.
  */
-class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #radioButtons = [];
   #value;
   static properties = {
@@ -1076,8 +1138,7 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   };
   static queries = {
     defaultSlot: "slot:not([name])",
-    fieldset: "fieldset",
-    legend: "legend"
+    fieldset: "moz-fieldset"
   };
   set value(newValue) {
     this.#value = newValue;
@@ -1194,18 +1255,17 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
     this.dispatchEvent(new Event(event.type));
   }
   render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_radio_group_moz_radio_group_css__WEBPACK_IMPORTED_MODULE_1__}"
-      />
-      <fieldset role="radiogroup" ?disabled=${this.disabled}>
-        <legend class="heading-medium">${this.label}</legend>
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-fieldset
+        role="radiogroup"
+        ?disabled=${this.disabled}
+        label=${this.label}
+      >
         <slot
           @slotchange=${this.syncStateToRadioButtons}
           @change=${this.handleChange}
         ></slot>
-      </fieldset>
+      </moz-fieldset>
     `;
   }
 }
@@ -1223,7 +1283,7 @@ customElements.define("moz-radio-group", MozRadioGroup);
  * @property {number} inputTabIndex - Tabindex of the input element.
  * @property {number} value - Value of the radio input.
  */
-class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #controller;
   static properties = {
     checked: {
@@ -1313,12 +1373,12 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
   }
   iconTemplate() {
     if (this.iconSrc) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<img src=${this.iconSrc} role="presentation" class="icon" />`;
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" class="icon" />`;
     }
     return "";
   }
   inputTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<input
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<input
       type="radio"
       id="radio-button"
       value=${this.value}
@@ -1332,13 +1392,13 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement
     />`;
   }
   labelTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label-content">
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span class="label-content">
       ${this.iconTemplate()}
       <span class="text">${this.label}</span>
     </span>`;
   }
   render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
@@ -12056,19 +12116,19 @@ function useResizeObserver(opts) {
 
 /***/ }),
 
+/***/ 12876:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "moz-fieldset.7bca79825e772f6db7b7.css";
+
+/***/ }),
+
 /***/ 83230:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
-
-/***/ }),
-
-/***/ 25286:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-radio-group.bdfe9818aabd09a5c9d8.css";
 
 /***/ }),
 
@@ -12081,4 +12141,4 @@ module.exports = __webpack_require__.p + "moz-radio.f82c1d1f40ce4a32b094.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.0b127ddc.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.d94a71e1.iframe.bundle.js.map
