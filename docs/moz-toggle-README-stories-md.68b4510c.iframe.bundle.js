@@ -1,4 +1,4 @@
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[3080,9433],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[8719,9433],{
 
 /***/ 63349:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -749,67 +749,6 @@ var Wrapper=_storybook_theming__WEBPACK_IMPORTED_MODULE_1__.styled.div(_storyboo
 
 /***/ }),
 
-/***/ 46570:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozFieldset)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12876);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/**
- * Fieldset wrapper to lay out form inputs consistently.
- *
- * @tagname moz-fieldset
- * @property {string} label - The label for the fieldset's legend.
- * @property {string} description - The description for the fieldset.
- */
-class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    label: {
-      type: String,
-      fluent: true
-    },
-    description: {
-      type: String,
-      fluent: true
-    }
-  };
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <fieldset
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
-      >
-        <legend class="heading-medium">${this.label}</legend>
-        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
-              ${this.description}
-            </p>` : ""}
-        <div id="inputs">
-          <slot></slot>
-        </div>
-      </fieldset>
-    `;
-  }
-}
-customElements.define("moz-fieldset", MozFieldset);
-
-/***/ }),
-
 /***/ 58825:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -827,6 +766,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @tagname moz-label
  * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
  */
 class MozTextLabel extends HTMLLabelElement {
   #insertSeparator = false;
@@ -836,7 +778,7 @@ class MozTextLabel extends HTMLLabelElement {
   // Default to underlining accesskeys for Windows and Linux.
   static #underlineAccesskey = !navigator.platform.includes("Mac");
   static get observedAttributes() {
-    return ["accesskey"];
+    return ["accesskey", "shownaccesskey"];
   }
   static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
   constructor() {
@@ -941,7 +883,7 @@ class MozTextLabel extends HTMLLabelElement {
   // label uses [value]). So this is just for when we have textContent.
   formatAccessKey() {
     // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey;
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
     if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
       return;
     }
@@ -1062,231 +1004,45 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 75295:
+/***/ 34003:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "MozRadio": () => (/* binding */ MozRadio),
-/* harmony export */   "MozRadioGroup": () => (/* binding */ MozRadioGroup)
+/* harmony export */   "default": () => (/* binding */ MozToggle)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(73681);
+/* harmony import */ var toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16368);
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
 /* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(58825);
-/* harmony import */ var chrome_global_content_elements_moz_fieldset_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46570);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at htp://mozilla.org/MPL/2.0/. */
 
 
 
 // eslint-disable-next-line import/no-unassigned-import
 
-// eslint-disable-next-line import/no-unassigned-import
-
-const NAVIGATION_FORWARD = "forward";
-const NAVIGATION_BACKWARD = "backward";
-const NAVIGATION_VALUE = {
-  [NAVIGATION_FORWARD]: 1,
-  [NAVIGATION_BACKWARD]: -1
-};
-const DIRECTION_RIGHT = "Right";
-const DIRECTION_LEFT = "Left";
-const NAVIGATION_DIRECTIONS = {
-  LTR: {
-    FORWARD: DIRECTION_RIGHT,
-    BACKWARD: DIRECTION_LEFT
-  },
-  RTL: {
-    FORWARD: DIRECTION_LEFT,
-    BACKWARD: DIRECTION_RIGHT
-  }
-};
 
 /**
- * Element used to group and associate moz-radio buttons so that they function
- * as a single form-control element.
+ * A simple toggle element that can be used to switch between two states.
  *
- * @tagname moz-radio-group
- * @property {boolean} disabled - Whether or not the fieldset is disabled.
- * @property {string} label - Label for the group of moz-radio elements.
- * @property {string} name
- *  Input name of the radio group. Propagates to moz-radio children.
- * @property {string} value
- *  Selected value for the group. Changing the value updates the checked
- *  state of moz-radio children and vice versa.
- * @slot default - The radio group's content, intended for moz-radio elements.
+ * @tagname moz-toggle
+ * @property {boolean} pressed - Whether or not the element is pressed.
+ * @property {boolean} disabled - Whether or not the element is disabled.
+ * @property {string} label - The label text.
+ * @property {string} description - The description text.
+ * @property {string} ariaLabel
+ *  The aria-label text for cases where there is no visible label.
+ * @slot support-link - Used to append a moz-support-link to the description.
+ * @fires toggle
+ *  Custom event indicating that the toggle's pressed state has changed.
  */
-class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #radioButtons = [];
-  #value;
+class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    label: {
-      type: String,
-      fluent: true
-    },
-    name: {
-      type: String
-    }
-  };
-  static queries = {
-    defaultSlot: "slot:not([name])",
-    fieldset: "moz-fieldset"
-  };
-  set value(newValue) {
-    this.#value = newValue;
-    this.#radioButtons.forEach(button => {
-      button.checked = this.value === button.value;
-    });
-    this.syncFocusState();
-  }
-  get value() {
-    return this.#value;
-  }
-  get focusableIndex() {
-    if (!this.#value) {
-      return this.#radioButtons.findIndex(button => !button.disabled);
-    }
-    return this.#radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
-  }
-  constructor() {
-    super();
-    this.disabled = false;
-    this.addEventListener("keydown", e => this.handleKeydown(e));
-  }
-  firstUpdated() {
-    this.syncStateToRadioButtons();
-  }
-  async getUpdateComplete() {
-    await super.getUpdateComplete();
-    await Promise.all(this.#radioButtons.map(button => button.updateComplete));
-  }
-  syncStateToRadioButtons() {
-    this.#radioButtons = this.defaultSlot?.assignedElements().filter(el => el.localName === "moz-radio");
-    this.#radioButtons.forEach(button => {
-      if (button.checked && this.value == undefined) {
-        this.value = button.value;
-      }
-      button.name = this.name;
-    });
-    this.syncFocusState();
-  }
-  syncFocusState() {
-    let focusableIndex = this.focusableIndex;
-    this.#radioButtons.forEach((button, index) => {
-      button.inputTabIndex = focusableIndex === index ? 0 : -1;
-    });
-  }
-
-  // NB: We may need to revise this to avoid bugs when we add more focusable
-  // elements to moz-radio-group / moz-radio.
-  handleKeydown(event) {
-    let directions = this.getNavigationDirections();
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-      case directions.FORWARD:
-      case `Arrow${directions.FORWARD}`:
-        {
-          event.preventDefault();
-          this.navigate(NAVIGATION_FORWARD);
-          break;
-        }
-      case "Up":
-      case "ArrowUp":
-      case directions.BACKWARD:
-      case `Arrow${directions.BACKWARD}`:
-        {
-          event.preventDefault();
-          this.navigate(NAVIGATION_BACKWARD);
-          break;
-        }
-    }
-  }
-  getNavigationDirections() {
-    if (this.isDocumentRTL) {
-      return NAVIGATION_DIRECTIONS.RTL;
-    }
-    return NAVIGATION_DIRECTIONS.LTR;
-  }
-  get isDocumentRTL() {
-    if (typeof Services !== "undefined") {
-      return Services.locale.isAppLocaleRTL;
-    }
-    return document.dir === "rtl";
-  }
-  navigate(direction) {
-    let currentIndex = this.focusableIndex;
-    let indexStep = this.#radioButtons.length + NAVIGATION_VALUE[direction];
-    for (let i = 1; i < this.#radioButtons.length; i++) {
-      let nextIndex = (currentIndex + indexStep * i) % this.#radioButtons.length;
-      if (!this.#radioButtons[nextIndex].disabled) {
-        this.#radioButtons[nextIndex].click();
-        return;
-      }
-    }
-  }
-  willUpdate(changedProperties) {
-    if (changedProperties.has("name")) {
-      this.handleSetName();
-    }
-    if (changedProperties.has("disabled")) {
-      this.#radioButtons.forEach(button => {
-        button.requestUpdate();
-      });
-    }
-  }
-  handleSetName() {
-    this.#radioButtons.forEach(button => {
-      button.name = this.name;
-    });
-  }
-
-  // Re-dispatch change event so it's re-targeted to moz-radio-group.
-  handleChange(event) {
-    event.stopPropagation();
-    this.dispatchEvent(new Event(event.type));
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <moz-fieldset
-        role="radiogroup"
-        ?disabled=${this.disabled}
-        label=${this.label}
-      >
-        <slot
-          @slotchange=${this.syncStateToRadioButtons}
-          @change=${this.handleChange}
-        ></slot>
-      </moz-fieldset>
-    `;
-  }
-}
-customElements.define("moz-radio-group", MozRadioGroup);
-
-/**
- * Input element that allows a user to select one option from a group of options.
- *
- * @tagname moz-radio
- * @property {boolean} checked - Whether or not the input is selected.
- * @property {boolean} disabled - Whether or not the input is disabled.
- * @property {string} label - Label for the radio input.
- * @property {string} name
- *  Name of the input control, set by the associated moz-radio-group element.
- * @property {number} inputTabIndex - Tabindex of the input element.
- * @property {number} value - Value of the radio input.
- */
-class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #controller;
-  static properties = {
-    checked: {
+    pressed: {
       type: Boolean,
       reflect: true
     },
@@ -1294,120 +1050,127 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       type: Boolean,
       reflect: true
     },
-    iconSrc: {
+    label: {
       type: String
     },
-    label: {
-      type: String,
-      fluent: true
+    description: {
+      type: String
     },
-    name: {
+    ariaLabel: {
       type: String,
-      attribute: false
+      attribute: "aria-label"
     },
-    inputTabIndex: {
-      type: Number,
+    accessKeyAttribute: {
+      type: String,
+      attribute: "accesskey",
+      reflect: true
+    },
+    accessKey: {
+      type: String,
       state: true
-    },
-    value: {
-      type: String
     }
   };
-  static queries = {
-    radioButton: "#radio-button",
-    labelEl: "label",
-    icon: ".icon"
-  };
+  static get queries() {
+    return {
+      buttonEl: "#moz-toggle-button",
+      labelEl: "#moz-toggle-label",
+      descriptionEl: "#moz-toggle-description"
+    };
+  }
   constructor() {
     super();
-    this.checked = false;
+    this.pressed = false;
     this.disabled = false;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    let hostRadioGroup = this.parentElement || this.getRootNode().host;
-    if (!(hostRadioGroup instanceof MozRadioGroup)) {
-      console.error("moz-radio can only be used in moz-radio-group element.");
-    }
-    this.#controller = hostRadioGroup;
-  }
-  willUpdate(changedProperties) {
-    // Handle setting checked directly via JS.
-    if (changedProperties.has("checked") && this.checked && this.#controller.value && this.value !== this.#controller.value) {
-      this.#controller.value = this.value;
-    }
-    // Handle un-checking directly via JS. If the checked input is un-checked,
-    // the value of the associated moz-radio-group needs to be un-set.
-    if (changedProperties.has("checked") && !this.checked && this.#controller.value && this.value === this.#controller.value) {
-      this.#controller.value = "";
-    }
-    if (changedProperties.has("disabled")) {
-      // Prevent enabling a radio button if containing radio-group is disabled.
-      if (this.disabled === false && this.#controller.disabled) {
-        this.disabled = true;
-      } else if (this.checked || !this.#controller.value) {
-        // Update buttons via moz-radio-group for proper keyboard nav behavior.
-        this.#controller.syncFocusState();
-      }
-    }
   }
   handleClick() {
-    this.#controller.value = this.value;
-    this.focus();
+    this.pressed = !this.pressed;
+    this.dispatchOnUpdateComplete(new CustomEvent("toggle", {
+      bubbles: true,
+      composed: true
+    }));
   }
 
-  // Re-dispatch change event so it propagates out of moz-radio.
-  handleChange(e) {
-    this.dispatchEvent(new Event(e.type, e));
-  }
-
-  // Delegate click to the input element.
+  // Delegate clicks on the host to the input element
   click() {
-    this.radioButton.click();
-    this.focus();
+    this.buttonEl.click();
   }
 
-  // Delegate focus to the input element.
+  // Delegate focus to the input element
   focus() {
-    this.radioButton.focus();
+    this.buttonEl.focus();
   }
-  iconTemplate() {
-    if (this.iconSrc) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" class="icon" />`;
+  willUpdate(changes) {
+    if (changes.has("accessKeyAttribute")) {
+      this.accessKey = this.accessKeyAttribute;
+      this.accessKeyAttribute = null;
+    }
+  }
+  descriptionTemplate() {
+    if (this.description) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+        <p
+          id="moz-toggle-description"
+          class="description-wrapper text-deemphasized"
+          part="description"
+        >
+          ${this.description} ${this.supportLinkTemplate()}
+        </p>
+      `;
     }
     return "";
   }
-  inputTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<input
-      type="radio"
-      id="radio-button"
-      value=${this.value}
-      name=${this.name}
-      .checked=${this.checked}
-      aria-checked=${this.checked}
-      tabindex=${this.inputTabIndex}
-      ?disabled=${this.disabled || this.#controller.disabled}
-      @click=${this.handleClick}
-      @change=${this.handleChange}
-    />`;
+  supportLinkTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot name="support-link"></slot> `;
   }
-  labelTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span class="label-content">
-      ${this.iconTemplate()}
-      <span class="text">${this.label}</span>
-    </span>`;
+  buttonTemplate() {
+    const {
+      pressed,
+      disabled,
+      description,
+      ariaLabel,
+      handleClick
+    } = this;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <button
+        id="moz-toggle-button"
+        part="button"
+        type="button"
+        class="toggle-button"
+        ?disabled=${disabled}
+        aria-pressed=${pressed}
+        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
+        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(description ? "moz-toggle-description" : undefined)}
+        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        @click=${handleClick}
+      ></button>
+    `;
   }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <label>${this.inputTemplate()}${this.labelTemplate()}</label>
+      ${this.label ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+            <label
+              is="moz-label"
+              id="moz-toggle-label"
+              part="label"
+              for="moz-toggle-button"
+              shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+            >
+              <span>
+                ${this.label}
+                ${!this.description ? this.supportLinkTemplate() : ""}
+              </span>
+              ${this.buttonTemplate()}
+            </label>
+          ` : this.buttonTemplate()}
+      ${this.descriptionTemplate()}
     `;
   }
 }
-customElements.define("moz-radio", MozRadio);
+customElements.define("moz-toggle", MozToggle);
 
 /***/ }),
 
@@ -2123,7 +1886,7 @@ ${input}`);let match=input.match(firstLineRegex);if(!match)return react__WEBPACK
 
 /***/ }),
 
-/***/ 49089:
+/***/ 71217:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -2135,7 +1898,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(67294);
 /* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38155);
 /* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(54557);
-/* harmony import */ var toolkit_widgets_moz_radio_group_moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(75295);
+/* harmony import */ var toolkit_widgets_moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(34003);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(85893);
 
 
@@ -2151,16 +1914,16 @@ function _createMdxContent(props) {
     h1: "h1",
     p: "p",
     code: "code",
-    a: "a",
     h2: "h2",
     ul: "ul",
     li: "li",
-    h3: "h3",
-    pre: "pre"
+    a: "a",
+    pre: "pre",
+    h3: "h3"
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Radio Group/README",
+      title: "UI Widgets/ Toggle/README",
       parameters: {
         previewTabs: {
           canvas: {
@@ -2170,229 +1933,137 @@ function _createMdxContent(props) {
         viewMode: "docs"
       }
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "mozradiogroup",
-      children: "MozRadioGroup"
+      id: "moztoggle",
+      children: "MozToggle"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " is an element that allows users to select one option from a list of related options. It is designed to be used in tandem with our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " custom element, which is a wrapper around an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "<input type=\"radio\">"
-      }), " HTML element."]
+        children: "moz-toggle"
+      }), " is a toggle element that can be used to switch between two states.\nIt may be helpful to think of it as a button that can be pressed or unpressed,\ncorresponding with \"on\" and \"off\" states."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-radio-group name=\"contact\" label=\"Select a contact method\"><moz-radio value=\"email\" label=\"Email\" checked /><moz-radio value=\"phone\" label=\"Phone\" /><moz-radio value=\"mail\" label=\"Mail\" /></moz-radio-group></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-toggle pressed label=\"Toggle label\" description=\"This is a demo toggle for the docs.\" /></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
-          name: "contact",
-          label: "Select a contact method",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "email",
-            label: "Email",
-            checked: true
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "phone",
-            label: "Phone"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "mail",
-            label: "Mail"
-          })]
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-toggle", {
+          pressed: true,
+          label: "Toggle label",
+          description: "This is a demo toggle for the docs."
         })
       })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["More information about this component including design, writing, and localization guidelines, as well as design assets, can be found on our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://acorn.firefox.com/latest/components/radio/desktop-A9fsJE6U",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Acorn site"
-      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-to-use",
+      children: "When to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Use a toggle for binary controls like on/off or enabled/disabled."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Use when the action is performed immediately and doesn't require confirmation\nor form submission."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "A toggle is like a switch. If it would be appropriate to use a switch in the\nphysical world for this action, it is likely appropriate to use a toggle in\nsoftware."
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-not-to-use",
+      children: "When not to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "If another action is required to execute the choice, use a checkbox (i.e. a\ntoggle should not generally be used as part of a form)."
+      }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "code",
       children: "Code"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " can be found under ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-radio-group/",
+        children: "moz-toggle"
+      }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-toggle/moz-toggle.mjs",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-radio-group/"
+        children: "toolkit/content/widgets/moz-toggle"
+      }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/browser/components/preferences/privacy.inc.xhtml#696",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:preferences"
+      }), "\nand ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html#182",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:addons"
       }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "when-to-use-moz-radio-group",
-      children: ["When to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use a radio group when you are trying to get a user to select only one option from a relatively short list of options."
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use a radio group over a select when it is advantageous to have all possible options to be immediately visible to the user."
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "when-not-to-use-moz-radio-group",
-      children: ["When not to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["If it should be possible for the user to select multiple options, use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "moz-checkbox"
-        }), "."]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["If the intention is for a user to turn something off or on with their selection, and for their selection to have an immediate effect, consider using ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "moz-toggle"
-        }), " instead."]
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "how-to-use-moz-radio-group",
-      children: ["How to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "importing-the-element",
-      children: "Importing the element"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Like other custom elements, you should usually be able to rely on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " getting lazy loaded at the time of first use. See ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://firefox-source-docs.mozilla.org/browser/components/storybook/docs/README.reusable-widgets.stories.html#using-new-design-system-components",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "this documentation"
-      }), " for more information on using design system custom elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "combining-moz-radio-and-moz-radio-group",
-      children: ["Combining ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " must be used together in order for the elements to behave as expected. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements must also be direct children of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), "; they should not need to be wrapped in additional elements for purposes of positioning or spacing as those style attributes are provided by ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["If you are using the elements improperly you may see the following ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/a215fbd85843a91fcd8fdc33aa9cd9a357403f35/toolkit/content/widgets/moz-radio-group/moz-radio-group.mjs#260",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "console error"
-      }), ":"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-sh",
-        children: "moz-radio can only be used in moz-radio-group element.\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-name-for-the-group",
-      children: ["Setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " for the group"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " attribute used to associate multiple ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements can only be set on the containing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " element. This is different from HTML ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "<input type=\"radio\">"
-      }), " elements where ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " can be set on each of the individual inputs. With ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " propagates down the the child ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-the-disabled-state",
-      children: ["Setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " state"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " state can be set on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " to disable all of its child ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements:"]
+        children: "moz-toggle"
+      }), " can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".html"
+      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".xhtml"
+      }), " files:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-radio-group name=\"group-disabled\" disabled>\n  <moz-radio value=\"disabled1\" label=\"I'm disabled\"></moz-radio>\n  <moz-radio value=\"disabled2\" label=\"I'm disabled too\"></moz-radio>\n</moz-radio-group>\n"
+        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-toggle.mjs\"></script>\n"
       })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " can also be set on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements to control their state independently of the rest of the group:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "And used as follows:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-radio-group name=\"button-disabled\">\n  <moz-radio value=\"enabled\" label=\"I'm enabled\"></moz-radio>\n  <moz-radio value=\"disabled\" label=\"I'm disabled\" disabled></moz-radio>\n</moz-radio-group>\n"
+        children: "<moz-toggle pressed\n            label=\"Label for the toggle\"\n            description=\"Longer explanation of what the toggle is for\"\n            aria-label=\"Toggle label if label text isn't visible\"></moz-toggle>\n"
       })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The one caveat to this is that it is not possible to programmatically enable an individual ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " element when the containing group is ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "fluent-usage",
       children: "Fluent usage"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+      children: ["Generally the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "label"
-      }), " properties of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " will generally be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "description"
+      }), ", and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "aria-label"
+      }), " properties of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " will be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
         href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "Fluent attributes"
-      }), ". ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " are set automatically, so to get things working you just need to supply a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+      }), ".\nTo get this working you will need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "data-l10n-id"
-      }), " as you would with any other element."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "For example the following Fluent messages:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group-id =\n  .label = This is the label for the group\nfirst-moz-radio-id =\n  .label = This is the label for the first radio button\nsecond-moz-radio-id =\n  .label = This is the label for the second radio button\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "Would be used to set labels on the different elements as follows:"
+      }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " if you're providing a label and a description:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-radio-group data-l10n-id=\"moz-radio-group-id\">\n  <moz-radio data-l10n-id=\"first-moz-radio-id\"></moz-radio>\n  <moz-radio data-l10n-id=\"second-moz-radio-id\"></moz-radio>\n</moz-radio-group>\n"
+        children: "<moz-toggle data-l10n-id=\"with-label-and-description\"\n            data-l10n-attrs=\"label, description\"></moz-toggle>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "In which case your Fluent messages will look something like this:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-label-and-description =\n  .label = Label text goes here\n  .description = Description text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["You do not have to specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " if you're only using an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "aria-label"
+      }), ":"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-toggle data-l10n-id=\"with-aria-label-only\"></moz-toggle>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-aria-label-only =\n  .aria-label = aria-label text goes here\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-radio-group"
+      of: "moz-toggle"
     })]
   });
 }
@@ -2415,7 +2086,7 @@ __page.parameters = {
   docsOnly: true
 };
 const componentMeta = {
-  title: 'UI Widgets/ Radio Group/README',
+  title: 'UI Widgets/ Toggle/README',
   parameters: {
     previewTabs: {
       canvas: {
@@ -12116,14 +11787,6 @@ function useResizeObserver(opts) {
 
 /***/ }),
 
-/***/ 12876:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-fieldset.7bca79825e772f6db7b7.css";
-
-/***/ }),
-
 /***/ 83230:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -12132,13 +11795,13 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
 /***/ }),
 
-/***/ 73681:
+/***/ 16368:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-radio.f82c1d1f40ce4a32b094.css";
+module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.d94a71e1.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-README-stories-md.68b4510c.iframe.bundle.js.map

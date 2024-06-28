@@ -1,4 +1,4 @@
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[8719,9433],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[3553,9433],{
 
 /***/ 63349:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -766,6 +766,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @tagname moz-label
  * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
  */
 class MozTextLabel extends HTMLLabelElement {
   #insertSeparator = false;
@@ -775,7 +778,7 @@ class MozTextLabel extends HTMLLabelElement {
   // Default to underlining accesskeys for Windows and Linux.
   static #underlineAccesskey = !navigator.platform.includes("Mac");
   static get observedAttributes() {
-    return ["accesskey"];
+    return ["accesskey", "shownaccesskey"];
   }
   static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
   constructor() {
@@ -880,7 +883,7 @@ class MozTextLabel extends HTMLLabelElement {
   // label uses [value]). So this is just for when we have textContent.
   formatAccessKey() {
     // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey;
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
     if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
       return;
     }
@@ -998,164 +1001,6 @@ function wrapChar(parentNode, element, index) {
   }
   element.appendChild(node);
 }
-
-/***/ }),
-
-/***/ 34003:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozToggle)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16368);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(58825);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at htp://mozilla.org/MPL/2.0/. */
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/**
- * A simple toggle element that can be used to switch between two states.
- *
- * @tagname moz-toggle
- * @property {boolean} pressed - Whether or not the element is pressed.
- * @property {boolean} disabled - Whether or not the element is disabled.
- * @property {string} label - The label text.
- * @property {string} description - The description text.
- * @property {string} ariaLabel
- *  The aria-label text for cases where there is no visible label.
- * @slot support-link - Used to append a moz-support-link to the description.
- * @fires toggle
- *  Custom event indicating that the toggle's pressed state has changed.
- */
-class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    pressed: {
-      type: Boolean,
-      reflect: true
-    },
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    label: {
-      type: String
-    },
-    description: {
-      type: String
-    },
-    ariaLabel: {
-      type: String,
-      attribute: "aria-label"
-    },
-    accessKey: {
-      type: String,
-      attribute: "accesskey"
-    }
-  };
-  static get queries() {
-    return {
-      buttonEl: "#moz-toggle-button",
-      labelEl: "#moz-toggle-label",
-      descriptionEl: "#moz-toggle-description"
-    };
-  }
-  constructor() {
-    super();
-    this.pressed = false;
-    this.disabled = false;
-  }
-  handleClick() {
-    this.pressed = !this.pressed;
-    this.dispatchOnUpdateComplete(new CustomEvent("toggle", {
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  // Delegate clicks on the host to the input element
-  click() {
-    this.buttonEl.click();
-  }
-
-  // Delegate focus to the input element
-  focus() {
-    this.buttonEl.focus();
-  }
-  descriptionTemplate() {
-    if (this.description) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <p
-          id="moz-toggle-description"
-          class="description-wrapper text-deemphasized"
-          part="description"
-        >
-          ${this.description} ${this.supportLinkTemplate()}
-        </p>
-      `;
-    }
-    return "";
-  }
-  supportLinkTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot name="support-link"></slot> `;
-  }
-  buttonTemplate() {
-    const {
-      pressed,
-      disabled,
-      description,
-      ariaLabel,
-      handleClick
-    } = this;
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <button
-        id="moz-toggle-button"
-        part="button"
-        type="button"
-        class="toggle-button"
-        ?disabled=${disabled}
-        aria-pressed=${pressed}
-        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(description ? "moz-toggle-description" : undefined)}
-        @click=${handleClick}
-      ></button>
-    `;
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.label ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-            <label
-              is="moz-label"
-              id="moz-toggle-label"
-              part="label"
-              for="moz-toggle-button"
-              accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
-            >
-              <span>
-                ${this.label}
-                ${!this.description ? this.supportLinkTemplate() : ""}
-              </span>
-              ${this.buttonTemplate()}
-            </label>
-          ` : this.buttonTemplate()}
-      ${this.descriptionTemplate()}
-    `;
-  }
-}
-customElements.define("moz-toggle", MozToggle);
 
 /***/ }),
 
@@ -1871,7 +1716,7 @@ ${input}`);let match=input.match(firstLineRegex);if(!match)return react__WEBPACK
 
 /***/ }),
 
-/***/ 71217:
+/***/ 67703:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1883,7 +1728,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(67294);
 /* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38155);
 /* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(54557);
-/* harmony import */ var toolkit_widgets_moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(34003);
+/* harmony import */ var toolkit_widgets_moz_label_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(58825);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(85893);
 
 
@@ -1900,15 +1745,11 @@ function _createMdxContent(props) {
     p: "p",
     code: "code",
     h2: "h2",
-    ul: "ul",
-    li: "li",
-    a: "a",
-    pre: "pre",
-    h3: "h3"
+    a: "a"
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Toggle/README",
+      title: "UI Widgets/ Label/README",
       parameters: {
         previewTabs: {
           canvas: {
@@ -1918,137 +1759,66 @@ function _createMdxContent(props) {
         viewMode: "docs"
       }
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "moztoggle",
-      children: "MozToggle"
+      id: "mozlabel",
+      children: "MozLabel"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-toggle"
-      }), " is a toggle element that can be used to switch between two states.\nIt may be helpful to think of it as a button that can be pressed or unpressed,\ncorresponding with \"on\" and \"off\" states."]
+        children: "moz-label"
+      }), " is an extension of the built-in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "HTMLLabelElement"
+      }), " that provides accesskey styling and formatting as well as some click handling logic."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-toggle pressed label=\"Toggle label\" description=\"This is a demo toggle for the docs.\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-toggle", {
-          pressed: true,
-          label: "Toggle label",
-          description: "This is a demo toggle for the docs."
-        })
+      mdxSource: "<with-common-styles><label is=\"moz-label\" accesskey=\"c\" for=\"check\" style={{ display: \"inline-block\" }}><p>{\"This is a label with an accesskey:\"}</p></label><input id=\"check\" type=\"checkbox\" defaultChecked style={{ display: \"inline-block\" }} /></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("with-common-styles", {
+        children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("label", {
+          is: "moz-label",
+          accesskey: "c",
+          for: "check",
+          style: {
+            display: "inline-block"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+            children: "This is a label with an accesskey:"
+          })
+        }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("input", {
+          id: "check",
+          type: "checkbox",
+          defaultChecked: true,
+          style: {
+            display: "inline-block"
+          }
+        })]
       })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "when-to-use",
-      children: "When to use"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use a toggle for binary controls like on/off or enabled/disabled."
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use when the action is performed immediately and doesn't require confirmation\nor form submission."
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "A toggle is like a switch. If it would be appropriate to use a switch in the\nphysical world for this action, it is likely appropriate to use a toggle in\nsoftware."
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "when-not-to-use",
-      children: "When not to use"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "If another action is required to execute the choice, use a checkbox (i.e. a\ntoggle should not generally be used as part of a form)."
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "code",
-      children: "Code"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-toggle"
-      }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-toggle/moz-toggle.mjs",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-toggle"
-      }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-toggle"
-      }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/components/preferences/privacy.inc.xhtml#696",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "about:preferences"
-      }), "\nand ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html#182",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "about:addons"
-      }), "."]
+      children: ["Accesskey underlining is enabled by default on Windows and Linux. It is also enabled in Storybook on Mac for demonstrative purposes, but is usually controlled by the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "ui.key.menuAccessKey"
+      }), " preference."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "component-status",
+      children: "Component status"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["At this time ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-label"
+      }), " may not be suitable for general use in Firefox."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-label"
+      }), " is currently only used in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "moz-toggle"
-      }), " can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: ".html"
-      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: ".xhtml"
-      }), " files:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-toggle.mjs\"></script>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "And used as follows:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-toggle pressed\n            label=\"Label for the toggle\"\n            description=\"Longer explanation of what the toggle is for\"\n            aria-label=\"Toggle label if label text isn't visible\"></moz-toggle>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "fluent-usage",
-      children: "Fluent usage"
+      }), " custom element. There are no instances in Firefox where we set an accesskey on a toggle, so it is still largely untested in the wild."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Generally the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      }), ", and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "aria-label"
-      }), " properties of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-toggle"
-      }), " will be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
+      children: ["Additionally there is at least ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1819469",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "Fluent attributes"
-      }), ".\nTo get this working you will need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " if you're providing a label and a description:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-toggle data-l10n-id=\"with-label-and-description\"\n            data-l10n-attrs=\"label, description\"></moz-toggle>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "In which case your Fluent messages will look something like this:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "with-label-and-description =\n  .label = Label text goes here\n  .description = Description text goes here\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["You do not have to specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " if you're only using an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "aria-label"
-      }), ":"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-toggle data-l10n-id=\"with-aria-label-only\"></moz-toggle>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "with-aria-label-only =\n  .aria-label = aria-label text goes here\n"
-      })
+        children: "one outstanding bug"
+      }), " related to accesskey handling in the shadow DOM."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-toggle"
+      of: "moz-label"
     })]
   });
 }
@@ -2071,7 +1841,7 @@ __page.parameters = {
   docsOnly: true
 };
 const componentMeta = {
-  title: 'UI Widgets/ Toggle/README',
+  title: 'UI Widgets/ Label/README',
   parameters: {
     previewTabs: {
       canvas: {
@@ -11778,15 +11548,7 @@ function useResizeObserver(opts) {
 "use strict";
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
-/***/ }),
-
-/***/ 16368:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
-
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-README-stories-md.82267b31.iframe.bundle.js.map
+//# sourceMappingURL=moz-label-README-stories-md.eb139c3c.iframe.bundle.js.map

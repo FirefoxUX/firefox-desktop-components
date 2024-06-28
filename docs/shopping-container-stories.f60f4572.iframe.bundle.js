@@ -2136,6 +2136,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @tagname moz-label
  * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
  */
 class MozTextLabel extends HTMLLabelElement {
   #insertSeparator = false;
@@ -2145,7 +2148,7 @@ class MozTextLabel extends HTMLLabelElement {
   // Default to underlining accesskeys for Windows and Linux.
   static #underlineAccesskey = !navigator.platform.includes("Mac");
   static get observedAttributes() {
-    return ["accesskey"];
+    return ["accesskey", "shownaccesskey"];
   }
   static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
   constructor() {
@@ -2250,7 +2253,7 @@ class MozTextLabel extends HTMLLabelElement {
   // label uses [value]). So this is just for when we have textContent.
   formatAccessKey() {
     // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey;
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
     if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
       return;
     }
@@ -2743,9 +2746,14 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
       type: String,
       attribute: "aria-label"
     },
+    accessKeyAttribute: {
+      type: String,
+      attribute: "accesskey",
+      reflect: true
+    },
     accessKey: {
       type: String,
-      attribute: "accesskey"
+      state: true
     }
   };
   static get queries() {
@@ -2776,6 +2784,12 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   // Delegate focus to the input element
   focus() {
     this.buttonEl.focus();
+  }
+  willUpdate(changes) {
+    if (changes.has("accessKeyAttribute")) {
+      this.accessKey = this.accessKeyAttribute;
+      this.accessKeyAttribute = null;
+    }
   }
   descriptionTemplate() {
     if (this.description) {
@@ -2812,6 +2826,7 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         aria-pressed=${pressed}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
         aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(description ? "moz-toggle-description" : undefined)}
+        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
         @click=${handleClick}
       ></button>
     `;
@@ -2828,7 +2843,7 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
               id="moz-toggle-label"
               part="label"
               for="moz-toggle-button"
-              accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+              shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
             >
               <span>
                 ${this.label}
@@ -3232,4 +3247,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.5059edeb.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.f60f4572.iframe.bundle.js.map

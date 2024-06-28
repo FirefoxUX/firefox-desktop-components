@@ -77,6 +77,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @tagname moz-label
  * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
  */
 class MozTextLabel extends HTMLLabelElement {
   #insertSeparator = false;
@@ -86,7 +89,7 @@ class MozTextLabel extends HTMLLabelElement {
   // Default to underlining accesskeys for Windows and Linux.
   static #underlineAccesskey = !navigator.platform.includes("Mac");
   static get observedAttributes() {
-    return ["accesskey"];
+    return ["accesskey", "shownaccesskey"];
   }
   static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
   constructor() {
@@ -191,7 +194,7 @@ class MozTextLabel extends HTMLLabelElement {
   // label uses [value]). So this is just for when we have textContent.
   formatAccessKey() {
     // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey;
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
     if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
       return;
     }
@@ -808,4 +811,4 @@ module.exports = __webpack_require__.p + "moz-radio.f82c1d1f40ce4a32b094.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.6f30d1f1.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.114aa407.iframe.bundle.js.map

@@ -1,257 +1,5 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[8776],{
-
-/***/ 54680:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozCheckbox)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_checkbox_moz_checkbox_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(95412);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(58825);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/**
- * A checkbox input with a label.
- *
- * @tagname moz-checkbox
- * @property {string} label - The text of the label element
- * @property {string} name - The name of the checkbox input control
- * @property {string} value - The value of the checkbox input control
- * @property {boolean} checked - The state of the checkbox element,
- *  also controls whether the checkbox is initially rendered as
- *  being checked.
- * @property {boolean} disabled - The disabled state of the checkbox input
- * @property {string} iconSrc - The src for an optional icon
- * @property {string} description - The text for the description element that helps describe the checkbox
- */
-class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    label: {
-      type: String,
-      fluent: true
-    },
-    name: {
-      type: String
-    },
-    value: {
-      type: String
-    },
-    iconSrc: {
-      type: String
-    },
-    checked: {
-      type: Boolean,
-      reflect: true
-    },
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    description: {
-      type: String,
-      fluent: true
-    }
-  };
-  static get queries() {
-    return {
-      checkboxEl: "#moz-checkbox",
-      labelEl: "label",
-      icon: ".icon",
-      descriptionEl: "#description"
-    };
-  }
-  constructor() {
-    super();
-    this.checked = false;
-    this.disabled = false;
-  }
-  click() {
-    this.checkboxEl.click();
-  }
-  focus() {
-    this.checkboxEl.focus();
-  }
-
-  /**
-   * Handles click events and keeps the checkbox checked value in sync
-   *
-   * @param {Event} event
-   * @memberof MozCheckbox
-   */
-  handleStateChange(event) {
-    this.checked = event.target.checked;
-  }
-
-  /**
-   * Dispatches an event from the host element so that outside
-   * listeners can react to these events
-   *
-   * @param {Event} event
-   * @memberof MozCheckbox
-   */
-  redispatchEvent(event) {
-    let newEvent = new Event(event.type, event);
-    this.dispatchEvent(newEvent);
-  }
-  iconTemplate() {
-    if (this.iconSrc) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" class="icon" />`;
-    }
-    return "";
-  }
-  descriptionTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <span id="description" class="description text-deemphasized">
-        ${this.description ?? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="description"></slot>`}
-      </span>
-    `;
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_checkbox_moz_checkbox_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <label is="moz-label" for="moz-checkbox">
-        <input
-          id="moz-checkbox"
-          type="checkbox"
-          name=${this.name}
-          value=${this.value}
-          .checked=${this.checked}
-          @click=${this.handleStateChange}
-          @change=${this.redispatchEvent}
-          .disabled=${this.disabled}
-          aria-describedby="description"
-        />
-        <span class="label-content">
-          ${this.iconTemplate()}
-          <span class="text">${this.label}</span>
-        </span>
-      </label>
-      ${this.descriptionTemplate()}
-    `;
-  }
-}
-customElements.define("moz-checkbox", MozCheckbox);
-
-/***/ }),
-
-/***/ 68985:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "CheckedByDefault": () => (/* binding */ CheckedByDefault),
-/* harmony export */   "Default": () => (/* binding */ Default),
-/* harmony export */   "Disabled": () => (/* binding */ Disabled),
-/* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
-/* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
-/* harmony export */   "WithSlottedDescription": () => (/* binding */ WithSlottedDescription),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _moz_checkbox_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54680);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Checkbox",
-  component: "moz-checkbox",
-  argTypes: {
-    l10nId: {
-      options: ["moz-checkbox-label", "moz-checkbox-label-description"],
-      control: {
-        type: "select"
-      }
-    }
-  },
-  parameters: {
-    status: "in-development",
-    handles: ["click", "input", "change"],
-    fluent: `
-moz-checkbox-label =
-  .label = The label of the checkbox
-moz-checkbox-label-description =
-  .label = The label of the checkbox
-  .description = This is a description
-    `
-  }
-});
-const Template = ({
-  l10nId,
-  checked,
-  label,
-  disabled,
-  iconSrc,
-  description,
-  hasSlottedDescription
-}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <moz-checkbox
-    ?checked=${checked}
-    label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(label)}
-    description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(description)}
-    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-    .iconSrc=${iconSrc}
-    ?disabled=${disabled}
-  >
-    ${hasSlottedDescription ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<div slot="description">test slot text</div>` : ""}
-  </moz-checkbox>
-`;
-const Default = Template.bind({});
-Default.args = {
-  name: "example-moz-checkbox",
-  value: "example-value",
-  l10nId: "moz-checkbox-label",
-  checked: false,
-  disabled: false,
-  iconSrc: "",
-  description: "",
-  label: ""
-};
-const WithIcon = Template.bind({});
-WithIcon.args = {
-  ...Default.args,
-  iconSrc: "chrome://global/skin/icons/highlights.svg"
-};
-const CheckedByDefault = Template.bind({});
-CheckedByDefault.args = {
-  ...Default.args,
-  checked: true
-};
-const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true
-};
-const WithDescription = Template.bind({});
-WithDescription.args = {
-  ...Default.args,
-  l10nId: "moz-checkbox-label-description"
-};
-const WithSlottedDescription = Template.bind({});
-WithSlottedDescription.args = {
-  ...Default.args,
-  hasSlottedDescription: true
-};
-
-/***/ }),
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[9835],{
 
 /***/ 58825:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -269,6 +17,9 @@ __webpack_require__.r(__webpack_exports__);
  *
  * @tagname moz-label
  * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
  */
 class MozTextLabel extends HTMLLabelElement {
   #insertSeparator = false;
@@ -278,7 +29,7 @@ class MozTextLabel extends HTMLLabelElement {
   // Default to underlining accesskeys for Windows and Linux.
   static #underlineAccesskey = !navigator.platform.includes("Mac");
   static get observedAttributes() {
-    return ["accesskey"];
+    return ["accesskey", "shownaccesskey"];
   }
   static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
   constructor() {
@@ -383,7 +134,7 @@ class MozTextLabel extends HTMLLabelElement {
   // label uses [value]). So this is just for when we have textContent.
   formatAccessKey() {
     // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey;
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
     if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
       return;
     }
@@ -504,10 +255,97 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 95412:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 74320:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-checkbox.df329fef52b070240dd0.css";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AccessKey": () => (/* binding */ AccessKey),
+/* harmony export */   "AccessKeyNotInLabel": () => (/* binding */ AccessKeyNotInLabel),
+/* harmony export */   "DisabledCheckbox": () => (/* binding */ DisabledCheckbox),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var _moz_label_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58825);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+MozXULElement.insertFTLIfNeeded("locales-preview/moz-label.storybook.ftl");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Label",
+  component: "moz-label",
+  argTypes: {
+    inputType: {
+      options: ["checkbox", "radio"],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    status: {
+      type: "unstable",
+      links: [{
+        title: "Learn more",
+        href: "?path=/docs/ui-widgets-label-readme--page#component-status"
+      }]
+    }
+  }
+});
+const Template = ({
+  accesskey,
+  inputType,
+  disabled,
+  "data-l10n-id": dataL10nId
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <style>
+    div {
+      display: flex;
+      align-items: center;
+    }
+
+    label {
+      margin-inline-end: 8px;
+    }
+  </style>
+  <div>
+    <label
+      is="moz-label"
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
+      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(dataL10nId)}
+      for="cheese"
+    >
+    </label>
+    <input
+      type=${inputType}
+      name="cheese"
+      id="cheese"
+      ?disabled=${disabled}
+      checked
+    />
+  </div>
+`;
+const AccessKey = Template.bind({});
+AccessKey.args = {
+  accesskey: "c",
+  inputType: "checkbox",
+  disabled: false,
+  "data-l10n-id": "default-label"
+};
+const AccessKeyNotInLabel = Template.bind({});
+AccessKeyNotInLabel.args = {
+  ...AccessKey.args,
+  accesskey: "x",
+  "data-l10n-id": "label-with-colon"
+};
+const DisabledCheckbox = Template.bind({});
+DisabledCheckbox.args = {
+  ...AccessKey.args,
+  disabled: true
+};
 
 /***/ }),
 
@@ -519,4 +357,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.388efb23.iframe.bundle.js.map
+//# sourceMappingURL=moz-label-moz-label-stories.f86d5095.iframe.bundle.js.map

@@ -138,7 +138,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           bubbles: true,
           composed: true,
           detail: {
-            backupFile: event.detail.backupFile
+            backupFile: event.detail.backupFile,
+            backupPassword: event.detail.backupPassword
           }
         }));
         break;
@@ -153,8 +154,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           bubbles: true,
           composed: true,
           detail: {
-            backupFile: event.detail.backupFile,
-            backupPassword: event.detail.backupPassword
+            backupFile: event.detail.backupFile
           }
         }));
         break;
@@ -1214,4 +1214,4 @@ module.exports = __webpack_require__.p + "preferences.87cab5657a485da89120.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.d80a0eaf.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.67683f86.iframe.bundle.js.map
