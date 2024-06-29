@@ -122,7 +122,6 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
   handleConfirm() {
     /**
      * TODO:
-     * If encryption is enabled via this dialog, ensure a password is set and pass it to BackupUIParent (bug 1895981).
      * Before confirmation, verify passwords match and FxA format rules (bug 1896772).
      */
     let detail = {
@@ -513,7 +512,7 @@ customElements.define("moz-card", MozCard);
 /***/ 95010:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "turn-on-scheduled-backups.114c0e550abcd7aec1af.css";
+module.exports = __webpack_require__.p + "turn-on-scheduled-backups.248485c58c1837c59e65.css";
 
 /***/ }),
 
@@ -525,4 +524,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.dec43718.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.20d0ba2a.iframe.bundle.js.map
