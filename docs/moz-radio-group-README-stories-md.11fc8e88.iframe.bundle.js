@@ -1154,10 +1154,13 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
     return this.#value;
   }
   get focusableIndex() {
-    if (!this.#value) {
-      return this.#radioButtons.findIndex(button => !button.disabled);
+    if (this.#value) {
+      let selectedIndex = this.#radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
+      if (selectedIndex !== -1) {
+        return selectedIndex;
+      }
     }
-    return this.#radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
+    return this.#radioButtons.findIndex(button => !button.disabled);
   }
   constructor() {
     super();
@@ -12144,4 +12147,4 @@ module.exports = __webpack_require__.p + "moz-radio.f82c1d1f40ce4a32b094.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.c3ee717c.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.11fc8e88.iframe.bundle.js.map
