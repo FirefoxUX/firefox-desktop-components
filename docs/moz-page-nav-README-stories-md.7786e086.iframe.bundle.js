@@ -1,4 +1,4 @@
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5295,9433],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7691,9433],{
 
 /***/ 63349:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -749,174 +749,21 @@ var Wrapper=_storybook_theming__WEBPACK_IMPORTED_MODULE_1__.styled.div(_storyboo
 
 /***/ }),
 
-/***/ 15872:
+/***/ 69687:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozButton)
+/* harmony export */   "MozPageNavButton": () => (/* binding */ MozPageNavButton),
+/* harmony export */   "default": () => (/* binding */ MozPageNav)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(54078);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var toolkit_content_widgets_moz_page_nav_moz_page_nav_button_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(16737);
+/* harmony import */ var toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13487);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(49896);
 
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/**
- * A button with multiple types and two sizes.
- *
- * @tagname moz-button
- * @property {string} label - The button's label, will be overridden by slotted content.
- * @property {string} type - The button type.
- *   Options: default, primary, destructive, icon, icon ghost, ghost.
- * @property {string} size - The button size.
- *   Options: default, small.
- * @property {boolean} disabled - The disabled state.
- * @property {string} title - The button's title attribute, used in shadow DOM and therefore not as an attribute on moz-button.
- * @property {string} titleAttribute - Internal, map title attribute to the title JS property.
- * @property {string} tooltipText - Set the title property, the title attribute will be used first.
- * @property {string} ariaLabel - The button's arial-label attribute, used in shadow DOM and therefore not as an attribute on moz-button.
- * @property {string} iconSrc - Path to the icon that should be displayed in the button.
- * @property {string} ariaLabelAttribute - Internal, map aria-label attribute to the ariaLabel JS property.
- * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
- * @property {HTMLButtonElement} buttonEl - The internal button element in the shadow DOM.
- * @property {HTMLButtonElement} slotEl - The internal slot element in the shadow DOM.
- * @slot default - The button's content, overrides label property.
- * @fires click - The click event.
- */
-class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static shadowRootOptions = {
-    ..._lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
-  static properties = {
-    label: {
-      type: String,
-      reflect: true,
-      fluent: true
-    },
-    type: {
-      type: String,
-      reflect: true
-    },
-    size: {
-      type: String,
-      reflect: true
-    },
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    title: {
-      type: String,
-      state: true
-    },
-    titleAttribute: {
-      type: String,
-      attribute: "title",
-      reflect: true
-    },
-    tooltipText: {
-      type: String,
-      fluent: true
-    },
-    ariaLabelAttribute: {
-      type: String,
-      attribute: "aria-label",
-      reflect: true
-    },
-    ariaLabel: {
-      type: String,
-      state: true
-    },
-    iconSrc: {
-      type: String
-    },
-    hasVisibleLabel: {
-      type: Boolean,
-      state: true
-    }
-  };
-  static queries = {
-    buttonEl: "button",
-    slotEl: "slot"
-  };
-  constructor() {
-    super();
-    this.type = "default";
-    this.size = "default";
-    this.disabled = false;
-    this.hasVisibleLabel = !!this.label;
-  }
-  willUpdate(changes) {
-    if (changes.has("titleAttribute")) {
-      this.title = this.titleAttribute;
-      this.titleAttribute = null;
-    }
-    if (changes.has("ariaLabelAttribute")) {
-      this.ariaLabel = this.ariaLabelAttribute;
-      this.ariaLabelAttribute = null;
-    }
-  }
-
-  // Delegate clicks on host to the button element.
-  click() {
-    this.buttonEl.click();
-  }
-  checkForLabelText() {
-    this.hasVisibleLabel = this.slotEl?.assignedNodes().some(node => node.textContent.trim());
-  }
-  labelTemplate() {
-    if (this.label) {
-      return this.label;
-    }
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot @slotchange=${this.checkForLabelText}></slot>`;
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <button
-        type=${this.type}
-        size=${this.size}
-        ?disabled=${this.disabled}
-        title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
-        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
-        part="button"
-        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
-      labelled: this.label || this.hasVisibleLabel
-    })}
-      >
-        ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        ${this.labelTemplate()}
-      </button>
-    `;
-  }
-}
-customElements.define("moz-button", MozButton);
-
-/***/ }),
-
-/***/ 46949:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozMessageBar)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(84296);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15872);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -926,179 +773,338 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozMessageBar.ftl");
-const messageTypeToIconData = {
-  info: {
-    iconSrc: "chrome://global/skin/icons/info-filled.svg",
-    l10nId: "moz-message-bar-icon-info"
-  },
-  warning: {
-    iconSrc: "chrome://global/skin/icons/warning.svg",
-    l10nId: "moz-message-bar-icon-warning"
-  },
-  success: {
-    iconSrc: "chrome://global/skin/icons/check-filled.svg",
-    l10nId: "moz-message-bar-icon-success"
-  },
-  error: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  },
-  critical: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  }
-};
 
 /**
- * A simple message bar element that can be used to display
- * important information to users.
+ * A grouping of navigation buttons that is displayed at the page level,
+ * intended to change the selected view, provide a heading, and have links
+ * to external resources.
  *
- * @tagname moz-message-bar
- * @property {string} type - The type of the displayed message.
- * @property {string} heading - The heading of the message.
- * @property {string} message - The message text.
- * @property {boolean} dismissable - Whether or not the element is dismissable.
- * @property {string} messageL10nId - l10n ID for the message.
- * @property {string} messageL10nArgs - Any args needed for the message l10n ID.
- * @fires message-bar:close
- *  Custom event indicating that message bar was closed.
- * @fires message-bar:user-dismissed
- *  Custom event indicating that message bar was dismissed by the user.
+ * @tagname moz-page-nav
+ * @property {string} currentView - The currently selected view.
+ * @property {string} heading - A heading to be displayed at the top of the navigation.
+ * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
  */
-
-class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static queries = {
-    actionsSlot: "slot[name=actions]",
-    actionsEl: ".actions",
-    closeButton: "moz-button.close",
-    supportLinkSlot: "slot[name=support-link]"
-  };
+class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
-    type: {
+    currentView: {
       type: String
     },
     heading: {
       type: String
-    },
-    message: {
-      type: String
-    },
-    dismissable: {
-      type: Boolean
-    },
-    messageL10nId: {
-      type: String
-    },
-    messageL10nArgs: {
-      type: String
     }
   };
-  constructor() {
-    super();
-    this.type = "info";
-    this.dismissable = false;
+  static queries = {
+    headingEl: "#page-nav-header",
+    primaryNavGroupSlot: ".primary-nav-group slot",
+    secondaryNavGroupSlot: "#secondary-nav-group slot"
+  };
+  get pageNavButtons() {
+    return this.primaryNavGroupSlot.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
   }
-  onSlotchange() {
-    let actions = this.actionsSlot.assignedNodes();
-    this.actionsEl.classList.toggle("active", actions.length);
+  get secondaryNavButtons() {
+    return this.secondaryNavGroupSlot.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
   }
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute("role", "alert");
+  onChangeView(e) {
+    this.currentView = e.target.view;
   }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.dispatchEvent(new CustomEvent("message-bar:close"));
-  }
-  get supportLinkEls() {
-    return this.supportLinkSlot.assignedElements();
-  }
-  iconTemplate() {
-    let iconData = messageTypeToIconData[this.type];
-    if (iconData) {
-      let {
-        iconSrc,
-        l10nId
-      } = iconData;
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="icon-container">
-          <img
-            class="icon"
-            src=${iconSrc}
-            data-l10n-id=${l10nId}
-            data-l10n-attrs="alt"
-          />
-        </div>
-      `;
+  handleFocus(e) {
+    if (e.key == "ArrowDown" || e.key == "ArrowRight") {
+      e.preventDefault();
+      this.focusNextView();
+    } else if (e.key == "ArrowUp" || e.key == "ArrowLeft") {
+      e.preventDefault();
+      this.focusPreviousView();
     }
-    return "";
   }
-  headingTemplate() {
-    if (this.heading) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<strong class="heading">${this.heading}</strong>`;
+  focusPreviousView() {
+    let pageNavButtons = this.pageNavButtons;
+    let currentIndex = pageNavButtons.findIndex(b => b.selected);
+    let prev = pageNavButtons[currentIndex - 1];
+    if (prev) {
+      prev.activate();
+      prev.buttonEl.focus();
     }
-    return "";
   }
-  closeButtonTemplate({
-    size
-  } = {}) {
-    if (this.dismissable) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <moz-button
-          type="icon ghost"
-          class="close"
-          size=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(size)}
-          data-l10n-id="moz-message-bar-close-button"
-          @click=${this.dismiss}
-        ></moz-button>
-      `;
+  focusNextView() {
+    let pageNavButtons = this.pageNavButtons;
+    let currentIndex = pageNavButtons.findIndex(b => b.selected);
+    let next = pageNavButtons[currentIndex + 1];
+    if (next) {
+      next.activate();
+      next.buttonEl.focus();
     }
-    return "";
+  }
+  onSecondaryNavChange() {
+    this.secondaryNavGroupSlot.assignedElements()?.forEach(el => {
+      el.classList.add("secondary-nav-item");
+    });
   }
   render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
-      <div class="container">
-        <div class="content">
-          <div class="text-container">
-            ${this.iconTemplate()}
-            <div class="text-content">
-              ${this.headingTemplate()}
-              <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
-                <span class="link">
-                  <slot name="support-link"></slot>
-                </span>
-              </div>
-            </div>
-          </div>
-          <span class="actions">
-            <slot name="actions" @slotchange=${this.onSlotchange}></slot>
-          </span>
+      <nav>
+        <h1 class="page-nav-header" id="page-nav-header">${this.heading}</h1>
+        <div
+          class="primary-nav-group"
+          role="tablist"
+          aria-orientation="vertical"
+          aria-labelledby="page-nav-header"
+        >
+          <slot
+            @change-view=${this.onChangeView}
+            @keydown=${this.handleFocus}
+          ></slot>
         </div>
-        ${this.closeButtonTemplate()}
-      </div>
+        <div id="secondary-nav-group" role="group">
+          <slot
+            name="secondary-nav"
+            @slotchange=${this.onSecondaryNavChange}
+          ></slot>
+        </div>
+      </nav>
     `;
   }
-  dismiss() {
-    this.dispatchEvent(new CustomEvent("message-bar:user-dismissed"));
-    this.close();
-  }
-  close() {
-    this.remove();
+  updated() {
+    let isViewSelected = false;
+    let assignedPageNavButtons = this.pageNavButtons;
+    for (let button of assignedPageNavButtons) {
+      button.selected = button.view == this.currentView;
+      isViewSelected = isViewSelected || button.selected;
+    }
+    if (!isViewSelected && assignedPageNavButtons.length) {
+      // Current page nav has no matching view, reset to the first view.
+      assignedPageNavButtons[0].activate();
+    }
   }
 }
-customElements.define("moz-message-bar", MozMessageBar);
+customElements.define("moz-page-nav", MozPageNav);
+
+/**
+ * A navigation button intended to change the selected view within a page.
+ *
+ * @tagname moz-page-nav-button
+ * @property {string} href - (optional) The url for an external link if not a support page URL
+ * @property {string} iconSrc - The chrome:// url for the icon used for the button.
+ * @property {boolean} selected - Whether or not the button is currently selected.
+ * @property {string} supportPage - (optional) The short name for the support page a secondary link should launch to
+ * @slot [default] - Used to append the l10n string to the button.
+ */
+class MozPageNavButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  static properties = {
+    iconSrc: {
+      type: String
+    },
+    href: {
+      type: String
+    },
+    selected: {
+      type: Boolean
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
+    }
+  };
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute("role", "none");
+  }
+  static queries = {
+    buttonEl: "button",
+    linkEl: "a"
+  };
+  get view() {
+    return this.getAttribute("view");
+  }
+  activate() {
+    this.dispatchEvent(new CustomEvent("change-view", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  itemTemplate() {
+    if (this.href || this.supportPage) {
+      return this.linkTemplate();
+    }
+    return this.buttonTemplate();
+  }
+  buttonTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <button
+        aria-selected=${this.selected}
+        tabindex=${this.selected ? 0 : -1}
+        role="tab"
+        ?selected=${this.selected}
+        @click=${this.activate}
+      >
+        ${this.innerContentTemplate()}
+      </button>
+    `;
+  }
+  linkTemplate() {
+    if (this.supportPage) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+        <a
+          is="moz-support-link"
+          class="moz-page-nav-link"
+          support-page=${this.supportPage}
+        >
+          ${this.innerContentTemplate()}
+        </a>
+      `;
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <a href=${this.href} class="moz-page-nav-link" target="_blank">
+        ${this.innerContentTemplate()}
+      </a>
+    `;
+  }
+  innerContentTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      ${this.iconSrc ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<img
+            class="page-nav-icon"
+            src=${this.iconSrc}
+            role="presentation"
+          />` : ""}
+      <slot></slot>
+    `;
+  }
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_button_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.itemTemplate()}
+    `;
+  }
+}
+customElements.define("moz-page-nav-button", MozPageNavButton);
+
+/***/ }),
+
+/***/ 49896:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozSupportLink),
+/* harmony export */   "formatUTMParams": () => (/* binding */ formatUTMParams)
+/* harmony export */ });
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozSupportLink.ftl");
+
+/**
+ * An extension of the anchor element that helps create links to Mozilla's
+ * support documentation. This should be used for SUMO links only - other "Learn
+ * more" links can use the regular anchor element.
+ *
+ * @tagname moz-support-link
+ * @attribute {string} support-page - Short-hand string from SUMO to the specific support page.
+ * @attribute {string} utm-content - UTM parameter for a URL, if it is an AMO URL.
+ * @attribute {string} data-l10n-id - Fluent ID used to generate the text content.
+ */
+class MozSupportLink extends HTMLAnchorElement {
+  static SUPPORT_URL = "https://www.mozilla.org/";
+  static get observedAttributes() {
+    return ["support-page", "utm-content"];
+  }
+
+  /**
+   * Handles setting up the SUPPORT_URL preference getter.
+   * Without this, the tests for this component may not behave
+   * as expected.
+   * @private
+   * @memberof MozSupportLink
+   */
+  #register() {
+    if (window.document.nodePrincipal?.isSystemPrincipal) {
+      ChromeUtils.defineESModuleGetters(MozSupportLink, {
+        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
+      });
+
+      // eslint-disable-next-line no-shadow
+      let {
+        XPCOMUtils
+      } = window.XPCOMUtils ? window : ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
+      XPCOMUtils.defineLazyPreferenceGetter(MozSupportLink, "SUPPORT_URL", "app.support.baseURL", "", null, val => Services.urlFormatter.formatURL(val));
+    } else if (!window.IS_STORYBOOK) {
+      MozSupportLink.SUPPORT_URL = window.RPMGetFormatURLPref("app.support.baseURL");
+    }
+  }
+  connectedCallback() {
+    this.#register();
+    this.#setHref();
+    this.setAttribute("target", "_blank");
+    this.addEventListener("click", this);
+    if (!this.getAttribute("data-l10n-id") && !this.getAttribute("data-l10n-name") && !this.childElementCount) {
+      document.l10n.setAttributes(this, "moz-support-link-text");
+    }
+    document.l10n.translateFragment(this);
+  }
+  disconnectedCallback() {
+    this.removeEventListener("click", this);
+  }
+  handleEvent(e) {
+    if (e.type == "click") {
+      if (window.openTrustedLinkIn) {
+        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
+        if (where == "current") {
+          where = "tab";
+        }
+        e.preventDefault();
+        openTrustedLinkIn(this.href, where);
+      }
+    }
+  }
+  attributeChangedCallback(attrName) {
+    if (attrName === "support-page" || attrName === "utm-content") {
+      this.#setHref();
+    }
+  }
+  #setHref() {
+    let supportPage = this.getAttribute("support-page") ?? "";
+    let base = MozSupportLink.SUPPORT_URL + supportPage;
+    this.href = this.hasAttribute("utm-content") ? formatUTMParams(this.getAttribute("utm-content"), base) : base;
+  }
+}
+customElements.define("moz-support-link", MozSupportLink, {
+  extends: "a"
+});
+
+/**
+ * Adds UTM parameters to a given URL, if it is an AMO URL.
+ *
+ * @param {string} contentAttribute
+ *        Identifies the part of the UI with which the link is associated.
+ * @param {string} url
+ * @returns {string}
+ *          The url with UTM parameters if it is an AMO URL.
+ *          Otherwise the url in unmodified form.
+ */
+function formatUTMParams(contentAttribute, url) {
+  if (!contentAttribute) {
+    return url;
+  }
+  let parsedUrl = new URL(url);
+  let domain = `.${parsedUrl.hostname}`;
+  if (!domain.endsWith(".mozilla.org") &&
+  // For testing: addons-dev.allizom.org and addons.allizom.org
+  !domain.endsWith(".allizom.org")) {
+    return url;
+  }
+  parsedUrl.searchParams.set("utm_source", "firefox-browser");
+  parsedUrl.searchParams.set("utm_medium", "firefox-browser");
+  parsedUrl.searchParams.set("utm_content", contentAttribute);
+  return parsedUrl.href;
+}
 
 /***/ }),
 
@@ -1814,7 +1820,7 @@ ${input}`);let match=input.match(firstLineRegex);if(!match)return react__WEBPACK
 
 /***/ }),
 
-/***/ 7461:
+/***/ 83011:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
@@ -1826,7 +1832,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(67294);
 /* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38155);
 /* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(54557);
-/* harmony import */ var toolkit_widgets_moz_message_bar_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+/* harmony import */ var toolkit_widgets_moz_page_nav_moz_page_nav_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(69687);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(85893);
 
 
@@ -1851,7 +1857,7 @@ function _createMdxContent(props) {
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Message Bar/README",
+      title: "UI Widgets/ Page Nav/README",
       parameters: {
         previewTabs: {
           canvas: {
@@ -1861,24 +1867,71 @@ function _createMdxContent(props) {
         viewMode: "docs"
       }
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "mozmessagebar",
-      children: "MozMessageBar"
+      id: "mozpagenav",
+      children: "MozPageNav"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
-      }), " is a versatile user interface element designed to display messages or notifications.\nThese messages and notifications are nonmodal, and keep users informed without blocking access to the base page.\nIt supports various types of messages - info, warning, success, and error - each with distinct visual styling\nto convey the message's urgency or importance. You can customize ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
-      }), " by adding a message, message heading,\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-support-link"
-      }), ", actions buttons, or by making the message bar dismissable."]
+        children: "moz-page-nav"
+      }), " is a grouping of navigation buttons that is displayed at the page level,\nintended to change the selected view, provide a heading, and have links to external resources."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-message-bar dismissable heading=\"Heading of the message bar\" message=\"Message for the user\" /></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, \"--page-nav-margin-bottom\": 0, height: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-message-bar", {
-          dismissable: true,
-          heading: "Heading of the message bar",
-          message: "Message for the user"
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
+          heading: "This is a nav",
+          style: {
+            '--page-nav-margin-top': 0,
+            '--page-nav-margin-bottom': 0,
+            height: '275px'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-one",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 1"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-two",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 2"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-three",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 3"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            "support-page": "test",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            slot: "secondary-nav",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Support Link"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            href: "https://www.example.com",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            slot: "secondary-nav",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "External Link"
+            })
+          })]
         })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
@@ -1886,49 +1939,43 @@ function _createMdxContent(props) {
       children: "When to use"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
       children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use the message bar to display important announcements or notifications to the user."
+        children: "Use moz-page-nav for single-page navigation to switch between different views."
       }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use it to attract the user's attention without interrupting the user's task."
+        children: "moz-page-nav also supports footer buttons for external and support links"
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "This component will be used in about: pages such as about:firefoxview, about:preferences, about:addons, about:debugging, etc."
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "when-not-to-use",
       children: "When not to use"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
       children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Do not use the message bar for displaying critical alerts or warnings that require immediate and focused attention."
+        children: "If you need a navigation menu that does not switch between views within a single page"
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "code",
       children: "Code"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
+        children: "moz-page-nav"
+      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
       }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-message-bar/moz-message-bar.mjs",
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-page-nav",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-message-bar"
+        children: "toolkit/content/widgets/moz-page-nav"
       }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
+        children: "moz-page-nav"
       }), " in use in the Firefox codebase in\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html",
+        href: "https://searchfox.org/mozilla-central/source/browser/components/firefoxview/firefoxview.html#52-87",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "about:addons"
-      }), ",\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/base/content/browser-addons.js",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "unified extensions panel"
-      }), " and\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/components/shopping/content/shopping-message-bar.mjs",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "shopping components"
+        children: "about:firefoxview"
       }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
+        children: "moz-page-nav"
       }), " can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: ".html"
       }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
@@ -1937,14 +1984,14 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-message-bar.mjs\"></script>\n"
+        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-page-nav.mjs\"></script>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
       children: "And used as follows:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-message-bar dismissable\n                 heading=\"Heading of the message bar\"\n                 message=\"Message for the user\">\n</moz-message-bar>\n"
+        children: "<moz-page-nav>\n  <moz-page-nav-button\n    view=\"A name for the first view\"\n    iconSrc=\"A url for the icon for the first navigation button\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    view=\"A name for the second view\"\n    iconSrc=\"A url for the icon for the second navigation button\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    view=\"A name for the third view\"\n    iconSrc=\"A url for the icon for the third navigation button\">\n  </moz-page-nav-button>\n\n  <!-- Footer Links -->\n\n  <!-- Support Link -->\n  <moz-page-nav-button\n    support-page=\"A name for a support link\"\n    iconSrc=\"A url for the icon for the third navigation button\"\n    slot=\"secondary-nav\">\n  </moz-page-nav-button>\n\n  <!-- External Link -->\n  <moz-page-nav-button\n    href=\"A url for an external link\"\n    iconSrc=\"A url for the icon for the third navigation button\"\n    slot=\"secondary-nav\">\n  </moz-page-nav-button>\n</moz-page-nav>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "fluent-usage",
@@ -1952,10 +1999,8 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["Generally the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "heading"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "message"
-      }), " properties of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-message-bar"
+      }), " property of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
       }), " will be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
         href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
         target: "_blank",
@@ -1965,23 +2010,38 @@ function _createMdxContent(props) {
         children: "data-l10n-id"
       }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "data-l10n-attrs"
-      }), " if you're providing a heading and a message:"]
+      }), " if you're providing a heading:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-message-bar data-l10n-id=\"with-heading-and-message\"\n                 data-l10n-attrs=\"heading, message\"></moz-message-bar>\n"
+        children: "<moz-page-nav data-l10n-id=\"with-heading\"\n            data-l10n-attrs=\"heading\"></moz-page-nav>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
       children: "In which case your Fluent messages will look something like this:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "with-heading-and-message =\n  .heading = Heading text goes here\n  .message = Message text goes here\n"
+        children: "with-heading =\n  .heading = Heading text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["You also need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " for each ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), ":"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav-button data-l10n-id=\"with-button-text\"></moz-page-nav-button>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-button-text = button text goes here\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-message-bar"
+      of: "moz-page-nav"
     })]
   });
 }
@@ -2004,7 +2064,7 @@ __page.parameters = {
   docsOnly: true
 };
 const componentMeta = {
-  title: 'UI Widgets/ Message Bar/README',
+  title: 'UI Widgets/ Page Nav/README',
   parameters: {
     previewTabs: {
       canvas: {
@@ -11705,21 +11765,21 @@ function useResizeObserver(opts) {
 
 /***/ }),
 
-/***/ 54078:
+/***/ 16737:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.efa9cc93fc23d1381bb4.css";
 
 /***/ }),
 
-/***/ 84296:
+/***/ 13487:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.css";
+module.exports = __webpack_require__.p + "moz-page-nav.2892f22041b8119e67c9.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.b92f953e.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.7786e086.iframe.bundle.js.map

@@ -1,5 +1,134 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[4262],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7436],{
+
+/***/ 46570:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozFieldset)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12876);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Fieldset wrapper to lay out form inputs consistently.
+ *
+ * @tagname moz-fieldset
+ * @property {string} label - The label for the fieldset's legend.
+ * @property {string} description - The description for the fieldset.
+ */
+class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    description: {
+      type: String,
+      fluent: true
+    }
+  };
+  render() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <fieldset
+        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
+      >
+        <legend class="heading-medium">${this.label}</legend>
+        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
+              ${this.description}
+            </p>` : ""}
+        <div id="inputs">
+          <slot></slot>
+        </div>
+      </fieldset>
+    `;
+  }
+}
+customElements.define("moz-fieldset", MozFieldset);
+
+/***/ }),
+
+/***/ 86362:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var _moz_fieldset_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46570);
+/* harmony import */ var _moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(34003);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Fieldset",
+  component: "moz-fieldset",
+  parameters: {
+    status: "in-development",
+    fluent: `
+moz-fieldset-label =
+  .label = Related Settings
+moz-fieldset-description =
+  .label = Some Settings
+  .description = Perhaps you want to have a longer description of what these settings do. Width is set explicitly for emphasis.
+  `
+  }
+});
+const Template = ({
+  label,
+  description,
+  l10nId
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <moz-fieldset
+    data-l10n-id=${l10nId}
+    .label=${label}
+    .description=${description}
+    style="width: 400px;"
+  >
+    <moz-toggle
+      pressed
+      label="First setting"
+      description="These could have descriptions too."
+    ></moz-toggle>
+    <label><input type="checkbox" /> Second setting</label>
+    <label><input type="checkbox" /> Third setting</label>
+  </moz-fieldset>
+`;
+const Default = Template.bind({});
+Default.args = {
+  label: "",
+  description: "",
+  l10nId: "moz-fieldset-label"
+};
+const WithDescription = Template.bind({});
+WithDescription.args = {
+  ...Default.args,
+  l10nId: "moz-fieldset-description"
+};
+
+/***/ }),
 
 /***/ 58825:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -255,127 +384,6 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 49896:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozSupportLink),
-/* harmony export */   "formatUTMParams": () => (/* binding */ formatUTMParams)
-/* harmony export */ });
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozSupportLink.ftl");
-
-/**
- * An extension of the anchor element that helps create links to Mozilla's
- * support documentation. This should be used for SUMO links only - other "Learn
- * more" links can use the regular anchor element.
- *
- * @tagname moz-support-link
- * @attribute {string} support-page - Short-hand string from SUMO to the specific support page.
- * @attribute {string} utm-content - UTM parameter for a URL, if it is an AMO URL.
- * @attribute {string} data-l10n-id - Fluent ID used to generate the text content.
- */
-class MozSupportLink extends HTMLAnchorElement {
-  static SUPPORT_URL = "https://www.mozilla.org/";
-  static get observedAttributes() {
-    return ["support-page", "utm-content"];
-  }
-
-  /**
-   * Handles setting up the SUPPORT_URL preference getter.
-   * Without this, the tests for this component may not behave
-   * as expected.
-   * @private
-   * @memberof MozSupportLink
-   */
-  #register() {
-    if (window.document.nodePrincipal?.isSystemPrincipal) {
-      ChromeUtils.defineESModuleGetters(MozSupportLink, {
-        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
-      });
-
-      // eslint-disable-next-line no-shadow
-      let {
-        XPCOMUtils
-      } = window.XPCOMUtils ? window : ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
-      XPCOMUtils.defineLazyPreferenceGetter(MozSupportLink, "SUPPORT_URL", "app.support.baseURL", "", null, val => Services.urlFormatter.formatURL(val));
-    } else if (!window.IS_STORYBOOK) {
-      MozSupportLink.SUPPORT_URL = window.RPMGetFormatURLPref("app.support.baseURL");
-    }
-  }
-  connectedCallback() {
-    this.#register();
-    this.#setHref();
-    this.setAttribute("target", "_blank");
-    this.addEventListener("click", this);
-    if (!this.getAttribute("data-l10n-id") && !this.getAttribute("data-l10n-name") && !this.childElementCount) {
-      document.l10n.setAttributes(this, "moz-support-link-text");
-    }
-    document.l10n.translateFragment(this);
-  }
-  disconnectedCallback() {
-    this.removeEventListener("click", this);
-  }
-  handleEvent(e) {
-    if (e.type == "click") {
-      if (window.openTrustedLinkIn) {
-        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
-        if (where == "current") {
-          where = "tab";
-        }
-        e.preventDefault();
-        openTrustedLinkIn(this.href, where);
-      }
-    }
-  }
-  attributeChangedCallback(attrName) {
-    if (attrName === "support-page" || attrName === "utm-content") {
-      this.#setHref();
-    }
-  }
-  #setHref() {
-    let supportPage = this.getAttribute("support-page") ?? "";
-    let base = MozSupportLink.SUPPORT_URL + supportPage;
-    this.href = this.hasAttribute("utm-content") ? formatUTMParams(this.getAttribute("utm-content"), base) : base;
-  }
-}
-customElements.define("moz-support-link", MozSupportLink, {
-  extends: "a"
-});
-
-/**
- * Adds UTM parameters to a given URL, if it is an AMO URL.
- *
- * @param {string} contentAttribute
- *        Identifies the part of the UI with which the link is associated.
- * @param {string} url
- * @returns {string}
- *          The url with UTM parameters if it is an AMO URL.
- *          Otherwise the url in unmodified form.
- */
-function formatUTMParams(contentAttribute, url) {
-  if (!contentAttribute) {
-    return url;
-  }
-  let parsedUrl = new URL(url);
-  let domain = `.${parsedUrl.hostname}`;
-  if (!domain.endsWith(".mozilla.org") &&
-  // For testing: addons-dev.allizom.org and addons.allizom.org
-  !domain.endsWith(".allizom.org")) {
-    return url;
-  }
-  parsedUrl.searchParams.set("utm_source", "firefox-browser");
-  parsedUrl.searchParams.set("utm_medium", "firefox-browser");
-  parsedUrl.searchParams.set("utm_content", contentAttribute);
-  return parsedUrl.href;
-}
-
-/***/ }),
-
 /***/ 34003:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -545,107 +553,10 @@ customElements.define("moz-toggle", MozToggle);
 
 /***/ }),
 
-/***/ 89488:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 12876:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Toggle": () => (/* binding */ Toggle),
-/* harmony export */   "ToggleDisabled": () => (/* binding */ ToggleDisabled),
-/* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
-/* harmony export */   "WithLabel": () => (/* binding */ WithLabel),
-/* harmony export */   "WithSupportLink": () => (/* binding */ WithSupportLink),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(34003);
-/* harmony import */ var _moz_support_link_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49896);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Toggle",
-  component: "moz-toggle",
-  parameters: {
-    status: "in-development",
-    actions: {
-      handles: ["toggle"]
-    },
-    fluent: `
-moz-toggle-aria-label =
-  .aria-label = This is the aria-label
-moz-toggle-label =
-  .label = This is the label
-moz-toggle-description =
-  .label = This is the label
-  .description = This is the description.
-    `
-  }
-});
-const Template = ({
-  pressed,
-  disabled,
-  label,
-  description,
-  ariaLabel,
-  l10nId,
-  hasSupportLink,
-  accessKey
-}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <div style="max-width: 400px">
-    <moz-toggle
-      ?pressed=${pressed}
-      ?disabled=${disabled}
-      label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(label)}
-      description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(description)}
-      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(ariaLabel)}
-      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-      data-l10n-attrs="aria-label, description, label"
-      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accessKey)}
-    >
-      ${hasSupportLink ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-            <a
-              is="moz-support-link"
-              support-page="addons"
-              slot="support-link"
-            ></a>
-          ` : ""}
-    </moz-toggle>
-  </div>
-`;
-const Toggle = Template.bind({});
-Toggle.args = {
-  pressed: true,
-  disabled: false,
-  l10nId: "moz-toggle-aria-label"
-};
-const ToggleDisabled = Template.bind({});
-ToggleDisabled.args = {
-  ...Toggle.args,
-  disabled: true
-};
-const WithLabel = Template.bind({});
-WithLabel.args = {
-  pressed: true,
-  disabled: false,
-  l10nId: "moz-toggle-label",
-  hasSupportLink: false,
-  accessKey: "h"
-};
-const WithDescription = Template.bind({});
-WithDescription.args = {
-  ...WithLabel.args,
-  l10nId: "moz-toggle-description"
-};
-const WithSupportLink = Template.bind({});
-WithSupportLink.args = {
-  ...WithDescription.args,
-  hasSupportLink: true
-};
+module.exports = __webpack_require__.p + "moz-fieldset.7bca79825e772f6db7b7.css";
 
 /***/ }),
 
@@ -659,9 +570,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 16368:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
+module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.487dbcf9.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.5db94f20.iframe.bundle.js.map

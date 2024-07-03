@@ -686,9 +686,9 @@ module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 /***/ 84296:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.a0c47882cf100c1990dc.css";
+module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-message-bar-stories.02c83a6d.iframe.bundle.js.map
+//# sourceMappingURL=shopping-message-bar-stories.f6d5fc60.iframe.bundle.js.map

@@ -11799,9 +11799,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-toggle.668fc9a161b19b32dc2b.css";
+module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-README-stories-md.68b4510c.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-README-stories-md.921d6298.iframe.bundle.js.map
