@@ -867,6 +867,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   willUpdate(changedProperties) {
     if (changedProperties.has("backupFileToRestore")) {
+      this.backupFileInfo = null;
       this.getBackupFileInfo();
     }
   }
@@ -996,13 +997,17 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     `;
   }
   descriptionTemplate() {
+    let {
+      date
+    } = this.backupFileInfo;
+    let dateTime = date && new Date(date).getTime();
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <div id="restore-from-backup-description">
         <span
           id="restore-from-backup-description-span"
           data-l10n-id="restore-from-backup-description-with-metadata"
           data-l10n-args=${JSON.stringify({
-      date: new Date(this.backupFileInfo?.date).getTime()
+      date: dateTime
     })}
         ></span>
         <a
@@ -1504,4 +1509,4 @@ module.exports = __webpack_require__.p + "preferences.8b91ecb64eb85fc1eae0.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.52c0a276.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.3dc468e6.iframe.bundle.js.map
