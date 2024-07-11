@@ -42,6 +42,7 @@ __webpack_require__.r(__webpack_exports__);
  * document of about:settings / about:preferences.
  */
 class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  #placeholderIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
     backupServiceState: {
       type: Object
@@ -65,7 +66,13 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       restoreFromBackupEl: "restore-from-backup",
       restoreFromBackupButtonEl: "#backup-toggle-restore-button",
       restoreFromBackupDialogEl: "#restore-from-backup-dialog",
-      sensitiveDataCheckboxInputEl: "#backup-sensitive-data-checkbox-input"
+      sensitiveDataCheckboxInputEl: "#backup-sensitive-data-checkbox-input",
+      passwordControlsEl: "#backup-password-controls",
+      lastBackupLocationInputEl: "#last-backup-location",
+      lastBackupFileNameEl: "#last-backup-filename",
+      lastBackupDateEl: "#last-backup-date",
+      backupLocationShowButtonEl: "#backup-location-show",
+      backupLocationEditButtonEl: "#backup-location-edit"
     };
   }
 
@@ -79,14 +86,15 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       backupDirPath: "",
       backupFileToRestore: null,
       backupFileInfo: null,
-      backupInProgress: false,
       defaultParent: {
         fileName: "",
         path: "",
         iconURL: ""
       },
       encryptionEnabled: false,
-      scheduledBackupsEnabled: false
+      scheduledBackupsEnabled: false,
+      lastBackupDate: null,
+      lastBackupFileName: ""
     };
     this._enableEncryptionTypeAttr = "";
   }
@@ -281,6 +289,16 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       this.restoreFromBackupDialogEl.showModal();
     }
   }
+  handleShowBackupLocation() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowBackupLocation", {
+      bubbles: true
+    }));
+  }
+  handleEditBackupLocation() {
+    this.dispatchEvent(new CustomEvent("BackupUI:EditBackupLocation", {
+      bubbles: true
+    }));
+  }
   enableBackupEncryptionDialogTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<dialog id="enable-backup-encryption-dialog">
       <enable-backup-encryption
@@ -293,7 +311,111 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       <disable-backup-encryption></disable-backup-encryption>
     </dialog>`;
   }
+  lastBackupInfoTemplate() {
+    // The lastBackupDate is stored in preferences, which only accepts
+    // 32-bit signed values, so we automatically divide it by 1000 before
+    // storing it. We need to re-multiply it by 1000 to get Fluent to render
+    // the right time.
+    let backupDateArgs = {
+      date: this.backupServiceState.lastBackupDate * 1000
+    };
+    let backupFileNameArgs = {
+      fileName: this.backupServiceState.lastBackupFileName
+    };
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <div id="last-backup-info">
+        <div
+          id="last-backup-date"
+          data-l10n-id="settings-data-backup-last-backup-date"
+          data-l10n-args="${JSON.stringify(backupDateArgs)}"
+        ></div>
+        <div
+          id="last-backup-filename"
+          data-l10n-id="settings-data-backup-last-backup-filename"
+          data-l10n-args="${JSON.stringify(backupFileNameArgs)}"
+        ></div>
+      </div>
+    `;
+  }
+  backupLocationTemplate() {
+    let iconURL = this.backupServiceState.defaultParent.iconURL || this.#placeholderIconURL;
+    let {
+      backupDirPath
+    } = this.backupServiceState;
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <div id="last-backup-location-control">
+        <span data-l10n-id="settings-data-backup-last-backup-location"></span>
+        <input
+          id="last-backup-location"
+          class="backup-location-filepicker-input"
+          type="text"
+          readonly
+          value="${backupDirPath}"
+          style=${`background-image: url(${iconURL})`}></input>
+        <moz-button
+          id="backup-location-show"
+          @click=${this.handleShowBackupLocation}
+          data-l10n-id="settings-data-backup-last-backup-location-show-in-folder"
+        ></moz-button>
+        <moz-button
+          id="backup-location-edit"
+          @click=${this.handleEditBackupLocation}
+          data-l10n-id="settings-data-backup-last-backup-location-edit"
+        ></moz-button>
+      </div>
+    `;
+  }
+  sensitiveDataTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html` <div id="backup-password-controls">
+      <!-- TODO: we can use the moz-checkbox reusable component once it is ready (bug 1901635)-->
+      <div id="backup-sensitive-data-checkbox">
+        <label
+          id="backup-sensitive-data-checkbox-label"
+          for="backup-sensitive-data-checkbox-input"
+        >
+          <input
+            id="backup-sensitive-data-checkbox-input"
+            @click=${this.handleToggleBackupEncryption}
+            type="checkbox"
+            .checked=${this.backupServiceState.encryptionEnabled}
+          />
+          <span
+            id="backup-sensitive-data-checkbox-span"
+            data-l10n-id="settings-data-toggle-encryption-label"
+          ></span>
+        </label>
+        <div
+          id="backup-sensitive-data-checkbox-description"
+          class="text-deemphasized"
+        >
+          <span
+            id="backup-sensitive-data-checkbox-description-span"
+            data-l10n-id="settings-data-toggle-encryption-description"
+          ></span>
+          <!--TODO: finalize support page links (bug 1900467)-->
+          <a
+            id="settings-data-toggle-encryption-learn-more-link"
+            is="moz-support-link"
+            support-page="todo-backup"
+            data-l10n-id="settings-data-toggle-encryption-support-link"
+          ></a>
+        </div>
+      </div>
+      ${this.backupServiceState.encryptionEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-button
+            id="backup-change-password-button"
+            @click=${this.handleChangePassword}
+            data-l10n-id="settings-data-change-password"
+          ></moz-button>` : null}
+    </div>`;
+  }
+  updated() {
+    if (this.backupServiceState.scheduledBackupsEnabled) {
+      let input = this.lastBackupLocationInputEl;
+      input.setSelectionRange(input.value.length, input.value.length);
+    }
+  }
   render() {
+    let scheduledBackupsEnabledL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-scheduled-backups-on" : "settings-data-backup-scheduled-backups-off";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<link
         rel="stylesheet"
         href="${browser_themes_shared_preferences_preferences_css__WEBPACK_IMPORTED_MODULE_1__}"
@@ -302,64 +424,30 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         rel="stylesheet"
         href="${browser_components_backup_content_backup_settings_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
+      ${this.turnOnScheduledBackupsDialogTemplate()}
+      ${this.turnOffScheduledBackupsDialogTemplate()}
+      ${this.enableBackupEncryptionDialogTemplate()}
+      ${this.disableBackupEncryptionDialogTemplate()}
+
       <div id="scheduled-backups">
-        <div>
-          Backup in progress:
-          ${this.backupServiceState.backupInProgress ? "Yes" : "No"}
+        <div id="scheduled-backups-control">
+          <span
+            id="scheduled-backups-enabled"
+            data-l10n-id="${scheduledBackupsEnabledL10nID}"
+            class="heading-medium"
+          ></span>
+
+          <moz-button
+            id="backup-toggle-scheduled-button"
+            @click=${this.handleShowScheduledBackups}
+            data-l10n-id="settings-data-backup-toggle"
+          ></moz-button>
         </div>
 
-        ${this.turnOnScheduledBackupsDialogTemplate()}
-        ${this.turnOffScheduledBackupsDialogTemplate()}
-        ${this.enableBackupEncryptionDialogTemplate()}
-        ${this.disableBackupEncryptionDialogTemplate()}
-
-        <moz-button
-          id="backup-toggle-scheduled-button"
-          @click=${this.handleShowScheduledBackups}
-          data-l10n-id="settings-data-backup-toggle"
-        ></moz-button>
-
+        ${this.backupServiceState.lastBackupDate ? this.lastBackupInfoTemplate() : null}
+        ${this.backupServiceState.scheduledBackupsEnabled ? this.backupLocationTemplate() : null}
+        ${this.backupServiceState.scheduledBackupsEnabled ? this.sensitiveDataTemplate() : null}
         ${this.restoreFromBackupTemplate()}
-
-        <!-- TODO: we can use the moz-checkbox reusable component once it is ready (bug 1901635)-->
-        <div id="backup-sensitive-data-checkbox">
-          <label
-            id="backup-sensitive-data-checkbox-label"
-            for="backup-sensitive-data-checkbox-input"
-          >
-            <input
-              id="backup-sensitive-data-checkbox-input"
-              @click=${this.handleToggleBackupEncryption}
-              type="checkbox"
-              .checked=${this.backupServiceState.encryptionEnabled}
-            />
-            <span
-              id="backup-sensitive-data-checkbox-span"
-              data-l10n-id="settings-data-toggle-encryption-label"
-            ></span>
-          </label>
-          <div
-            id="backup-sensitive-data-checkbox-description"
-            class="text-deemphasized"
-          >
-            <span
-              id="backup-sensitive-data-checkbox-description-span"
-              data-l10n-id="settings-data-toggle-encryption-description"
-            ></span>
-            <!--TODO: finalize support page links (bug 1900467)-->
-            <a
-              id="settings-data-toggle-encryption-learn-more-link"
-              is="moz-support-link"
-              support-page="todo-backup"
-              data-l10n-id="settings-data-toggle-encryption-support-link"
-            ></a>
-          </div>
-        </div>
-        ${this.backupServiceState.encryptionEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-button
-              id="backup-change-password-button"
-              @click=${this.handleChangePassword}
-              data-l10n-id="settings-data-change-password"
-            ></moz-button>` : null}
       </div>`;
   }
 }
@@ -372,9 +460,9 @@ customElements.define("backup-settings", BackupSettings);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "BackingUpInProgress": () => (/* binding */ BackingUpInProgress),
-/* harmony export */   "BackingUpNotInProgress": () => (/* binding */ BackingUpNotInProgress),
 /* harmony export */   "EncryptionEnabled": () => (/* binding */ EncryptionEnabled),
+/* harmony export */   "ExistingBackup": () => (/* binding */ ExistingBackup),
+/* harmony export */   "ScheduledBackupsDisabled": () => (/* binding */ ScheduledBackupsDisabled),
 /* harmony export */   "ScheduledBackupsEnabled": () => (/* binding */ ScheduledBackupsEnabled),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -399,23 +487,10 @@ const Template = ({
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <backup-settings .backupServiceState=${backupServiceState}></backup-settings>
 `;
-const BackingUpNotInProgress = Template.bind({});
-BackingUpNotInProgress.args = {
+const ScheduledBackupsDisabled = Template.bind({});
+ScheduledBackupsDisabled.args = {
   backupServiceState: {
     backupDirPath: "/Some/User/Documents",
-    backupInProgress: false,
-    defaultParent: {
-      path: "/Some/User/Documents",
-      fileName: "Documents"
-    },
-    scheduledBackupsEnabled: false
-  }
-};
-const BackingUpInProgress = Template.bind({});
-BackingUpInProgress.args = {
-  backupServiceState: {
-    backupDirPath: "/Some/User/Documents",
-    backupInProgress: true,
     defaultParent: {
       path: "/Some/User/Documents",
       fileName: "Documents"
@@ -427,7 +502,6 @@ const ScheduledBackupsEnabled = Template.bind({});
 ScheduledBackupsEnabled.args = {
   backupServiceState: {
     backupDirPath: "/Some/User/Documents",
-    backupInProgress: false,
     defaultParent: {
       path: "/Some/User/Documents",
       fileName: "Documents"
@@ -435,17 +509,31 @@ ScheduledBackupsEnabled.args = {
     scheduledBackupsEnabled: true
   }
 };
-const EncryptionEnabled = Template.bind({});
-EncryptionEnabled.args = {
+const ExistingBackup = Template.bind({});
+ExistingBackup.args = {
   backupServiceState: {
     backupDirPath: "/Some/User/Documents",
-    backupInProgress: false,
     defaultParent: {
       path: "/Some/User/Documents",
       fileName: "Documents"
     },
     scheduledBackupsEnabled: true,
-    encryptionEnabled: true
+    lastBackupDate: 1719625747,
+    lastBackupFileName: "FirefoxBackup_default_123123123.html"
+  }
+};
+const EncryptionEnabled = Template.bind({});
+EncryptionEnabled.args = {
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    defaultParent: {
+      path: "/Some/User/Documents",
+      fileName: "Documents"
+    },
+    scheduledBackupsEnabled: true,
+    encryptionEnabled: true,
+    lastBackupDate: 1719625747,
+    lastBackupFileName: "FirefoxBackup_default_123123123.html"
   }
 };
 
@@ -1462,7 +1550,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 81715:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "backup-settings.856ce59d02af2c5e07e1.css";
+module.exports = __webpack_require__.p + "backup-settings.bb022e2d532218226a86.css";
 
 /***/ }),
 
@@ -1497,16 +1585,16 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ 95010:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "turn-on-scheduled-backups.248485c58c1837c59e65.css";
+module.exports = __webpack_require__.p + "turn-on-scheduled-backups.75031d48df987444e78f.css";
 
 /***/ }),
 
 /***/ 9024:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.8b91ecb64eb85fc1eae0.css";
+module.exports = __webpack_require__.p + "preferences.c86cb8cdf625b0a4c60e.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.3dc468e6.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.b2da50a9.iframe.bundle.js.map
