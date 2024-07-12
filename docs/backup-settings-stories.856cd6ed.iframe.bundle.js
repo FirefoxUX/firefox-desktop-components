@@ -65,6 +65,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       turnOffScheduledBackupsDialogEl: "#turn-off-scheduled-backups-dialog",
       restoreFromBackupEl: "restore-from-backup",
       restoreFromBackupButtonEl: "#backup-toggle-restore-button",
+      restoreFromBackupDescriptionEl: "#backup-restore-description",
       restoreFromBackupDialogEl: "#restore-from-backup-dialog",
       sensitiveDataCheckboxInputEl: "#backup-sensitive-data-checkbox-input",
       passwordControlsEl: "#backup-password-controls",
@@ -72,7 +73,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       lastBackupFileNameEl: "#last-backup-filename",
       lastBackupDateEl: "#last-backup-date",
       backupLocationShowButtonEl: "#backup-location-show",
-      backupLocationEditButtonEl: "#backup-location-edit"
+      backupLocationEditButtonEl: "#backup-location-edit",
+      scheduledBackupsDescriptionEl: "#scheduled-backups-description"
     };
   }
 
@@ -240,6 +242,21 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       this.enableBackupEncryptionDialogEl.showModal();
     }
   }
+  scheduledBackupsDescriptionTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+      <div
+        id="scheduled-backups-description"
+        data-l10n-id="settings-data-backup-scheduled-backups-description"
+      >
+        <!--TODO: finalize support page links (bug 1900467)-->
+        <a
+          is="moz-support-link"
+          support-page="todo-backup"
+          data-l10n-name="support-link"
+        ></a>
+      </div>
+    `;
+  }
   turnOnScheduledBackupsDialogTemplate() {
     let {
       fileName,
@@ -274,15 +291,27 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     </dialog>`;
   }
   restoreFromBackupTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div id="restore-from-backup">
+    let descriptionL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-scheduled-backups-on-restore-description" : "settings-data-backup-scheduled-backups-off-restore-description";
+    let restoreButtonL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-scheduled-backups-on-restore-choose" : "settings-data-backup-scheduled-backups-off-restore-choose";
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<section id="restore-from-backup"">
       ${this.restoreFromBackupDialogTemplate()}
-
-      <moz-button
-        id="backup-toggle-restore-button"
-        @click=${this.handleShowRestoreDialog}
-        data-l10n-id="settings-data-backup-restore-choose"
-      ></moz-button>
-    </div>`;
+      <div class="backups-control">
+        <span
+          id="restore-header"
+          data-l10n-id="settings-data-backup-restore-header"
+          class="heading-medium"
+        ></span>
+        <moz-button
+          id="backup-toggle-restore-button"
+          @click=${this.handleShowRestoreDialog}
+          data-l10n-id="${restoreButtonL10nID}"
+        ></moz-button>
+        <div
+          id="backup-restore-description"
+          data-l10n-id="${descriptionL10nID}"
+        ></div>
+      </div>
+    </section>`;
   }
   handleShowRestoreDialog() {
     if (this.restoreFromBackupDialogEl) {
@@ -366,7 +395,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     `;
   }
   sensitiveDataTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html` <div id="backup-password-controls">
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<section id="backup-password-controls">
       <!-- TODO: we can use the moz-checkbox reusable component once it is ready (bug 1901635)-->
       <div id="backup-sensitive-data-checkbox">
         <label
@@ -406,7 +435,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
             @click=${this.handleChangePassword}
             data-l10n-id="settings-data-change-password"
           ></moz-button>` : null}
-    </div>`;
+    </section>`;
   }
   updated() {
     if (this.backupServiceState.scheduledBackupsEnabled) {
@@ -429,8 +458,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       ${this.enableBackupEncryptionDialogTemplate()}
       ${this.disableBackupEncryptionDialogTemplate()}
 
-      <div id="scheduled-backups">
-        <div id="scheduled-backups-control">
+      <section id="scheduled-backups">
+        <div class="backups-control">
           <span
             id="scheduled-backups-enabled"
             data-l10n-id="${scheduledBackupsEnabledL10nID}"
@@ -442,13 +471,16 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
             @click=${this.handleShowScheduledBackups}
             data-l10n-id="settings-data-backup-toggle"
           ></moz-button>
+
+          ${this.backupServiceState.scheduledBackupsEnabled ? null : this.scheduledBackupsDescriptionTemplate()}
         </div>
 
         ${this.backupServiceState.lastBackupDate ? this.lastBackupInfoTemplate() : null}
         ${this.backupServiceState.scheduledBackupsEnabled ? this.backupLocationTemplate() : null}
         ${this.backupServiceState.scheduledBackupsEnabled ? this.sensitiveDataTemplate() : null}
-        ${this.restoreFromBackupTemplate()}
-      </div>`;
+      </section>
+
+      ${this.restoreFromBackupTemplate()} `;
   }
 }
 customElements.define("backup-settings", BackupSettings);
@@ -1550,7 +1582,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 81715:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "backup-settings.bb022e2d532218226a86.css";
+module.exports = __webpack_require__.p + "backup-settings.0c6694ae948fe9149154.css";
 
 /***/ }),
 
@@ -1597,4 +1629,4 @@ module.exports = __webpack_require__.p + "preferences.c86cb8cdf625b0a4c60e.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.b2da50a9.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.856cd6ed.iframe.bundle.js.map
