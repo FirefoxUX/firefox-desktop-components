@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[1062],{
+
+/***/ 81062:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n## Generative AI (GenAI) Settings section\n\ngenai-settings-chat-title =\n    .label = AI Chatbot Integration\ngenai-settings-chat-description =\n    Select text on a webpage and right-click to see relevant prompts like summarize, simplify, and more. { -brand-short-name } sends the selected text, page title, and prompt to the chatbot of your choice. If you try this feature, <a data-l10n-name=\"connect\">share your thoughts on Connect</a>.\n\n    We plan to add more chatbots as we continue to experiment.\ngenai-settings-chat-choose = Choose a chatbot\ngenai-settings-chat-choose-one-menuitem =\n    .label = Choose one\ngenai-settings-chat-links = When you choose a chatbot, you agree to the provider’s terms of use and privacy policy.\ngenai-settings-chat-chatgpt-links = By choosing ChatGPT, you agree to the OpenAI <a data-l10n-name=\"link1\">Terms of Use</a> and <a data-l10n-name=\"link2\">Privacy Policy</a>.\ngenai-settings-chat-copilot-links = By choosing Copilot, you agree to the <a data-l10n-name=\"link1\">Copilot AI Experiences Terms</a> and <a data-l10n-name=\"link2\">Microsoft Privacy Statement</a>.\ngenai-settings-chat-gemini-links = By choosing Google Gemini, you agree to the <a data-l10n-name=\"link1\">Google Terms of Service</a>, <a data-l10n-name=\"link2\">Generative AI Prohibited Use Policy</a>, and <a data-l10n-name=\"link3\">Gemini Apps Privacy Notice</a>.\ngenai-settings-chat-huggingchat-links = By choosing HuggingChat, you agree to the <a data-l10n-name=\"link1\">HuggingChat Privacy Notice</a> and <a data-l10n-name=\"link2\">Hugging Face Privacy Policy</a>.\ngenai-settings-chat-lechat-links = By choosing Le Chat Mistral, you agree to the Mistral AI <a data-l10n-name=\"link1\">Terms of Service</a> and <a data-l10n-name=\"link2\">Privacy Policy</a>.\ngenai-settings-chat-localhost-links = Bring your own private local chatbot such as <a data-l10n-name=\"link1\">llamafile</a> from { -vendor-short-name }’s Innovation group.\n";
+
+/***/ })
+
+}]);

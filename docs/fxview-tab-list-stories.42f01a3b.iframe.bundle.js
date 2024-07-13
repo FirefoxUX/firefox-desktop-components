@@ -1107,9 +1107,8 @@ var Template = function Template(_ref) {
     maxTabsLength = _ref.maxTabsLength,
     primaryAction = _ref.primaryAction,
     secondaryAction = _ref.secondaryAction,
-    secondaryActionClass = _ref.secondaryActionClass,
     tabItems = _ref.tabItems;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    main {\n      max-width: 750px;\n    }\n    fxview-tab-list.menu::part(secondary-button) {\n      background-image: url(\"chrome://global/skin/icons/more.svg\");\n    }\n    fxview-tab-list.dismiss::part(secondary-button) {\n      background-image: url(\"chrome://global/skin/icons/close.svg\");\n    }\n    :host panel-item::part(button) {\n      padding-inline-start: 12px;\n      cursor: pointer;\n    }\n  </style>\n  <main>\n    <fxview-tab-list\n      class=", "\n      .hasPopup=", "\n      .dateTimeFormat=", "\n      .maxTabsLength=", "\n      .tabItems=", "\n      .updatesPaused=", "\n      .secondaryActionClass=", "\n      @fxview-tab-list-secondary-action=", "\n      @fxview-tab-list-primary-action=", "\n    >\n      <panel-list slot=\"menu\">\n        <panel-item data-l10n-id=\"fxviewtabrow-delete\"></panel-item>\n        <panel-item\n          data-l10n-id=\"fxviewtabrow-forget-about-this-site\"\n        ></panel-item>\n        <hr />\n        <panel-item data-l10n-id=\"fxviewtabrow-open-in-window\"></panel-item>\n        <panel-item\n          data-l10n-id=\"fxviewtabrow-open-in-private-window\"\n        ></panel-item>\n        <hr />\n        <panel-item data-l10n-id=\"fxviewtabrow-add-bookmark\"></panel-item>\n        <panel-item data-l10n-id=\"fxviewtabrow-save-to-pocket\"></panel-item>\n        <panel-item data-l10n-id=\"fxviewtabrow-copy-link\"></panel-item>\n      </panel-list>\n    </fxview-tab-list>\n  </main>\n"])), listClass, hasPopup, dateTimeFormat, maxTabsLength, tabItems, false, secondaryActionClass, secondaryAction, primaryAction);
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    main {\n      max-width: 750px;\n    }\n    fxview-tab-list.menu::part(secondary-button) {\n      background-image: url(\"chrome://global/skin/icons/more.svg\");\n    }\n    fxview-tab-list.dismiss::part(secondary-button) {\n      background-image: url(\"chrome://global/skin/icons/close.svg\");\n    }\n    :host panel-item::part(button) {\n      padding-inline-start: 12px;\n      cursor: pointer;\n    }\n  </style>\n  <main>\n    <fxview-tab-list\n      class=", "\n      .hasPopup=", "\n      .dateTimeFormat=", "\n      .maxTabsLength=", "\n      .tabItems=", "\n      .updatesPaused=", "\n      @fxview-tab-list-secondary-action=", "\n      @fxview-tab-list-primary-action=", "\n    >\n      <panel-list slot=\"menu\">\n        <panel-item data-l10n-id=\"fxviewtabrow-delete\"></panel-item>\n        <panel-item\n          data-l10n-id=\"fxviewtabrow-forget-about-this-site\"\n        ></panel-item>\n        <hr />\n        <panel-item data-l10n-id=\"fxviewtabrow-open-in-window\"></panel-item>\n        <panel-item\n          data-l10n-id=\"fxviewtabrow-open-in-private-window\"\n        ></panel-item>\n        <hr />\n        <panel-item data-l10n-id=\"fxviewtabrow-add-bookmark\"></panel-item>\n        <panel-item data-l10n-id=\"fxviewtabrow-save-to-pocket\"></panel-item>\n        <panel-item data-l10n-id=\"fxviewtabrow-copy-link\"></panel-item>\n      </panel-list>\n    </fxview-tab-list>\n  </main>\n"])), listClass, hasPopup, dateTimeFormat, maxTabsLength, tabItems, false, secondaryAction, primaryAction);
 };
 var MAX_TABS_LENGTH = 25;
 var secondaryAction = function secondaryAction(e) {
@@ -1209,7 +1208,6 @@ RelativeTime.args = {
   maxTabsLength: MAX_TABS_LENGTH,
   primaryAction: primaryAction,
   secondaryAction: secondaryAction,
-  secondaryActionClass: "options-button",
   tabItems: tabItems
 };
 var DateAndTime = Template.bind({});
@@ -1219,7 +1217,6 @@ DateAndTime.args = {
   maxTabsLength: MAX_TABS_LENGTH,
   primaryAction: primaryAction,
   secondaryAction: secondaryAction,
-  secondaryActionClass: "options-button",
   tabItems: tabItems
 };
 var DateOnly = Template.bind({});
@@ -1230,7 +1227,6 @@ DateOnly.args = {
   maxTabsLength: MAX_TABS_LENGTH,
   primaryAction: primaryAction,
   secondaryAction: secondaryAction,
-  secondaryActionClass: "options-button",
   tabItems: tabItems
 };
 var TimeOnly = Template.bind({});
@@ -1241,7 +1237,6 @@ TimeOnly.args = {
   maxTabsLength: MAX_TABS_LENGTH,
   primaryAction: primaryAction,
   secondaryAction: secondaryAction,
-  secondaryActionClass: "options-button",
   tabItems: tabItems
 };
 var RecentlyClosed = Template.bind({});
@@ -1252,7 +1247,6 @@ RecentlyClosed.args = {
   maxTabsLength: MAX_TABS_LENGTH,
   primaryAction: primaryAction,
   secondaryAction: function secondaryAction() {},
-  secondaryActionClass: "dismiss-button",
   tabItems: recentlyClosedItems
 };
 
@@ -1280,4 +1274,4 @@ module.exports = __webpack_require__.p + "moz-button.23df0832914dcc7f1980.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.80d78208.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.42f01a3b.iframe.bundle.js.map
