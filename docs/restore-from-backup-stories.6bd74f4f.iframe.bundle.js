@@ -38,6 +38,12 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     },
     _fileIconURL: {
       type: String
+    },
+    recoveryInProgress: {
+      type: Boolean
+    },
+    recoveryErrorCode: {
+      type: Number
     }
   };
   static get queries() {
@@ -115,7 +121,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   handleConfirm() {
     let backupFile = this.backupFileToRestore;
-    if (!backupFile) {
+    if (!backupFile || this.recoveryInProgress) {
       return;
     }
     let backupPassword = this.passwordInput?.value;
@@ -177,6 +183,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     </fieldset>`;
   }
   contentTemplate() {
+    let buttonL10nId = !this.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <div
         id="restore-from-backup-wrapper"
@@ -203,7 +210,8 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             id="restore-from-backup-confirm-button"
             @click=${this.handleConfirm}
             type="primary"
-            data-l10n-id="restore-from-backup-confirm-button"
+            data-l10n-id="${buttonL10nId}"
+            ?disabled=${!this.backupFileToRestore || this.recoveryInProgress}
           ></moz-button>
         </moz-button-group>
       </div>
@@ -254,6 +262,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "BackupFound": () => (/* binding */ BackupFound),
 /* harmony export */   "EncryptedBackupFound": () => (/* binding */ EncryptedBackupFound),
 /* harmony export */   "NoBackupFound": () => (/* binding */ NoBackupFound),
+/* harmony export */   "RecoveryInProgress": () => (/* binding */ RecoveryInProgress),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -279,13 +288,17 @@ window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
 const Template = ({
   backupFilePath,
   backupFileToRestore,
-  backupFileInfo
+  backupFileInfo,
+  recoveryInProgress,
+  recoveryErrorCode
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-card style="width: fit-content;">
     <restore-from-backup
       .backupFilePath=${backupFilePath}
       .backupFileToRestore=${backupFileToRestore}
       .backupFileInfo=${backupFileInfo}
+      .recoveryInProgress=${recoveryInProgress}
+      .recoveryErrorCode=${recoveryErrorCode}
     ></restore-from-backup>
   </moz-card>
 `;
@@ -306,6 +319,15 @@ EncryptedBackupFound.args = {
     date: new Date(),
     isEncrypted: true
   }
+};
+const RecoveryInProgress = Template.bind({});
+RecoveryInProgress.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date()
+  },
+  recoveryInProgress: true
 };
 const NoBackupFound = Template.bind({});
 
@@ -462,4 +484,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.ef45fe4a.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.6bd74f4f.iframe.bundle.js.map

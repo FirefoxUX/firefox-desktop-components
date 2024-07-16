@@ -47,6 +47,12 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     backupServiceState: {
       type: Object
     },
+    recoveryErrorCode: {
+      type: Number
+    },
+    recoveryInProgress: {
+      type: Boolean
+    },
     _enableEncryptionTypeAttr: {
       type: String
     }
@@ -98,6 +104,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       lastBackupDate: null,
       lastBackupFileName: ""
     };
+    this.recoveryInProgress = false;
+    this.recoveryErrorCode = 0;
     this._enableEncryptionTypeAttr = "";
   }
 
@@ -157,7 +165,6 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         }
         break;
       case "restoreFromBackupConfirm":
-        this.restoreFromBackupDialogEl.close();
         this.dispatchEvent(new CustomEvent("BackupUI:RestoreFromBackupFile", {
           bubbles: true,
           composed: true,
@@ -287,6 +294,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         .backupFilePath=${backupFilePath}
         .backupFileToRestore=${backupFileToRestore}
         .backupFileInfo=${backupFileInfo}
+        .recoveryInProgress=${this.recoveryInProgress}
+        .recoveryErrorCode=${this.recoveryErrorCode}
       ></restore-from-backup>
     </dialog>`;
   }
@@ -945,6 +954,12 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     },
     _fileIconURL: {
       type: String
+    },
+    recoveryInProgress: {
+      type: Boolean
+    },
+    recoveryErrorCode: {
+      type: Number
     }
   };
   static get queries() {
@@ -1022,7 +1037,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   handleConfirm() {
     let backupFile = this.backupFileToRestore;
-    if (!backupFile) {
+    if (!backupFile || this.recoveryInProgress) {
       return;
     }
     let backupPassword = this.passwordInput?.value;
@@ -1084,6 +1099,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     </fieldset>`;
   }
   contentTemplate() {
+    let buttonL10nId = !this.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <div
         id="restore-from-backup-wrapper"
@@ -1110,7 +1126,8 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             id="restore-from-backup-confirm-button"
             @click=${this.handleConfirm}
             type="primary"
-            data-l10n-id="restore-from-backup-confirm-button"
+            data-l10n-id="${buttonL10nId}"
+            ?disabled=${!this.backupFileToRestore || this.recoveryInProgress}
           ></moz-button>
         </moz-button-group>
       </div>
@@ -1629,4 +1646,4 @@ module.exports = __webpack_require__.p + "preferences.c86cb8cdf625b0a4c60e.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.856cd6ed.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.7a427290.iframe.bundle.js.map
