@@ -212,9 +212,9 @@ Default.args = {
 /***/ 38924:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-slider.778e481cb08524067aab.css";
+module.exports = __webpack_require__.p + "moz-slider.bc897e294ec867d01648.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-slider-stories.7fbe6079.iframe.bundle.js.map
+//# sourceMappingURL=moz-slider-stories.ce985e72.iframe.bundle.js.map
