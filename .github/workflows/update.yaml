@@ -24,6 +24,7 @@ jobs:
           git-cinnabar --version
           cd ..
           git clone hg::https://hg.mozilla.org/mozilla-unified gecko && cd gecko
+          git checkout bookmarks/central
           echo "git revision" && git log -1 --format='%H'
           echo "hg revision" && git cinnabar git2hg $(git log -1 --format='%H')
           ./mach --no-interactive bootstrap
