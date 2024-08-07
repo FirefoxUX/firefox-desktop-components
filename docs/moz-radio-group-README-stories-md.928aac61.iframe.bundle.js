@@ -1300,11 +1300,13 @@ customElements.define("moz-radio-group", MozRadioGroup);
  *
  * @tagname moz-radio
  * @property {boolean} checked - Whether or not the input is selected.
+ * @property {string} description - Description for the input.
  * @property {boolean} disabled - Whether or not the input is disabled.
+ * @property {string} iconSrc - Path to an icon displayed next to the input.
+ * @property {number} inputTabIndex - Tabindex of the input element.
  * @property {string} label - Label for the radio input.
  * @property {string} name
  *  Name of the input control, set by the associated moz-radio-group element.
- * @property {number} inputTabIndex - Tabindex of the input element.
  * @property {number} value - Value of the radio input.
  */
 class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
@@ -1314,12 +1316,20 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       type: Boolean,
       reflect: true
     },
+    description: {
+      type: String,
+      fluent: true
+    },
     disabled: {
       type: Boolean,
       reflect: true
     },
     iconSrc: {
       type: String
+    },
+    inputTabIndex: {
+      type: Number,
+      state: true
     },
     label: {
       type: String,
@@ -1329,10 +1339,6 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       type: String,
       attribute: false
     },
-    inputTabIndex: {
-      type: Number,
-      state: true
-    },
     value: {
       type: String
     }
@@ -1340,7 +1346,8 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
   static queries = {
     radioButton: "#radio-button",
     labelEl: "label",
-    icon: ".icon"
+    icon: ".icon",
+    descriptionEl: "#description"
   };
   constructor() {
     super();
@@ -1409,6 +1416,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       name=${this.name}
       .checked=${this.checked}
       aria-checked=${this.checked}
+      aria-describedby="description"
       tabindex=${this.inputTabIndex}
       ?disabled=${this.disabled || this.#controller.disabled}
       @click=${this.handleClick}
@@ -1421,6 +1429,13 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       <span class="text">${this.label}</span>
     </span>`;
   }
+  descriptionTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <span id="description" class="description text-deemphasized">
+        ${this.description ?? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="description"></slot>`}
+      </span>
+    `;
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -1428,6 +1443,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <label part="label">${this.inputTemplate()}${this.labelTemplate()}</label>
+      ${this.descriptionTemplate()}
     `;
   }
 }
@@ -12160,9 +12176,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-radio.cda6c319f7b9a8714842.css";
+module.exports = __webpack_require__.p + "moz-radio.f8a037e4d41446fd4e4b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.593eec03.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.928aac61.iframe.bundle.js.map

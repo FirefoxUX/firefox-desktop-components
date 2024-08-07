@@ -30,27 +30,15 @@ class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPA
       confirmButtonEl: "#backup-turn-off-scheduled-confirm-button"
     };
   }
-
-  /**
-   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
-   * DOM, which registers with BackupUIChild for BackupService state updates.
-   */
-  connectedCallback() {
-    super.connectedCallback();
-    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
-      bubbles: true
-    }));
-  }
-  handleCancel() {
+  close() {
     this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
   }
   handleConfirm() {
-    this.dispatchEvent(new CustomEvent("turnOffScheduledBackups", {
-      bubbles: true,
-      composed: true
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableScheduledBackups", {
+      bubbles: true
     }));
   }
   contentTemplate() {
@@ -84,7 +72,7 @@ class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPA
         <moz-button-group id="backup-turn-off-scheduled-button-group">
           <moz-button
             id="backup-turn-off-scheduled-cancel-button"
-            @click=${this.handleCancel}
+            @click=${this.close}
             data-l10n-id="turn-off-scheduled-backups-cancel-button"
           ></moz-button>
           <moz-button
@@ -210,6 +198,7 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   constructor() {
     super();
     this.type = "default";
+    this.expanded = false;
   }
   headingTemplate() {
     if (!this.heading) {
@@ -305,4 +294,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-off-scheduled-backups-stories.1b030aef.iframe.bundle.js.map
+//# sourceMappingURL=turn-off-scheduled-backups-stories.d728b4ee.iframe.bundle.js.map

@@ -178,39 +178,13 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
       bubbles: true
     }));
-    this.addEventListener("turnOnScheduledBackups", this);
-    this.addEventListener("turnOffScheduledBackups", this);
     this.addEventListener("dialogCancel", this);
     this.addEventListener("getBackupFileInfo", this);
-    this.addEventListener("enableEncryption", this);
-    this.addEventListener("rerunEncryption", this);
-    this.addEventListener("disableEncryption", this);
     this.addEventListener("restoreFromBackupConfirm", this);
     this.addEventListener("restoreFromBackupChooseFile", this);
   }
   handleEvent(event) {
     switch (event.type) {
-      case "turnOnScheduledBackups":
-        this.turnOnScheduledBackupsDialogEl.close();
-        this.dispatchEvent(new CustomEvent("BackupUI:ToggleScheduledBackups", {
-          bubbles: true,
-          composed: true,
-          detail: {
-            ...event.detail,
-            isScheduledBackupsEnabled: true
-          }
-        }));
-        break;
-      case "turnOffScheduledBackups":
-        this.turnOffScheduledBackupsDialogEl.close();
-        this.dispatchEvent(new CustomEvent("BackupUI:ToggleScheduledBackups", {
-          bubbles: true,
-          composed: true,
-          detail: {
-            isScheduledBackupsEnabled: false
-          }
-        }));
-        break;
       case "dialogCancel":
         if (this.turnOnScheduledBackupsDialogEl.open) {
           this.turnOnScheduledBackupsDialogEl.close();
@@ -246,37 +220,6 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           composed: true,
           detail: {
             backupFile: event.detail.backupFile
-          }
-        }));
-        break;
-      case "enableEncryption":
-        this.enableBackupEncryptionDialogEl.close();
-        this.dispatchEvent(new CustomEvent("BackupUI:ToggleEncryption", {
-          bubbles: true,
-          composed: true,
-          detail: {
-            ...event.detail,
-            isEncryptionEnabled: true
-          }
-        }));
-        break;
-      case "rerunEncryption":
-        this.enableBackupEncryptionDialogEl.close();
-        this.dispatchEvent(new CustomEvent("BackupUI:RerunEncryption", {
-          bubbles: true,
-          composed: true,
-          detail: {
-            ...event.detail
-          }
-        }));
-        break;
-      case "disableEncryption":
-        this.disableBackupEncryptionDialogEl.close();
-        this.dispatchEvent(new CustomEvent("BackupUI:ToggleEncryption", {
-          bubbles: true,
-          composed: true,
-          detail: {
-            isEncryptionEnabled: false
           }
         }));
         break;
@@ -658,6 +601,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12163);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -666,39 +610,55 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// eslint-disable-next-line import/no-unassigned-import
+
+const ERROR_L10N_ID = "backup-error-retry";
+
 /**
  * The widget for disabling password protection if the backup is already
  * encrypted.
  */
 class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    // managed by BackupUIChild
+    disableEncryptionErrorCode: {
+      type: Number
+    }
+  };
   static get queries() {
     return {
       cancelButtonEl: "#backup-disable-encryption-cancel-button",
-      confirmButtonEl: "#backup-disable-encryption-confirm-button"
+      confirmButtonEl: "#backup-disable-encryption-confirm-button",
+      errorEl: "#disable-backup-encryption-error"
     };
   }
-
-  /**
-   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
-   * DOM, which registers with BackupUIChild for BackupService state updates.
-   */
-  connectedCallback() {
-    super.connectedCallback();
-    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
-      bubbles: true
-    }));
+  constructor() {
+    super();
+    this.disableEncryptionErrorCode = 0;
   }
-  handleCancel() {
+  close() {
     this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
+    this.reset();
+  }
+  reset() {
+    this.disableEncryptionErrorCode = 0;
   }
   handleConfirm() {
-    this.dispatchEvent(new CustomEvent("disableEncryption", {
-      bubbles: true,
-      composed: true
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
+      bubbles: true
     }));
+  }
+  errorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar
+        id="disable-backup-encryption-error"
+        type="error"
+        .messageL10nId="${ERROR_L10N_ID}"
+      ></moz-message-bar>
+    `;
   }
   contentTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -727,12 +687,13 @@ class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPA
               data-l10n-id="disable-backup-encryption-support-link"
             ></a>
           </div>
+          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
         </main>
 
         <moz-button-group id="backup-disable-encryption-button-group">
           <moz-button
             id="backup-disable-encryption-cancel-button"
-            @click=${this.handleCancel}
+            @click=${this.close}
             data-l10n-id="disable-backup-encryption-cancel-button"
           ></moz-button>
           <moz-button
@@ -769,7 +730,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38955);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52294);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52294);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41145);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -779,6 +742,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 // eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
 
 
 /**
@@ -791,6 +757,18 @@ const VALID_TYPES = Object.freeze({
   CHANGE_PASSWORD: "change-password"
 });
 const VALID_L10N_IDS = new Map([[VALID_TYPES.SET_PASSWORD, "enable-backup-encryption-header"], [VALID_TYPES.CHANGE_PASSWORD, "change-backup-encryption-header"]]);
+const ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.INVALID_PASSWORD]: "backup-error-password-requirements",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN]: "backup-error-retry"
+});
+
+/**
+ * @param {number} errorCode Error code from backup-constants.mjs
+ * @returns {string} Localization ID for error message
+ */
+function getErrorL10nId(errorCode) {
+  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN];
+}
 
 /**
  * The widget for enabling password protection if the backup is not yet
@@ -798,6 +776,7 @@ const VALID_L10N_IDS = new Map([[VALID_TYPES.SET_PASSWORD, "enable-backup-encryp
  */
 class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
+    // internal state
     _inputPassValue: {
       type: String,
       state: true
@@ -806,6 +785,7 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       type: Boolean,
       state: true
     },
+    // passed from parents
     supportBaseLink: {
       type: String
     },
@@ -817,6 +797,13 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
     type: {
       type: String,
       reflect: true
+    },
+    // managed by BackupUIChild
+    enableEncryptionErrorCode: {
+      type: Number
+    },
+    rerunEncryptionErrorCode: {
+      type: Number
     }
   };
   static get queries() {
@@ -826,7 +813,8 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       contentEl: "#backup-enable-encryption-content",
       textHeaderEl: "#backup-enable-encryption-header",
       textDescriptionEl: "#backup-enable-encryption-description",
-      passwordInputsEl: "#backup-enable-encryption-password-inputs"
+      passwordInputsEl: "#backup-enable-encryption-password-inputs",
+      errorEl: "#enable-backup-encryption-error"
     };
   }
   constructor() {
@@ -835,17 +823,12 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
     this.type = VALID_TYPES.SET_PASSWORD;
     this._inputPassValue = "";
     this._passwordsMatch = false;
+    this.enableEncryptionErrorCode = 0;
+    this.rerunEncryptionErrorCode = 0;
   }
-
-  /**
-   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
-   * DOM, which registers with BackupUIChild for BackupService state updates.
-   */
   connectedCallback() {
     super.connectedCallback();
-    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
-      bubbles: true
-    }));
+    // Listening to events from child <password-validation-inputs>
     this.addEventListener("ValidPasswordsDetected", this);
     this.addEventListener("InvalidPasswordsDetected", this);
   }
@@ -861,43 +844,38 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       this._inputPassValue = "";
     }
   }
-  handleCancel() {
+  close() {
     this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
-    this.resetChanges();
+    this.reset();
+  }
+  reset() {
+    this._inputPassValue = "";
+    this._passwordsMatch = false;
+    this.passwordInputsEl.reset();
+    this.enableEncryptionErrorCode = 0;
   }
   handleConfirm() {
     switch (this.type) {
       case VALID_TYPES.SET_PASSWORD:
-        this.dispatchEvent(new CustomEvent("enableEncryption", {
+        this.dispatchEvent(new CustomEvent("BackupUI:EnableEncryption", {
           bubbles: true,
-          composed: true,
           detail: {
             password: this._inputPassValue
           }
         }));
         break;
       case VALID_TYPES.CHANGE_PASSWORD:
-        this.dispatchEvent(new CustomEvent("rerunEncryption", {
+        this.dispatchEvent(new CustomEvent("BackupUI:RerunEncryption", {
           bubbles: true,
-          composed: true,
           detail: {
             password: this._inputPassValue
           }
         }));
         break;
     }
-    this.resetChanges();
-  }
-  resetChanges() {
-    this._inputPassValue = "";
-    this._passwordsMatch = false;
-    this.passwordInputsEl.dispatchEvent(new CustomEvent("resetInputs", {
-      bubbles: true,
-      composed: true
-    }));
   }
   descriptionTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -922,7 +900,7 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       <moz-button-group id="backup-enable-encryption-button-group">
         <moz-button
           id="backup-enable-encryption-cancel-button"
-          @click=${this.handleCancel}
+          @click=${this.close}
           data-l10n-id="enable-backup-encryption-cancel-button"
         ></moz-button>
         <moz-button
@@ -933,6 +911,16 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
           ?disabled=${!this._passwordsMatch}
         ></moz-button>
       </moz-button-group>
+    `;
+  }
+  errorTemplate() {
+    let messageId = this.enableEncryptionErrorCode ? getErrorL10nId(this.enableEncryptionErrorCode) : getErrorL10nId(this.rerunEncryptionErrorCode);
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar
+        id="enable-backup-encryption-error"
+        type="error"
+        .messageL10nId="${messageId}"
+      ></moz-message-bar>
     `;
   }
   contentTemplate() {
@@ -954,6 +942,8 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
             .supportBaseLink=${this.supportBaseLink}
           >
           </password-validation-inputs>
+
+          ${this.enableEncryptionErrorCode || this.rerunEncryptionErrorCode ? this.errorTemplate() : null}
         </div>
         ${this.buttonGroupTemplate()}
       </div>
@@ -1189,15 +1179,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._passwordsValid = false;
     this._tooltipFocus = false;
   }
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener("resetInputs", this.handleReset);
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener("resetInputs", this.handleReset);
-  }
-  handleReset() {
+  reset() {
     this.formEl.reset();
     this._showRules = false;
     this._hasCommon = false;
@@ -1671,27 +1653,15 @@ class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPA
       confirmButtonEl: "#backup-turn-off-scheduled-confirm-button"
     };
   }
-
-  /**
-   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
-   * DOM, which registers with BackupUIChild for BackupService state updates.
-   */
-  connectedCallback() {
-    super.connectedCallback();
-    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
-      bubbles: true
-    }));
-  }
-  handleCancel() {
+  close() {
     this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
   }
   handleConfirm() {
-    this.dispatchEvent(new CustomEvent("turnOffScheduledBackups", {
-      bubbles: true,
-      composed: true
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableScheduledBackups", {
+      bubbles: true
     }));
   }
   contentTemplate() {
@@ -1725,7 +1695,7 @@ class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPA
         <moz-button-group id="backup-turn-off-scheduled-button-group">
           <moz-button
             id="backup-turn-off-scheduled-cancel-button"
-            @click=${this.handleCancel}
+            @click=${this.close}
             data-l10n-id="turn-off-scheduled-backups-cancel-button"
           ></moz-button>
           <moz-button
@@ -1762,7 +1732,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_backup_content_turn_on_scheduled_backups_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(95010);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(52294);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(52294);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(41145);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1773,6 +1745,22 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
+// eslint-disable-next-line import/no-unassigned-import
+
+
+const ENABLE_ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.FILE_SYSTEM_ERROR]: "turn-on-scheduled-backups-error-file-system",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.INVALID_PASSWORD]: "backup-error-password-requirements",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN]: "backup-error-retry"
+});
+
+/**
+ * @param {number} errorCode Error code from backup-constants.mjs
+ * @returns {string} Localization ID for error message
+ */
+function getEnableErrorL10nId(errorCode) {
+  return ENABLE_ERROR_L10N_IDS[errorCode] ?? ENABLE_ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN];
+}
 
 /**
  * The widget for showing available options when users want to turn on
@@ -1781,6 +1769,7 @@ __webpack_require__.r(__webpack_exports__);
 class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #placeholderIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
+    // passed in from parents
     defaultIconURL: {
       type: String,
       reflect: true
@@ -1793,14 +1782,21 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       type: String,
       reflect: true
     },
-    _newIconURL: {
+    supportBaseLink: {
       type: String
+    },
+    // internal state
+    _newIconURL: {
+      type: String,
+      state: true
     },
     _newLabel: {
-      type: String
+      type: String,
+      state: true
     },
     _newPath: {
-      type: String
+      type: String,
+      state: true
     },
     _showPasswordOptions: {
       type: Boolean,
@@ -1815,8 +1811,9 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       type: String,
       state: true
     },
-    supportBaseLink: {
-      type: String
+    // managed by BackupUIChild
+    enableBackupErrorCode: {
+      type: Number
     }
   };
   static get queries() {
@@ -1827,7 +1824,8 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       filePathInputCustomEl: "#backup-location-filepicker-input-custom",
       filePathInputDefaultEl: "#backup-location-filepicker-input-default",
       passwordOptionsCheckboxEl: "#sensitive-data-checkbox-input",
-      passwordOptionsExpandedEl: "#passwords"
+      passwordOptionsExpandedEl: "#passwords",
+      errorEl: "#enable-backup-encryption-error"
     };
   }
   constructor() {
@@ -1840,18 +1838,18 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this._newPath = "";
     this._showPasswordOptions = false;
     this._passwordsMatch = false;
+    this.enableBackupErrorCode = 0;
   }
-
-  /**
-   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
-   * DOM, which registers with BackupUIChild for BackupService state updates.
-   */
   connectedCallback() {
     super.connectedCallback();
     this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
       bubbles: true
     }));
+
+    // listen to events from BackupUIChild
     this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
+
+    // listen to events from <password-validation-inputs>
     this.addEventListener("ValidPasswordsDetected", this);
     this.addEventListener("InvalidPasswordsDetected", this);
   }
@@ -1884,12 +1882,12 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       }
     }));
   }
-  handleCancel() {
+  close() {
     this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
-    this.resetChanges();
+    this.reset();
   }
   handleConfirm() {
     let detail = {
@@ -1898,18 +1896,16 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     if (this._showPasswordOptions && this._passwordsMatch) {
       detail.password = this._inputPassValue;
     }
-    this.dispatchEvent(new CustomEvent("turnOnScheduledBackups", {
+    this.dispatchEvent(new CustomEvent("BackupUI:EnableScheduledBackups", {
       bubbles: true,
-      composed: true,
       detail
     }));
-    this.resetChanges();
   }
   handleTogglePasswordOptions() {
     this._showPasswordOptions = this.passwordOptionsCheckboxEl?.checked;
     this._passwordsMatch = false;
   }
-  resetChanges() {
+  reset() {
     this._newPath = "";
     this._newIconURL = "";
     this._newLabel = "";
@@ -1917,11 +1913,11 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this.passwordOptionsCheckboxEl.checked = false;
     this._passwordsMatch = false;
     this._inputPassValue = "";
+    this.enableBackupErrorCode = 0;
     if (this.passwordOptionsExpandedEl) {
-      this.passwordOptionsExpandedEl.dispatchEvent(new CustomEvent("resetInputs", {
-        bubbles: true,
-        composed: true
-      }));
+      /** @type {import("./password-validation-inputs.mjs").default} */
+      const passwordElement = this.passwordOptionsExpandedEl;
+      passwordElement.reset();
     }
   }
   defaultFilePathInputTemplate() {
@@ -1954,6 +1950,15 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
         value=${filename}
         style=${`background-image: url(${iconURL})`}
       />
+    `;
+  }
+  errorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar
+        id="enable-backup-encryption-error"
+        type="error"
+        .messageL10nId="${getEnableErrorL10nId(this.enableBackupErrorCode)}"
+      ></moz-message-bar>
     `;
   }
   allOptionsTemplate() {
@@ -2041,12 +2046,13 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             ></a>
           </div>
           ${this.allOptionsTemplate()}
+          ${this.enableBackupErrorCode ? this.errorTemplate() : null}
         </main>
 
         <moz-button-group id="backup-turn-on-scheduled-button-group">
           <moz-button
             id="backup-turn-on-scheduled-cancel-button"
-            @click=${this.handleCancel}
+            @click=${this.close}
             data-l10n-id="turn-on-scheduled-backups-cancel-button"
           ></moz-button>
           <moz-button
@@ -2801,4 +2807,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.c
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.0b72f6e5.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.efcdc00e.iframe.bundle.js.map

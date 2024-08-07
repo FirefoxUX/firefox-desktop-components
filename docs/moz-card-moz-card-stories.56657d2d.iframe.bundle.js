@@ -65,6 +65,7 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   constructor() {
     super();
     this.type = "default";
+    this.expanded = false;
   }
   headingTemplate() {
     if (!this.heading) {
@@ -307,4 +308,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-card-moz-card-stories.84e45dfd.iframe.bundle.js.map
+//# sourceMappingURL=moz-card-moz-card-stories.56657d2d.iframe.bundle.js.map

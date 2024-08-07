@@ -549,11 +549,13 @@ customElements.define("moz-radio-group", MozRadioGroup);
  *
  * @tagname moz-radio
  * @property {boolean} checked - Whether or not the input is selected.
+ * @property {string} description - Description for the input.
  * @property {boolean} disabled - Whether or not the input is disabled.
+ * @property {string} iconSrc - Path to an icon displayed next to the input.
+ * @property {number} inputTabIndex - Tabindex of the input element.
  * @property {string} label - Label for the radio input.
  * @property {string} name
  *  Name of the input control, set by the associated moz-radio-group element.
- * @property {number} inputTabIndex - Tabindex of the input element.
  * @property {number} value - Value of the radio input.
  */
 class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
@@ -563,12 +565,20 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       type: Boolean,
       reflect: true
     },
+    description: {
+      type: String,
+      fluent: true
+    },
     disabled: {
       type: Boolean,
       reflect: true
     },
     iconSrc: {
       type: String
+    },
+    inputTabIndex: {
+      type: Number,
+      state: true
     },
     label: {
       type: String,
@@ -578,10 +588,6 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       type: String,
       attribute: false
     },
-    inputTabIndex: {
-      type: Number,
-      state: true
-    },
     value: {
       type: String
     }
@@ -589,7 +595,8 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
   static queries = {
     radioButton: "#radio-button",
     labelEl: "label",
-    icon: ".icon"
+    icon: ".icon",
+    descriptionEl: "#description"
   };
   constructor() {
     super();
@@ -658,6 +665,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       name=${this.name}
       .checked=${this.checked}
       aria-checked=${this.checked}
+      aria-describedby="description"
       tabindex=${this.inputTabIndex}
       ?disabled=${this.disabled || this.#controller.disabled}
       @click=${this.handleClick}
@@ -670,6 +678,13 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       <span class="text">${this.label}</span>
     </span>`;
   }
+  descriptionTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <span id="description" class="description text-deemphasized">
+        ${this.description ?? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="description"></slot>`}
+      </span>
+    `;
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -677,6 +692,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <label part="label">${this.inputTemplate()}${this.labelTemplate()}</label>
+      ${this.descriptionTemplate()}
     `;
   }
 }
@@ -693,6 +709,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Default": () => (/* binding */ Default),
 /* harmony export */   "DisabledRadioButton": () => (/* binding */ DisabledRadioButton),
 /* harmony export */   "DisabledRadioGroup": () => (/* binding */ DisabledRadioGroup),
+/* harmony export */   "WithDescriptions": () => (/* binding */ WithDescriptions),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -735,20 +752,38 @@ let wrappedLabelIds = ["moz-radio-long-0", "moz-radio-long-1", "moz-radio-long-2
     },
     status: "in-development",
     fluent: `
+moz-radio-group =
+  .label = This is the group label
 moz-radio-0 =
   .label = Hello
 moz-radio-1 =
   .label = Howdy
 moz-radio-2 =
   .label = Hola
-moz-radio-group =
-  .label = This is the group label
 moz-radio-long-0 =
   .label = Hello ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
 moz-radio-long-1 =
   .label = Howdy ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
 moz-radio-long-2 =
   .label = Hola ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+moz-radio-described-0 =
+  .label = Hello
+  .description = This is the first option.
+moz-radio-described-1 =
+  .label = Howdy
+  .description = This is the second option.
+moz-radio-described-2 =
+  .label = Hola
+  .description = This is the third option.
+moz-radio-described-long-0 =
+  .label = Hello ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the first option.
+moz-radio-described-long-1 =
+  .label = Howdy ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the second option.
+moz-radio-described-long-2 =
+  .label = Hola ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the third option.
     `
   }
 });
@@ -759,7 +794,8 @@ const Template = ({
   unchecked,
   showIcons,
   disabled,
-  disabledButtons
+  disabledButtons,
+  showDescriptions
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-radio-group
     name=${groupName}
@@ -771,7 +807,7 @@ const Template = ({
           ?checked=${i == 0 && !unchecked}
           ?disabled=${disabledButtons.includes(greeting)}
           value=${greeting}
-          data-l10n-id=${buttonLabels[i]}
+          data-l10n-id=${showDescriptions ? buttonLabels[i].replace("moz-radio", "moz-radio-described") : buttonLabels[i]}
           iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showIcons ? icons[i] : "")}
         ></moz-radio>
       `)}
@@ -785,7 +821,8 @@ Default.args = {
   unchecked: false,
   showIcons: false,
   disabled: false,
-  disabledButtons: []
+  disabledButtons: [],
+  showDescriptions: false
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
@@ -807,6 +844,11 @@ DisabledRadioButton.args = {
   ...Default.args,
   disabledButtons: ["hello"]
 };
+const WithDescriptions = Template.bind({});
+WithDescriptions.args = {
+  ...Default.args,
+  showDescriptions: true
+};
 
 /***/ }),
 
@@ -827,9 +869,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 73681:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-radio.cda6c319f7b9a8714842.css";
+module.exports = __webpack_require__.p + "moz-radio.f8a037e4d41446fd4e4b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.270c1631.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.7282b1fe.iframe.bundle.js.map

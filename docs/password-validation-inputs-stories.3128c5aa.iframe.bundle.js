@@ -217,15 +217,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._passwordsValid = false;
     this._tooltipFocus = false;
   }
-  connectedCallback() {
-    super.connectedCallback();
-    this.addEventListener("resetInputs", this.handleReset);
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.removeEventListener("resetInputs", this.handleReset);
-  }
-  handleReset() {
+  reset() {
     this.formEl.reset();
     this._showRules = false;
     this._hasCommon = false;
@@ -469,6 +461,7 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   constructor() {
     super();
     this.type = "default";
+    this.expanded = false;
   }
   headingTemplate() {
     if (!this.heading) {
@@ -571,4 +564,4 @@ module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.d36be5de.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.3128c5aa.iframe.bundle.js.map
