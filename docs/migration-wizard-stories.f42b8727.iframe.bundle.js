@@ -3122,16 +3122,16 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ 38732:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-item.98d428cf11dad2e93843.css";
+module.exports = __webpack_require__.p + "panel-item.d0ba058c25c326e32df4.css";
 
 /***/ }),
 
 /***/ 73326:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.f6288da5b73816352518.css";
+module.exports = __webpack_require__.p + "panel-list.a6323fc79568f25ec2bc.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.365687fd.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.f42b8727.iframe.bundle.js.map
