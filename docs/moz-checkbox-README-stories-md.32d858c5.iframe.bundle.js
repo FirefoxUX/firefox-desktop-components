@@ -926,8 +926,8 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         />
         <span class="label-content">
           ${this.iconTemplate()}
-          <span>
-            <span class="text">${this.label}</span>
+          <span class="text">
+            <span class="label">${this.label}</span>
             ${this.supportLinkTemplate()}
           </span>
         </span>
@@ -12067,7 +12067,7 @@ function useResizeObserver(opts) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-checkbox.2291b2fc7328fcfce8ff.css";
+module.exports = __webpack_require__.p + "moz-checkbox.70858e3a04b53b7a6f73.css";
 
 /***/ }),
 
@@ -12080,4 +12080,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-README-stories-md.e4272472.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-README-stories-md.32d858c5.iframe.bundle.js.map
