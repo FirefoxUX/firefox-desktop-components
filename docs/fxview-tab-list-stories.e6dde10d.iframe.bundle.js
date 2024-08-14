@@ -1558,7 +1558,7 @@ module.exports = __webpack_require__.p + "fxview-tab-list.cb9c9be18ded822be2b2.c
 /***/ 81529:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "fxview-tab-row.0ce8377734774925c278.css";
+module.exports = __webpack_require__.p + "fxview-tab-row.5472c686502b15858391.css";
 
 /***/ }),
 
@@ -1577,4 +1577,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.64015f32.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.e6dde10d.iframe.bundle.js.map
