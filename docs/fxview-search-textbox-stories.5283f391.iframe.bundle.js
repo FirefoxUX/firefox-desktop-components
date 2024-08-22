@@ -68,6 +68,9 @@ class FxviewSearchTextbox extends chrome_global_content_lit_utils_mjs__WEBPACK_I
     },
     pageName: {
       type: String
+    },
+    autofocus: {
+      type: Boolean
     }
   };
   static queries = {
@@ -76,6 +79,11 @@ class FxviewSearchTextbox extends chrome_global_content_lit_utils_mjs__WEBPACK_I
   };
   #query = "";
   #searchTimer;
+  firstUpdated() {
+    if (this.autofocus) {
+      this.focus();
+    }
+  }
   disconnectedCallback() {
     super.disconnectedCallback();
     clearTimeout(this.#searchTimer);
@@ -158,6 +166,7 @@ customElements.define("fxview-search-textbox", FxviewSearchTextbox);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "SearchBoxWithAutoFocus": () => (/* binding */ SearchBoxWithAutoFocus),
 /* harmony export */   "SearchBoxWithCustomSize": () => (/* binding */ SearchBoxWithCustomSize),
 /* harmony export */   "SearchBoxWithPlaceholder": () => (/* binding */ SearchBoxWithPlaceholder),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -194,9 +203,10 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
   }
 });
 var Template = function Template(_ref) {
-  var placeholder = _ref.placeholder,
+  var autofocus = _ref.autofocus,
+    placeholder = _ref.placeholder,
     size = _ref.size;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    fxview-search-textbox {\n      --fxview-border: var(--in-content-border-color);\n      --fxview-text-primary-color: var(--in-content-page-color);\n      --fxview-element-background-hover: var(\n        --in-content-button-background-hover\n      );\n      --fxview-text-color-hover: var(--in-content-button-text-color-hover);\n    }\n  </style>\n  <fxview-search-textbox\n    placeholder=", "\n    size=", "\n    @fxview-search-textbox-query=", "\n  ></fxview-search-textbox>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(placeholder), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(size), (0,_storybook_addon_actions__WEBPACK_IMPORTED_MODULE_0__.action)("fxview-search-textbox-query"));
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    fxview-search-textbox {\n      --fxview-border: var(--in-content-border-color);\n      --fxview-text-primary-color: var(--in-content-page-color);\n      --fxview-element-background-hover: var(\n        --in-content-button-background-hover\n      );\n      --fxview-text-color-hover: var(--in-content-button-text-color-hover);\n    }\n  </style>\n  <fxview-search-textbox\n    placeholder=", "\n    size=", "\n    autofocus=", "\n    @fxview-search-textbox-query=", "\n  ></fxview-search-textbox>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(placeholder), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(size), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(autofocus), (0,_storybook_addon_actions__WEBPACK_IMPORTED_MODULE_0__.action)("fxview-search-textbox-query"));
 };
 var Default = Template.bind({});
 Default.args = {
@@ -210,6 +220,10 @@ var SearchBoxWithCustomSize = Template.bind({});
 SearchBoxWithCustomSize.args = _objectSpread(_objectSpread({}, Default.args), {}, {
   size: 32
 });
+var SearchBoxWithAutoFocus = Template.bind({});
+SearchBoxWithAutoFocus.args = _objectSpread(_objectSpread({}, Default.args), {}, {
+  autofocus: true
+});
 
 /***/ }),
 
@@ -221,4 +235,4 @@ module.exports = __webpack_require__.p + "fxview-search-textbox.1858b8dbf8d383f3
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-search-textbox-stories.0d3218f8.iframe.bundle.js.map
+//# sourceMappingURL=fxview-search-textbox-stories.5283f391.iframe.bundle.js.map

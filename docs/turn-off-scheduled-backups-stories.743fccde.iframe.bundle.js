@@ -208,7 +208,9 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
       <div id="heading-wrapper">
         ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type == "accordion", () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div class="chevron-icon"></div>`)}
         ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div part="icon" id="heading-icon" role="presentation"></div>`)}
-        <span id="heading">${this.heading}</span>
+        <span id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading)} part="heading"
+          >${this.heading}</span
+        >
       </div>
     `;
   }
@@ -226,9 +228,11 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
       `;
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      ${this.headingTemplate()}
-      <div id="content" aria-describedby="content">
-        <slot></slot>
+      <div id="moz-card-details">
+        ${this.headingTemplate()}
+        <div id="content" aria-describedby="content">
+          <slot></slot>
+        </div>
       </div>
     `;
   }
@@ -289,9 +293,9 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ 48058:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-card.d9ac61c4de254bf74cdf.css";
+module.exports = __webpack_require__.p + "moz-card.be6f3e799a775bb99d12.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-off-scheduled-backups-stories.d728b4ee.iframe.bundle.js.map
+//# sourceMappingURL=turn-off-scheduled-backups-stories.743fccde.iframe.bundle.js.map
