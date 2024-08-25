@@ -21,8 +21,6 @@ const MigrationWizardConstants = Object.freeze({
    * A mapping of a page identification string to the IDs used by the
    * various wizard pages. These are used by MigrationWizard.setState
    * to set the current page.
-   *
-   * @type {Object<string, string>}
    */
   PAGES: Object.freeze({
     LOADING: "loading",
@@ -36,8 +34,6 @@ const MigrationWizardConstants = Object.freeze({
   /**
    * A mapping of a progress value string. These are used by
    * MigrationWizard.#onShowingProgress to update the UI accordingly.
-   *
-   * @type {Object<string, number>}
    */
   PROGRESS_VALUE: Object.freeze({
     LOADING: 1,
@@ -50,8 +46,6 @@ const MigrationWizardConstants = Object.freeze({
    * the associated resource group in the wizard via a data-resource-type
    * attribute. The keys are used to set which items should be shown and
    * in what state in #onShowingProgress.
-   *
-   * @type {Object<string, string>}
    */
   DISPLAYED_RESOURCE_TYPES: Object.freeze({
     // The DISPLAYED_RESOURCE_TYPES should have their keys match those
@@ -88,8 +82,6 @@ const MigrationWizardConstants = Object.freeze({
    * the associated resource group in the wizard via a data-resource-type
    * attribute. The keys are for resource types that are only ever shown
    * for profile resets.
-   *
-   * @type {Object<string, string>}
    */
   PROFILE_RESET_ONLY_RESOURCE_TYPES: Object.freeze({
     COOKIES: "COOKIES",
@@ -109,8 +101,6 @@ const MigrationWizardConstants = Object.freeze({
    * "3" if all extensions were matched after import. "2" if only some
    * extensions were matched. "1" if none were matched, and "0" if extensions
    * weren't selected for import.
-   *
-   * @type {Object<string, string>}
    */
   EXTENSIONS_IMPORT_RESULT: Object.freeze({
     NOT_IMPORTED: "0",
@@ -728,6 +718,12 @@ class MigrationWizard extends HTMLElement {
    */
 
   /**
+   * @typedef {
+   *   keyof typeof MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES
+   * } DISPLAYED_RESOURCE_TYPES_KEYS
+   */
+
+  /**
    * Called when showing the progress / success page of the wizard.
    *
    * @param {object} state
@@ -735,7 +731,7 @@ class MigrationWizard extends HTMLElement {
    *   used:
    * @param {string} state.key
    *   The key of the migrator being used.
-   * @param {Object<string, ProgressState>} state.progress
+   * @param {Record<DISPLAYED_RESOURCE_TYPES_KEYS, ProgressState>} state.progress
    *   An object whose keys match one of DISPLAYED_RESOURCE_TYPES.
    *
    *   Any resource type not included in state.progress will be hidden.
@@ -862,6 +858,12 @@ class MigrationWizard extends HTMLElement {
   }
 
   /**
+   * @typedef {
+   *   keyof typeof MigrationWizardConstants.DISPLAYED_FILE_RESOURCE_TYPES
+   * } DISPLAYED_FILE_RESOURCE_TYPES_KEYS
+   */
+
+  /**
    * Called when showing the progress / success page of the wizard for
    * files.
    *
@@ -870,7 +872,7 @@ class MigrationWizard extends HTMLElement {
    *   used:
    * @param {string} state.title
    *   The string to display in the header.
-   * @param {Object<string, ProgressState>} state.progress
+   * @param {Record<DISPLAYED_FILE_RESOURCE_TYPES_KEYS, ProgressState>} state.progress
    *   An object whose keys match one of DISPLAYED_FILE_RESOURCE_TYPES.
    *
    *   Any resource type not included in state.progress will be hidden.
@@ -3134,4 +3136,4 @@ module.exports = __webpack_require__.p + "panel-list.a6323fc79568f25ec2bc.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.f42b8727.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.ee6c072d.iframe.bundle.js.map
