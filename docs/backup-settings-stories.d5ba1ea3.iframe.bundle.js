@@ -2245,7 +2245,11 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       >
         ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <label is="moz-label" shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+        <label
+          is="moz-label"
+          part="label"
+          shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        >
           ${this.labelTemplate()}
         </label>
       </button>
@@ -2807,4 +2811,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.c
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.f7cee08b.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.d5ba1ea3.iframe.bundle.js.map

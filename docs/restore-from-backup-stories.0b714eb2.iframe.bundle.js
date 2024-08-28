@@ -1,261 +1,443 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7328],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[4045],{
 
-/***/ 38582:
+/***/ 41145:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57143);
-/* harmony import */ var browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53665);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46949);
-
-
-/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ERRORS": () => (/* binding */ ERRORS)
+/* harmony export */ });
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* eslint-env mozilla/remote-page */
+const ERRORS = Object.freeze({
+  /** User is not authorized to restore a backup archive */
+  UNAUTHORIZED: 1,
+  /** Selected backup archive can't be restored because it is corrupt */
+  CORRUPTED_ARCHIVE: 2,
+  /**
+   * Selected backup archive can't be restored because the backup manifest
+   * version is too old, from the future, or invalid
+   */
+  UNSUPPORTED_BACKUP_VERSION: 3,
+  /** Backup service was not started or is not running */
+  UNINITIALIZED: 4,
+  /** Could not read from or write to the file system */
+  FILE_SYSTEM_ERROR: 5,
+  /** Encryption of backup archive failed */
+  ENCRYPTION_FAILED: 6,
+  /** Decryption of backup archive failed */
+  DECRYPTION_FAILED: 7,
+  /** Recovery of backup failed without a more specific cause */
+  RECOVERY_FAILED: 8,
+  /** Unknown error with backup system without a more specific cause */
+  UNKNOWN: 9,
+  /**
+   * Backup system tried to enable backup encryption but it was
+   * already enabled
+   */
+  ENCRYPTION_ALREADY_ENABLED: 10,
+  /**
+   * Backup system tried to disable backup encryption but it was
+   * already disabled
+   */
+  ENCRYPTION_ALREADY_DISABLED: 11,
+  /** User supplied a new password that is not a valid password */
+  INVALID_PASSWORD: 12,
+  /**
+   * An error internal to the code that is likely caused by a bug
+   * or other programmer error.
+   */
+  INTERNAL_ERROR: 13,
+  /**
+   * A backup cannot be recovered because the backup file was created
+   * by a different application than the currently running application
+   */
+  UNSUPPORTED_APPLICATION: 14
+});
+
+/***/ }),
+
+/***/ 43902:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ RestoreFromBackup)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38647);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(41145);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
 
 // eslint-disable-next-line import/no-unassigned-import
 
-const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
-const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
-const SHOPPING_AUTO_OPEN_SIDEBAR_PREF = "browser.shopping.experience2023.autoOpen.userEnabled";
-class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
-  #MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING = new Map([["stale", () => this.staleWarningTemplate()], ["generic-error", () => this.genericErrorTemplate()], ["not-enough-reviews", () => this.notEnoughReviewsTemplate()], ["product-not-available", () => this.productNotAvailableTemplate()], ["thanks-for-reporting", () => this.thanksForReportingTemplate()], ["product-not-available-reported", () => this.productNotAvailableReportedTemplate()], ["analysis-in-progress", () => this.analysisInProgressTemplate()], ["reanalysis-in-progress", () => this.reanalysisInProgressTemplate()], ["page-not-supported", () => this.pageNotSupportedTemplate()], ["thank-you-for-feedback", () => this.thankYouForFeedbackTemplate()], ["keep-closed", () => this.keepClosedTemplate()]]);
+
+
+/**
+ * Any recovery error messaging should be defined in Fluent with both
+ * a `heading` attribute and a `message` attribute.
+ */
+const RECOVERY_ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNAUTHORIZED]: "restore-from-backup-error-incorrect-password",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.CORRUPTED_ARCHIVE]: "restore-from-backup-error-corrupt-file",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "restore-from-backup-error-unsupported-version",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNINITIALIZED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.FILE_SYSTEM_ERROR]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.DECRYPTION_FAILED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.RECOVERY_FAILED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN]: "restore-from-backup-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.INTERNAL_ERROR]: "restore-from-backup-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_APPLICATION]: "restore-from-backup-error-unsupported-application"
+});
+
+/**
+ * @param {number} errorCode
+ *   Error code from backup-constants.mjs:ERRORS
+ * @returns {string}
+ *   L10N ID for error messaging for the given error code; the L10N
+ *   ID should have both a `heading` and a `message` attribute
+ */
+function getRecoveryErrorL10nId(errorCode) {
+  return RECOVERY_ERROR_L10N_IDS[errorCode] ?? RECOVERY_ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN];
+}
+
+/**
+ * The widget for allowing users to select and restore from a
+ * a backup file.
+ */
+class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  #placeholderFileIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
-    type: {
+    backupFilePath: {
       type: String
     },
-    productUrl: {
+    backupFileToRestore: {
       type: String,
       reflect: true
     },
-    progress: {
-      type: Number,
-      reflect: true
+    backupFileInfo: {
+      type: Object
+    },
+    _fileIconURL: {
+      type: String
+    },
+    recoveryInProgress: {
+      type: Boolean
+    },
+    recoveryErrorCode: {
+      type: Number
     }
   };
   static get queries() {
     return {
-      reAnalysisButtonEl: "#message-bar-reanalysis-button",
-      productAvailableBtnEl: "#message-bar-report-product-available-btn",
-      yesKeepClosedButtonEl: "#yes-keep-closed-button",
-      noThanksButtonEl: "#no-thanks-button"
+      filePicker: "#backup-filepicker-input",
+      passwordInput: "#backup-password-input",
+      cancelButtonEl: "#restore-from-backup-cancel-button",
+      confirmButtonEl: "#restore-from-backup-confirm-button",
+      chooseButtonEl: "#backup-filepicker-button",
+      errorMessageEl: "#restore-from-backup-error"
     };
   }
-  onClickAnalysisButton() {
-    this.dispatchEvent(new CustomEvent("ReanalysisRequested", {
+  constructor() {
+    super();
+    this._fileIconURL = "";
+  }
+
+  /**
+   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
+   * DOM, which registers with BackupUIChild for BackupService state updates.
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
+      bubbles: true
+    }));
+    if (this.backupFileToRestore && !this.backupFileInfo) {
+      this.getBackupFileInfo();
+    }
+    this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
+  }
+  handleEvent(event) {
+    if (event.type == "BackupUI:SelectNewFilepickerPath") {
+      let {
+        path,
+        iconURL
+      } = event.detail;
+      this.backupFileToRestore = path;
+      this._fileIconURL = iconURL;
+    }
+  }
+  willUpdate(changedProperties) {
+    if (changedProperties.has("backupFileToRestore")) {
+      this.backupFileInfo = null;
+      this.getBackupFileInfo();
+    }
+  }
+  async handleChooseBackupFile() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
+      bubbles: true,
+      detail: {
+        win: window.browsingContext,
+        filter: "filterHTML",
+        displayDirectoryPath: this.backupFileToRestore
+      }
+    }));
+  }
+  getBackupFileInfo() {
+    let backupFile = this.backupFileToRestore;
+    if (!backupFile) {
+      return;
+    }
+    this.dispatchEvent(new CustomEvent("getBackupFileInfo", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        backupFile
+      }
+    }));
+  }
+  handleCancel() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
-    Glean.shopping.surfaceReanalyzeClicked.record();
   }
-  onClickProductAvailable() {
-    this.dispatchEvent(new CustomEvent("ReportedProductAvailable", {
+  handleConfirm() {
+    let backupFile = this.backupFileToRestore;
+    if (!backupFile || this.recoveryInProgress) {
+      return;
+    }
+    let backupPassword = this.passwordInput?.value;
+    this.dispatchEvent(new CustomEvent("restoreFromBackupConfirm", {
       bubbles: true,
-      composed: true
+      composed: true,
+      detail: {
+        backupFile,
+        backupPassword
+      }
     }));
   }
-  handleNoThanksClick() {
-    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
-    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
-    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
-      bubbles: true,
-      composed: true
-    }));
-    Glean.shopping.surfaceNoThanksButtonClicked.record();
+  controlsTemplate() {
+    let iconURL = this.backupFileToRestore && (this._fileIconURL || this.#placeholderFileIconURL);
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <fieldset id="backup-restore-controls">
+        <fieldset id="backup-filepicker-controls">
+          <label
+            id="backup-filepicker-label"
+            for="backup-filepicker-input"
+            data-l10n-id="restore-from-backup-filepicker-label"
+          ></label>
+          <div id="backup-filepicker">
+            <input
+              id="backup-filepicker-input"
+              type="text"
+              readonly
+              value=${this.backupFileToRestore}
+              style="background-image: url(${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(iconURL)})"
+            />
+            <moz-button
+              id="backup-filepicker-button"
+              @click=${this.handleChooseBackupFile}
+              data-l10n-id="restore-from-backup-file-choose-button"
+              aria-controls="backup-filepicker-input"
+            ></moz-button>
+          </div>
+        </fieldset>
+
+        <fieldset id="password-entry-controls">
+          ${this.backupFileInfo?.isEncrypted ? this.passwordEntryTemplate() : null}
+        </fieldset>
+      </fieldset>
+    `;
   }
-  handleKeepClosedClick() {
-    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
-    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
-    RPMSetPref(SHOPPING_AUTO_OPEN_SIDEBAR_PREF, false);
-    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
-      bubbles: true,
-      composed: true
-    }));
-    Glean.shopping.surfaceYesKeepClosedButtonClicked.record();
-  }
-  staleWarningTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div class="shopping-message-bar">
-      <span class="icon"></span>
-      <article id="message-bar-container" aria-labelledby="header">
+  passwordEntryTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <fieldset id="backup-password">
+      <label id="backup-password-label" for="backup-password-input">
         <span
-          data-l10n-id="shopping-message-bar-warning-stale-analysis-message-2"
+          id="backup-password-span"
+          data-l10n-id="restore-from-backup-password-label"
         ></span>
-        <button
-          id="message-bar-reanalysis-button"
-          class="small-button shopping-button"
-          data-l10n-id="shopping-message-bar-warning-stale-analysis-button"
-          @click=${this.onClickAnalysisButton}
-        ></button>
-      </article>
-    </div>`;
+        <input type="password" id="backup-password-input" />
+      </label>
+      <label
+        id="backup-password-description"
+        data-l10n-id="restore-from-backup-password-description"
+      ></label>
+    </fieldset>`;
   }
-  genericErrorTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="warning"
-      data-l10n-id="shopping-message-bar-generic-error"
-    >
-    </moz-message-bar>`;
-  }
-  notEnoughReviewsTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-not-enough-reviews"
-    >
-    </moz-message-bar>`;
-  }
-  productNotAvailableTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-product-not-available"
-    >
-      <button
-        slot="actions"
-        id="message-bar-report-product-available-btn"
-        class="small-button shopping-button"
-        data-l10n-id="shopping-message-bar-warning-product-not-available-button2"
-        @click=${this.onClickProductAvailable}
-      ></button>
-    </moz-message-bar>`;
-  }
-  thanksForReportingTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="info"
-      data-l10n-id="shopping-message-bar-thanks-for-reporting"
-    >
-    </moz-message-bar>`;
-  }
-  productNotAvailableReportedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-product-not-available-reported"
-    >
-    </moz-message-bar>`;
-  }
-  analysisInProgressTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
-      class="shopping-message-bar analysis-in-progress"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
-      "--analysis-progress-pcent": `${this.progress}%`
-    })}
-    >
-      <span class="icon"></span>
-      <article
-        id="message-bar-container"
-        aria-labelledby="header"
-        type="analysis"
+  contentTemplate() {
+    let buttonL10nId = !this.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div
+        id="restore-from-backup-wrapper"
+        aria-labelledby="restore-from-backup-header"
+        aria-describedby="restore-from-backup-description"
       >
-        <strong
-          id="header"
-          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
-          data-l10n-args="${JSON.stringify({
-      percentage: Math.round(this.progress)
-    })}"
-        ></strong>
-        <span
-          data-l10n-id="shopping-message-bar-analysis-in-progress-message2"
-        ></span>
-      </article>
-    </div>`;
+        <h1
+          id="restore-from-backup-header"
+          class="heading-medium"
+          data-l10n-id="restore-from-backup-header"
+        ></h1>
+        <main id="restore-from-backup-content">
+          ${this.recoveryErrorCode ? this.errorTemplate() : null}
+          ${this.backupFileInfo ? this.descriptionTemplate() : null}
+          ${this.controlsTemplate()}
+        </main>
+
+        <moz-button-group id="restore-from-backup-button-group">
+          <moz-button
+            id="restore-from-backup-cancel-button"
+            @click=${this.handleCancel}
+            data-l10n-id="restore-from-backup-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="restore-from-backup-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id="${buttonL10nId}"
+            ?disabled=${!this.backupFileToRestore || this.recoveryInProgress}
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
   }
-  reanalysisInProgressTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
-      class="shopping-message-bar"
-      id="reanalysis-in-progress-message"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
-      "--analysis-progress-pcent": `${this.progress}%`
+  descriptionTemplate() {
+    let {
+      date
+    } = this.backupFileInfo;
+    let dateTime = date && new Date(date).getTime();
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div id="restore-from-backup-description">
+        <span
+          id="restore-from-backup-description-span"
+          data-l10n-id="restore-from-backup-description-with-metadata"
+          data-l10n-args=${JSON.stringify({
+      date: dateTime
     })}
-    >
-      <span class="icon"></span>
-      <article
-        id="message-bar-container"
-        aria-labelledby="header"
-        type="re-analysis"
-      >
-        <span
-          id="header"
-          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
-          data-l10n-args="${JSON.stringify({
-      percentage: Math.round(this.progress)
-    })}"
         ></span>
-      </article>
-    </div>`;
+        <a
+          id="restore-from-backup-learn-more-link"
+          is="moz-support-link"
+          support-page="todo-backup"
+          data-l10n-id="restore-from-backup-support-link"
+        ></a>
+      </div>
+    `;
   }
-  pageNotSupportedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="warning"
-      data-l10n-id="shopping-message-bar-page-not-supported"
-    >
-    </moz-message-bar>`;
-  }
-  thankYouForFeedbackTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading"
-      type="success"
-      dismissable
-      data-l10n-id="shopping-survey-thanks"
-    >
-    </moz-message-bar>`;
-  }
-  keepClosedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
-      type="info"
-      data-l10n-id="shopping-message-bar-keep-closed-header"
-    >
-      <moz-button-group slot="actions">
-        <button
-          id="no-thanks-button"
-          class="small-button shopping-button"
-          data-l10n-id="shopping-message-bar-keep-closed-dismiss-button"
-          @click=${this.handleNoThanksClick}
-        ></button>
-        <button
-          id="yes-keep-closed-button"
-          class="primary small-button shopping-button"
-          data-l10n-id="shopping-message-bar-keep-closed-accept-button"
-          @click=${this.handleKeepClosedClick}
-        ></button>
-      </moz-button-group>
-    </moz-message-bar>`;
+  errorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar
+        id="restore-from-backup-error"
+        type="error"
+        data-l10n-id="${getRecoveryErrorL10nId(this.recoveryErrorCode)}"
+        data-l10n-attrs="heading, message"
+      >
+      </moz-message-bar>
+    `;
   }
   render() {
-    let messageBarTemplate = this.#MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING.get(this.type)();
-    if (messageBarTemplate) {
-      if (this.type == "stale") {
-        Glean.shopping.surfaceStaleAnalysisShown.record();
-      }
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-        <link
-          rel="stylesheet"
-          href="${browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__}"
-        />
-        <link
-          rel="stylesheet"
-          href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
-        />
-        ${messageBarTemplate}
-      `;
-    }
-    return null;
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
   }
 }
-customElements.define("shopping-message-bar", ShoppingMessageBar);
+customElements.define("restore-from-backup", RestoreFromBackup);
+
+/***/ }),
+
+/***/ 1881:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "BackupFound": () => (/* binding */ BackupFound),
+/* harmony export */   "EncryptedBackupFound": () => (/* binding */ EncryptedBackupFound),
+/* harmony export */   "NoBackupFound": () => (/* binding */ NoBackupFound),
+/* harmony export */   "RecoveryInProgress": () => (/* binding */ RecoveryInProgress),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63922);
+/* harmony import */ var _restore_from_backup_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43902);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Backup/Restore from Backup",
+  component: "restore-from-backup",
+  argTypes: {}
+});
+const Template = ({
+  backupFilePath,
+  backupFileToRestore,
+  backupFileInfo,
+  recoveryInProgress,
+  recoveryErrorCode
+}) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <moz-card style="width: fit-content;">
+    <restore-from-backup
+      .backupFilePath=${backupFilePath}
+      .backupFileToRestore=${backupFileToRestore}
+      .backupFileInfo=${backupFileInfo}
+      .recoveryInProgress=${recoveryInProgress}
+      .recoveryErrorCode=${recoveryErrorCode}
+    ></restore-from-backup>
+  </moz-card>
+`;
+const BackupFound = Template.bind({});
+BackupFound.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date(),
+    isEncrypted: null
+  },
+  recoveryErrorCode: 0
+};
+const EncryptedBackupFound = Template.bind({});
+EncryptedBackupFound.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date(),
+    isEncrypted: true
+  },
+  recoveryErrorCode: 0
+};
+const RecoveryInProgress = Template.bind({});
+RecoveryInProgress.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date()
+  },
+  recoveryInProgress: true
+};
+const NoBackupFound = Template.bind({});
 
 /***/ }),
 
@@ -423,7 +605,11 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       >
         ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <label is="moz-label" shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+        <label
+          is="moz-label"
+          part="label"
+          shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        >
           ${this.labelTemplate()}
         </label>
       </button>
@@ -431,6 +617,155 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   }
 }
 customElements.define("moz-button", MozButton);
+
+/***/ }),
+
+/***/ 63922:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozCard)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48058);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Cards contain content and actions about a single subject.
+ * There are two card types:
+ * The default type where no type attribute is required and the card
+ * will have no extra functionality.
+ *
+ * The "accordion" type will initially not show any content. The card
+ * will contain an arrow to expand the card so that all of the content
+ * is visible. You can use the "expanded" attribute to force the accordion
+ * card to show its content on initial render.
+ *
+ *
+ * @property {string} heading - The heading text that will be used for the card.
+ * @property {string} icon - (optional) A flag to indicate the header should include an icon
+ * @property {string} type - (optional) The type of card. No type specified
+ *   will be the default card. The other available type is "accordion"
+ * @property {boolean} expanded - A flag to indicate whether the card is
+ *  expanded or not. Can be used to expand the content section of the
+ *  accordion card on initial render.
+ * @slot content - The content to show inside of the card.
+ */
+class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    detailsEl: "#moz-card-details",
+    headingEl: "#heading",
+    contentSlotEl: "#content"
+  };
+  static properties = {
+    heading: {
+      type: String
+    },
+    icon: {
+      type: Boolean
+    },
+    type: {
+      type: String,
+      reflect: true
+    },
+    expanded: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    this.type = "default";
+    this.expanded = false;
+  }
+  headingTemplate() {
+    if (!this.heading) {
+      return "";
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div id="heading-wrapper">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type == "accordion", () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div class="chevron-icon"></div>`)}
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div part="icon" id="heading-icon" role="presentation"></div>`)}
+        <span id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading)} part="heading"
+          >${this.heading}</span
+        >
+      </div>
+    `;
+  }
+  cardTemplate() {
+    if (this.type === "accordion") {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+        <details
+          id="moz-card-details"
+          @toggle="${this.onToggle}"
+          ?open=${this.expanded}
+        >
+          <summary part="summary">${this.headingTemplate()}</summary>
+          <div id="content"><slot></slot></div>
+        </details>
+      `;
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div id="moz-card-details">
+        ${this.headingTemplate()}
+        <div id="content" aria-describedby="content">
+          <slot></slot>
+        </div>
+      </div>
+    `;
+  }
+  /**
+   * Handles the click event on the chevron icon.
+   *
+   * Without this, the click event would be passed to
+   * toggleDetails which would force the details element
+   * to stay open.
+   *
+   * @memberof MozCard
+   */
+  onDetailsClick() {
+    this.toggleDetails();
+  }
+
+  /**
+   * @param {boolean} force - Used to force open or force close the
+   * details element.
+   * @memberof MozCard
+   */
+  toggleDetails(force) {
+    this.expanded = force ?? !this.detailsEl.open;
+  }
+  onToggle() {
+    this.expanded = this.detailsEl.open;
+    this.dispatchEvent(new ToggleEvent("toggle", {
+      newState: this.detailsEl.open ? "open" : "closed",
+      oldState: this.detailsEl.open ? "closed" : "open"
+    }));
+  }
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <article
+        class="moz-card"
+        aria-labelledby=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading ? "heading" : undefined)}
+      >
+        ${this.cardTemplate()}
+      </article>
+    `;
+  }
+}
+customElements.define("moz-card", MozCard);
 
 /***/ }),
 
@@ -900,69 +1235,10 @@ customElements.define("moz-message-bar", MozMessageBar);
 
 /***/ }),
 
-/***/ 98161:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DefaultShoppingMessageBar": () => (/* binding */ DefaultShoppingMessageBar),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var browser_components_shopping_content_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38582);
-var _templateObject;
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// eslint-disable-next-line import/no-unresolved
-
-
-window.MozXULElement.insertFTLIfNeeded("browser/shopping.ftl");
-window.MozXULElement.insertFTLIfNeeded("toolkit/branding/brandings.ftl");
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Shopping/Shopping Message Bar",
-  component: "shopping-message-bar",
-  argTypes: {
-    type: {
-      control: {
-        type: "select"
-      },
-      options: ["stale", "generic-error", "not-enough-reviews", "product-not-available", "product-not-available-reported", "thanks-for-reporting", "analysis-in-progress", "reanalysis-in-progress", "page-not-supported", "thank-you-for-feedback"]
-    }
-  },
-  parameters: {
-    status: "in-development",
-    actions: {
-      handles: ["click"]
-    }
-  }
-});
-var Template = function Template(_ref) {
-  var type = _ref.type,
-    progress = _ref.progress;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <shopping-message-bar\n    type=", "\n    progress=", "\n  ></shopping-message-bar>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(progress));
-};
-var DefaultShoppingMessageBar = Template.bind({});
-DefaultShoppingMessageBar.args = {
-  type: "stale",
-  progress: 0
-};
-
-/***/ }),
-
-/***/ 53665:
+/***/ 38647:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "shopping-message-bar.70ce85ff4e48cc311a96.css";
-
-/***/ }),
-
-/***/ 57143:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css";
+module.exports = __webpack_require__.p + "restore-from-backup.5d7846f5ff6861a69814.css";
 
 /***/ }),
 
@@ -970,6 +1246,13 @@ module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-button.9ba424e28de41739b434.css";
+
+/***/ }),
+
+/***/ 48058:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-card.be6f3e799a775bb99d12.css";
 
 /***/ }),
 
@@ -988,4 +1271,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.c
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-message-bar-stories.1725e0f9.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.0b714eb2.iframe.bundle.js.map

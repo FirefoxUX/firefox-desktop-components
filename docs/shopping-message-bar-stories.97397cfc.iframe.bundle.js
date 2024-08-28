@@ -1,5 +1,263 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[9613],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7328],{
+
+/***/ 38582:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57143);
+/* harmony import */ var browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53665);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46949);
+
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* eslint-env mozilla/remote-page */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
+const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
+const SHOPPING_AUTO_OPEN_SIDEBAR_PREF = "browser.shopping.experience2023.autoOpen.userEnabled";
+class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  #MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING = new Map([["stale", () => this.staleWarningTemplate()], ["generic-error", () => this.genericErrorTemplate()], ["not-enough-reviews", () => this.notEnoughReviewsTemplate()], ["product-not-available", () => this.productNotAvailableTemplate()], ["thanks-for-reporting", () => this.thanksForReportingTemplate()], ["product-not-available-reported", () => this.productNotAvailableReportedTemplate()], ["analysis-in-progress", () => this.analysisInProgressTemplate()], ["reanalysis-in-progress", () => this.reanalysisInProgressTemplate()], ["page-not-supported", () => this.pageNotSupportedTemplate()], ["thank-you-for-feedback", () => this.thankYouForFeedbackTemplate()], ["keep-closed", () => this.keepClosedTemplate()]]);
+  static properties = {
+    type: {
+      type: String
+    },
+    productUrl: {
+      type: String,
+      reflect: true
+    },
+    progress: {
+      type: Number,
+      reflect: true
+    }
+  };
+  static get queries() {
+    return {
+      reAnalysisButtonEl: "#message-bar-reanalysis-button",
+      productAvailableBtnEl: "#message-bar-report-product-available-btn",
+      yesKeepClosedButtonEl: "#yes-keep-closed-button",
+      noThanksButtonEl: "#no-thanks-button"
+    };
+  }
+  onClickAnalysisButton() {
+    this.dispatchEvent(new CustomEvent("ReanalysisRequested", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceReanalyzeClicked.record();
+  }
+  onClickProductAvailable() {
+    this.dispatchEvent(new CustomEvent("ReportedProductAvailable", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleNoThanksClick() {
+    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
+    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceNoThanksButtonClicked.record();
+  }
+  handleKeepClosedClick() {
+    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
+    RPMSetPref(SHOPPING_AUTO_OPEN_SIDEBAR_PREF, false);
+    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceYesKeepClosedButtonClicked.record();
+  }
+  staleWarningTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div class="shopping-message-bar">
+      <span class="icon"></span>
+      <article id="message-bar-container" aria-labelledby="header">
+        <span
+          data-l10n-id="shopping-message-bar-warning-stale-analysis-message-2"
+        ></span>
+        <button
+          id="message-bar-reanalysis-button"
+          class="small-button shopping-button"
+          data-l10n-id="shopping-message-bar-warning-stale-analysis-button"
+          @click=${this.onClickAnalysisButton}
+        ></button>
+      </article>
+    </div>`;
+  }
+  genericErrorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="warning"
+      data-l10n-id="shopping-message-bar-generic-error"
+    >
+    </moz-message-bar>`;
+  }
+  notEnoughReviewsTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-not-enough-reviews"
+    >
+    </moz-message-bar>`;
+  }
+  productNotAvailableTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-product-not-available"
+    >
+      <button
+        slot="actions"
+        id="message-bar-report-product-available-btn"
+        class="small-button shopping-button"
+        data-l10n-id="shopping-message-bar-warning-product-not-available-button2"
+        @click=${this.onClickProductAvailable}
+      ></button>
+    </moz-message-bar>`;
+  }
+  thanksForReportingTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="info"
+      data-l10n-id="shopping-message-bar-thanks-for-reporting"
+    >
+    </moz-message-bar>`;
+  }
+  productNotAvailableReportedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-product-not-available-reported"
+    >
+    </moz-message-bar>`;
+  }
+  analysisInProgressTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
+      class="shopping-message-bar analysis-in-progress"
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
+      "--analysis-progress-pcent": `${this.progress}%`
+    })}
+    >
+      <span class="icon"></span>
+      <article
+        id="message-bar-container"
+        aria-labelledby="header"
+        type="analysis"
+      >
+        <strong
+          id="header"
+          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
+          data-l10n-args="${JSON.stringify({
+      percentage: Math.round(this.progress)
+    })}"
+        ></strong>
+        <span
+          data-l10n-id="shopping-message-bar-analysis-in-progress-message2"
+        ></span>
+      </article>
+    </div>`;
+  }
+  reanalysisInProgressTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
+      class="shopping-message-bar"
+      id="reanalysis-in-progress-message"
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
+      "--analysis-progress-pcent": `${this.progress}%`
+    })}
+    >
+      <span class="icon"></span>
+      <article
+        id="message-bar-container"
+        aria-labelledby="header"
+        type="re-analysis"
+      >
+        <span
+          id="header"
+          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
+          data-l10n-args="${JSON.stringify({
+      percentage: Math.round(this.progress)
+    })}"
+        ></span>
+      </article>
+    </div>`;
+  }
+  pageNotSupportedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="warning"
+      data-l10n-id="shopping-message-bar-page-not-supported"
+    >
+    </moz-message-bar>`;
+  }
+  thankYouForFeedbackTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading"
+      type="success"
+      dismissable
+      data-l10n-id="shopping-survey-thanks"
+    >
+    </moz-message-bar>`;
+  }
+  keepClosedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      data-l10n-attrs="heading, message"
+      type="info"
+      data-l10n-id="shopping-message-bar-keep-closed-header"
+    >
+      <moz-button-group slot="actions">
+        <button
+          id="no-thanks-button"
+          class="small-button shopping-button"
+          data-l10n-id="shopping-message-bar-keep-closed-dismiss-button"
+          @click=${this.handleNoThanksClick}
+        ></button>
+        <button
+          id="yes-keep-closed-button"
+          class="primary small-button shopping-button"
+          data-l10n-id="shopping-message-bar-keep-closed-accept-button"
+          @click=${this.handleKeepClosedClick}
+        ></button>
+      </moz-button-group>
+    </moz-message-bar>`;
+  }
+  render() {
+    let messageBarTemplate = this.#MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING.get(this.type)();
+    if (messageBarTemplate) {
+      if (this.type == "stale") {
+        Glean.shopping.surfaceStaleAnalysisShown.record();
+      }
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+        <link
+          rel="stylesheet"
+          href="${browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__}"
+        />
+        <link
+          rel="stylesheet"
+          href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
+        />
+        ${messageBarTemplate}
+      `;
+    }
+    return null;
+  }
+}
+customElements.define("shopping-message-bar", ShoppingMessageBar);
+
+/***/ }),
 
 /***/ 15872:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -165,7 +423,11 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       >
         ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <label is="moz-label" shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+        <label
+          is="moz-label"
+          part="label"
+          shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        >
           ${this.labelTemplate()}
         </label>
       </button>
@@ -642,258 +904,69 @@ customElements.define("moz-message-bar", MozMessageBar);
 
 /***/ }),
 
-/***/ 32154:
+/***/ 98161:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Default": () => (/* binding */ Default),
-/* harmony export */   "Dismissable": () => (/* binding */ Dismissable),
-/* harmony export */   "WithActionButton": () => (/* binding */ WithActionButton),
-/* harmony export */   "WithHeading": () => (/* binding */ WithHeading),
-/* harmony export */   "WithSupportLink": () => (/* binding */ WithSupportLink),
+/* harmony export */   "DefaultShoppingMessageBar": () => (/* binding */ DefaultShoppingMessageBar),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(46949);
-/* harmony import */ var _moz_support_link_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(49896);
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var browser_components_shopping_content_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38582);
+var _templateObject;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// eslint-disable-next-line import/no-unresolved
 
 
-
-const fluentStrings = ["moz-message-bar-message", "moz-message-bar-message-heading", "moz-message-bar-message-heading-long"];
+window.MozXULElement.insertFTLIfNeeded("browser/shopping.ftl");
+window.MozXULElement.insertFTLIfNeeded("toolkit/branding/brandings.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Message Bar",
-  component: "moz-message-bar",
+  title: "Domain-specific UI Widgets/Shopping/Shopping Message Bar",
+  component: "shopping-message-bar",
   argTypes: {
     type: {
-      options: ["info", "warning", "success", "error"],
       control: {
         type: "select"
-      }
-    },
-    l10nId: {
-      options: fluentStrings,
-      control: {
-        type: "select"
-      }
-    },
-    heading: {
-      table: {
-        disable: true
-      }
-    },
-    message: {
-      table: {
-        disable: true
-      }
+      },
+      options: ["stale", "generic-error", "not-enough-reviews", "product-not-available", "product-not-available-reported", "thanks-for-reporting", "analysis-in-progress", "reanalysis-in-progress", "page-not-supported", "thank-you-for-feedback"]
     }
   },
   parameters: {
-    status: "stable",
-    fluent: `
-moz-message-bar-message =
-  .message = For your information message
-moz-message-bar-message-heading =
-  .heading = Heading
-  .message = For your information message
-moz-message-bar-message-heading-long =
-  .heading = A longer heading to check text wrapping in the message bar
-  .message = Some message that we use to check text wrapping. Some message that we use to check text wrapping.
-moz-message-bar-button = Click me!
-    `
+    status: "in-development",
+    actions: {
+      handles: ["click"]
+    }
   }
 });
-const Template = ({
-  type,
-  heading,
-  message,
-  l10nId,
-  dismissable,
-  hasSupportLink,
-  hasActionButton
-}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <moz-message-bar
-    type=${type}
-    heading=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(heading)}
-    message=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(message)}
-    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-    data-l10n-attrs="heading, message"
-    ?dismissable=${dismissable}
-  >
-    ${hasSupportLink ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-          <a
-            is="moz-support-link"
-            support-page="addons"
-            slot="support-link"
-          ></a>
-        ` : ""}
-    ${hasActionButton ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-          <button data-l10n-id="moz-message-bar-button" slot="actions"></button>
-        ` : ""}
-  </moz-message-bar>
-`;
-const Default = Template.bind({});
-Default.args = {
-  type: "info",
-  l10nId: "moz-message-bar-message",
-  dismissable: false,
-  hasSupportLink: false,
-  hasActionButton: false
+var Template = function Template(_ref) {
+  var type = _ref.type,
+    progress = _ref.progress;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <shopping-message-bar\n    type=", "\n    progress=", "\n  ></shopping-message-bar>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(progress));
 };
-const Dismissable = Template.bind({});
-Dismissable.args = {
-  type: "info",
-  l10nId: "moz-message-bar-message",
-  dismissable: true,
-  hasSupportLink: false,
-  hasActionButton: false
-};
-const WithActionButton = Template.bind({});
-WithActionButton.args = {
-  type: "info",
-  l10nId: "moz-message-bar-message",
-  dismissable: false,
-  hasSupportLink: false,
-  hasActionButton: true
-};
-const WithSupportLink = Template.bind({});
-WithSupportLink.args = {
-  type: "info",
-  l10nId: "moz-message-bar-message",
-  dismissable: false,
-  hasSupportLink: true,
-  hasActionButton: false
-};
-const WithHeading = Template.bind({});
-WithHeading.args = {
-  ...Default.args,
-  l10nId: "moz-message-bar-message-heading"
+var DefaultShoppingMessageBar = Template.bind({});
+DefaultShoppingMessageBar.args = {
+  type: "stale",
+  progress: 0
 };
 
 /***/ }),
 
-/***/ 49896:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 53665:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozSupportLink),
-/* harmony export */   "formatUTMParams": () => (/* binding */ formatUTMParams)
-/* harmony export */ });
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+module.exports = __webpack_require__.p + "shopping-message-bar.70ce85ff4e48cc311a96.css";
 
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozSupportLink.ftl");
+/***/ }),
 
-/**
- * An extension of the anchor element that helps create links to Mozilla's
- * support documentation. This should be used for SUMO links only - other "Learn
- * more" links can use the regular anchor element.
- *
- * @tagname moz-support-link
- * @attribute {string} support-page - Short-hand string from SUMO to the specific support page.
- * @attribute {string} utm-content - UTM parameter for a URL, if it is an AMO URL.
- * @attribute {string} data-l10n-id - Fluent ID used to generate the text content.
- */
-class MozSupportLink extends HTMLAnchorElement {
-  static SUPPORT_URL = "https://www.mozilla.org/";
-  static get observedAttributes() {
-    return ["support-page", "utm-content"];
-  }
+/***/ 57143:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-  /**
-   * Handles setting up the SUPPORT_URL preference getter.
-   * Without this, the tests for this component may not behave
-   * as expected.
-   * @private
-   * @memberof MozSupportLink
-   */
-  #register() {
-    if (window.document.nodePrincipal?.isSystemPrincipal) {
-      ChromeUtils.defineESModuleGetters(MozSupportLink, {
-        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
-      });
-
-      // eslint-disable-next-line no-shadow
-      let {
-        XPCOMUtils
-      } = window.XPCOMUtils ? window : ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
-      XPCOMUtils.defineLazyPreferenceGetter(MozSupportLink, "SUPPORT_URL", "app.support.baseURL", "", null, val => Services.urlFormatter.formatURL(val));
-    } else if (!window.IS_STORYBOOK) {
-      MozSupportLink.SUPPORT_URL = window.RPMGetFormatURLPref("app.support.baseURL");
-    }
-  }
-  connectedCallback() {
-    this.#register();
-    this.#setHref();
-    this.setAttribute("target", "_blank");
-    this.addEventListener("click", this);
-    if (!this.getAttribute("data-l10n-id") && !this.getAttribute("data-l10n-name") && !this.childElementCount) {
-      document.l10n.setAttributes(this, "moz-support-link-text");
-    }
-    document.l10n.translateFragment(this);
-  }
-  disconnectedCallback() {
-    this.removeEventListener("click", this);
-  }
-  handleEvent(e) {
-    if (e.type == "click") {
-      if (window.openTrustedLinkIn) {
-        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
-        if (where == "current") {
-          where = "tab";
-        }
-        e.preventDefault();
-        openTrustedLinkIn(this.href, where);
-      }
-    }
-  }
-  attributeChangedCallback(attrName) {
-    if (attrName === "support-page" || attrName === "utm-content") {
-      this.#setHref();
-    }
-  }
-  #setHref() {
-    let supportPage = this.getAttribute("support-page") ?? "";
-    let base = MozSupportLink.SUPPORT_URL + supportPage;
-    this.href = this.hasAttribute("utm-content") ? formatUTMParams(this.getAttribute("utm-content"), base) : base;
-  }
-}
-customElements.define("moz-support-link", MozSupportLink, {
-  extends: "a"
-});
-
-/**
- * Adds UTM parameters to a given URL, if it is an AMO URL.
- *
- * @param {string} contentAttribute
- *        Identifies the part of the UI with which the link is associated.
- * @param {string} url
- * @returns {string}
- *          The url with UTM parameters if it is an AMO URL.
- *          Otherwise the url in unmodified form.
- */
-function formatUTMParams(contentAttribute, url) {
-  if (!contentAttribute) {
-    return url;
-  }
-  let parsedUrl = new URL(url);
-  let domain = `.${parsedUrl.hostname}`;
-  if (!domain.endsWith(".mozilla.org") &&
-  // For testing: addons-dev.allizom.org and addons.allizom.org
-  !domain.endsWith(".allizom.org")) {
-    return url;
-  }
-  parsedUrl.searchParams.set("utm_source", "firefox-browser");
-  parsedUrl.searchParams.set("utm_medium", "firefox-browser");
-  parsedUrl.searchParams.set("utm_content", contentAttribute);
-  return parsedUrl.href;
-}
+module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css";
 
 /***/ }),
 
@@ -919,4 +992,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.e7fa60bf.iframe.bundle.js.map
+//# sourceMappingURL=shopping-message-bar-stories.97397cfc.iframe.bundle.js.map
