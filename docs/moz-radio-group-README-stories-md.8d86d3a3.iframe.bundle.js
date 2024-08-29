@@ -1312,6 +1312,15 @@ customElements.define("moz-radio-group", MozRadioGroup);
 class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #controller;
   static properties = {
+    accessKey: {
+      type: String,
+      state: true
+    },
+    accessKeyAttribute: {
+      type: String,
+      attribute: "accesskey",
+      reflect: true
+    },
     checked: {
       type: Boolean,
       reflect: true
@@ -1381,6 +1390,10 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         this.#controller.syncFocusState();
       }
     }
+    if (changedProperties.has("accessKeyAttribute")) {
+      this.accessKey = this.accessKeyAttribute;
+      this.accessKeyAttribute = null;
+    }
   }
   handleClick() {
     this.#controller.value = this.value;
@@ -1419,6 +1432,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       aria-describedby="description"
       tabindex=${this.inputTabIndex}
       ?disabled=${this.disabled || this.#controller.disabled}
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       @click=${this.handleClick}
       @change=${this.handleChange}
     />`;
@@ -1442,7 +1456,13 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <label part="label">${this.inputTemplate()}${this.labelTemplate()}</label>
+      <label
+        part="label"
+        is="moz-label"
+        shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      >
+        ${this.inputTemplate()}${this.labelTemplate()}
+      </label>
       ${this.descriptionTemplate()}
     `;
   }
@@ -12176,9 +12196,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-radio.f8a037e4d41446fd4e4b.css";
+module.exports = __webpack_require__.p + "moz-radio.ce191b74395d6729a4e1.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.928aac61.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.8d86d3a3.iframe.bundle.js.map

@@ -649,6 +649,20 @@ const storybookTables = {
     name: "--border-color"
   }, {
     value: {
+      brand: {
+        light: "var(--color-gray-30)",
+        dark: "var(--color-gray-70)",
+        default: "light-dark(var(--color-gray-30), var(--color-gray-70))"
+      },
+      platform: {
+        default: "color-mix(in srgb, currentColor 24%, transparent)"
+      },
+      prefersContrast: "currentColor",
+      forcedColors: "ButtonText"
+    },
+    name: "--border-color-deemphasized"
+  }, {
+    value: {
       prefersContrast: "var(--text-color)",
       forcedColors: "ButtonText",
       brand: {
@@ -1070,6 +1084,9 @@ const storybookTables = {
     value: "#00ddff",
     name: "--color-cyan-50"
   }, {
+    value: "#bac2ca",
+    name: "--color-gray-30"
+  }, {
     value: "#bfbfc9",
     name: "--color-gray-50"
   }, {
@@ -1384,6 +1401,18 @@ const variableLookupTable = {
   "border-color": {
     prefersContrast: "var(--text-color)"
   },
+  "border-color-deemphasized": {
+    brand: {
+      light: "var(--color-gray-30)",
+      dark: "var(--color-gray-70)",
+      default: "light-dark(var(--color-gray-30), var(--color-gray-70))"
+    },
+    platform: {
+      default: "color-mix(in srgb, currentColor 24%, transparent)"
+    },
+    prefersContrast: "currentColor",
+    forcedColors: "ButtonText"
+  },
   "border-color-interactive": {
     prefersContrast: "var(--text-color)",
     forcedColors: "ButtonText",
@@ -1639,6 +1668,7 @@ const variableLookupTable = {
   "color-cyan-20": "#aaf2ff",
   "color-cyan-30": "#80ebff",
   "color-cyan-50": "#00ddff",
+  "color-gray-30": "#bac2ca",
   "color-gray-50": "#bfbfc9",
   "color-gray-60": "#8f8f9d",
   "color-gray-70": "#5b5b66",
@@ -1865,4 +1895,4 @@ module.exports = __webpack_require__.p + "tokens-table.b67d114c4ae89a70aeca.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.bc54c4c7.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.3bbae926.iframe.bundle.js.map

@@ -512,7 +512,8 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       letterGradeEl: "letter-grade",
       linkEl: "#recommended-ad-wrapper",
       priceEl: "#price",
-      ratingEl: "moz-five-star"
+      ratingEl: "moz-five-star",
+      sponsoredLabelEl: "#sponsored-label"
     };
   }
   connectedCallback() {
@@ -549,7 +550,8 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.dispatchEvent(new CustomEvent("AdImpression", {
       bubbles: true,
       detail: {
-        aid: this.product.aid
+        aid: this.product.aid,
+        sponsored: this.product.sponsored
       }
     }));
     document.removeEventListener("visibilitychange", this);
@@ -561,7 +563,8 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       this.dispatchEvent(new CustomEvent("AdClicked", {
         bubbles: true,
         detail: {
-          aid: this.product.aid
+          aid: this.product.aid,
+          sponsored: this.product.sponsored
         }
       }));
     }
@@ -606,7 +609,10 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           </div>
         </a>
       </shopping-card>
-      <p data-l10n-id="ad-by-fakespot"></p>
+      ${this.product.sponsored ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p
+              id="sponsored-label"
+              data-l10n-id="shopping-sponsored-label"
+            ></p>` : null}
     `;
   }
 }
@@ -717,7 +723,6 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       autoOpenToggleEl: "#shopping-settings-auto-open-toggle",
       autoOpenToggleDescriptionEl: "#shopping-auto-open-description",
       dividerEl: ".divider",
-      sidebarEnabledStateEl: "#shopping-settings-sidebar-enabled-state",
       optOutButtonEl: "#shopping-settings-opt-out-button",
       shoppingCardEl: "shopping-card",
       adsLearnMoreLinkEl: "#shopping-ads-learn-more-link",
@@ -764,11 +769,11 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
           <moz-toggle
             id="shopping-settings-recommendations-toggle"
             ?pressed=${this.adsEnabledByUser}
-            data-l10n-id="shopping-settings-recommendations-toggle"
+            data-l10n-id="shopping-settings-recommendations-toggle2"
             data-l10n-attrs="label"
             @toggle=${this.onToggleRecommendations}>
           </moz-toggle/>
-          <span id="shopping-ads-learn-more" data-l10n-id="shopping-settings-recommendations-learn-more2">
+          <span id="shopping-ads-learn-more" data-l10n-id="shopping-settings-recommendations-learn-more3">
             <a
               id="shopping-ads-learn-more-link"
               target="_blank"
@@ -830,7 +835,7 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       <shopping-card
         data-l10n-id="shopping-settings-label"
         data-l10n-attrs="label"
-        type=${!this.autoOpenEnabled ? "accordion" : ""}
+        type="accordion"
       >
         <div
           id="shopping-settings-wrapper"
@@ -838,16 +843,12 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
           slot="content"
         >
           <section id="shopping-settings-toggles-section">
-            ${adsToggleMarkup} ${autoOpenToggleMarkup}
+            ${autoOpenToggleMarkup} ${adsToggleMarkup}
           </section>
           ${this.autoOpenEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="divider" role="separator"></span>` : null}
           <section id="shopping-settings-opt-out-section">
-            ${this.autoOpenEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span
-                  id="shopping-settings-sidebar-enabled-state"
-                  data-l10n-id="shopping-settings-sidebar-enabled-state"
-                ></span>` : null}
             <button
-              class="shopping-button"
+              class="small-button shopping-button"
               id="shopping-settings-opt-out-button"
               data-l10n-id="shopping-settings-opt-out-button"
               @click=${this.onDisableShopping}
@@ -857,7 +858,6 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       </shopping-card>
       <p
         id="powered-by-fakespot"
-        class="deemphasized"
         data-l10n-id="powered-by-fakespot"
         @click=${this.fakespotLinkClicked}
       >
@@ -2917,6 +2917,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "PageNotSupported": () => (/* binding */ PageNotSupported),
 /* harmony export */   "ProductNotAvailable": () => (/* binding */ ProductNotAvailable),
 /* harmony export */   "ReanalysisInProgress": () => (/* binding */ ReanalysisInProgress),
+/* harmony export */   "RecommendationVisibleByUser": () => (/* binding */ RecommendationVisibleByUser),
 /* harmony export */   "StaleProduct": () => (/* binding */ StaleProduct),
 /* harmony export */   "ThanksForReporting": () => (/* binding */ ThanksForReporting),
 /* harmony export */   "UnanalyzedProduct": () => (/* binding */ UnanalyzedProduct),
@@ -2979,7 +2980,7 @@ var MOCK_HIGHLIGHTS = {
     neutral: []
   }
 };
-var MOCK_RECOMMENDED_ADS = [{
+var MOCK_RECOMMENDED_ADS_SPONSORED = [{
   name: "VIVO Electric 60 x 24 inch Stand Up Desk | Black Table Top, Black Frame, Height Adjustable Standing Workstation with Memory Preset Controller (DESK-KIT-1B6B)",
   url: "www.example.com",
   price: "249.99",
@@ -2987,6 +2988,18 @@ var MOCK_RECOMMENDED_ADS = [{
   grade: "A",
   adjusted_rating: 4.6,
   sponsored: true,
+  image_blob: new Blob(new Uint8Array(), {
+    type: "image/jpeg"
+  })
+}];
+var MOCK_RECOMMENDED_NOT_SPONSORED = [{
+  name: "VIVO Electric 60 x 24 inch Stand Up Desk | Black Table Top, Black Frame, Height Adjustable Standing Workstation with Memory Preset Controller (DESK-KIT-1B6B)",
+  url: "www.example.com",
+  price: "249.99",
+  currency: "USD",
+  grade: "A",
+  adjusted_rating: 4.6,
+  sponsored: false,
   image_blob: new Blob(new Uint8Array(), {
     type: "image/jpeg"
   })
@@ -3001,8 +3014,9 @@ var Template = function Template(_ref) {
     adsEnabled = _ref.adsEnabled,
     adsEnabledByUser = _ref.adsEnabledByUser,
     recommendationData = _ref.recommendationData,
-    analysisProgress = _ref.analysisProgress;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    main {\n      /**\n        --shopping-header-background and sidebar background-color should\n        come from shopping.page.css, but they are not loaded when\n        viewing the sidebar in Storybook. Hardcode them here\n       */\n      --shopping-header-background: light-dark(#f9f9fb, #2b2a33);\n      background-color: var(--shopping-header-background);\n      width: 320px;\n    }\n  </style>\n\n  <main>\n    <shopping-container\n      .data=", "\n      ?isOffline=", "\n      ?isAnalysisInProgress=", "\n      .analysisEvent=", "\n      productUrl=", "\n      ?userReportedAvailable=", "\n      ?adsEnabled=", "\n      ?adsEnabledByUser=", "\n      .recommendationData=", "\n      analysisProgress=", "\n    >\n    </shopping-container>\n  </main>\n"])), data, isOffline, isAnalysisInProgress, analysisEvent, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(productUrl), userReportedAvailable, adsEnabled, adsEnabledByUser, recommendationData, analysisProgress);
+    analysisProgress = _ref.analysisProgress,
+    autoOpenEnabled = _ref.autoOpenEnabled;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    main {\n      /**\n        --shopping-header-background and sidebar background-color should\n        come from shopping.page.css, but they are not loaded when\n        viewing the sidebar in Storybook. Hardcode them here\n       */\n      --shopping-header-background: light-dark(#f9f9fb, #2b2a33);\n      background-color: var(--shopping-header-background);\n      width: 320px;\n    }\n  </style>\n\n  <main>\n    <shopping-container\n      .data=", "\n      ?isOffline=", "\n      ?isAnalysisInProgress=", "\n      .analysisEvent=", "\n      productUrl=", "\n      ?userReportedAvailable=", "\n      ?adsEnabled=", "\n      ?adsEnabledByUser=", "\n      .recommendationData=", "\n      analysisProgress=", "\n      autoOpenEnabled=", "\n    >\n    </shopping-container>\n  </main>\n"])), data, isOffline, isAnalysisInProgress, analysisEvent, (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(productUrl), userReportedAvailable, adsEnabled, adsEnabledByUser, recommendationData, analysisProgress, autoOpenEnabled);
 };
 var DefaultShoppingContainer = Template.bind({});
 DefaultShoppingContainer.args = {
@@ -3072,8 +3086,7 @@ ReanalysisInProgress.args = {
 };
 
 /**
- * When ad functionality is enabled and the user wants the ad
- * component visible.
+ * When a sponsored ad is served, and the user wants the ad component visible.
  */
 var AdVisibleByUser = Template.bind({});
 AdVisibleByUser.args = {
@@ -3086,12 +3099,28 @@ AdVisibleByUser.args = {
   },
   adsEnabled: true,
   adsEnabledByUser: true,
-  recommendationData: MOCK_RECOMMENDED_ADS
+  recommendationData: MOCK_RECOMMENDED_ADS_SPONSORED
 };
 
 /**
- * When ad functionality is enabled, but the user wants the ad
- * component hidden.
+ * When a non-sponsored recommendation is served, and the user wants the recommendation component visible.
+ */
+var RecommendationVisibleByUser = Template.bind({});
+RecommendationVisibleByUser.args = {
+  data: {
+    product_id: "ABCD123",
+    needs_analysis: false,
+    adjusted_rating: 5,
+    grade: "B",
+    highlights: MOCK_HIGHLIGHTS
+  },
+  adsEnabled: true,
+  adsEnabledByUser: true,
+  recommendationData: MOCK_RECOMMENDED_NOT_SPONSORED
+};
+
+/**
+ * When a sponsored ad is served, and the user wants the ad component hidden.
  */
 var AdHiddenByUser = Template.bind({});
 AdHiddenByUser.args = {
@@ -3104,7 +3133,7 @@ AdHiddenByUser.args = {
   },
   adsEnabled: true,
   adsEnabledByUser: false,
-  recommendationData: MOCK_RECOMMENDED_ADS
+  recommendationData: MOCK_RECOMMENDED_ADS_SPONSORED
 };
 var NotEnoughReviews = Template.bind({});
 NotEnoughReviews.args = {
@@ -3198,14 +3227,14 @@ module.exports = __webpack_require__.p + "letter-grade.4bec18081ae0a9d0845c.css"
 /***/ 98971:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "recommended-ad.d86a8e168cc78644af4d.css";
+module.exports = __webpack_require__.p + "recommended-ad.877fda06e5101151800d.css";
 
 /***/ }),
 
 /***/ 8423:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "settings.114468cd25d5b5a53f6e.css";
+module.exports = __webpack_require__.p + "settings.e33109b287cdfcbc61cd.css";
 
 /***/ }),
 
@@ -3287,4 +3316,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.0fa647cc.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.3dcc06b0.iframe.bundle.js.map

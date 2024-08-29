@@ -561,6 +561,15 @@ customElements.define("moz-radio-group", MozRadioGroup);
 class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #controller;
   static properties = {
+    accessKey: {
+      type: String,
+      state: true
+    },
+    accessKeyAttribute: {
+      type: String,
+      attribute: "accesskey",
+      reflect: true
+    },
     checked: {
       type: Boolean,
       reflect: true
@@ -630,6 +639,10 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         this.#controller.syncFocusState();
       }
     }
+    if (changedProperties.has("accessKeyAttribute")) {
+      this.accessKey = this.accessKeyAttribute;
+      this.accessKeyAttribute = null;
+    }
   }
   handleClick() {
     this.#controller.value = this.value;
@@ -668,6 +681,7 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       aria-describedby="description"
       tabindex=${this.inputTabIndex}
       ?disabled=${this.disabled || this.#controller.disabled}
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       @click=${this.handleClick}
       @change=${this.handleChange}
     />`;
@@ -691,7 +705,13 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_radio_group_moz_radio_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <label part="label">${this.inputTemplate()}${this.labelTemplate()}</label>
+      <label
+        part="label"
+        is="moz-label"
+        shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      >
+        ${this.inputTemplate()}${this.labelTemplate()}
+      </label>
       ${this.descriptionTemplate()}
     `;
   }
@@ -709,6 +729,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "Default": () => (/* binding */ Default),
 /* harmony export */   "DisabledRadioButton": () => (/* binding */ DisabledRadioButton),
 /* harmony export */   "DisabledRadioGroup": () => (/* binding */ DisabledRadioGroup),
+/* harmony export */   "WithAccesskeys": () => (/* binding */ WithAccesskeys),
 /* harmony export */   "WithDescriptions": () => (/* binding */ WithDescriptions),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -723,6 +744,7 @@ __webpack_require__.r(__webpack_exports__);
 
 let greetings = ["hello", "howdy", "hola"];
 let icons = ["chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/delete.svg", "chrome://global/skin/icons/defaultFavicon.svg"];
+let accesskeyOptions = ["h", "w", "X"];
 let defaultLabelIds = ["moz-radio-0", "moz-radio-1", "moz-radio-2"];
 let wrappedLabelIds = ["moz-radio-long-0", "moz-radio-long-1", "moz-radio-long-2"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -743,6 +765,12 @@ let wrappedLabelIds = ["moz-radio-long-0", "moz-radio-long-1", "moz-radio-long-2
       },
       control: {
         type: "radio"
+      }
+    },
+    accesskeys: {
+      if: {
+        arg: "showAccesskeys",
+        truthy: true
       }
     }
   },
@@ -795,7 +823,9 @@ const Template = ({
   showIcons,
   disabled,
   disabledButtons,
-  showDescriptions
+  showDescriptions,
+  showAccesskeys,
+  accesskeys
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-radio-group
     name=${groupName}
@@ -809,6 +839,7 @@ const Template = ({
           value=${greeting}
           data-l10n-id=${showDescriptions ? buttonLabels[i].replace("moz-radio", "moz-radio-described") : buttonLabels[i]}
           iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showIcons ? icons[i] : "")}
+          accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showAccesskeys ? accesskeys[i] : "")}
         ></moz-radio>
       `)}
   </moz-radio-group>
@@ -822,7 +853,9 @@ Default.args = {
   showIcons: false,
   disabled: false,
   disabledButtons: [],
-  showDescriptions: false
+  showDescriptions: false,
+  showAccesskeys: false,
+  accesskeys: accesskeyOptions
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
@@ -849,6 +882,11 @@ WithDescriptions.args = {
   ...Default.args,
   showDescriptions: true
 };
+const WithAccesskeys = Template.bind({});
+WithAccesskeys.args = {
+  ...Default.args,
+  showAccesskeys: true
+};
 
 /***/ }),
 
@@ -869,9 +907,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 73681:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-radio.f8a037e4d41446fd4e4b.css";
+module.exports = __webpack_require__.p + "moz-radio.ce191b74395d6729a4e1.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.7282b1fe.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.bd3be466.iframe.bundle.js.map
