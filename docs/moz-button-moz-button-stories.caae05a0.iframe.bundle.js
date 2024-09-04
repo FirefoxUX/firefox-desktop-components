@@ -231,7 +231,7 @@ __webpack_require__.r(__webpack_exports__);
     actions: {
       handles: ["click"]
     },
-    status: "in-development",
+    status: "stable",
     fluent: `
 moz-button-labelled =
   .label = Button
@@ -609,4 +609,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-moz-button-stories.c0284389.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-moz-button-stories.caae05a0.iframe.bundle.js.map

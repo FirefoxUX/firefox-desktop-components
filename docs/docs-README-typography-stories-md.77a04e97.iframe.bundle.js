@@ -1491,9 +1491,9 @@ function _createMdxContent(props) {
     code: "code",
     h3: "h3",
     strong: "strong",
-    h4: "h4",
     ul: "ul",
     li: "li",
+    h4: "h4",
     h5: "h5",
     h6: "h6",
     pre: "pre",
@@ -1866,7 +1866,7 @@ function _createMdxContent(props) {
       children: "Design tokens"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
       children: "Type setting relies on design tokens for font size and font weight."
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
       id: "font-size",
       children: "Font size"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
@@ -1954,7 +1954,7 @@ function _createMdxContent(props) {
           })]
         })]
       })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
       id: "font-weight",
       children: "Font weight"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)("table", {
@@ -11895,4 +11895,4 @@ function useResizeObserver(opts) {
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-typography-stories-md.96204ed3.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-typography-stories-md.77a04e97.iframe.bundle.js.map
