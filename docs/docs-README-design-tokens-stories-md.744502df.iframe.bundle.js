@@ -2075,8 +2075,13 @@ function _createMdxContent(props) {
         rel: "nofollow noopener noreferrer",
         children: "tokens-shared.css"
       }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "/* This part of the documentation will link to Bug 1863436 once it lands */"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["To learn more about the HCM media queries, please consult ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://firefox-source-docs.mozilla.org/accessible/HCMMediaQueries.html",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "these docs"
+      }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
       id: "help-and-support",
       children: "Help and support"
@@ -11858,4 +11863,4 @@ function useResizeObserver(opts) {
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-design-tokens-stories-md.0473b142.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-design-tokens-stories-md.744502df.iframe.bundle.js.map
