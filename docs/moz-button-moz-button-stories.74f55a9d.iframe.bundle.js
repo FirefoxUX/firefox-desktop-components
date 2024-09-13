@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5872,8825],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7802,5872,8825],{
 
 /***/ 15872:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -42,6 +42,12 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {HTMLButtonElement} buttonEl - The internal button element in the shadow DOM.
  * @property {HTMLButtonElement} slotEl - The internal slot element in the shadow DOM.
+ * @cssproperty [--button-outer-padding-inline] - Used to set the outer inline padding of toolbar style buttons
+ * @csspropert [--button-outer-padding-block] - Used to set the outer block padding of toolbar style buttons.
+ * @cssproperty [--button-outer-padding-inline-start] - Used to set the outer inline-start padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-inline-end] - Used to set the outer inline-end padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-block-start] - Used to set the outer block-start padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-block-end] - Used to set the outer block-end padding of toolbar style buttons
  * @slot default - The button's content, overrides label property.
  * @fires click - The click event.
  */
@@ -109,7 +115,8 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   };
   static queries = {
     buttonEl: "button",
-    slotEl: "slot"
+    slotEl: "slot",
+    backgroundEl: ".button-background"
   };
   constructor() {
     super();
@@ -153,30 +160,191 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <button
-        type=${this.type}
-        size=${this.size}
         ?disabled=${this.disabled}
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
-        part="button"
-        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
-      labelled: this.label || this.hasVisibleLabel
-    })}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       >
-        ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <label
-          is="moz-label"
-          part="label"
-          shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        <span
+          class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      labelled: this.label || this.hasVisibleLabel,
+      "button-background": true
+    })}
+          part="button"
+          type=${this.type}
+          size=${this.size}
         >
-          ${this.labelTemplate()}
-        </label>
+          ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
+          <label is="moz-label" shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+            ${this.labelTemplate()}
+          </label>
+        </span>
       </button>
     `;
   }
 }
 customElements.define("moz-button", MozButton);
+
+/***/ }),
+
+/***/ 92459:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "DefaultSmall": () => (/* binding */ DefaultSmall),
+/* harmony export */   "Destructive": () => (/* binding */ Destructive),
+/* harmony export */   "Icon": () => (/* binding */ Icon),
+/* harmony export */   "IconGhost": () => (/* binding */ IconGhost),
+/* harmony export */   "IconSmall": () => (/* binding */ IconSmall),
+/* harmony export */   "IconText": () => (/* binding */ IconText),
+/* harmony export */   "Primary": () => (/* binding */ Primary),
+/* harmony export */   "Toolbar": () => (/* binding */ Toolbar),
+/* harmony export */   "WithAccesskey": () => (/* binding */ WithAccesskey),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var _moz_button_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15872);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Button",
+  component: "moz-button",
+  argTypes: {
+    l10nId: {
+      options: ["moz-button-labelled", "moz-button-titled", "moz-button-aria-labelled"],
+      control: {
+        type: "select"
+      }
+    },
+    size: {
+      options: ["default", "small"],
+      control: {
+        type: "radio"
+      }
+    },
+    type: {
+      options: ["default", "primary", "destructive", "icon", "icon ghost"],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    actions: {
+      handles: ["click"]
+    },
+    status: "stable",
+    fluent: `
+moz-button-labelled =
+  .label = Button
+moz-button-primary = Primary
+moz-button-destructive = Destructive
+moz-button-titled =
+  .title = View logins
+moz-button-aria-labelled =
+  .aria-label = View logins
+`
+  }
+});
+const Template = ({
+  type,
+  size,
+  l10nId,
+  iconSrc,
+  disabled,
+  accesskey,
+  clickHandler,
+  showOuterPadding
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <style>
+    .show-outer-padding {
+      --button-outer-padding-inline: var(--space-medium);
+      --button-outer-padding-block: var(--space-medium);
+    }
+  </style>
+  <moz-button
+    @click=${clickHandler}
+    data-l10n-id=${l10nId}
+    data-l10n-attrs="label"
+    type=${type}
+    size=${size}
+    ?disabled=${disabled}
+    iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+    accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
+    class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+  "show-outer-padding": showOuterPadding
+})}
+  ></moz-button>
+`;
+const Default = Template.bind({});
+Default.args = {
+  type: "default",
+  size: "default",
+  l10nId: "moz-button-labelled",
+  iconSrc: "",
+  disabled: false,
+  showOuterPadding: false
+};
+const DefaultSmall = Template.bind({});
+DefaultSmall.args = {
+  type: "default",
+  size: "small",
+  l10nId: "moz-button-labelled",
+  iconSrc: "",
+  disabled: false
+};
+const Primary = Template.bind({});
+Primary.args = {
+  ...Default.args,
+  type: "primary",
+  l10nId: "moz-button-primary"
+};
+const Destructive = Template.bind({});
+Destructive.args = {
+  ...Default.args,
+  type: "destructive",
+  l10nId: "moz-button-destructive"
+};
+const Icon = Template.bind({});
+Icon.args = {
+  ...Default.args,
+  iconSrc: "chrome://global/skin/icons/more.svg",
+  l10nId: "moz-button-titled"
+};
+const IconSmall = Template.bind({});
+IconSmall.args = {
+  ...Icon.args,
+  size: "small"
+};
+const IconGhost = Template.bind({});
+IconGhost.args = {
+  ...Icon.args,
+  type: "ghost"
+};
+const IconText = Template.bind({});
+IconText.args = {
+  type: "default",
+  size: "default",
+  iconSrc: "chrome://global/skin/icons/edit-copy.svg",
+  l10nId: "moz-button-labelled"
+};
+const WithAccesskey = Template.bind({});
+WithAccesskey.args = {
+  ...Default.args,
+  accesskey: "t",
+  clickHandler: () => alert("Activating the accesskey clicks the button")
+};
+const Toolbar = Template.bind({});
+Toolbar.args = {
+  ...Default.args,
+  showOuterPadding: true
+};
 
 /***/ }),
 
@@ -453,7 +621,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.9ba424e28de41739b434.css";
+module.exports = __webpack_require__.p + "moz-button.725ffdbc91377217ba67.css";
 
 /***/ }),
 
@@ -465,4 +633,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=5872.a3c389ee.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-moz-button-stories.74f55a9d.iframe.bundle.js.map

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[6949,5872,8825],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5872,8825],{
 
 /***/ 15872:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -42,6 +42,12 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {HTMLButtonElement} buttonEl - The internal button element in the shadow DOM.
  * @property {HTMLButtonElement} slotEl - The internal slot element in the shadow DOM.
+ * @cssproperty [--button-outer-padding-inline] - Used to set the outer inline padding of toolbar style buttons
+ * @csspropert [--button-outer-padding-block] - Used to set the outer block padding of toolbar style buttons.
+ * @cssproperty [--button-outer-padding-inline-start] - Used to set the outer inline-start padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-inline-end] - Used to set the outer inline-end padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-block-start] - Used to set the outer block-start padding of toolbar style buttons
+ * @cssproperty [--button-outer-padding-block-end] - Used to set the outer block-end padding of toolbar style buttons
  * @slot default - The button's content, overrides label property.
  * @fires click - The click event.
  */
@@ -109,7 +115,8 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   };
   static queries = {
     buttonEl: "button",
-    slotEl: "slot"
+    slotEl: "slot",
+    backgroundEl: ".button-background"
   };
   constructor() {
     super();
@@ -153,25 +160,25 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <button
-        type=${this.type}
-        size=${this.size}
         ?disabled=${this.disabled}
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
-        part="button"
-        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
-      labelled: this.label || this.hasVisibleLabel
-    })}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
       >
-        ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
-        <label
-          is="moz-label"
-          part="label"
-          shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+        <span
+          class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      labelled: this.label || this.hasVisibleLabel,
+      "button-background": true
+    })}
+          part="button"
+          type=${this.type}
+          size=${this.size}
         >
-          ${this.labelTemplate()}
-        </label>
+          ${this.iconSrc ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img src=${this.iconSrc} role="presentation" />` : ""}
+          <label is="moz-label" shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+            ${this.labelTemplate()}
+          </label>
+        </span>
       </button>
     `;
   }
@@ -450,206 +457,10 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 46949:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozMessageBar)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(84296);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15872);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozMessageBar.ftl");
-const messageTypeToIconData = {
-  info: {
-    iconSrc: "chrome://global/skin/icons/info-filled.svg",
-    l10nId: "moz-message-bar-icon-info"
-  },
-  warning: {
-    iconSrc: "chrome://global/skin/icons/warning.svg",
-    l10nId: "moz-message-bar-icon-warning"
-  },
-  success: {
-    iconSrc: "chrome://global/skin/icons/check-filled.svg",
-    l10nId: "moz-message-bar-icon-success"
-  },
-  error: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  },
-  critical: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  }
-};
-
-/**
- * A simple message bar element that can be used to display
- * important information to users.
- *
- * @tagname moz-message-bar
- * @property {string} type - The type of the displayed message.
- * @property {string} heading - The heading of the message.
- * @property {string} message - The message text.
- * @property {boolean} dismissable - Whether or not the element is dismissable.
- * @property {string} messageL10nId - l10n ID for the message.
- * @property {string} messageL10nArgs - Any args needed for the message l10n ID.
- * @fires message-bar:close
- *  Custom event indicating that message bar was closed.
- * @fires message-bar:user-dismissed
- *  Custom event indicating that message bar was dismissed by the user.
- */
-
-class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static queries = {
-    actionsSlot: "slot[name=actions]",
-    actionsEl: ".actions",
-    closeButton: "moz-button.close",
-    supportLinkSlot: "slot[name=support-link]"
-  };
-  static properties = {
-    type: {
-      type: String
-    },
-    heading: {
-      type: String
-    },
-    message: {
-      type: String
-    },
-    dismissable: {
-      type: Boolean
-    },
-    messageL10nId: {
-      type: String
-    },
-    messageL10nArgs: {
-      type: String
-    }
-  };
-  constructor() {
-    super();
-    this.type = "info";
-    this.dismissable = false;
-  }
-  onSlotchange() {
-    let actions = this.actionsSlot.assignedNodes();
-    this.actionsEl.classList.toggle("active", actions.length);
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute("role", "alert");
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.dispatchEvent(new CustomEvent("message-bar:close"));
-  }
-  get supportLinkEls() {
-    return this.supportLinkSlot.assignedElements();
-  }
-  iconTemplate() {
-    let iconData = messageTypeToIconData[this.type];
-    if (iconData) {
-      let {
-        iconSrc,
-        l10nId
-      } = iconData;
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="icon-container">
-          <img
-            class="icon"
-            src=${iconSrc}
-            data-l10n-id=${l10nId}
-            data-l10n-attrs="alt"
-          />
-        </div>
-      `;
-    }
-    return "";
-  }
-  headingTemplate() {
-    if (this.heading) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<strong class="heading">${this.heading}</strong>`;
-    }
-    return "";
-  }
-  closeButtonTemplate({
-    size
-  } = {}) {
-    if (this.dismissable) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <moz-button
-          type="icon ghost"
-          class="close"
-          size=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(size)}
-          data-l10n-id="moz-message-bar-close-button"
-          @click=${this.dismiss}
-        ></moz-button>
-      `;
-    }
-    return "";
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div class="container">
-        <div class="content">
-          <div class="text-container">
-            ${this.iconTemplate()}
-            <div class="text-content">
-              ${this.headingTemplate()}
-              <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
-                <span class="link">
-                  <slot name="support-link"></slot>
-                </span>
-              </div>
-            </div>
-          </div>
-          <span class="actions">
-            <slot name="actions" @slotchange=${this.onSlotchange}></slot>
-          </span>
-        </div>
-        ${this.closeButtonTemplate()}
-      </div>
-    `;
-  }
-  dismiss() {
-    this.dispatchEvent(new CustomEvent("message-bar:user-dismissed"));
-    this.close();
-  }
-  close() {
-    this.remove();
-  }
-}
-customElements.define("moz-message-bar", MozMessageBar);
-
-/***/ }),
-
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-button.9ba424e28de41739b434.css";
+module.exports = __webpack_require__.p + "moz-button.725ffdbc91377217ba67.css";
 
 /***/ }),
 
@@ -658,14 +469,7 @@ module.exports = __webpack_require__.p + "moz-button.9ba424e28de41739b434.css";
 
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
-/***/ }),
-
-/***/ 84296:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.css";
-
 /***/ })
 
 }]);
-//# sourceMappingURL=6949.8031aed1.iframe.bundle.js.map
+//# sourceMappingURL=5872.9f75ff79.iframe.bundle.js.map

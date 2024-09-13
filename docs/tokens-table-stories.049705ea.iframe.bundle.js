@@ -545,7 +545,7 @@ const storybookTables = {
         default: "color-mix(in srgb, currentColor 7%, transparent)"
       },
       platform: {
-        default: "var(--button-bgcolor, color-mix(in srgb, currentColor 13%, transparent))"
+        default: "color-mix(in srgb, currentColor 13%, transparent)"
       }
     },
     name: "--button-background-color"
@@ -556,7 +556,7 @@ const storybookTables = {
         default: "color-mix(in srgb, currentColor 14%, transparent)"
       },
       platform: {
-        default: "var(--button-hover-bgcolor, color-mix(in srgb, currentColor 17%, transparent))"
+        default: "color-mix(in srgb, currentColor 17%, transparent)"
       }
     },
     name: "--button-background-color-hover"
@@ -567,7 +567,7 @@ const storybookTables = {
         default: "color-mix(in srgb, currentColor 21%, transparent)"
       },
       platform: {
-        default: "var(--button-active-bgcolor, color-mix(in srgb, currentColor 30%, transparent))"
+        default: "color-mix(in srgb, currentColor 30%, transparent)"
       }
     },
     name: "--button-background-color-active"
@@ -1448,7 +1448,7 @@ const variableLookupTable = {
       default: "color-mix(in srgb, currentColor 7%, transparent)"
     },
     platform: {
-      default: "var(--button-bgcolor, color-mix(in srgb, currentColor 13%, transparent))"
+      default: "color-mix(in srgb, currentColor 13%, transparent)"
     }
   },
   "button-background-color-hover": {
@@ -1457,7 +1457,7 @@ const variableLookupTable = {
       default: "color-mix(in srgb, currentColor 14%, transparent)"
     },
     platform: {
-      default: "var(--button-hover-bgcolor, color-mix(in srgb, currentColor 17%, transparent))"
+      default: "color-mix(in srgb, currentColor 17%, transparent)"
     }
   },
   "button-background-color-active": {
@@ -1466,7 +1466,7 @@ const variableLookupTable = {
       default: "color-mix(in srgb, currentColor 21%, transparent)"
     },
     platform: {
-      default: "var(--button-active-bgcolor, color-mix(in srgb, currentColor 30%, transparent))"
+      default: "color-mix(in srgb, currentColor 30%, transparent)"
     }
   },
   "button-background-color-disabled": {
@@ -1895,4 +1895,4 @@ module.exports = __webpack_require__.p + "tokens-table.b67d114c4ae89a70aeca.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.aa05f3bc.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.049705ea.iframe.bundle.js.map
