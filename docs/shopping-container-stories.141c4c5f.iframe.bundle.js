@@ -500,6 +500,9 @@ __webpack_require__.r(__webpack_exports__);
 // eslint-disable-next-line import/no-unassigned-import
 
 const AD_IMPRESSION_TIMEOUT = 1500;
+// We are only showing prices in USD for now. In the future we will need
+// to update this to include other currencies.
+const SUPPORTED_CURRENCY_SYMBOLS = new Map([["USD", "$"]]);
 class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     product: {
@@ -580,9 +583,17 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }
   }
   priceTemplate() {
-    // We are only showing prices in USD for now. In the future we will need
-    // to update this to include other currencies.
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span id="price">$${this.product.price}</span>`;
+    const currencySymbol = SUPPORTED_CURRENCY_SYMBOLS.get(this.product.currency);
+
+    // TODO: not all non-USD currencies have the symbol displayed on the right.
+    // Adjust symbol position as we add more supported currencies.
+    let priceLabelText;
+    if (this.product.currency === "USD") {
+      priceLabelText = `${currencySymbol}${this.product.price}`;
+    } else {
+      priceLabelText = `${this.product.price}${currencySymbol}`;
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span id="price">${priceLabelText}</span>`;
   }
   render() {
     this.startImpressionTimer();
@@ -604,7 +615,7 @@ class RecommendedAd extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
             <letter-grade letter="${this.product.grade}"></letter-grade>
           </div>
           <div id="footer">
-            ${this.priceTemplate()}
+            ${this.product.price && SUPPORTED_CURRENCY_SYMBOLS.has(this.product.currency) ? this.priceTemplate() : null}
             <moz-five-star rating=${this.product.adjusted_rating}></moz-five-star>
           </div>
         </a>
@@ -3323,4 +3334,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.f535db27.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.141c4c5f.iframe.bundle.js.map
