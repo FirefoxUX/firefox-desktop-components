@@ -131,7 +131,7 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               <img
                 data-l10n-id="check-icon"
                 class="check-icon"
-                src="chrome://global/skin/icons/check.svg"
+                src="chrome://global/skin/icons/check-filled.svg"
               />
             </div>
           `;
@@ -592,4 +592,4 @@ module.exports = __webpack_require__.p + "PasswordCard.d0121da2c2cc38f0b9d9.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.a3b4887e.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.8cf63686.iframe.bundle.js.map

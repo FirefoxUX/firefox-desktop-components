@@ -126,7 +126,7 @@ class FxviewSearchTextbox extends chrome_global_content_lit_utils_mjs__WEBPACK_I
       }
     }));
     if (!window.IS_STORYBOOK) {
-      Services.telemetry.recordEvent("firefoxview_next", "search_initiated", "search", null, {
+      Glean.firefoxviewNext.searchInitiatedSearch.record({
         page: this.pageName
       });
     }
@@ -235,4 +235,4 @@ module.exports = __webpack_require__.p + "fxview-search-textbox.1858b8dbf8d383f3
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-search-textbox-stories.5283f391.iframe.bundle.js.map
+//# sourceMappingURL=fxview-search-textbox-stories.84e168db.iframe.bundle.js.map
