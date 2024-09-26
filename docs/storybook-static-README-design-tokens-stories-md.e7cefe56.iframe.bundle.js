@@ -1957,7 +1957,7 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         className: "language-css",
-        children: "/* tokens-platform.css */\n--color-accent-primary: var(--button-primary-bgcolor, AccentColor);\n"
+        children: "/* tokens-platform.css */\n--color-accent-primary: AccentColor;\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
       id: "tokens-sharedcss",
@@ -11863,4 +11863,4 @@ function useResizeObserver(opts) {
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-static-README-design-tokens-stories-md.9efd9bb7.iframe.bundle.js.map
+//# sourceMappingURL=storybook-static-README-design-tokens-stories-md.e7cefe56.iframe.bundle.js.map

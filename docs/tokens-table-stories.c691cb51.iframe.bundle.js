@@ -1005,7 +1005,7 @@ const storybookTables = {
         default: "light-dark(var(--color-gray-05), var(--color-gray-100))"
       },
       platform: {
-        default: "var(--button-primary-color)"
+        default: "AccentColorText"
       }
     },
     name: "--button-text-color-primary"
@@ -1173,7 +1173,7 @@ const storybookTables = {
         default: "light-dark(var(--color-blue-50), var(--color-cyan-50))"
       },
       platform: {
-        default: "var(--button-primary-bgcolor, AccentColor)"
+        default: "AccentColor"
       }
     },
     name: "--color-accent-primary"
@@ -1186,7 +1186,7 @@ const storybookTables = {
         default: "light-dark(var(--color-blue-60), var(--color-cyan-30))"
       },
       platform: {
-        default: "var(--button-primary-hover-bgcolor)"
+        default: "color-mix(in srgb, black 10%, var(--color-accent-primary))"
       }
     },
     name: "--color-accent-primary-hover"
@@ -1199,7 +1199,7 @@ const storybookTables = {
         default: "light-dark(var(--color-blue-70), var(--color-cyan-20))"
       },
       platform: {
-        default: "var(--button-primary-active-bgcolor)"
+        default: "color-mix(in srgb, black 20%, var(--color-accent-primary))"
       }
     },
     name: "--color-accent-primary-active"
@@ -1653,7 +1653,7 @@ const variableLookupTable = {
       default: "light-dark(var(--color-gray-05), var(--color-gray-100))"
     },
     platform: {
-      default: "var(--button-primary-color)"
+      default: "AccentColorText"
     }
   },
   "button-text-color-primary-active": "var(--button-text-color-primary-hover)",
@@ -1707,7 +1707,7 @@ const variableLookupTable = {
       default: "light-dark(var(--color-blue-50), var(--color-cyan-50))"
     },
     platform: {
-      default: "var(--button-primary-bgcolor, AccentColor)"
+      default: "AccentColor"
     }
   },
   "color-accent-primary-hover": {
@@ -1718,7 +1718,7 @@ const variableLookupTable = {
       default: "light-dark(var(--color-blue-60), var(--color-cyan-30))"
     },
     platform: {
-      default: "var(--button-primary-hover-bgcolor)"
+      default: "color-mix(in srgb, black 10%, var(--color-accent-primary))"
     }
   },
   "color-accent-primary-active": {
@@ -1729,7 +1729,7 @@ const variableLookupTable = {
       default: "light-dark(var(--color-blue-70), var(--color-cyan-20))"
     },
     platform: {
-      default: "var(--button-primary-active-bgcolor)"
+      default: "color-mix(in srgb, black 20%, var(--color-accent-primary))"
     }
   },
   "focus-outline": "var(--focus-outline-width) solid var(--focus-outline-color)",
@@ -1905,4 +1905,4 @@ module.exports = __webpack_require__.p + "tokens-table.b67d114c4ae89a70aeca.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.22319cd1.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.c691cb51.iframe.bundle.js.map
