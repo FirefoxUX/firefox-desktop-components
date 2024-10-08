@@ -2792,7 +2792,7 @@ module.exports = __webpack_require__.p + "turn-on-scheduled-backups.13dd695cb3ff
 /***/ 9024:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.9ed6385908085713cd61.css";
+module.exports = __webpack_require__.p + "preferences.2d6d9a8d6eabdda7caf9.css";
 
 /***/ }),
 
@@ -2818,4 +2818,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.d73c15d53642261d6599.c
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.775ecd6f.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.93e2b56e.iframe.bundle.js.map

@@ -2326,10 +2326,10 @@ function _createMdxContent(props) {
       children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "panel-list"
       }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/panel-list.js",
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/panel-list/panel-list.js",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/panel-list.js"
+        children: "toolkit/content/widgets/panel-list/panel-list.js"
       }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "panel-list"
       }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
@@ -12352,4 +12352,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.021c94a3.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.75fac3a1.iframe.bundle.js.map
