@@ -16,10 +16,6 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
   static properties = {
     value: {
       type: String
@@ -38,6 +34,9 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     },
     alert: {
       type: Boolean
+    },
+    onLineClick: {
+      type: Function
     }
   };
   #copyTimeoutID;
@@ -52,10 +51,7 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
   #addCopyAttr() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.#canCopy() ? "data-after" : undefined);
   }
-  #handleLineClick() {
-    if (!this.#canCopy()) {
-      return;
-    }
+  #handleCopyAnimation() {
     if (!this.lineContainer.classList.contains("copied")) {
       this.lineContainer.classList.add("copied");
       this.#copyTimeoutID = setTimeout(() => {
@@ -63,6 +59,23 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
         this.#copyTimeoutID = null;
       }, 4000);
     }
+  }
+  async #onClick() {
+    const isAuthorized = await this.onLineClick();
+    if (!isAuthorized || !this.#canCopy()) {
+      return;
+    }
+    this.#handleCopyAnimation();
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.addEventListener("click", this.#onClick);
+    this.addEventListener("keypress", async e => {
+      if (e.code === "Enter" || e.code === "Space") {
+        e.preventDefault();
+        await this.#onClick();
+      }
+    });
   }
   disconnectedCallback() {
     super.disconnectedCallback();
@@ -81,16 +94,7 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
         rel="stylesheet"
         href="${toolkit_components_satchel_megalist_content_LoginLine_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <div
-        class="line-container"
-        tabindex="0"
-        @click=${() => this.#handleLineClick()}
-        @keypress=${e => {
-      if (e.code == "Enter") {
-        this.#handleLineClick();
-      }
-    }}
-      >
+      <div class="line-container">
         <div class="input-container">
           <div class="label-container">
             <label
@@ -182,45 +186,44 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     "chrome://browser/content/aboutlogins/icons/password-hide.svg" : /* eslint-disable-next-line mozilla/no-browser-refs-in-toolkit */
     "chrome://browser/content/aboutlogins/icons/password.svg";
   }
+  async #onRevealButtonClick() {
+    const isAuthorized = await this.onButtonClick();
+    if (!isAuthorized) {
+      return;
+    }
+    this.revealBtn.setAttribute("data-l10n-id", this.#revealBtnLabel);
+  }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
         rel="stylesheet"
         href="${toolkit_components_satchel_megalist_content_LoginLine_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <login-line
-        tabIndex="0"
+        role="option"
+        tabindex="-1"
         data-l10n-id="password-login-line"
         lineType="password"
         inputType=${this.#inputType}
         labelL10nId=${this.labelL10nId}
         .value=${this.#displayValue}
         ?alert=${this.alert}
-        @click=${this.onLineClick}
-        @keypress=${e => {
-      if (e.key === "Enter") {
-        this.onLineClick();
-      }
-    }}
+        .onLineClick=${this.onLineClick}
+        }
       >
       </login-line>
       <div class="reveal-button-container">
         <moz-button
+          role="option"
           class="reveal-button"
           type="icon ghost"
           data-l10n-id=${this.#revealBtnLabel}
           iconSrc=${this.#revealIconSrc()}
-          @mousedown=${e => e.preventDefault()}
-          @keypress=${e => {
-      if (e.key === "Enter") {
-        this.revealBtn.setAttribute("data-l10n-id", this.#revealBtnLabel);
-        this.loginLine.focus();
-        this.onButtonClick();
+          @keypress=${async e => {
+      if (e.code === "Enter") {
+        await this.#onRevealButtonClick();
       }
     }}
-          @click=${() => {
-      this.revealBtn.setAttribute("data-l10n-id", this.#revealBtnLabel);
-      this.onButtonClick();
-    }}
+          @click=${this.#onRevealButtonClick}
         ></moz-button>
       </div>`;
   }
@@ -256,7 +259,6 @@ const DIRECTIONS = {
   ArrowDown: 1,
   ArrowRight: 1
 };
-const LOGIN_FIELDS_LENGTH = 3;
 class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     origin: {
@@ -270,11 +272,10 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     },
     messageToViewModel: {
       type: Function
+    },
+    reauthCommandHandler: {
+      type: Function
     }
-  };
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
   };
   static get queries() {
     return {
@@ -293,82 +294,54 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
    * and if the user is navigating up, then it should be the origin line.
    *
    * @param {string} keyCode - The code associated with a keypress event. Either 'ArrowUp' or 'ArrowDown'.
-   * @returns {HTMLDivElement | MozButton | null} The first focusable element of the next password-card.
+   * @returns {HTMLElement | null} The first focusable element of the next password-card.
    */
   #getNextFocusableElement(keyCode) {
-    const cardIndex = Math.floor(this.origin.lineIndex / LOGIN_FIELDS_LENGTH);
-    const passwordCards = this.parentNode.querySelectorAll("password-card");
-    const nextCardIndex = cardIndex + DIRECTIONS[keyCode];
-    if (nextCardIndex < 0 || nextCardIndex >= passwordCards.length) {
-      return null;
-    }
-    const nextPasswordCard = passwordCards[nextCardIndex];
-    return keyCode === "ArrowDown" ? nextPasswordCard.originLine.lineContainer : nextPasswordCard.editBtn;
+    return keyCode === "ArrowDown" ? this.nextElementSibling?.originLine : this.previousElementSibling?.editBtn;
   }
   async firstUpdated() {
     this.#focusableElementsMap = new Map();
     let index = 0;
     for (const el of this.shadowRoot.querySelectorAll(".line-item")) {
-      await el.updateComplete;
       if (el === this.passwordLine) {
-        this.#focusableElementsMap.set(el.loginLine.lineContainer, index++);
+        await el.updateComplete;
+        this.#focusableElementsMap.set(el.loginLine, index++);
         this.#focusableElementsMap.set(el.revealBtn.buttonEl, index++);
       } else {
-        this.#focusableElementsMap.set(el.lineContainer, index++);
+        this.#focusableElementsMap.set(el, index++);
       }
     }
     this.#focusableElementsMap.set(this.editBtn.buttonEl, index);
     this.#focusableElementsList = Array.from(this.#focusableElementsMap.keys());
   }
-  #handleKeydown(element, e) {
-    const targetIsPasswordLine = this.passwordLine.loginLine.lineContainer === element;
-    const targetIsRevealButton = this.passwordLine.revealBtn.buttonEl === element;
+  #handleKeydown(e) {
+    const element = e.composedTarget;
     const focusInternal = offset => {
       const index = this.#focusableElementsMap.get(element);
       this.#focusableElementsList[index + offset].focus();
     };
     switch (e.code) {
       case "ArrowUp":
+        e.preventDefault();
         if (this.#focusableElementsMap.get(element) === 0) {
-          const nextFocusableElement = this.#getNextFocusableElement(e.code);
-          nextFocusableElement?.focus();
-        } else if (targetIsRevealButton) {
-          focusInternal(-2);
+          this.#getNextFocusableElement(e.code)?.focus();
         } else {
           focusInternal(DIRECTIONS[e.code]);
         }
         break;
       case "ArrowDown":
+        e.preventDefault();
         if (this.#focusableElementsMap.get(element) === this.#focusableElementsList.length - 1) {
-          const nextFocusableElement = this.#getNextFocusableElement(e.code);
-          nextFocusableElement?.focus();
-        } else if (targetIsPasswordLine) {
-          focusInternal(2);
+          this.#getNextFocusableElement(e.code)?.focus();
         } else {
           focusInternal(DIRECTIONS[e.code]);
         }
         break;
-      case "ArrowRight":
-        if (targetIsPasswordLine) {
-          focusInternal(DIRECTIONS[e.code]);
-        }
-        break;
-      case "ArrowLeft":
-        if (targetIsRevealButton) {
-          focusInternal(DIRECTIONS[e.code]);
-        }
-        break;
-      default:
-        return;
     }
-    e.stopPropagation();
   }
   connectedCallback() {
     super.connectedCallback();
-    this.addEventListener("keydown", e => {
-      const element = e.composedTarget;
-      this.#handleKeydown(element, e);
-    }, {
+    this.addEventListener("keydown", e => this.#handleKeydown(e), {
       capture: true
     });
   }
@@ -384,10 +357,10 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   #onOriginLineClick(lineIndex) {
     this.handleCommand("OpenLink", lineIndex);
   }
-  onCopyButtonClick(lineIndex) {
+  #onCopyButtonClick(lineIndex) {
     this.handleCommand("Copy", lineIndex);
   }
-  onPasswordRevealClick(concealed, lineIndex) {
+  #onPasswordRevealClick(concealed, lineIndex) {
     if (concealed) {
       this.handleCommand("Reveal", lineIndex);
     } else {
@@ -397,8 +370,8 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   renderOriginField() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
+        tabindex="-1"
         role="option"
-        tabIndex="0"
         class="line-item"
         data-l10n-id="origin-login-line"
         data-l10n-args="${JSON.stringify({
@@ -410,11 +383,9 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         .value=${this.origin.value}
         .favIcon=${this.origin.valueIcon}
         ?alert=${this.origin.breached}
-        @click=${() => this.#onOriginLineClick(this.origin.lineIndex)}
-        @keypress=${e => {
-      if (e.key === "Enter") {
-        this.#onOriginLineClick(this.origin.lineIndex);
-      }
+        .onLineClick=${() => {
+      this.#onOriginLineClick(this.origin.lineIndex);
+      return true;
     }}
       >
       </login-line>
@@ -423,7 +394,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   renderUsernameField() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
-        tabIndex="0"
+        tabindex="-1"
         role="option"
         class="line-item"
         data-l10n-id="username-login-line"
@@ -434,13 +405,11 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         lineType="username"
         labelL10nId="passwords-username-label"
         .value=${this.username.value}
-        ?alert=${this.username.value.length === 0}
-        @click=${() => this.onCopyButtonClick(this.username.lineIndex)}
-        @keypress=${e => {
-      if (e.key === "Enter") {
-        this.onCopyButtonClick(this.username.lineIndex);
-      }
+        .onLineClick=${() => {
+      this.#onCopyButtonClick(this.username.lineIndex);
+      return true;
     }}
+        ?alert=${this.username.value.length === 0}
       >
       </login-line>
     `;
@@ -448,15 +417,13 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   renderPasswordField() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <concealed-login-line
-        role="option"
         class="line-item"
         labelL10nId="passwords-password-label"
         .value=${this.password.value}
         .visible=${!this.password.concealed}
         ?alert=${this.password.vulnerable}
-        .onLineClick=${() => this.onCopyButtonClick(this.password.lineIndex)}
-        }}
-        .onButtonClick=${() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex)}
+        .onLineClick=${() => this.reauthCommandHandler(() => this.#onCopyButtonClick(this.password.lineIndex))}
+        .onButtonClick=${() => this.reauthCommandHandler(() => this.#onPasswordRevealClick(this.password.concealed, this.password.lineIndex))}
       >
       </concealed-login-line>
     `;
@@ -466,7 +433,6 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       <moz-button
         data-l10n-id="edit-login-button"
         class="edit-button"
-        @mousedown=${e => e.preventDefault()}
         @click=${this.onEditButtonClick}
       ></moz-button>
     </div>`;
@@ -538,6 +504,7 @@ const Template = ({
       .username=${username}
       .password=${password}
       .messageToViewModel=${() => {}}
+      .reauthCommandHandler=${() => true}
     >
     </password-card>
   `;
@@ -592,4 +559,4 @@ module.exports = __webpack_require__.p + "PasswordCard.d0121da2c2cc38f0b9d9.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.12067fa8.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.28b04298.iframe.bundle.js.map
