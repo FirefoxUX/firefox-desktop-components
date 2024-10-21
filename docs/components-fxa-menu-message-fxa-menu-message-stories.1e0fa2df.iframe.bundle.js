@@ -114,6 +114,8 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           type="primary"
           tabindex="1"
           autofocus
+          title="${this.buttonText}"
+          aria-label="${this.buttonText}"
           >${this.buttonText}</moz-button
         >
       </div>
@@ -169,10 +171,10 @@ const Template = ({
 const Default = Template.bind({});
 Default.args = {
   buttonText: "Sign up",
-  imageURL: "chrome://activity-stream/content/data/content/assets/fox-doodle-waving-static.png",
+  imageURL: "chrome://browser/content/asrouter/assets/fox-with-box-on-cloud.svg",
   primaryText: "Bounce between devices",
   secondaryText: "Sync and encrypt your bookmarks, passwords, and more on all your devices.",
-  imageVerticalOffset: -24
+  imageVerticalOffset: -20
 };
 
 /***/ }),
@@ -756,7 +758,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 76668:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "fxa-menu-message.6aaecd3112a44fb684b2.css";
+module.exports = __webpack_require__.p + "fxa-menu-message.3ed90baf9baf88e5a2bc.css";
 
 /***/ }),
 
@@ -782,4 +784,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.be766ac4.iframe.bundle.js.map
+//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.1e0fa2df.iframe.bundle.js.map
