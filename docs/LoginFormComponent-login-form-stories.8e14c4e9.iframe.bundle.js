@@ -30,6 +30,7 @@ const editableFieldTemplate = ({
   type,
   value,
   disabled,
+  required,
   onFocus,
   onBlur,
   labelL10nId,
@@ -43,6 +44,7 @@ const editableFieldTemplate = ({
       value=${value}
       aria-describedby="explainer"
       ?disabled=${disabled}
+      ?required=${required}
       @focus=${onFocus}
       @blur=${onBlur}
     />
@@ -75,11 +77,47 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       type: String,
       reflect: true
     },
+    name: {
+      type: String
+    },
     readonly: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
   };
+  static formAssociated = true;
+  static queries = {
+    input: "input"
+  };
+  constructor() {
+    super();
+    this.value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this.value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
+  addHTTPSPrefix(e) {
+    const input = e.composedTarget;
+    let originValue = input.value.trim();
+    if (!originValue) {
+      return;
+    }
+    if (!originValue.match(/:\/\//)) {
+      input.value = "https://" + originValue;
+      input.dispatchEvent(new InputEvent("input", {
+        composed: true,
+        bubbles: true
+      }));
+    }
+  }
   get readonlyTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       <label
@@ -107,8 +145,10 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       ${this.readonly ? this.readonlyTemplate : (0,_input_field_mjs__WEBPACK_IMPORTED_MODULE_2__.editableFieldTemplate)({
       type: "url",
       value: this.value,
+      required: this.required,
       labelL10nId: "login-item-origin-label",
-      noteL10nId: "passwords-origin-tooltip"
+      noteL10nId: "passwords-origin-tooltip",
+      onBlur: e => this.addHTTPSPrefix(e)
     })}
     `;
   }
@@ -138,11 +178,18 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: String,
       state: true
     },
+    name: {
+      type: String
+    },
     readonly: {
       type: Boolean,
       reflect: true
     },
     visible: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
@@ -151,6 +198,18 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     input: "input",
     button: "button"
   };
+  static formAssociated = true;
+  constructor() {
+    super();
+    this._value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this._value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
   set value(newValue) {
     this._value = newValue;
   }
@@ -171,6 +230,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       value: this.#password,
       labelId: "login-item-password-label",
       disabled: this.readonly,
+      required: this.required,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       labelL10nId: "login-item-password-label",
@@ -225,11 +285,33 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: String,
       reflect: true
     },
+    name: {
+      type: String
+    },
     readonly: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
   };
+  static formAssociated = true;
+  static queries = {
+    input: "input"
+  };
+  constructor() {
+    super();
+    this.value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this.value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       ${(0,_input_field_mjs__WEBPACK_IMPORTED_MODULE_2__.stylesTemplate)()}
@@ -237,6 +319,7 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: "text",
       value: this.value,
       disabled: this.readonly,
+      required: this.required,
       labelL10nId: "login-item-username-label",
       noteL10nId: "passwords-username-tooltip"
     })}
@@ -244,6 +327,120 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
 }
 customElements.define("login-username-field", LoginUsernameField);
+
+/***/ }),
+
+/***/ 45645:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "MessagePopup": () => (/* binding */ MessagePopup),
+/* harmony export */   "OriginWarning": () => (/* binding */ OriginWarning),
+/* harmony export */   "PasswordWarning": () => (/* binding */ PasswordWarning)
+/* harmony export */ });
+/* harmony import */ var browser_components_aboutlogins_content_components_login_message_popup_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(63707);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+const stylesTemplate = () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
+  rel="stylesheet"
+  href="${browser_components_aboutlogins_content_components_login_message_popup_css__WEBPACK_IMPORTED_MODULE_0__}"
+/>`;
+const MessagePopup = ({
+  l10nid,
+  message,
+  webTitle = ""
+}) => {
+  return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <div class="tooltip-container">
+    <div class="arrow-box">
+      <p
+        class="tooltip-message"
+        data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nid)}
+        data-l10n-args=${JSON.stringify({
+    webTitle
+  })}
+      >
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(message)}
+      </p>
+    </div>
+  </div>`;
+};
+class PasswordWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static get properties() {
+    return {
+      isNewLogin: {
+        type: Boolean,
+        reflect: true
+      },
+      webTitle: {
+        type: String,
+        reflect: true
+      },
+      arrowDirection: {
+        type: String
+      },
+      message: {
+        type: String
+      }
+    };
+  }
+  constructor() {
+    super();
+    this.isNewLogin = false;
+    this.arrowDirection = "left";
+  }
+  render() {
+    if (this.message) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
+      ${MessagePopup({
+        message: this.message
+      })}`;
+    }
+    return this.isNewLogin ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
+        ${MessagePopup({
+      l10nid: "about-logins-add-password-tooltip"
+    })}` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
+        ${MessagePopup({
+      l10nid: "about-logins-edit-password-tooltip",
+      webTitle: this.webTitle
+    })}`;
+  }
+}
+class OriginWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static get properties() {
+    return {
+      l10nId: {
+        type: String
+      },
+      message: {
+        type: String
+      },
+      arrowDirection: {
+        type: String
+      }
+    };
+  }
+  constructor() {
+    super();
+    this.arrowDirection = "left";
+  }
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
+    ${MessagePopup({
+      l10nid: this.l10nId,
+      message: this.message
+    })}`;
+  }
+}
+customElements.define("password-warning", PasswordWarning);
+customElements.define("origin-warning", OriginWarning);
 
 /***/ }),
 
@@ -260,6 +457,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_browser_content_aboutlogins_components_input_field_login_origin_field_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60891);
 /* harmony import */ var chrome_browser_content_aboutlogins_components_input_field_login_username_field_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(82578);
 /* harmony import */ var chrome_browser_content_aboutlogins_components_input_field_login_password_field_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(54001);
+/* harmony import */ var chrome_browser_content_aboutlogins_components_login_message_popup_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(45645);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -274,13 +472,60 @@ __webpack_require__.r(__webpack_exports__);
 
 /* eslint-disable-next-line import/no-unassigned-import, mozilla/no-browser-refs-in-toolkit */
 
+
+/* eslint-disable-next-line import/no-unassigned-import, mozilla/no-browser-refs-in-toolkit */
+
 class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     type: {
       type: String,
       reflect: true
+    },
+    onSaveClick: {
+      type: Function
+    },
+    onCancelClick: {
+      type: Function
     }
   };
+  static queries = {
+    formEl: "form",
+    originField: "login-origin-field",
+    passwordField: "login-password-field",
+    originWarning: "origin-warning",
+    passwordWarning: "password-warning"
+  };
+  #removeWarning(warning) {
+    if (warning.classList.contains("invalid-input")) {
+      warning.classList.remove("invalid-input");
+    }
+  }
+  #shouldShowWarning(input, warning) {
+    if (!input.checkValidity()) {
+      warning.setAttribute("message", input.validationMessage);
+      warning.classList.add("invalid-input");
+      return true;
+    }
+    this.#removeWarning(warning);
+    return false;
+  }
+  onInput(e) {
+    const field = e.target;
+    const warning = field.name === "origin" ? this.originWarning : this.passwordWarning;
+    if (field.input.checkValidity()) {
+      this.#removeWarning(warning);
+    }
+  }
+  onSubmit(e) {
+    e.preventDefault();
+    if (this.#shouldShowWarning(this.originField.input, this.originWarning)) {
+      return;
+    }
+    if (this.#shouldShowWarning(this.passwordField.input, this.passwordWarning)) {
+      return;
+    }
+    this.onSaveClick(new FormData(e.target));
+  }
   render() {
     const heading = this.type !== "edit" ? "passwords-create-label" : "passwords-edit-label";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
@@ -297,16 +542,43 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               ></moz-button>
             </div>
           `)}
-        <form>
+
+        <form
+          role="region"
+          aria-label=${heading}
+          @submit=${e => this.onSubmit(e)}
+        >
           <moz-fieldset data-l10n-id=${heading}>
-            <login-origin-field></login-origin-field>
-            <login-username-field></login-username-field>
-            <login-password-field></login-password-field>
+            <div class="field-container">
+              <login-origin-field
+                name="origin"
+                required
+                @input=${e => this.onInput(e)}
+              >
+              </login-origin-field>
+              <origin-warning arrowdirection="down"></origin-warning>
+            </div>
+            <login-username-field name="username"></login-username-field>
+            <div class="field-container">
+              <login-password-field
+                name="password"
+                required
+                @input=${e => this.onInput(e)}
+              ></login-password-field>
+              <password-warning
+                isNewLogin
+                arrowdirection="down"
+              ></password-warning>
+            </div>
             <moz-button-group>
-              <moz-button data-l10n-id="login-item-cancel-button"></moz-button>
+              <moz-button
+                data-l10n-id="login-item-cancel-button"
+                @click=${this.onCancelClick}
+              ></moz-button>
               <moz-button
                 data-l10n-id="login-item-save-new-button"
                 type="primary"
+                @click=${() => this.formEl.requestSubmit()}
               >
               </moz-button>
             </moz-button-group>
@@ -354,10 +626,17 @@ module.exports = __webpack_require__.p + "input-field.bcaff3aef712aca9f6fa.css";
 
 /***/ }),
 
+/***/ 63707:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "login-message-popup.b803c319d0a7e168a239.css";
+
+/***/ }),
+
 /***/ 90647:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "login-form.7c43629b7a2bf2301af3.css";
+module.exports = __webpack_require__.p + "login-form.f7073e844d95001ec938.css";
 
 /***/ }),
 
@@ -369,4 +648,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=LoginFormComponent-login-form-stories.c52f06c7.iframe.bundle.js.map
+//# sourceMappingURL=LoginFormComponent-login-form-stories.8e14c4e9.iframe.bundle.js.map

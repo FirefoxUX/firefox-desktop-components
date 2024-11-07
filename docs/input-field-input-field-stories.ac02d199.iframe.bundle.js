@@ -30,6 +30,7 @@ const editableFieldTemplate = ({
   type,
   value,
   disabled,
+  required,
   onFocus,
   onBlur,
   labelL10nId,
@@ -43,6 +44,7 @@ const editableFieldTemplate = ({
       value=${value}
       aria-describedby="explainer"
       ?disabled=${disabled}
+      ?required=${required}
       @focus=${onFocus}
       @blur=${onBlur}
     />
@@ -218,11 +220,47 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       type: String,
       reflect: true
     },
+    name: {
+      type: String
+    },
     readonly: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
   };
+  static formAssociated = true;
+  static queries = {
+    input: "input"
+  };
+  constructor() {
+    super();
+    this.value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this.value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
+  addHTTPSPrefix(e) {
+    const input = e.composedTarget;
+    let originValue = input.value.trim();
+    if (!originValue) {
+      return;
+    }
+    if (!originValue.match(/:\/\//)) {
+      input.value = "https://" + originValue;
+      input.dispatchEvent(new InputEvent("input", {
+        composed: true,
+        bubbles: true
+      }));
+    }
+  }
   get readonlyTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       <label
@@ -250,8 +288,10 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       ${this.readonly ? this.readonlyTemplate : (0,_input_field_mjs__WEBPACK_IMPORTED_MODULE_2__.editableFieldTemplate)({
       type: "url",
       value: this.value,
+      required: this.required,
       labelL10nId: "login-item-origin-label",
-      noteL10nId: "passwords-origin-tooltip"
+      noteL10nId: "passwords-origin-tooltip",
+      onBlur: e => this.addHTTPSPrefix(e)
     })}
     `;
   }
@@ -281,11 +321,18 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: String,
       state: true
     },
+    name: {
+      type: String
+    },
     readonly: {
       type: Boolean,
       reflect: true
     },
     visible: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
@@ -294,6 +341,18 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     input: "input",
     button: "button"
   };
+  static formAssociated = true;
+  constructor() {
+    super();
+    this._value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this._value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
   set value(newValue) {
     this._value = newValue;
   }
@@ -314,6 +373,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       value: this.#password,
       labelId: "login-item-password-label",
       disabled: this.readonly,
+      required: this.required,
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       labelL10nId: "login-item-password-label",
@@ -368,11 +428,33 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: String,
       reflect: true
     },
+    name: {
+      type: String
+    },
     readonly: {
+      type: Boolean,
+      reflect: true
+    },
+    required: {
       type: Boolean,
       reflect: true
     }
   };
+  static formAssociated = true;
+  static queries = {
+    input: "input"
+  };
+  constructor() {
+    super();
+    this.value = "";
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.internals.setFormValue(this.value);
+    this.addEventListener("input", e => {
+      this.internals.setFormValue(e.composedTarget.value);
+    });
+  }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       ${(0,_input_field_mjs__WEBPACK_IMPORTED_MODULE_2__.stylesTemplate)()}
@@ -380,6 +462,7 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       type: "text",
       value: this.value,
       disabled: this.readonly,
+      required: this.required,
       labelL10nId: "login-item-username-label",
       noteL10nId: "passwords-username-tooltip"
     })}
@@ -405,4 +488,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=input-field-input-field-stories.cdf18d92.iframe.bundle.js.map
+//# sourceMappingURL=input-field-input-field-stories.ac02d199.iframe.bundle.js.map
