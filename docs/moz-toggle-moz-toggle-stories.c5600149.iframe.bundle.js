@@ -576,7 +576,7 @@ __webpack_require__.r(__webpack_exports__);
   title: "UI Widgets/Toggle",
   component: "moz-toggle",
   parameters: {
-    status: "in-development",
+    status: "stable",
     actions: {
       handles: ["toggle"]
     },
@@ -669,4 +669,4 @@ module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.80d70ade.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.c5600149.iframe.bundle.js.map

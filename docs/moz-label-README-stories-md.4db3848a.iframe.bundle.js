@@ -1760,8 +1760,7 @@ function _createMdxContent(props) {
     h1: "h1",
     p: "p",
     code: "code",
-    h2: "h2",
-    a: "a"
+    h2: "h2"
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
@@ -1810,26 +1809,6 @@ function _createMdxContent(props) {
       children: ["Accesskey underlining is enabled by default on Windows and Linux. It is also enabled in Storybook on Mac for demonstrative purposes, but is usually controlled by the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "ui.key.menuAccessKey"
       }), " preference."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "component-status",
-      children: "Component status"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["At this time ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-label"
-      }), " may not be suitable for general use in Firefox."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-label"
-      }), " is currently only used in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-toggle"
-      }), " custom element. There are no instances in Firefox where we set an accesskey on a toggle, so it is still largely untested in the wild."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Additionally there is at least ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://bugzilla.mozilla.org/show_bug.cgi?id=1819469",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "one outstanding bug"
-      }), " related to accesskey handling in the shadow DOM."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
@@ -11567,4 +11546,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-label-README-stories-md.1557e8a2.iframe.bundle.js.map
+//# sourceMappingURL=moz-label-README-stories-md.4db3848a.iframe.bundle.js.map

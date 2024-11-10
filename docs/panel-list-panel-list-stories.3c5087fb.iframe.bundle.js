@@ -758,7 +758,7 @@ let accesskeyOptions = ["n", "w", "e", "c", "b"];
     }
   },
   parameters: {
-    status: "in-development",
+    status: "stable",
     actions: {
       handles: ["showing", "shown", "hidden", "click"]
     },
@@ -937,4 +937,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-panel-list-stories.569f7867.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.3c5087fb.iframe.bundle.js.map

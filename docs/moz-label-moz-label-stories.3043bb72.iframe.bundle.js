@@ -303,7 +303,7 @@ MozXULElement.insertFTLIfNeeded("locales-preview/moz-label.storybook.ftl");
   },
   parameters: {
     status: {
-      type: "unstable",
+      type: "stable",
       links: [{
         title: "Learn more",
         href: "?path=/docs/ui-widgets-label-readme--page#component-status"
@@ -373,4 +373,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-label-moz-label-stories.9608fca7.iframe.bundle.js.map
+//# sourceMappingURL=moz-label-moz-label-stories.3043bb72.iframe.bundle.js.map
