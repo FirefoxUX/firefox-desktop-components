@@ -834,8 +834,10 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       next.buttonEl.focus();
     }
   }
-  onSecondaryNavChange() {
-    this.secondaryNavGroupSlot.assignedElements()?.forEach(el => {
+  onSecondaryNavChange(event) {
+    let secondaryNavElements = event.target.assignedElements();
+    this.hasSecondaryNav = !!secondaryNavElements.length;
+    secondaryNavElements?.forEach(el => {
       el.classList.add("secondary-nav-item");
     });
   }
@@ -858,6 +860,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
             @keydown=${this.handleFocus}
           ></slot>
         </div>
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.hasSecondaryNav, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<hr />`)}
         <div id="secondary-nav-group" role="group">
           <slot
             name="secondary-nav"
@@ -11769,7 +11772,7 @@ function useResizeObserver(opts) {
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav-button.efa9cc93fc23d1381bb4.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.fa1f91df83f1887f759a.css";
 
 /***/ }),
 
@@ -11777,9 +11780,9 @@ module.exports = __webpack_require__.p + "moz-page-nav-button.efa9cc93fc23d1381b
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav.2892f22041b8119e67c9.css";
+module.exports = __webpack_require__.p + "moz-page-nav.7531342ec7184ad377eb.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.617b9e53.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.fa4378a1.iframe.bundle.js.map

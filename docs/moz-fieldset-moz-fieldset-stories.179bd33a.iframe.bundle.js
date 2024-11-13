@@ -112,8 +112,16 @@ const Template = ({
       label="First setting"
       description="These could have descriptions too."
     ></moz-toggle>
-    <label><input type="checkbox" /> Second setting</label>
-    <label><input type="checkbox" /> Third setting</label>
+    <moz-checkbox label="Second setting"></moz-checkbox>
+    <moz-checkbox
+      label="Third setting"
+      description="Checkbox with a description."
+      support-page="foo"
+    ></moz-checkbox>
+    <moz-select label="Make a choice">
+      <moz-option label="Option One" value="1"></moz-option>
+      <moz-option label="Option A" value="a"></moz-option>
+    </moz-select>
   </moz-fieldset>
 `;
 const Default = Template.bind({});
@@ -580,4 +588,4 @@ module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.e3c0f9d5.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.179bd33a.iframe.bundle.js.map
