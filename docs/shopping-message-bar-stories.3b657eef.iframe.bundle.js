@@ -1,5 +1,255 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[6949,5872,8825],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[7328,5872,8825,6949],{
+
+/***/ 38582:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57143);
+/* harmony import */ var browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53665);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46949);
+
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* eslint-env mozilla/remote-page */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
+const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
+const SHOPPING_AUTO_OPEN_SIDEBAR_PREF = "browser.shopping.experience2023.autoOpen.userEnabled";
+class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  #MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING = new Map([["stale", () => this.staleWarningTemplate()], ["generic-error", () => this.genericErrorTemplate()], ["not-enough-reviews", () => this.notEnoughReviewsTemplate()], ["product-not-available", () => this.productNotAvailableTemplate()], ["thanks-for-reporting", () => this.thanksForReportingTemplate()], ["product-not-available-reported", () => this.productNotAvailableReportedTemplate()], ["analysis-in-progress", () => this.analysisInProgressTemplate()], ["reanalysis-in-progress", () => this.reanalysisInProgressTemplate()], ["page-not-supported", () => this.pageNotSupportedTemplate()], ["thank-you-for-feedback", () => this.thankYouForFeedbackTemplate()], ["keep-closed", () => this.keepClosedTemplate()]]);
+  static properties = {
+    type: {
+      type: String
+    },
+    productUrl: {
+      type: String,
+      reflect: true
+    },
+    progress: {
+      type: Number,
+      reflect: true
+    }
+  };
+  static get queries() {
+    return {
+      reAnalysisButtonEl: "#message-bar-reanalysis-button",
+      productAvailableBtnEl: "#message-bar-report-product-available-btn",
+      yesKeepClosedButtonEl: "#yes-keep-closed-button",
+      noThanksButtonEl: "#no-thanks-button"
+    };
+  }
+  onClickAnalysisButton() {
+    this.dispatchEvent(new CustomEvent("ReanalysisRequested", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceReanalyzeClicked.record();
+  }
+  onClickProductAvailable() {
+    this.dispatchEvent(new CustomEvent("ReportedProductAvailable", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleNoThanksClick() {
+    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
+    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceNoThanksButtonClicked.record();
+  }
+  handleKeepClosedClick() {
+    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
+    RPMSetPref(SHOPPING_AUTO_OPEN_SIDEBAR_PREF, false);
+    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
+      bubbles: true,
+      composed: true
+    }));
+    Glean.shopping.surfaceYesKeepClosedButtonClicked.record();
+  }
+  staleWarningTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div class="shopping-message-bar">
+      <span class="icon"></span>
+      <article id="message-bar-container" aria-labelledby="header">
+        <span
+          data-l10n-id="shopping-message-bar-warning-stale-analysis-message-2"
+        ></span>
+        <button
+          id="message-bar-reanalysis-button"
+          class="small-button shopping-button"
+          data-l10n-id="shopping-message-bar-warning-stale-analysis-button"
+          @click=${this.onClickAnalysisButton}
+        ></button>
+      </article>
+    </div>`;
+  }
+  genericErrorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="warning"
+      data-l10n-id="shopping-message-bar-generic-error"
+    >
+    </moz-message-bar>`;
+  }
+  notEnoughReviewsTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-not-enough-reviews"
+    >
+    </moz-message-bar>`;
+  }
+  productNotAvailableTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-product-not-available"
+    >
+      <button
+        slot="actions"
+        id="message-bar-report-product-available-btn"
+        class="small-button shopping-button"
+        data-l10n-id="shopping-message-bar-warning-product-not-available-button2"
+        @click=${this.onClickProductAvailable}
+      ></button>
+    </moz-message-bar>`;
+  }
+  thanksForReportingTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="info"
+      data-l10n-id="shopping-message-bar-thanks-for-reporting"
+    >
+    </moz-message-bar>`;
+  }
+  productNotAvailableReportedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="warning"
+      data-l10n-id="shopping-message-bar-warning-product-not-available-reported"
+    >
+    </moz-message-bar>`;
+  }
+  analysisInProgressTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
+      class="shopping-message-bar analysis-in-progress"
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
+      "--analysis-progress-pcent": `${this.progress}%`
+    })}
+    >
+      <span class="icon"></span>
+      <article
+        id="message-bar-container"
+        aria-labelledby="header"
+        type="analysis"
+      >
+        <strong
+          id="header"
+          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
+          data-l10n-args="${JSON.stringify({
+      percentage: Math.round(this.progress)
+    })}"
+        ></strong>
+        <span
+          data-l10n-id="shopping-message-bar-analysis-in-progress-message2"
+        ></span>
+      </article>
+    </div>`;
+  }
+  reanalysisInProgressTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
+      class="shopping-message-bar"
+      id="reanalysis-in-progress-message"
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
+      "--analysis-progress-pcent": `${this.progress}%`
+    })}
+    >
+      <span class="icon"></span>
+      <article
+        id="message-bar-container"
+        aria-labelledby="header"
+        type="re-analysis"
+      >
+        <span
+          id="header"
+          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
+          data-l10n-args="${JSON.stringify({
+      percentage: Math.round(this.progress)
+    })}"
+        ></span>
+      </article>
+    </div>`;
+  }
+  pageNotSupportedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="warning"
+      data-l10n-id="shopping-message-bar-page-not-supported"
+    >
+    </moz-message-bar>`;
+  }
+  thankYouForFeedbackTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="success"
+      dismissable
+      data-l10n-id="shopping-survey-thanks"
+    >
+    </moz-message-bar>`;
+  }
+  keepClosedTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
+      type="info"
+      data-l10n-id="shopping-message-bar-keep-closed-header"
+    >
+      <moz-button-group slot="actions">
+        <button
+          id="no-thanks-button"
+          class="small-button shopping-button"
+          data-l10n-id="shopping-message-bar-keep-closed-dismiss-button"
+          @click=${this.handleNoThanksClick}
+        ></button>
+        <button
+          id="yes-keep-closed-button"
+          class="primary small-button shopping-button"
+          data-l10n-id="shopping-message-bar-keep-closed-accept-button"
+          @click=${this.handleKeepClosedClick}
+        ></button>
+      </moz-button-group>
+    </moz-message-bar>`;
+  }
+  render() {
+    let messageBarTemplate = this.#MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING.get(this.type)();
+    if (messageBarTemplate) {
+      if (this.type == "stale") {
+        Glean.shopping.surfaceStaleAnalysisShown.record();
+      }
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
+        <link
+          rel="stylesheet"
+          href="${browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__}"
+        />
+        <link
+          rel="stylesheet"
+          href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
+        />
+        ${messageBarTemplate}
+      `;
+    }
+    return null;
+  }
+}
+customElements.define("shopping-message-bar", ShoppingMessageBar);
+
+/***/ }),
 
 /***/ 15872:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -501,10 +751,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     message: {
-      type: String
+      type: String,
+      fluent: true
     },
     dismissable: {
       type: Boolean
@@ -624,6 +876,72 @@ customElements.define("moz-message-bar", MozMessageBar);
 
 /***/ }),
 
+/***/ 98161:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "DefaultShoppingMessageBar": () => (/* binding */ DefaultShoppingMessageBar),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var browser_components_shopping_content_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38582);
+var _templateObject;
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+
+window.MozXULElement.insertFTLIfNeeded("browser/shopping.ftl");
+window.MozXULElement.insertFTLIfNeeded("toolkit/branding/brandings.ftl");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Shopping/Shopping Message Bar",
+  component: "shopping-message-bar",
+  argTypes: {
+    type: {
+      control: {
+        type: "select"
+      },
+      options: ["stale", "generic-error", "not-enough-reviews", "product-not-available", "product-not-available-reported", "thanks-for-reporting", "analysis-in-progress", "reanalysis-in-progress", "page-not-supported", "thank-you-for-feedback"]
+    }
+  },
+  parameters: {
+    status: "in-development",
+    actions: {
+      handles: ["click"]
+    }
+  }
+});
+var Template = function Template(_ref) {
+  var type = _ref.type,
+    progress = _ref.progress;
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <shopping-message-bar\n    type=", "\n    progress=", "\n  ></shopping-message-bar>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(progress));
+};
+var DefaultShoppingMessageBar = Template.bind({});
+DefaultShoppingMessageBar.args = {
+  type: "stale",
+  progress: 0
+};
+
+/***/ }),
+
+/***/ 53665:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "shopping-message-bar.70ce85ff4e48cc311a96.css";
+
+/***/ }),
+
+/***/ 57143:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css";
+
+/***/ }),
+
 /***/ 54078:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -646,4 +964,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.efe17daa810b8a59898c.c
 /***/ })
 
 }]);
-//# sourceMappingURL=6949.a8971d35.iframe.bundle.js.map
+//# sourceMappingURL=shopping-message-bar-stories.3b657eef.iframe.bundle.js.map

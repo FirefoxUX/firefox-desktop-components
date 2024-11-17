@@ -1672,7 +1672,6 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         id="restore-from-backup-error"
         type="error"
         data-l10n-id="${getRecoveryErrorL10nId(this.recoveryErrorCode)}"
-        data-l10n-attrs="heading, message"
       >
       </moz-message-bar>
     `;
@@ -2648,10 +2647,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     message: {
-      type: String
+      type: String,
+      fluent: true
     },
     dismissable: {
       type: Boolean
@@ -2856,4 +2857,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.efe17daa810b8a59898c.c
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.30f9dd59.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.e84f1ea5.iframe.bundle.js.map

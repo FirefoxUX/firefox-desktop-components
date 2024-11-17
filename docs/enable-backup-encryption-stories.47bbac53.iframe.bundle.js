@@ -1470,10 +1470,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     message: {
-      type: String
+      type: String,
+      fluent: true
     },
     dismissable: {
       type: Boolean
@@ -1643,4 +1645,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.efe17daa810b8a59898c.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.cd4297a8.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.47bbac53.iframe.bundle.js.map

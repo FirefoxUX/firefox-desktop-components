@@ -1252,10 +1252,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     message: {
-      type: String
+      type: String,
+      fluent: true
     },
     dismissable: {
       type: Boolean
@@ -2234,22 +2236,37 @@ function _createMdxContent(props) {
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "Fluent attributes"
-      }), ".\nTo get this working you will need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " if you're providing a heading and a message:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-message-bar data-l10n-id=\"with-heading-and-message\"\n                 data-l10n-attrs=\"heading, message\"></moz-message-bar>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "In which case your Fluent messages will look something like this:"
+      }), ".\nTo get this working you will need to format your Fluent message like this:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "with-heading-and-message =\n  .heading = Heading text goes here\n  .message = Message text goes here\n"
       })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " will be set up automatically via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "MozLitElement"
+      }), ", so you can just specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " on your message bar as you would with any other markup:\n+"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+            className: "language-html"
+          })
+        }), "\n"]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-message-bar", {
+          "data-l10n-id": "with-heading-and-message"
+        }), "\n"]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+            children: "\n\n"
+          })
+        }), "\n"]
+      }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
@@ -12003,4 +12020,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.efe17daa810b8a59898c.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.cbfd943c.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-README-stories-md.cea118e7.iframe.bundle.js.map

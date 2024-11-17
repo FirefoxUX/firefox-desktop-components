@@ -1665,7 +1665,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   genericErrorTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="warning"
       data-l10n-id="shopping-message-bar-generic-error"
     >
@@ -1673,7 +1672,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   notEnoughReviewsTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="warning"
       data-l10n-id="shopping-message-bar-warning-not-enough-reviews"
     >
@@ -1681,7 +1679,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   productNotAvailableTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="warning"
       data-l10n-id="shopping-message-bar-warning-product-not-available"
     >
@@ -1696,7 +1693,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   thanksForReportingTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="info"
       data-l10n-id="shopping-message-bar-thanks-for-reporting"
     >
@@ -1704,7 +1700,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   productNotAvailableReportedTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="warning"
       data-l10n-id="shopping-message-bar-warning-product-not-available-reported"
     >
@@ -1762,7 +1757,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   pageNotSupportedTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="warning"
       data-l10n-id="shopping-message-bar-page-not-supported"
     >
@@ -1770,7 +1764,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   thankYouForFeedbackTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading"
       type="success"
       dismissable
       data-l10n-id="shopping-survey-thanks"
@@ -1779,7 +1772,6 @@ class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   keepClosedTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      data-l10n-attrs="heading, message"
       type="info"
       data-l10n-id="shopping-message-bar-keep-closed-header"
     >
@@ -2476,10 +2468,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     message: {
-      type: String
+      type: String,
+      fluent: true
     },
     dismissable: {
       type: Boolean
@@ -3294,4 +3288,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.4f0c8798.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.bc2589d7.iframe.bundle.js.map
