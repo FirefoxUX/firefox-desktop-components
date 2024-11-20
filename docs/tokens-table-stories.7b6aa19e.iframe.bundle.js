@@ -1328,6 +1328,14 @@ const storybookTables = {
     value: "1px",
     name: "--link-focus-outline-offset"
   }],
+  "page-main": [{
+    value: {
+      brand: {
+        default: "664px"
+      }
+    },
+    name: "--page-main-content-width"
+  }],
   space: [{
     value: "calc(0.5 * var(--space-xsmall))",
     name: "--space-xxsmall"
@@ -1858,6 +1866,11 @@ const variableLookupTable = {
     prefersContrast: "var(--border-color)",
     default: "light-dark(var(--color-red-50), var(--color-red-20))"
   },
+  "page-main-content-width": {
+    brand: {
+      default: "664px"
+    }
+  },
   "size-item-small": "16px",
   "size-item-medium": "28px",
   "size-item-large": "32px",
@@ -1905,4 +1918,4 @@ module.exports = __webpack_require__.p + "tokens-table.fa3a1444a24e4f30dac7.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.da56e7a5.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.7b6aa19e.iframe.bundle.js.map
