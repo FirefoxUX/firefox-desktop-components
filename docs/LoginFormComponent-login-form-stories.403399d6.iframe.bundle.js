@@ -36,7 +36,13 @@ const editableFieldTemplate = ({
   labelL10nId,
   noteL10nId
 }) => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-    <label for="input" class="field-label" data-l10n-id=${labelL10nId}> </label>
+    <label
+      for="input"
+      class="field-label"
+      data-l10n-id=${labelL10nId}
+      tabindex="-1"
+    >
+    </label>
     <input
       id="input"
       class="input-field"
@@ -89,20 +95,12 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       reflect: true
     }
   };
-  static formAssociated = true;
   static queries = {
     input: "input"
   };
   constructor() {
     super();
     this.value = "";
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.internals.setFormValue(this.value);
-    this.addEventListener("input", e => {
-      this.internals.setFormValue(e.composedTarget.value);
-    });
   }
   addHTTPSPrefix(e) {
     const input = e.composedTarget;
@@ -112,10 +110,6 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     }
     if (!originValue.match(/:\/\//)) {
       input.value = "https://" + originValue;
-      input.dispatchEvent(new InputEvent("input", {
-        composed: true,
-        bubbles: true
-      }));
     }
   }
   get readonlyTemplate() {
@@ -174,16 +168,14 @@ __webpack_require__.r(__webpack_exports__);
 class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   static CONCEALED_PASSWORD_TEXT = " ".repeat(8);
   static properties = {
-    _value: {
-      type: String,
-      state: true
+    value: {
+      type: String
     },
     name: {
       type: String
     },
-    readonly: {
-      type: Boolean,
-      reflect: true
+    newPassword: {
+      type: Boolean
     },
     visible: {
       type: Boolean,
@@ -192,35 +184,39 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     required: {
       type: Boolean,
       reflect: true
+    },
+    onRevealClick: {
+      type: Function
     }
   };
   static queries = {
     input: "input",
-    button: "button"
+    label: "label",
+    button: "moz-button"
   };
-  static formAssociated = true;
   constructor() {
     super();
-    this._value = "";
+    this.value = "";
   }
   connectedCallback() {
     super.connectedCallback();
-    this.internals.setFormValue(this._value);
     this.addEventListener("input", e => {
-      this.internals.setFormValue(e.composedTarget.value);
+      this.value = e.composedTarget.value;
     });
-  }
-  set value(newValue) {
-    this._value = newValue;
   }
   get #type() {
     return this.visible ? "text" : "password";
   }
   get #password() {
-    return this.readonly && !this.visible ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this._value;
+    return !this.newPassword && !this.visible ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   #revealIconSrc(concealed) {
     return concealed ? "chrome://browser/content/aboutlogins/icons/password-hide.svg" : "chrome://browser/content/aboutlogins/icons/password.svg";
+  }
+  updated(changedProperties) {
+    if (changedProperties.has("visible") && !changedProperties.visible) {
+      this.input.selectionStart = this.value.length;
+    }
   }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
@@ -241,25 +237,30 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
         class="reveal-password-button"
         type="icon ghost"
         iconSrc=${this.#revealIconSrc(this.visible)}
-        @click=${this.toggleVisibility}
+        @mousedown=${() => {
+      /* Programmatically focus the button on mousedown instead of waiting for focus on click
+       * because the blur event occurs before the click event.
+       */
+      this.button.focus();
+    }}
+        @click=${this.onRevealClick}
       ></moz-button>
     `;
   }
-  handleFocus(ev) {
-    if (ev.relatedTarget !== this.button) {
-      this.visible = true;
+  handleFocus() {
+    if (this.visible) {
+      return;
     }
+    this.onRevealClick();
   }
   handleBlur(ev) {
-    if (ev.relatedTarget !== this.button) {
-      this.visible = false;
+    if (ev.relatedTarget === this.button || ev.relatedTarget === this.label) {
+      return;
     }
-  }
-  toggleVisibility() {
-    this.visible = !this.visible;
-    if (this.visible) {
-      this.onPasswordVisible?.();
+    if (!this.visible) {
+      return;
     }
+    this.onRevealClick();
   }
 }
 customElements.define("login-password-field", LoginPasswordField);
@@ -297,20 +298,12 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       reflect: true
     }
   };
-  static formAssociated = true;
   static queries = {
     input: "input"
   };
   constructor() {
     super();
     this.value = "";
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.internals.setFormValue(this.value);
-    this.addEventListener("input", e => {
-      this.internals.setFormValue(e.composedTarget.value);
-    });
   }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
@@ -484,17 +477,45 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     onSaveClick: {
       type: Function
     },
-    onCancelClick: {
+    onClose: {
+      type: Function
+    },
+    originValue: {
+      type: String
+    },
+    usernameValue: {
+      type: String
+    },
+    passwordValue: {
+      type: String
+    },
+    passwordVisible: {
+      type: Boolean
+    },
+    onPasswordRevealClick: {
       type: Function
     }
   };
   static queries = {
     formEl: "form",
     originField: "login-origin-field",
+    usernameField: "login-username-field",
     passwordField: "login-password-field",
     originWarning: "origin-warning",
     passwordWarning: "password-warning"
   };
+  constructor() {
+    super();
+    this.originValue = "";
+    this.usernameValue = "";
+    this.passwordValue = "";
+    this.onPasswordRevealClick = () => {
+      this.passwordVisible = !this.passwordVisible;
+    };
+  }
+  disconnectedCallback() {
+    this.onClose();
+  }
   #removeWarning(warning) {
     if (warning.classList.contains("invalid-input")) {
       warning.classList.remove("invalid-input");
@@ -518,13 +539,18 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
   }
   onSubmit(e) {
     e.preventDefault();
-    if (this.#shouldShowWarning(this.originField.input, this.originWarning)) {
+    if (this.type !== "edit" && this.#shouldShowWarning(this.originField.input, this.originWarning)) {
       return;
     }
     if (this.#shouldShowWarning(this.passwordField.input, this.passwordWarning)) {
       return;
     }
-    this.onSaveClick(new FormData(e.target));
+    const loginForm = {
+      origin: this.originValue || this.originField.input.value,
+      username: this.usernameField.input.value,
+      password: this.passwordField.value
+    };
+    this.onSaveClick(loginForm);
   }
   render() {
     const heading = this.type !== "edit" ? "passwords-create-label" : "passwords-edit-label";
@@ -553,16 +579,25 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               <login-origin-field
                 name="origin"
                 required
+                ?readonly=${this.type === "edit"}
+                value=${this.originValue}
                 @input=${e => this.onInput(e)}
               >
               </login-origin-field>
               <origin-warning arrowdirection="down"></origin-warning>
             </div>
-            <login-username-field name="username"></login-username-field>
+            <login-username-field
+              name="username"
+              value=${this.usernameValue}
+            ></login-username-field>
             <div class="field-container">
               <login-password-field
                 name="password"
                 required
+                ?visible=${this.passwordVisible}
+                ?newPassword=${this.type !== "edit"}
+                .value=${this.passwordValue}
+                .onRevealClick=${this.onPasswordRevealClick}
                 @input=${e => this.onInput(e)}
               ></login-password-field>
               <password-warning
@@ -573,7 +608,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             <moz-button-group>
               <moz-button
                 data-l10n-id="login-item-cancel-button"
-                @click=${this.onCancelClick}
+                @click=${this.remove}
               ></moz-button>
               <moz-button
                 data-l10n-id="login-item-save-new-button"
@@ -648,4 +683,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=LoginFormComponent-login-form-stories.8e14c4e9.iframe.bundle.js.map
+//# sourceMappingURL=LoginFormComponent-login-form-stories.403399d6.iframe.bundle.js.map

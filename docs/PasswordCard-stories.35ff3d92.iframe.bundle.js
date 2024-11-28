@@ -275,6 +275,12 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     },
     reauthCommandHandler: {
       type: Function
+    },
+    onPasswordRevealClick: {
+      type: Function
+    },
+    handleEditButtonClick: {
+      type: Function
     }
   };
   static get queries() {
@@ -351,21 +357,21 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       snapshotId: lineIndex
     });
   }
-  onEditButtonClick() {
-    // TODO: Implement me!
+  async onEditButtonClick() {
+    const isAuthenticated = await this.reauthCommandHandler(() => this.messageToViewModel("Command", {
+      commandId: "Edit",
+      snapshotId: this.password.lineIndex
+    }));
+    if (!isAuthenticated) {
+      return;
+    }
+    this.handleEditButtonClick();
   }
   #onOriginLineClick(lineIndex) {
     this.handleCommand("OpenLink", lineIndex);
   }
   #onCopyButtonClick(lineIndex) {
     this.handleCommand("Copy", lineIndex);
-  }
-  #onPasswordRevealClick(concealed, lineIndex) {
-    if (concealed) {
-      this.handleCommand("Reveal", lineIndex);
-    } else {
-      this.handleCommand("Conceal", lineIndex);
-    }
   }
   renderOriginField() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -423,7 +429,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         .visible=${!this.password.concealed}
         ?alert=${this.password.vulnerable}
         .onLineClick=${() => this.reauthCommandHandler(() => this.#onCopyButtonClick(this.password.lineIndex))}
-        .onButtonClick=${() => this.reauthCommandHandler(() => this.#onPasswordRevealClick(this.password.concealed, this.password.lineIndex))}
+        .onButtonClick=${() => this.reauthCommandHandler(() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex))}
       >
       </concealed-login-line>
     `;
@@ -559,4 +565,4 @@ module.exports = __webpack_require__.p + "PasswordCard.d0121da2c2cc38f0b9d9.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.3fc505a5.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.35ff3d92.iframe.bundle.js.map
