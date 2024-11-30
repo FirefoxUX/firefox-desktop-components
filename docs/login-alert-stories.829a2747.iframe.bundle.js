@@ -230,10 +230,10 @@ BasicLoginAlert.argTypes = {
 const VulnerablePasswordAlert = ({
   hostname
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-    <login-vulnerable-password-alert
-      .hostname=${hostname}
-    ></login-vulnerable-password-alert>
-  `;
+  <login-vulnerable-password-alert
+    .hostname=${hostname}
+  ></login-vulnerable-password-alert>
+`;
 VulnerablePasswordAlert.args = {
   hostname: "https://www.example.com"
 };
@@ -241,11 +241,8 @@ const LoginBreachAlert = ({
   date,
   hostname
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-    <login-breach-alert
-      .date=${date}
-      .hostname=${hostname}
-    ></login-breach-alert>
-  `;
+  <login-breach-alert .date=${date} .hostname=${hostname}></login-breach-alert>
+`;
 LoginBreachAlert.argTypes = {
   date: {
     control: {
@@ -271,4 +268,4 @@ module.exports = __webpack_require__.p + "login-alert.2ba9a56cfdfacfe50729.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=login-alert-stories.bd492786.iframe.bundle.js.map
+//# sourceMappingURL=login-alert-stories.829a2747.iframe.bundle.js.map

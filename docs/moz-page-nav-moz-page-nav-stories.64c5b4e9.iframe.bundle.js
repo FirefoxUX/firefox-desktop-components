@@ -326,19 +326,19 @@ const Template = ({
       >
       </moz-page-nav-button>
       ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(hasFooterLinks, () => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html` <moz-page-nav-button
-            support-page="test"
-            data-l10n-id="moz-page-nav-button-four"
-            iconSrc="chrome://browser/skin/preferences/category-general.svg"
-            slot="secondary-nav"
-          >
-          </moz-page-nav-button>
-          <moz-page-nav-button
-            href="https://www.example.com"
-            data-l10n-id="moz-page-nav-button-five"
-            iconSrc="chrome://browser/skin/preferences/category-general.svg"
-            slot="secondary-nav"
-          >
-          </moz-page-nav-button>`)}
+              support-page="test"
+              data-l10n-id="moz-page-nav-button-four"
+              iconSrc="chrome://browser/skin/preferences/category-general.svg"
+              slot="secondary-nav"
+            >
+            </moz-page-nav-button>
+            <moz-page-nav-button
+              href="https://www.example.com"
+              data-l10n-id="moz-page-nav-button-five"
+              iconSrc="chrome://browser/skin/preferences/category-general.svg"
+              slot="secondary-nav"
+            >
+            </moz-page-nav-button>`)}
     </moz-page-nav>
     <main></main>
   </div>
@@ -490,4 +490,4 @@ module.exports = __webpack_require__.p + "moz-page-nav.5b5591e76815f93ee86b.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.eea1d30d.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.64c5b4e9.iframe.bundle.js.map

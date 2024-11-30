@@ -122,7 +122,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 window.MozXULElement.insertFTLIfNeeded("browser/aboutLogins.ftl");
 var Template = function Template(_ref) {
   var historyItems = _ref.historyItems;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral([" <login-timeline .history=", "></login-timeline> "])), historyItems);
+  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <login-timeline .history=", "></login-timeline>\n"])), historyItems);
 };
 var ACTION_ID_CREATED = "login-item-timeline-action-created";
 var ACTION_ID_UPDATED = "login-item-timeline-action-updated";
@@ -168,4 +168,4 @@ module.exports = __webpack_require__.p + "login-timeline.f2d9e024a88427a68d78.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=login-timeline-stories.2850b312.iframe.bundle.js.map
+//# sourceMappingURL=login-timeline-stories.02bb48ff.iframe.bundle.js.map

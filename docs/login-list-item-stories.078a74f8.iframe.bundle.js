@@ -221,12 +221,12 @@ class LoginListItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         <div class="labels" slot="login-info">
           <span class="title" dir="auto">${this.title}</span>
           ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.username, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <span class="subtitle" dir="auto">
-              ${this.username}
-            </span>`, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span
-              class="subtitle"
-              dir="auto"
-              data-l10n-id="login-list-item-subtitle-missing-username"
-            ></span>`)}
+                ${this.username}
+              </span>`, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span
+                class="subtitle"
+                dir="auto"
+                data-l10n-id="login-list-item-subtitle-missing-username"
+              ></span>`)}
         </div>
         <div slot="notificationIcon">
           ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.choose)(this.notificationIcon, [["breached", () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<img
@@ -259,4 +259,4 @@ module.exports = __webpack_require__.p + "login-list-lit-item.bb25e12946b9ec76e8
 /***/ })
 
 }]);
-//# sourceMappingURL=login-list-item-stories.f4520142.iframe.bundle.js.map
+//# sourceMappingURL=login-list-item-stories.078a74f8.iframe.bundle.js.map

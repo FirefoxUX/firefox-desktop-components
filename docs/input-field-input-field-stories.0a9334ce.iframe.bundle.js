@@ -20,12 +20,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const stylesTemplate = () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-    <link rel="stylesheet" href="${toolkit_themes_linux_global_in_content_common_css__WEBPACK_IMPORTED_MODULE_1__}" />
-    <link
-      rel="stylesheet"
-      href="${browser_components_aboutlogins_content_components_input_field_input_field_css__WEBPACK_IMPORTED_MODULE_0__}"
-    />
-  `;
+  <link rel="stylesheet" href="${toolkit_themes_linux_global_in_content_common_css__WEBPACK_IMPORTED_MODULE_1__}" />
+  <link
+    rel="stylesheet"
+    href="${browser_components_aboutlogins_content_components_input_field_input_field_css__WEBPACK_IMPORTED_MODULE_0__}"
+  />
+`;
 const editableFieldTemplate = ({
   type,
   value,
@@ -36,31 +36,31 @@ const editableFieldTemplate = ({
   labelL10nId,
   noteL10nId
 }) => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-    <label
-      for="input"
-      class="field-label"
-      data-l10n-id=${labelL10nId}
-      tabindex="-1"
-    >
-    </label>
-    <input
-      id="input"
-      class="input-field"
-      type=${type}
-      value=${value}
-      aria-describedby="explainer"
-      ?disabled=${disabled}
-      ?required=${required}
-      @focus=${onFocus}
-      @blur=${onBlur}
-    />
-    <span
-      id="explainer"
-      role="note"
-      class="explainer text-deemphasized"
-      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(noteL10nId)}
-    ></span>
-  `;
+  <label
+    for="input"
+    class="field-label"
+    data-l10n-id=${labelL10nId}
+    tabindex="-1"
+  >
+  </label>
+  <input
+    id="input"
+    class="input-field"
+    type=${type}
+    value=${value}
+    aria-describedby="explainer"
+    ?disabled=${disabled}
+    ?required=${required}
+    @focus=${onFocus}
+    @blur=${onBlur}
+  />
+  <span
+    id="explainer"
+    role="note"
+    class="explainer text-deemphasized"
+    data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(noteL10nId)}
+  ></span>
+`;
 
 /***/ }),
 
@@ -481,4 +481,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=input-field-input-field-stories.08307b26.iframe.bundle.js.map
+//# sourceMappingURL=input-field-input-field-stories.0a9334ce.iframe.bundle.js.map

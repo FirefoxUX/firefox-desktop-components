@@ -33,13 +33,13 @@ __webpack_require__.r(__webpack_exports__);
 
 
 const stylesTemplate = () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<link
-    rel="stylesheet"
-    href="${toolkit_themes_linux_global_in_content_common_css__WEBPACK_IMPORTED_MODULE_1__}"
-  />
-  <link
-    rel="stylesheet"
-    href="${browser_components_aboutlogins_content_components_login_command_button_css__WEBPACK_IMPORTED_MODULE_0__}"
-  />`;
+      rel="stylesheet"
+      href="${toolkit_themes_linux_global_in_content_common_css__WEBPACK_IMPORTED_MODULE_1__}"
+    />
+    <link
+      rel="stylesheet"
+      href="${browser_components_aboutlogins_content_components_login_command_button_css__WEBPACK_IMPORTED_MODULE_0__}"
+    />`;
 const LoginCommandButton = ({
   onClick,
   l10nId,
@@ -48,15 +48,15 @@ const LoginCommandButton = ({
   disabled,
   buttonText
 }) => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<button
-  class=${variant}
-  data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(l10nId)}
-  ?disabled=${disabled}
-  @click=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(onClick)}
->
-  <img src=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(icon)} role="presentation" />
+    class=${variant}
+    data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(l10nId)}
+    ?disabled=${disabled}
+    @click=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(onClick)}
+  >
+    <img src=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(icon)} role="presentation" />
 
-  <span data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(buttonText)}></span>
-</button>`;
+    <span data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(buttonText)}></span>
+  </button>`;
 class CreateLoginButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static get properties() {
     return {
@@ -320,4 +320,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=login-command-button-stories.b84cd9ca.iframe.bundle.js.map
+//# sourceMappingURL=login-command-button-stories.e2fb957f.iframe.bundle.js.map

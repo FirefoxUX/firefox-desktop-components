@@ -670,33 +670,33 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   secondaryButtonTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.secondaryL10nId && this.secondaryActionHandler, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-button
-        type="icon ghost"
-        class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
+          type="icon ghost"
+          class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "fxview-tab-row-button": true,
       [this.secondaryActionClass]: this.secondaryActionClass
     })}
-        id="fxview-tab-row-secondary-button"
-        data-l10n-id=${this.secondaryL10nId}
-        data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.secondaryL10nArgs)}
-        aria-haspopup=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.hasPopup)}
-        @click=${this.secondaryActionHandler}
-        tabindex="${this.active && this.currentActiveElementId === "fxview-tab-row-secondary-button" ? "0" : "-1"}"
-      ></moz-button>`)}`;
+          id="fxview-tab-row-secondary-button"
+          data-l10n-id=${this.secondaryL10nId}
+          data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.secondaryL10nArgs)}
+          aria-haspopup=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.hasPopup)}
+          @click=${this.secondaryActionHandler}
+          tabindex="${this.active && this.currentActiveElementId === "fxview-tab-row-secondary-button" ? "0" : "-1"}"
+        ></moz-button>`)}`;
   }
   tertiaryButtonTemplate() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.tertiaryL10nId && this.tertiaryActionHandler, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-button
-        type="icon ghost"
-        class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
+          type="icon ghost"
+          class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "fxview-tab-row-button": true,
       [this.tertiaryActionClass]: this.tertiaryActionClass
     })}
-        id="fxview-tab-row-tertiary-button"
-        data-l10n-id=${this.tertiaryL10nId}
-        data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.tertiaryL10nArgs)}
-        aria-haspopup=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.hasPopup)}
-        @click=${this.tertiaryActionHandler}
-        tabindex="${this.active && this.currentActiveElementId === "fxview-tab-row-tertiary-button" ? "0" : "-1"}"
-      ></moz-button>`)}`;
+          id="fxview-tab-row-tertiary-button"
+          data-l10n-id=${this.tertiaryL10nId}
+          data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.tertiaryL10nArgs)}
+          aria-haspopup=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.hasPopup)}
+          @click=${this.tertiaryActionHandler}
+          tabindex="${this.active && this.currentActiveElementId === "fxview-tab-row-tertiary-button" ? "0" : "-1"}"
+        ></moz-button>`)}`;
   }
 }
 class FxviewTabRow extends FxviewTabRowBase {
@@ -716,7 +716,7 @@ class FxviewTabRow extends FxviewTabRowBase {
       >
         ${this.faviconTemplate()} ${this.titleTemplate()}
         ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(!this.compact, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`${this.urlTemplate()} ${this.dateTemplate()}
-          ${this.timeTemplate()}`)}
+            ${this.timeTemplate()}`)}
       </a>
       ${this.secondaryButtonTemplate()} ${this.tertiaryButtonTemplate()}
     `;
@@ -1563,4 +1563,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.62282040.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.de1ef8e7.iframe.bundle.js.map
