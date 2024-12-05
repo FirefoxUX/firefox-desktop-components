@@ -105,7 +105,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "WithSlottedDescription": () => (/* binding */ WithSlottedDescription),
-/* harmony export */   "WithSupportPage": () => (/* binding */ WithSupportPage),
+/* harmony export */   "WithSlottedSupportLink": () => (/* binding */ WithSlottedSupportLink),
+/* harmony export */   "WithSupportLink": () => (/* binding */ WithSupportLink),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -150,7 +151,8 @@ const Template = ({
   description,
   hasSlottedDescription,
   accesskey,
-  supportPage
+  supportPage,
+  hasSlottedSupportLink
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-checkbox
     ?checked=${checked}
@@ -163,6 +165,7 @@ const Template = ({
     support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
   >
     ${hasSlottedDescription ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<div slot="description">test slot text</div>` : ""}
+    ${hasSlottedSupportLink ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
   </moz-checkbox>
 `;
 const Default = Template.bind({});
@@ -176,7 +179,8 @@ Default.args = {
   description: "",
   label: "",
   accesskey: "",
-  supportPage: ""
+  supportPage: "",
+  hasSlottedSupportLink: false
 };
 const WithIcon = Template.bind({});
 WithIcon.args = {
@@ -208,10 +212,15 @@ WithAccesskey.args = {
   ...Default.args,
   accesskey: "c"
 };
-const WithSupportPage = Template.bind({});
-WithSupportPage.args = {
+const WithSupportLink = Template.bind({});
+WithSupportLink.args = {
   ...Default.args,
   supportPage: "test"
+};
+const WithSlottedSupportLink = Template.bind({});
+WithSlottedSupportLink.args = {
+  ...Default.args,
+  hasSlottedSupportLink: true
 };
 
 /***/ }),
@@ -615,4 +624,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.453dce38.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.3f32ce7f.iframe.bundle.js.map

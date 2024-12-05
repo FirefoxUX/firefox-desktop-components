@@ -648,6 +648,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WithAccesskeys": () => (/* binding */ WithAccesskeys),
 /* harmony export */   "WithDescriptions": () => (/* binding */ WithDescriptions),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
+/* harmony export */   "WithSlottedSupportLinks": () => (/* binding */ WithSlottedSupportLinks),
 /* harmony export */   "WithSupportLinks": () => (/* binding */ WithSupportLinks),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -743,7 +744,8 @@ const Template = ({
   showDescriptions,
   showAccesskeys,
   accesskeys,
-  supportPage
+  supportPage,
+  hasSlottedSupportLinks
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-radio-group
     name=${groupName}
@@ -760,6 +762,9 @@ const Template = ({
           accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showAccesskeys ? accesskeys[i] : "")}
           support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
         >
+          ${hasSlottedSupportLinks ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a slot="support-link" href="www.example.com">
+                Click me!
+              </a>` : ""}
         </moz-radio>
       `)}
   </moz-radio-group>
@@ -776,7 +781,8 @@ Default.args = {
   showDescriptions: false,
   showAccesskeys: false,
   accesskeys: accesskeyOptions,
-  supportPage: ""
+  supportPage: "",
+  hasSlottedSupportLinks: false
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
@@ -812,6 +818,11 @@ const WithSupportLinks = Template.bind({});
 WithSupportLinks.args = {
   ...Default.args,
   supportPage: "test"
+};
+const WithSlottedSupportLinks = Template.bind({});
+WithSlottedSupportLinks.args = {
+  ...Default.args,
+  hasSlottedSupportLinks: true
 };
 
 /***/ }),
@@ -952,4 +963,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.59db9174.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.abf1989d.iframe.bundle.js.map

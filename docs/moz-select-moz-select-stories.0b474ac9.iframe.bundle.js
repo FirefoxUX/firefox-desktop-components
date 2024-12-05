@@ -177,7 +177,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
 /* harmony export */   "WithSlottedDescription": () => (/* binding */ WithSlottedDescription),
-/* harmony export */   "WithSupportPage": () => (/* binding */ WithSupportPage),
+/* harmony export */   "WithSlottedSupportLink": () => (/* binding */ WithSlottedSupportLink),
+/* harmony export */   "WithSupportLink": () => (/* binding */ WithSupportLink),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -255,7 +256,8 @@ const Template = ({
   accessKey,
   hasSlottedDescription,
   useOtherOptions,
-  options = useOtherOptions ? OTHER_OPTIONS : DEFAULT_OPTIONS
+  options = useOtherOptions ? OTHER_OPTIONS : DEFAULT_OPTIONS,
+  hasSlottedSupportLink
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-select
     name=${name}
@@ -267,6 +269,7 @@ const Template = ({
     accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accessKey || null)}
   >
     ${hasSlottedDescription ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<div slot="description">${description}</div>` : ""}
+    ${hasSlottedSupportLink ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
     ${options.map(opt => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<moz-option value=${opt.value} label=${opt.label}></moz-option>`)}
   </moz-select>
 `;
@@ -281,7 +284,8 @@ Default.args = {
   supportPage: "",
   accessKey: "",
   hasSlottedDescription: false,
-  useOtherOptions: false
+  useOtherOptions: false,
+  hasSlottedSupportLink: false
 };
 const WithIcon = Template.bind({});
 WithIcon.args = {
@@ -309,10 +313,16 @@ WithAccesskey.args = {
   ...Default.args,
   accessKey: "s"
 };
-const WithSupportPage = Template.bind({});
-WithSupportPage.args = {
+const WithSupportLink = Template.bind({});
+WithSupportLink.args = {
   ...Default.args,
   supportPage: "support-page",
+  l10nId: "moz-select-description"
+};
+const WithSlottedSupportLink = Template.bind({});
+WithSlottedSupportLink.args = {
+  ...Default.args,
+  hasSlottedSupportLink: true,
   l10nId: "moz-select-description"
 };
 const PreselectedValue = Template.bind({});
@@ -324,4 +334,4 @@ PreselectedValue.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.6cf4de3f.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.0b474ac9.iframe.bundle.js.map

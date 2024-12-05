@@ -477,6 +477,9 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     onSaveClick: {
       type: Function
     },
+    onDeleteClick: {
+      type: Function
+    },
     onClose: {
       type: Function
     },
@@ -494,6 +497,10 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     },
     onPasswordRevealClick: {
       type: Function
+    },
+    _showDeleteCard: {
+      type: Boolean,
+      state: true
     }
   };
   static queries = {
@@ -509,6 +516,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     this.originValue = "";
     this.usernameValue = "";
     this.passwordValue = "";
+    this._showDeleteCard = false;
     this.onPasswordRevealClick = () => {
       this.passwordVisible = !this.passwordVisible;
     };
@@ -552,7 +560,47 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     };
     this.onSaveClick(loginForm);
   }
+  #toggleDeleteCard() {
+    this._showDeleteCard = !this._showDeleteCard;
+  }
+  #renderDeleteCard() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
+        rel="stylesheet"
+        href="${toolkit_components_satchel_megalist_content_LoginFormComponent_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <moz-card class="remove-login-card">
+        <div class="remove-card-back">
+          <moz-button
+            type="icon ghost"
+            iconSrc="chrome://browser/skin/back.svg"
+            @click=${this.#toggleDeleteCard}
+          >
+          </moz-button>
+          <p data-l10n-id="passwords-remove-login-card-back-message"></p>
+        </div>
+        <div class="remove-card-text">
+          <h3 data-l10n-id="passwords-remove-login-card-title"></h3>
+          <p data-l10n-id="passwords-remove-login-card-message"></p>
+        </div>
+        <moz-button-group>
+          <moz-button
+            data-l10n-id="passwords-remove-login-card-cancel-button"
+            @click=${this.#toggleDeleteCard}
+          >
+          </moz-button>
+          <moz-button
+            type="destructive"
+            data-l10n-id="passwords-remove-login-card-remove-button"
+            @click=${this.onDeleteClick}
+          >
+          </moz-button>
+        </moz-button-group>
+      </moz-card>`;
+  }
   render() {
+    if (this._showDeleteCard) {
+      return this.#renderDeleteCard();
+    }
     const heading = this.type !== "edit" ? "passwords-create-label" : "passwords-edit-label";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
         rel="stylesheet"
@@ -563,8 +611,10 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             <div class="delete-login-button-container">
               <moz-button
                 class="delete-login-button"
+                data-l10n-id="passwords-remove-label"
                 type="icon"
                 iconSrc="chrome://global/skin/icons/delete.svg"
+                @click=${this.#toggleDeleteCard}
               ></moz-button>
             </div>
           `)}
@@ -671,7 +721,7 @@ module.exports = __webpack_require__.p + "login-message-popup.b803c319d0a7e168a2
 /***/ 90647:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "login-form.f7073e844d95001ec938.css";
+module.exports = __webpack_require__.p + "login-form.61e65675456ca3ab84fa.css";
 
 /***/ }),
 
@@ -683,4 +733,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=LoginFormComponent-login-form-stories.b4c2e007.iframe.bundle.js.map
+//# sourceMappingURL=LoginFormComponent-login-form-stories.f35d4162.iframe.bundle.js.map

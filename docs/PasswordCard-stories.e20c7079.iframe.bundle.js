@@ -307,8 +307,10 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   }
   async firstUpdated() {
     this.#focusableElementsMap = new Map();
+    const buttons = this.shadowRoot.querySelectorAll("moz-button");
+    const lineItems = this.shadowRoot.querySelectorAll(".line-item");
     let index = 0;
-    for (const el of this.shadowRoot.querySelectorAll(".line-item")) {
+    for (const el of lineItems) {
       if (el === this.passwordLine) {
         await el.updateComplete;
         this.#focusableElementsMap.set(el.loginLine, index++);
@@ -317,7 +319,10 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         this.#focusableElementsMap.set(el, index++);
       }
     }
-    this.#focusableElementsMap.set(this.editBtn.buttonEl, index);
+    for (const el of buttons) {
+      this.#focusableElementsMap.set(el.buttonEl, index);
+      index++;
+    }
     this.#focusableElementsList = Array.from(this.#focusableElementsMap.keys());
   }
   #handleKeydown(e) {
@@ -366,6 +371,9 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       return;
     }
     this.handleEditButtonClick();
+  }
+  onViewAlertClick() {
+    // TODO: implement me
   }
   #onOriginLineClick(lineIndex) {
     this.handleCommand("OpenLink", lineIndex);
@@ -443,6 +451,25 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       ></moz-button>
     </div>`;
   }
+  renderViewAlertField() {
+    const hasAlert = this.origin.breached || !this.username.value.length || this.password.vulnerable;
+    if (!hasAlert) {
+      return "";
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar type="warning" data-l10n-id="view-alert-heading">
+        <moz-button
+          class="view-alert-button"
+          data-l10n-id="view-alert-button"
+          slot="actions"
+          type="icon"
+          iconSrc="chrome://browser/skin/forward.svg"
+          @click=${this.onViewAlertClick}
+        >
+        </moz-button>
+      </moz-message-bar>
+    `;
+  }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -451,6 +478,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       />
       ${this.renderOriginField()} ${this.renderUsernameField()}
       ${this.renderPasswordField()} ${this.renderButton()}
+      ${this.renderViewAlertField()}
     `;
   }
 }
@@ -560,9 +588,9 @@ module.exports = __webpack_require__.p + "LoginLine.6204908c1a0e679d1eb4.css";
 /***/ 62525:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "PasswordCard.d0121da2c2cc38f0b9d9.css";
+module.exports = __webpack_require__.p + "PasswordCard.3675af91aff9e58139b0.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.35ff3d92.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.e20c7079.iframe.bundle.js.map
