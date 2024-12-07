@@ -521,9 +521,6 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       this.passwordVisible = !this.passwordVisible;
     };
   }
-  disconnectedCallback() {
-    this.onClose();
-  }
   #removeWarning(warning) {
     if (warning.classList.contains("invalid-input")) {
       warning.classList.remove("invalid-input");
@@ -658,7 +655,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             <moz-button-group>
               <moz-button
                 data-l10n-id="login-item-cancel-button"
-                @click=${this.remove}
+                @click=${this.onClose}
               ></moz-button>
               <moz-button
                 data-l10n-id="login-item-save-new-button"
@@ -733,4 +730,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=LoginFormComponent-login-form-stories.f35d4162.iframe.bundle.js.map
+//# sourceMappingURL=LoginFormComponent-login-form-stories.fafc3a12.iframe.bundle.js.map
