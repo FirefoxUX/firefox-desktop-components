@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
  * @tagname moz-fieldset
  * @property {string} label - The label for the fieldset's legend.
  * @property {string} description - The description for the fieldset.
+ * @property {string} supportPage - Name of the SUMO support page to link to.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -35,8 +36,31 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     description: {
       type: String,
       fluent: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     }
   };
+  descriptionTemplate() {
+    if (this.description) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span id="description" class="description text-deemphasized">
+          ${this.description}
+        </span>
+        ${this.supportPageTemplate()}`;
+    }
+    return "";
+  }
+  supportPageTemplate() {
+    if (this.supportPage) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<a
+        is="moz-support-link"
+        support-page=${this.supportPage}
+        part="support-link"
+      ></a>`;
+    }
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="support-link"></slot>`;
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -47,9 +71,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
       >
         <legend part="label">${this.label}</legend>
-        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
-              ${this.description}
-            </p>` : ""}
+        ${!this.description ? this.supportPageTemplate() : ""}
+        ${this.descriptionTemplate()}
         <div id="inputs" part="inputs">
           <slot></slot>
         </div>
@@ -68,6 +91,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Default": () => (/* binding */ Default),
 /* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
+/* harmony export */   "WithDescriptionAndSlottedSupportLink": () => (/* binding */ WithDescriptionAndSlottedSupportLink),
+/* harmony export */   "WithDescriptionAndSupportLink": () => (/* binding */ WithDescriptionAndSupportLink),
+/* harmony export */   "WithSlottedSupportLink": () => (/* binding */ WithSlottedSupportLink),
+/* harmony export */   "WithSupportLink": () => (/* binding */ WithSupportLink),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
@@ -99,12 +126,15 @@ moz-fieldset-description =
 const Template = ({
   label,
   description,
-  l10nId
+  l10nId,
+  supportPage,
+  hasSlottedSupportLinks
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-fieldset
     data-l10n-id=${l10nId}
     .label=${label}
     .description=${description}
+    support-page=${supportPage}
     style="width: 400px;"
   >
     <moz-toggle
@@ -122,18 +152,41 @@ const Template = ({
       <moz-option label="Option One" value="1"></moz-option>
       <moz-option label="Option A" value="a"></moz-option>
     </moz-select>
+    ${hasSlottedSupportLinks ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a slot="support-link" href="www.example.com"> Click me! </a>` : ""}
   </moz-fieldset>
 `;
 const Default = Template.bind({});
 Default.args = {
   label: "",
   description: "",
-  l10nId: "moz-fieldset-label"
+  supportPage: "",
+  l10nId: "moz-fieldset-label",
+  hasSlottedSupportLinks: false
 };
 const WithDescription = Template.bind({});
 WithDescription.args = {
   ...Default.args,
   l10nId: "moz-fieldset-description"
+};
+const WithSupportLink = Template.bind({});
+WithSupportLink.args = {
+  ...Default.args,
+  supportPage: "test"
+};
+const WithDescriptionAndSupportLink = Template.bind({});
+WithDescriptionAndSupportLink.args = {
+  ...WithSupportLink.args,
+  l10nId: "moz-fieldset-description"
+};
+const WithSlottedSupportLink = Template.bind({});
+WithSlottedSupportLink.args = {
+  ...Default.args,
+  hasSlottedSupportLinks: true
+};
+const WithDescriptionAndSlottedSupportLink = Template.bind({});
+WithDescriptionAndSlottedSupportLink.args = {
+  ...WithDescription.args,
+  hasSlottedSupportLinks: true
 };
 
 /***/ }),
@@ -569,7 +622,7 @@ customElements.define("moz-toggle", MozToggle);
 /***/ 12876:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.cb2816ffa0cfb884d245.css";
+module.exports = __webpack_require__.p + "moz-fieldset.b70ad330f48a1183483b.css";
 
 /***/ }),
 
@@ -588,4 +641,4 @@ module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.179bd33a.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.52988733.iframe.bundle.js.map

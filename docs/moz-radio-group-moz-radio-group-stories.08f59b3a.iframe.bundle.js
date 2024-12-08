@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[1033,6570,8825,9896],{
+(self["webpackChunkbrowser_storybook"] = self["webpackChunkbrowser_storybook"] || []).push([[5604,6570,8825,1033,9896],{
 
 /***/ 46570:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
  * @tagname moz-fieldset
  * @property {string} label - The label for the fieldset's legend.
  * @property {string} description - The description for the fieldset.
+ * @property {string} supportPage - Name of the SUMO support page to link to.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -35,8 +36,31 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     description: {
       type: String,
       fluent: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     }
   };
+  descriptionTemplate() {
+    if (this.description) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span id="description" class="description text-deemphasized">
+          ${this.description}
+        </span>
+        ${this.supportPageTemplate()}`;
+    }
+    return "";
+  }
+  supportPageTemplate() {
+    if (this.supportPage) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<a
+        is="moz-support-link"
+        support-page=${this.supportPage}
+        part="support-link"
+      ></a>`;
+    }
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="support-link"></slot>`;
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -47,9 +71,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
       >
         <legend part="label">${this.label}</legend>
-        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
-              ${this.description}
-            </p>` : ""}
+        ${!this.description ? this.supportPageTemplate() : ""}
+        ${this.descriptionTemplate()}
         <div id="inputs" part="inputs">
           <slot></slot>
         </div>
@@ -636,6 +659,197 @@ customElements.define("moz-radio", MozRadio);
 
 /***/ }),
 
+/***/ 44134:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "AllUnchecked": () => (/* binding */ AllUnchecked),
+/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "DisabledRadioButton": () => (/* binding */ DisabledRadioButton),
+/* harmony export */   "DisabledRadioGroup": () => (/* binding */ DisabledRadioGroup),
+/* harmony export */   "WithAccesskeys": () => (/* binding */ WithAccesskeys),
+/* harmony export */   "WithDescriptions": () => (/* binding */ WithDescriptions),
+/* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
+/* harmony export */   "WithSlottedSupportLinks": () => (/* binding */ WithSlottedSupportLinks),
+/* harmony export */   "WithSupportLinks": () => (/* binding */ WithSupportLinks),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var _moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(75295);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+let greetings = ["hello", "howdy", "hola"];
+let icons = ["chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/delete.svg", "chrome://global/skin/icons/defaultFavicon.svg"];
+let accesskeyOptions = ["h", "w", "X"];
+let defaultLabelIds = ["moz-radio-0", "moz-radio-1", "moz-radio-2"];
+let wrappedLabelIds = ["moz-radio-long-0", "moz-radio-long-1", "moz-radio-long-2"];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Radio Group",
+  component: "moz-radio-group",
+  argTypes: {
+    disabledButtons: {
+      options: greetings,
+      control: {
+        type: "check"
+      }
+    },
+    buttonLabels: {
+      options: ["default", "wrapped"],
+      mapping: {
+        default: defaultLabelIds,
+        wrapped: wrappedLabelIds
+      },
+      control: {
+        type: "radio"
+      }
+    },
+    accesskeys: {
+      if: {
+        arg: "showAccesskeys",
+        truthy: true
+      }
+    }
+  },
+  parameters: {
+    actions: {
+      handles: ["click", "input", "change"]
+    },
+    status: "in-development",
+    fluent: `
+moz-radio-group =
+  .label = This is the group label
+moz-radio-0 =
+  .label = Hello
+moz-radio-1 =
+  .label = Howdy
+moz-radio-2 =
+  .label = Hola
+moz-radio-long-0 =
+  .label = Hello ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+moz-radio-long-1 =
+  .label = Howdy ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+moz-radio-long-2 =
+  .label = Hola ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+moz-radio-described-0 =
+  .label = Hello
+  .description = This is the first option.
+moz-radio-described-1 =
+  .label = Howdy
+  .description = This is the second option.
+moz-radio-described-2 =
+  .label = Hola
+  .description = This is the third option.
+moz-radio-described-long-0 =
+  .label = Hello ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the first option.
+moz-radio-described-long-1 =
+  .label = Howdy ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the second option.
+moz-radio-described-long-2 =
+  .label = Hola ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
+  .description = This is the third option.
+    `
+  }
+});
+const Template = ({
+  groupL10nId = "moz-radio-group",
+  buttonLabels,
+  groupName,
+  unchecked,
+  showIcons,
+  disabled,
+  disabledButtons,
+  showDescriptions,
+  showAccesskeys,
+  accesskeys,
+  supportPage,
+  hasSlottedSupportLinks
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <moz-radio-group
+    name=${groupName}
+    data-l10n-id=${groupL10nId}
+    ?disabled=${disabled}
+  >
+    ${greetings.map((greeting, i) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+        <moz-radio
+          ?checked=${i == 0 && !unchecked}
+          ?disabled=${disabledButtons.includes(greeting)}
+          value=${greeting}
+          data-l10n-id=${showDescriptions ? buttonLabels[i].replace("moz-radio", "moz-radio-described") : buttonLabels[i]}
+          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showIcons ? icons[i] : "")}
+          accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showAccesskeys ? accesskeys[i] : "")}
+          support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
+        >
+          ${hasSlottedSupportLinks ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a slot="support-link" href="www.example.com">
+                Click me!
+              </a>` : ""}
+        </moz-radio>
+      `)}
+  </moz-radio-group>
+`;
+const Default = Template.bind({});
+Default.args = {
+  label: "",
+  buttonLabels: "default",
+  groupName: "greeting",
+  unchecked: false,
+  showIcons: false,
+  disabled: false,
+  disabledButtons: [],
+  showDescriptions: false,
+  showAccesskeys: false,
+  accesskeys: accesskeyOptions,
+  supportPage: "",
+  hasSlottedSupportLinks: false
+};
+const AllUnchecked = Template.bind({});
+AllUnchecked.args = {
+  ...Default.args,
+  unchecked: true
+};
+const WithIcon = Template.bind({});
+WithIcon.args = {
+  ...Default.args,
+  showIcons: true
+};
+const DisabledRadioGroup = Template.bind({});
+DisabledRadioGroup.args = {
+  ...Default.args,
+  disabled: true
+};
+const DisabledRadioButton = Template.bind({});
+DisabledRadioButton.args = {
+  ...Default.args,
+  disabledButtons: ["hello"]
+};
+const WithDescriptions = Template.bind({});
+WithDescriptions.args = {
+  ...Default.args,
+  showDescriptions: true
+};
+const WithAccesskeys = Template.bind({});
+WithAccesskeys.args = {
+  ...Default.args,
+  showAccesskeys: true
+};
+const WithSupportLinks = Template.bind({});
+WithSupportLinks.args = {
+  ...Default.args,
+  supportPage: "test"
+};
+const WithSlottedSupportLinks = Template.bind({});
+WithSlottedSupportLinks.args = {
+  ...Default.args,
+  hasSlottedSupportLinks: true
+};
+
+/***/ }),
+
 /***/ 49896:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -760,7 +974,7 @@ function formatUTMParams(contentAttribute, url) {
 /***/ 12876:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.cb2816ffa0cfb884d245.css";
+module.exports = __webpack_require__.p + "moz-fieldset.b70ad330f48a1183483b.css";
 
 /***/ }),
 
@@ -772,4 +986,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=1033.bbd34f02.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.08f59b3a.iframe.bundle.js.map

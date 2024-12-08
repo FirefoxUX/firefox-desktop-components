@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
  * @tagname moz-fieldset
  * @property {string} label - The label for the fieldset's legend.
  * @property {string} description - The description for the fieldset.
+ * @property {string} supportPage - Name of the SUMO support page to link to.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -35,8 +36,31 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     description: {
       type: String,
       fluent: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     }
   };
+  descriptionTemplate() {
+    if (this.description) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<span id="description" class="description text-deemphasized">
+          ${this.description}
+        </span>
+        ${this.supportPageTemplate()}`;
+    }
+    return "";
+  }
+  supportPageTemplate() {
+    if (this.supportPage) {
+      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<a
+        is="moz-support-link"
+        support-page=${this.supportPage}
+        part="support-link"
+      ></a>`;
+    }
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot name="support-link"></slot>`;
+  }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
@@ -47,9 +71,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
       >
         <legend part="label">${this.label}</legend>
-        ${this.description ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<p id="description" class="text-deemphasized">
-              ${this.description}
-            </p>` : ""}
+        ${!this.description ? this.supportPageTemplate() : ""}
+        ${this.descriptionTemplate()}
         <div id="inputs" part="inputs">
           <slot></slot>
         </div>
@@ -64,9 +87,9 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ 12876:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.cb2816ffa0cfb884d245.css";
+module.exports = __webpack_require__.p + "moz-fieldset.b70ad330f48a1183483b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=6570.ac06f652.iframe.bundle.js.map
+//# sourceMappingURL=6570.e5396998.iframe.bundle.js.map
