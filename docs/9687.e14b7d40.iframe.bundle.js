@@ -41,7 +41,8 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     }
   };
   static queries = {
@@ -379,4 +380,4 @@ module.exports = __webpack_require__.p + "moz-page-nav.5b5591e76815f93ee86b.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=9687.70851f48.iframe.bundle.js.map
+//# sourceMappingURL=9687.e14b7d40.iframe.bundle.js.map

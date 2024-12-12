@@ -790,7 +790,8 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     }
   };
   static queries = {
@@ -2012,21 +2013,23 @@ function _createMdxContent(props) {
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "Fluent attributes"
-      }), ".\nTo get this working you will need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " if you're providing a heading:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-page-nav data-l10n-id=\"with-heading\"\n            data-l10n-attrs=\"heading\"></moz-page-nav>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "In which case your Fluent messages will look something like this:"
+      }), ".\nTo get this working you will need to format your Fluent message like this:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "with-heading =\n  .heading = Heading text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " will be set up automatically via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "MozLitElement"
+      }), ", so you can just specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " on your moz-page-nav as you would with any other markup:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav data-l10n-id=\"with-heading\"></moz-page-nav>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["You also need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
@@ -11788,4 +11791,4 @@ module.exports = __webpack_require__.p + "moz-page-nav.5b5591e76815f93ee86b.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.f0916136.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.ea734444.iframe.bundle.js.map

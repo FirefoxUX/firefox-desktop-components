@@ -41,7 +41,8 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       type: String
     },
     heading: {
-      type: String
+      type: String,
+      fluent: true
     }
   };
   static queries = {
@@ -306,7 +307,7 @@ const Template = ({
     }
   </style>
   <div id="page">
-    <moz-page-nav data-l10n-id="moz-page-nav-heading" data-l10n-attrs="heading">
+    <moz-page-nav data-l10n-id="moz-page-nav-heading">
       <moz-page-nav-button
         view="view-one"
         data-l10n-id="moz-page-nav-button-one"
@@ -490,4 +491,4 @@ module.exports = __webpack_require__.p + "moz-page-nav.5b5591e76815f93ee86b.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.64c5b4e9.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.d81e2d12.iframe.bundle.js.map
