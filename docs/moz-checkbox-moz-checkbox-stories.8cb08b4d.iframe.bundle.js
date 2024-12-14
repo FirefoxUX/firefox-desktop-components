@@ -73,20 +73,18 @@ class MozCheckbox extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInp
     this.dispatchEvent(newEvent);
   }
   inputTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-      <input
-        id="input"
-        type="checkbox"
-        name=${this.name}
-        value=${this.value}
-        .checked=${this.checked}
-        @click=${this.handleStateChange}
-        @change=${this.redispatchEvent}
-        .disabled=${this.disabled}
-        aria-describedby="description"
-        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
-      />
-    `;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<input
+      id="input"
+      type="checkbox"
+      name=${this.name}
+      value=${this.value}
+      .checked=${this.checked}
+      @click=${this.handleStateChange}
+      @change=${this.redispatchEvent}
+      .disabled=${this.disabled}
+      aria-describedby="description"
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
+    />`;
   }
 }
 customElements.define("moz-checkbox", MozCheckbox);
@@ -624,4 +622,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.3f32ce7f.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.8cb08b4d.iframe.bundle.js.map

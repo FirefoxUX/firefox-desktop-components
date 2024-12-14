@@ -783,15 +783,15 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             data-l10n-id="shopping-settings-recommendations-toggle2"
             data-l10n-attrs="label"
             @toggle=${this.onToggleRecommendations}>
+            <span id="shopping-ads-learn-more" data-l10n-id="shopping-settings-recommendations-learn-more3" slot="description">
+              <a
+                id="shopping-ads-learn-more-link"
+                target="_blank"
+                href="${window.RPMGetFormatURLPref("app.support.baseURL")}review-checker-review-quality?utm_campaign=learn-more&utm_medium=inproduct&utm_term=core-sidebar#w_ads_for_relevant_products"
+                data-l10n-name="review-quality-url"
+              ></a>
+            </span>
           </moz-toggle/>
-          <span id="shopping-ads-learn-more" data-l10n-id="shopping-settings-recommendations-learn-more3">
-            <a
-              id="shopping-ads-learn-more-link"
-              target="_blank"
-              href="${window.RPMGetFormatURLPref("app.support.baseURL")}review-checker-review-quality?utm_campaign=learn-more&utm_medium=inproduct&utm_term=core-sidebar#w_ads_for_relevant_products"
-              data-l10n-name="review-quality-url"
-            ></a>
-          </span>
         </div>` : null;
 
     /* Auto-open experiment changes how the settings card appears by:
@@ -827,12 +827,13 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             data-l10n-attrs="label"
             @toggle=${this.onToggleAutoOpen}
           >
+            <span
+              slot="description"
+              id="shopping-auto-open-description"
+              data-l10n-id=${autoOpenDescriptionL10nId}
+              data-l10n-args=${JSON.stringify(autoOpenDescriptionL10nArgs)}
+            ></span>
           </moz-toggle>
-          <span
-            id="shopping-auto-open-description"
-            data-l10n-id=${autoOpenDescriptionL10nId}
-            data-l10n-args=${JSON.stringify(autoOpenDescriptionL10nArgs)}
-          ></span>
         </div>` : null;
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
       <link
@@ -2851,42 +2852,19 @@ __webpack_require__.r(__webpack_exports__);
  * @fires toggle
  *  Custom event indicating that the toggle's pressed state has changed.
  */
-class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
   static properties = {
     pressed: {
       type: Boolean,
       reflect: true
-    },
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    label: {
-      type: String
-    },
-    description: {
-      type: String
-    },
-    ariaLabel: {
-      type: String,
-      attribute: "aria-label"
-    },
-    accessKey: {
-      type: String,
-      mapped: true
     }
   };
-  static get queries() {
-    return {
-      buttonEl: "#moz-toggle-button",
-      labelEl: "#moz-toggle-label",
-      descriptionEl: "#moz-toggle-description"
-    };
+  get buttonEl() {
+    return this.inputEl;
   }
   constructor() {
     super();
     this.pressed = false;
-    this.disabled = false;
   }
   handleClick() {
     this.pressed = !this.pressed;
@@ -2895,79 +2873,33 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
       composed: true
     }));
   }
-
-  // Delegate clicks on the host to the input element
-  click() {
-    this.buttonEl.click();
-  }
-
-  // Delegate focus to the input element
-  focus() {
-    this.buttonEl.focus();
-  }
-  descriptionTemplate() {
-    if (this.description) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <p
-          id="moz-toggle-description"
-          class="description-wrapper text-deemphasized"
-          part="description"
-        >
-          ${this.description} ${this.supportLinkTemplate()}
-        </p>
-      `;
-    }
-    return "";
-  }
-  supportLinkTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot name="support-link"></slot> `;
-  }
-  buttonTemplate() {
+  inputTemplate() {
     const {
       pressed,
       disabled,
-      description,
       ariaLabel,
       handleClick
     } = this;
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <button
-        id="moz-toggle-button"
-        part="button"
-        type="button"
-        class="toggle-button"
-        ?disabled=${disabled}
-        aria-pressed=${pressed}
-        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(description ? "moz-toggle-description" : undefined)}
-        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
-        @click=${handleClick}
-      ></button>
-    `;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<button
+      id="input"
+      part="button"
+      type="button"
+      class="toggle-button"
+      name=${this.name}
+      value=${this.value}
+      ?disabled=${disabled}
+      aria-pressed=${pressed}
+      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
+      aria-describedby="description"
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      @click=${handleClick}
+    ></button>`;
   }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.label ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-            <label
-              is="moz-label"
-              id="moz-toggle-label"
-              part="label"
-              for="moz-toggle-button"
-              shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
-            >
-              <span>
-                ${this.label}
-                ${!this.description ? this.supportLinkTemplate() : ""}
-              </span>
-              ${this.buttonTemplate()}
-            </label>
-          ` : this.buttonTemplate()}
-      ${this.descriptionTemplate()}
-    `;
+  inputStylesTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
+      rel="stylesheet"
+      href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
+    />`;
   }
 }
 customElements.define("moz-toggle", MozToggle);
@@ -3308,7 +3240,7 @@ module.exports = __webpack_require__.p + "recommended-ad.877fda06e5101151800d.cs
 /***/ 8423:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "settings.e33109b287cdfcbc61cd.css";
+module.exports = __webpack_require__.p + "settings.068169e89ebe09ea5c17.css";
 
 /***/ }),
 
@@ -3378,7 +3310,7 @@ module.exports = __webpack_require__.p + "moz-message-bar.c6600b8cdecdc558e794.c
 /***/ 16368:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
+module.exports = __webpack_require__.p + "moz-toggle.9f6e900b345c85c235f3.css";
 
 /***/ }),
 
@@ -3390,4 +3322,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.793d2424.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.5d0e1ad9.iframe.bundle.js.map

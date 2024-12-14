@@ -1056,42 +1056,19 @@ __webpack_require__.r(__webpack_exports__);
  * @fires toggle
  *  Custom event indicating that the toggle's pressed state has changed.
  */
-class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
   static properties = {
     pressed: {
       type: Boolean,
       reflect: true
-    },
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    label: {
-      type: String
-    },
-    description: {
-      type: String
-    },
-    ariaLabel: {
-      type: String,
-      attribute: "aria-label"
-    },
-    accessKey: {
-      type: String,
-      mapped: true
     }
   };
-  static get queries() {
-    return {
-      buttonEl: "#moz-toggle-button",
-      labelEl: "#moz-toggle-label",
-      descriptionEl: "#moz-toggle-description"
-    };
+  get buttonEl() {
+    return this.inputEl;
   }
   constructor() {
     super();
     this.pressed = false;
-    this.disabled = false;
   }
   handleClick() {
     this.pressed = !this.pressed;
@@ -1100,79 +1077,33 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
       composed: true
     }));
   }
-
-  // Delegate clicks on the host to the input element
-  click() {
-    this.buttonEl.click();
-  }
-
-  // Delegate focus to the input element
-  focus() {
-    this.buttonEl.focus();
-  }
-  descriptionTemplate() {
-    if (this.description) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <p
-          id="moz-toggle-description"
-          class="description-wrapper text-deemphasized"
-          part="description"
-        >
-          ${this.description} ${this.supportLinkTemplate()}
-        </p>
-      `;
-    }
-    return "";
-  }
-  supportLinkTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot name="support-link"></slot> `;
-  }
-  buttonTemplate() {
+  inputTemplate() {
     const {
       pressed,
       disabled,
-      description,
       ariaLabel,
       handleClick
     } = this;
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <button
-        id="moz-toggle-button"
-        part="button"
-        type="button"
-        class="toggle-button"
-        ?disabled=${disabled}
-        aria-pressed=${pressed}
-        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(description ? "moz-toggle-description" : undefined)}
-        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
-        @click=${handleClick}
-      ></button>
-    `;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<button
+      id="input"
+      part="button"
+      type="button"
+      class="toggle-button"
+      name=${this.name}
+      value=${this.value}
+      ?disabled=${disabled}
+      aria-pressed=${pressed}
+      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
+      aria-describedby="description"
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      @click=${handleClick}
+    ></button>`;
   }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.label ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-            <label
-              is="moz-label"
-              id="moz-toggle-label"
-              part="label"
-              for="moz-toggle-button"
-              shownaccesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
-            >
-              <span>
-                ${this.label}
-                ${!this.description ? this.supportLinkTemplate() : ""}
-              </span>
-              ${this.buttonTemplate()}
-            </label>
-          ` : this.buttonTemplate()}
-      ${this.descriptionTemplate()}
-    `;
+  inputStylesTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
+      rel="stylesheet"
+      href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
+    />`;
   }
 }
 customElements.define("moz-toggle", MozToggle);
@@ -11804,9 +11735,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-toggle.37107d87397819ec5609.css";
+module.exports = __webpack_require__.p + "moz-toggle.9f6e900b345c85c235f3.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-README-stories-md.8dcf735d.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-README-stories-md.5f3532b1.iframe.bundle.js.map
