@@ -1558,6 +1558,10 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       RPMSetPref(SIDEBAR_CLOSED_COUNT_PREF, sidebarClosedCount + 1);
     }
     RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+    window.dispatchEvent(new CustomEvent("CloseShoppingSidebar", {
+      bubbles: true,
+      composed: true
+    }));
     Glean.shopping.surfaceClosed.record({
       source: "closeButton"
     });
@@ -3322,4 +3326,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.5d0e1ad9.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.86f81a0c.iframe.bundle.js.map

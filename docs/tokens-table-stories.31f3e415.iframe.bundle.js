@@ -48,7 +48,7 @@ const HCM_MAP = {
   AccentColorText: "#2B2B2B",
   VisitedText: "#8080FF"
 };
-const THEMED_TABLES = ["attention-dot", "background-color", "border", "border-color", "opacity", "text-color", "color", "outline", "icon-color", "link"];
+const THEMED_TABLES = ["attention-dot", "background-color", "border", "border-color", "opacity", "text-color", "color", "outline", "icon-color", "link", "table-row"];
 
 /**
  *
@@ -368,6 +368,7 @@ class TokensTable extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPO
     switch (category) {
       case "attention-dot":
       case "color":
+      case "table-row":
         return "background-color";
       case "text-color":
         return "color";
@@ -1357,6 +1358,27 @@ const storybookTables = {
   }, {
     value: "calc(8 * var(--space-xsmall))",
     name: "--space-xxlarge"
+  }],
+  "table-row": [{
+    value: {
+      default: "var(--background-color-canvas)"
+    },
+    name: "--table-row-background-color"
+  }, {
+    value: {
+      forcedColors: "var(--background-color-canvas)",
+      brand: {
+        light: "#f0f0f4",
+        dark: "var(--color-gray-80)",
+        default: "light-dark(#f0f0f4, var(--color-gray-80))"
+      },
+      platform: {
+        light: "rgba(0,0,0,5%)",
+        dark: "rgba(255,255,255,5%)",
+        default: "light-dark(rgba(0,0,0,5%), rgba(255,255,255,5%))"
+      }
+    },
+    name: "--table-row-background-color-alternate"
   }]
 };
 const variableLookupTable = {
@@ -1881,6 +1903,22 @@ const variableLookupTable = {
   "space-large": "calc(4 * var(--space-xsmall))",
   "space-xlarge": "calc(6 * var(--space-xsmall))",
   "space-xxlarge": "calc(8 * var(--space-xsmall))",
+  "table-row-background-color": {
+    default: "var(--background-color-canvas)"
+  },
+  "table-row-background-color-alternate": {
+    forcedColors: "var(--background-color-canvas)",
+    brand: {
+      light: "#f0f0f4",
+      dark: "var(--color-gray-80)",
+      default: "light-dark(#f0f0f4, var(--color-gray-80))"
+    },
+    platform: {
+      light: "rgba(0,0,0,5%)",
+      dark: "rgba(255,255,255,5%)",
+      default: "light-dark(rgba(0,0,0,5%), rgba(255,255,255,5%))"
+    }
+  },
   "text-color": {
     prefersContrast: "CanvasText",
     brand: {
@@ -1918,4 +1956,4 @@ module.exports = __webpack_require__.p + "tokens-table.fa3a1444a24e4f30dac7.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.7b6aa19e.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.31f3e415.iframe.bundle.js.map
