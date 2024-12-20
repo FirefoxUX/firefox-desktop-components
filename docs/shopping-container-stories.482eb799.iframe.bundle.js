@@ -1188,6 +1188,12 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     },
     showingKeepClosedMessage: {
       type: Boolean
+    },
+    isProductPage: {
+      type: Boolean
+    },
+    isSupportedSite: {
+      type: Boolean
     }
   };
   static get queries() {
@@ -1243,23 +1249,27 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     analysisProgress,
     focusCloseButton,
     autoOpenEnabled,
-    autoOpenEnabledByUser
+    autoOpenEnabledByUser,
+    isProductPage,
+    isSupportedSite
   }) {
     // If we're not opted in or there's no shopping URL in the main browser,
     // the actor will pass `null`, which means this will clear out any existing
     // content in the sidebar.
     this.data = data;
-    this.showOnboarding = showOnboarding;
+    this.showOnboarding = showOnboarding ?? this.showOnboarding;
     this.productUrl = productUrl;
     this.recommendationData = recommendationData;
     this.isOffline = !navigator.onLine;
     this.isAnalysisInProgress = isAnalysisInProgress;
-    this.adsEnabled = adsEnabled;
-    this.adsEnabledByUser = adsEnabledByUser;
+    this.adsEnabled = adsEnabled ?? this.adsEnabled;
+    this.adsEnabledByUser = adsEnabledByUser ?? this.adsEnabledByUser;
     this.analysisProgress = analysisProgress;
     this.focusCloseButton = focusCloseButton;
-    this.autoOpenEnabled = autoOpenEnabled;
-    this.autoOpenEnabledByUser = autoOpenEnabledByUser;
+    this.autoOpenEnabled = autoOpenEnabled ?? this.autoOpenEnabled;
+    this.autoOpenEnabledByUser = autoOpenEnabledByUser ?? this.autoOpenEnabledByUser;
+    this.isProductPage = isProductPage ?? true;
+    this.isSupportedSite = isSupportedSite;
   }
   _updateRecommendations({
     recommendationData
@@ -1326,7 +1336,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       hostname = new URL(this.productUrl)?.hostname;
       return hostname;
     } catch (e) {
-      console.error(`Unknown product url ${this.productUrl}.`);
+      console.warn(`Unknown product url ${this.productUrl}.`);
       return null;
     }
   }
@@ -3326,4 +3336,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.86f81a0c.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.482eb799.iframe.bundle.js.map

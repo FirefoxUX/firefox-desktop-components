@@ -281,6 +281,9 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     },
     handleEditButtonClick: {
       type: Function
+    },
+    handleViewAlertClick: {
+      type: Function
     }
   };
   static get queries() {
@@ -373,7 +376,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     this.handleEditButtonClick();
   }
   onViewAlertClick() {
-    // TODO: implement me
+    this.handleViewAlertClick();
   }
   #onOriginLineClick(lineIndex) {
     this.handleCommand("OpenLink", lineIndex);
@@ -423,7 +426,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       this.#onCopyButtonClick(this.username.lineIndex);
       return true;
     }}
-        ?alert=${this.username.value.length === 0}
+        ?alert=${!this.username.value.length}
       >
       </login-line>
     `;
@@ -593,4 +596,4 @@ module.exports = __webpack_require__.p + "PasswordCard.3675af91aff9e58139b0.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.e20c7079.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.ca5e4ea2.iframe.bundle.js.map
