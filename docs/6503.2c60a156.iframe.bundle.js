@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[6503],{
+
+/***/ 86503:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n## These strings appear on the warning you see when first visiting about:config.\n\nabout-config-intro-warning-title = Proceed with Caution\nabout-config-intro-warning-text = Changing advanced configuration preferences can impact { -brand-short-name } performance or security.\nabout-config-intro-warning-checkbox = Warn me when I attempt to access these preferences\nabout-config-intro-warning-button = Accept the Risk and Continue\n\n##\n\n# This is shown on the page before searching but after the warning is accepted.\nabout-config-caution-text = Changing these preferences can impact { -brand-short-name } performance or security.\n\nabout-config-page-title = Advanced Preferences\n\nabout-config-search-input1 =\n    .placeholder = Search preference name\nabout-config-show-all = Show All\n\nabout-config-show-only-modified = Show only modified preferences\n\nabout-config-pref-add-button =\n    .title = Add\nabout-config-pref-toggle-button =\n    .title = Toggle\nabout-config-pref-edit-button =\n    .title = Edit\nabout-config-pref-save-button =\n    .title = Save\nabout-config-pref-reset-button =\n    .title = Reset\nabout-config-pref-delete-button =\n    .title = Delete\n\n## Labels for the type selection radio buttons shown when adding preferences.\n\nabout-config-pref-add-type-boolean = Boolean\nabout-config-pref-add-type-number = Number\nabout-config-pref-add-type-string = String\n\n## Preferences with a non-default value are differentiated visually, and at the\n## same time the state is made accessible to screen readers using an aria-label\n## that won't be visible or copied to the clipboard.\n##\n## Variables:\n##   $value (String): The full value of the preference.\n\nabout-config-pref-accessible-value-default =\n    .aria-label = { $value } (default)\nabout-config-pref-accessible-value-custom =\n    .aria-label = { $value } (custom)\n";
+
+/***/ })
+
+}]);
