@@ -1262,7 +1262,7 @@ __webpack_require__.r(__webpack_exports__);
     #initialized = false;
     #defaultSlot;
     static get observedAttributes() {
-      return ["accesskey", "type"];
+      return ["accesskey", "type", "disabled"];
     }
     constructor() {
       super();
@@ -1372,7 +1372,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this._accessKey = null;
         }
-      } else if (name === "type") {
+      } else if (name === "type" || name === "disabled") {
         this.#setButtonAttributes();
       }
     }
@@ -1384,6 +1384,7 @@ __webpack_require__.r(__webpack_exports__);
         this.button.setAttribute("role", "menuitem");
         this.button.removeAttribute("aria-checked");
       }
+      this.button.toggleAttribute("disabled", this.disabled);
     }
     #setLabelContents() {
       this.label.textContent = this.#defaultSlot.assignedNodes().map(node => node.textContent).join("");
@@ -1395,10 +1396,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
     get disabled() {
-      return this.button.hasAttribute("disabled");
+      return this.hasAttribute("disabled");
     }
     set disabled(val) {
-      this.button.toggleAttribute("disabled", val);
+      this.toggleAttribute("disabled", val);
     }
     get checked() {
       if (this.type !== "checkbox") {
@@ -2333,12 +2334,12 @@ function _createMdxContent(props) {
       }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "panel-list"
       }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html#87,102,114",
+        href: "https://searchfox.org/mozilla-central/rev/6f4bc07bd9eb07ed34774841ecf3b1f3678791e8/toolkit/mozapps/extensions/content/aboutaddons.html#209,252,280",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "about:addons"
       }), "\nand the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/components/migration/content/migration-dialog-window.html#18",
+        href: "https://searchfox.org/mozilla-central/rev/6f4bc07bd9eb07ed34774841ecf3b1f3678791e8/browser/components/migration/content/migration-wizard.mjs#443",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "migration-wizard"
@@ -12352,4 +12353,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.41135733.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.8cc6384c.iframe.bundle.js.map

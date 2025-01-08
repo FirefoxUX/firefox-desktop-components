@@ -2387,7 +2387,7 @@ __webpack_require__.r(__webpack_exports__);
     #initialized = false;
     #defaultSlot;
     static get observedAttributes() {
-      return ["accesskey", "type"];
+      return ["accesskey", "type", "disabled"];
     }
     constructor() {
       super();
@@ -2497,7 +2497,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this._accessKey = null;
         }
-      } else if (name === "type") {
+      } else if (name === "type" || name === "disabled") {
         this.#setButtonAttributes();
       }
     }
@@ -2509,6 +2509,7 @@ __webpack_require__.r(__webpack_exports__);
         this.button.setAttribute("role", "menuitem");
         this.button.removeAttribute("aria-checked");
       }
+      this.button.toggleAttribute("disabled", this.disabled);
     }
     #setLabelContents() {
       this.label.textContent = this.#defaultSlot.assignedNodes().map(node => node.textContent).join("");
@@ -2520,10 +2521,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
     get disabled() {
-      return this.button.hasAttribute("disabled");
+      return this.hasAttribute("disabled");
     }
     set disabled(val) {
-      this.button.toggleAttribute("disabled", val);
+      this.toggleAttribute("disabled", val);
     }
     get checked() {
       if (this.type !== "checkbox") {
@@ -3159,4 +3160,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.e184d6d3.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.16c8ee9d.iframe.bundle.js.map

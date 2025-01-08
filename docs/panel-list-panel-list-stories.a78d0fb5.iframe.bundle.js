@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[815],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4006,815],{
 
 /***/ 10815:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -513,7 +513,7 @@ __webpack_require__.r(__webpack_exports__);
     #initialized = false;
     #defaultSlot;
     static get observedAttributes() {
-      return ["accesskey", "type"];
+      return ["accesskey", "type", "disabled"];
     }
     constructor() {
       super();
@@ -623,7 +623,7 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           this._accessKey = null;
         }
-      } else if (name === "type") {
+      } else if (name === "type" || name === "disabled") {
         this.#setButtonAttributes();
       }
     }
@@ -635,6 +635,7 @@ __webpack_require__.r(__webpack_exports__);
         this.button.setAttribute("role", "menuitem");
         this.button.removeAttribute("aria-checked");
       }
+      this.button.toggleAttribute("disabled", this.disabled);
     }
     #setLabelContents() {
       this.label.textContent = this.#defaultSlot.assignedNodes().map(node => node.textContent).join("");
@@ -646,10 +647,10 @@ __webpack_require__.r(__webpack_exports__);
       }
     }
     get disabled() {
-      return this.button.hasAttribute("disabled");
+      return this.hasAttribute("disabled");
     }
     set disabled(val) {
-      this.button.toggleAttribute("disabled", val);
+      this.toggleAttribute("disabled", val);
     }
     get checked() {
       if (this.type !== "checkbox") {
@@ -724,6 +725,209 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ 10790:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Icons": () => (/* binding */ Icons),
+/* harmony export */   "Open": () => (/* binding */ Open),
+/* harmony export */   "Simple": () => (/* binding */ Simple),
+/* harmony export */   "SubMenu": () => (/* binding */ SubMenu),
+/* harmony export */   "Wide": () => (/* binding */ Wide),
+/* harmony export */   "WithAccesskeys": () => (/* binding */ WithAccesskeys),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _panel_list_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10815);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+let accesskeyOptions = ["n", "w", "e", "c", "b"];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Panel List",
+  component: "panel-list",
+  argTypes: {
+    accesskeys: {
+      if: {
+        arg: "showAccesskeys",
+        truthy: true
+      }
+    }
+  },
+  parameters: {
+    status: "stable",
+    actions: {
+      handles: ["showing", "shown", "hidden", "click"]
+    },
+    fluent: `
+panel-list-item-one = Item One
+panel-list-item-two = Item Two
+panel-list-item-three = Item Three
+panel-list-disabled = Disabled
+panel-list-checked = Checked
+panel-list-badged = Badged, look at me
+panel-list-passwords = Passwords
+panel-list-settings = Settings
+submenu-item-one = Submenu Item One
+submenu-item-two = Submenu Item Two
+submenu-item-three = Submenu Item Three
+    `
+  }
+});
+function openMenu(event) {
+  if (event.type == "mousedown" || event.inputSource == MouseEvent.MOZ_SOURCE_KEYBOARD || !event.detail) {
+    event.target.getRootNode().querySelector("panel-list").toggle(event);
+  }
+}
+const Template = ({
+  isOpen,
+  items,
+  wideAnchor,
+  hasSubMenu,
+  showAccesskeys,
+  accesskeys
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+  <style>
+    panel-item[icon="passwords"]::part(button) {
+      background-image: url("chrome://browser/skin/login.svg");
+    }
+    panel-item[icon="settings"]::part(button) {
+      background-image: url("chrome://global/skin/icons/settings.svg");
+    }
+    button {
+      position: absolute;
+      background-image: url("chrome://global/skin/icons/more.svg");
+    }
+    button[wide] {
+      width: 400px !important;
+    }
+    .end {
+      inset-inline-end: 30px;
+    }
+
+    .bottom {
+      inset-block-end: 30px;
+    }
+  </style>
+  ${isOpen ? "" : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+        <button
+          class="ghost-button icon-button"
+          @click=${openMenu}
+          @mousedown=${openMenu}
+          ?wide="${wideAnchor}"
+        ></button>
+        <button
+          class="ghost-button icon-button end"
+          @click=${openMenu}
+          @mousedown=${openMenu}
+          ?wide="${wideAnchor}"
+        ></button>
+        <button
+          class="ghost-button icon-button bottom"
+          @click=${openMenu}
+          @mousedown=${openMenu}
+          ?wide="${wideAnchor}"
+        ></button>
+        <button
+          class="ghost-button icon-button bottom end"
+          @click=${openMenu}
+          @mousedown=${openMenu}
+          ?wide="${wideAnchor}"
+        ></button>
+      `}
+  <panel-list
+    ?stay-open=${isOpen}
+    ?open=${isOpen}
+    ?min-width-from-anchor=${wideAnchor}
+  >
+    ${items.map((item, index) => {
+  // Always showing submenu on the first item for simplicity.
+  let showSubMenu = hasSubMenu && index == 0;
+  let subMenuId = showSubMenu ? "example-sub-menu" : undefined;
+  return item == "<hr>" ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <hr /> ` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+            <panel-item
+              icon=${item.icon ?? ""}
+              ?checked=${item.checked}
+              ?disabled=${item.disabled}
+              type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.checked ? "checkbox" : undefined)}
+              ?badged=${item.badged}
+              data-l10n-id=${item.l10nId ?? item}
+              submenu=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(subMenuId)}
+              accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(showAccesskeys ? accesskeys[index] : "")}
+            >
+              ${showSubMenu ? subMenuTemplate() : ""}
+            </panel-item>
+          `;
+})}
+  </panel-list>
+`;
+const subMenuTemplate = () => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+  <panel-list slot="submenu" id="example-sub-menu">
+    <panel-item data-l10n-id="submenu-item-one"></panel-item>
+    <panel-item data-l10n-id="submenu-item-two"></panel-item>
+    <panel-item data-l10n-id="submenu-item-three"></panel-item>
+  </panel-list>
+`;
+const Simple = Template.bind({});
+Simple.args = {
+  isOpen: false,
+  wideAnchor: false,
+  items: ["panel-list-item-one", {
+    l10nId: "panel-list-item-two"
+  }, "panel-list-item-three", "<hr>", {
+    l10nId: "panel-list-disabled",
+    disabled: true
+  }, {
+    l10nId: "panel-list-checked",
+    checked: true
+  }, {
+    l10nId: "panel-list-badged",
+    badged: true,
+    icon: "settings"
+  }],
+  showAccesskeys: false
+};
+const Icons = Template.bind({});
+Icons.args = {
+  isOpen: false,
+  wideAnchor: false,
+  items: [{
+    l10nId: "panel-list-passwords",
+    icon: "passwords"
+  }, {
+    l10nId: "panel-list-settings",
+    icon: "settings"
+  }]
+};
+const Open = Template.bind({});
+Open.args = {
+  ...Simple.args,
+  wideAnchor: false,
+  isOpen: true
+};
+const Wide = Template.bind({});
+Wide.args = {
+  ...Simple.args,
+  wideAnchor: true
+};
+const SubMenu = Template.bind({});
+SubMenu.args = {
+  ...Simple.args,
+  hasSubMenu: true
+};
+const WithAccesskeys = Template.bind({});
+WithAccesskeys.args = {
+  ...Simple.args,
+  showAccesskeys: true,
+  accesskeys: accesskeyOptions
+};
+
+/***/ }),
+
 /***/ 38732:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -739,4 +943,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=815.56460246.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.a78d0fb5.iframe.bundle.js.map

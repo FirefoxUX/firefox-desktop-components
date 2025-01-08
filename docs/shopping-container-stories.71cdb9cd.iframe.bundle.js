@@ -1142,6 +1142,8 @@ const HEADER_SCROLL_PIXEL_OFFSET = 8;
 const SIDEBAR_CLOSED_COUNT_PREF = "browser.shopping.experience2023.sidebarClosedCount";
 const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
 const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
+const SIDEBAR_REVAMP_PREF = "sidebar.revamp";
+const INTEGRATED_SIDEBAR_PREF = "browser.shopping.experience2023.integratedSidebar";
 class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
     data: {
@@ -1229,6 +1231,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       return;
     }
     this.initialized = true;
+    this.showHeader = !RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF) || RPMGetBoolPref(SIDEBAR_REVAMP_PREF);
     window.document.addEventListener("Update", this);
     window.document.addEventListener("NewAnalysisRequested", this);
     window.document.addEventListener("ReanalysisRequested", this);
@@ -1600,6 +1603,26 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     });
     return template;
   }
+  headerTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`<div
+      id="header-wrapper"
+      class=${this.isOverflow ? "shopping-header-overflow" : ""}
+    >
+      <header id="shopping-header" data-l10n-id="shopping-a11y-header">
+        <h1
+          id="shopping-header-title"
+          data-l10n-id="shopping-main-container-title"
+        ></h1>
+        <p id="beta-marker" data-l10n-id="shopping-beta-marker"></p>
+      </header>
+      <button
+        id="close-button"
+        class="ghost-button shopping-button"
+        data-l10n-id="shopping-close-button"
+        @click=${this.handleCloseButtonClick}
+      ></button>
+    </div>`;
+  }
   renderContainer(sidebarContent, {
     showSettings = false
   } = {}) {
@@ -1616,24 +1639,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div id="shopping-container">
-        <div
-          id="header-wrapper"
-          class=${this.isOverflow ? "shopping-header-overflow" : ""}
-        >
-          <header id="shopping-header" data-l10n-id="shopping-a11y-header">
-            <h1
-              id="shopping-header-title"
-              data-l10n-id="shopping-main-container-title"
-            ></h1>
-            <p id="beta-marker" data-l10n-id="shopping-beta-marker"></p>
-          </header>
-          <button
-            id="close-button"
-            class="ghost-button shopping-button"
-            data-l10n-id="shopping-close-button"
-            @click=${this.handleCloseButtonClick}
-          ></button>
-        </div>
+        ${this.showHeader ? this.headerTemplate() : null}
         <div
           id="content"
           class=${!this.isProductPage && !this.isOffline ? "is-empty-state" : ""}
@@ -3481,4 +3487,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.0c98e791.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.71cdb9cd.iframe.bundle.js.map
