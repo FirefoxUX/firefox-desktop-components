@@ -2729,6 +2729,7 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
     actionsSlot: "slot[name=actions]",
     actionsEl: ".actions",
     closeButton: "moz-button.close",
+    messageEl: ".message",
     supportLinkSlot: "slot[name=support-link]"
   };
   static properties = {
@@ -2758,9 +2759,12 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
     this.type = "info";
     this.dismissable = false;
   }
-  onSlotchange() {
+  onActionSlotchange() {
     let actions = this.actionsSlot.assignedNodes();
     this.actionsEl.classList.toggle("active", actions.length);
+  }
+  onLinkSlotChange() {
+    this.messageEl.classList.toggle("has-link-after", !!this.supportLinkEls.length);
   }
   connectedCallback() {
     super.connectedCallback();
@@ -2836,13 +2840,16 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
                   ${this.message}
                 </span>
                 <span class="link">
-                  <slot name="support-link"></slot>
+                  <slot
+                    name="support-link"
+                    @slotchange=${this.onLinkSlotChange}
+                  ></slot>
                 </span>
               </div>
             </div>
           </div>
           <span class="actions">
-            <slot name="actions" @slotchange=${this.onSlotchange}></slot>
+            <slot name="actions" @slotchange=${this.onActionSlotchange}></slot>
           </span>
         </div>
         ${this.closeButtonTemplate()}
@@ -3468,7 +3475,7 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 84296:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.c6600b8cdecdc558e794.css";
+module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.css";
 
 /***/ }),
 
@@ -3487,4 +3494,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.71cdb9cd.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.a11ac017.iframe.bundle.js.map
