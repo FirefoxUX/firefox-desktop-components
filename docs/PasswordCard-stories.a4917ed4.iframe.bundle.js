@@ -291,22 +291,24 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       originLine: ".line-item[linetype='origin']",
       usernameLine: ".line-item[linetype='username']",
       passwordLine: "concealed-login-line",
-      editBtn: ".edit-button"
+      editBtn: ".edit-button",
+      viewAlertBtn: ".view-alert-button"
     };
   }
   #focusableElementsList;
   #focusableElementsMap;
-
-  /**
-   * Returns the first focusable element of the next password card componenet.
-   * If the user is navigating down, then the next focusable element should be the edit button,
-   * and if the user is navigating up, then it should be the origin line.
-   *
-   * @param {string} keyCode - The code associated with a keypress event. Either 'ArrowUp' or 'ArrowDown'.
-   * @returns {HTMLElement | null} The first focusable element of the next password-card.
-   */
-  #getNextFocusableElement(keyCode) {
-    return keyCode === "ArrowDown" ? this.nextElementSibling?.originLine : this.previousElementSibling?.editBtn;
+  #hasAlert() {
+    return this.origin.breached || !this.username.value.length || this.password.vulnerable;
+  }
+  #getNextFocusableElement() {
+    return this.nextElementSibling?.originLine;
+  }
+  #getPrevFocusableElement() {
+    const prevSibling = this.previousElementSibling;
+    if (!prevSibling) {
+      return null;
+    }
+    return prevSibling.#hasAlert() ? prevSibling.viewAlertBtn : prevSibling.editBtn;
   }
   async firstUpdated() {
     this.#focusableElementsMap = new Map();
@@ -338,7 +340,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       case "ArrowUp":
         e.preventDefault();
         if (this.#focusableElementsMap.get(element) === 0) {
-          this.#getNextFocusableElement(e.code)?.focus();
+          this.#getPrevFocusableElement()?.focus();
         } else {
           focusInternal(DIRECTIONS[e.code]);
         }
@@ -346,7 +348,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       case "ArrowDown":
         e.preventDefault();
         if (this.#focusableElementsMap.get(element) === this.#focusableElementsList.length - 1) {
-          this.#getNextFocusableElement(e.code)?.focus();
+          this.#getNextFocusableElement()?.focus();
         } else {
           focusInternal(DIRECTIONS[e.code]);
         }
@@ -455,8 +457,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     </div>`;
   }
   renderViewAlertField() {
-    const hasAlert = this.origin.breached || !this.username.value.length || this.password.vulnerable;
-    if (!hasAlert) {
+    if (!this.#hasAlert()) {
       return "";
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -596,4 +597,4 @@ module.exports = __webpack_require__.p + "PasswordCard.3675af91aff9e58139b0.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.c1c9dd36.iframe.bundle.js.map
+//# sourceMappingURL=PasswordCard-stories.a4917ed4.iframe.bundle.js.map
