@@ -1,0 +1,156 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  --page-nav-button-border-radius: var(--button-border-radius);
+  --page-nav-button-text-color: var(--button-text-color-ghost);
+  --page-nav-button-text-color-hover: var(--button-text-color-ghost-hover);
+  --page-nav-button-text-color-active: var(--button-text-color-ghost-active);
+  --page-nav-button-background-color: var(--button-background-color-ghost);
+  --page-nav-button-background-color-hover: var(--button-background-color-ghost-hover);
+  --page-nav-button-background-color-active: var(--button-background-color-ghost-active);
+  --page-nav-button-background-color-selected: color-mix(in srgb, currentColor 8%, transparent);
+  --page-nav-button-padding: var(--space-small) var(--space-medium);
+  --page-nav-button-width: 240px;
+
+  border-radius: var(--border-radius-small);
+
+  &:focus-visible {
+    outline-offset: var(--page-nav-focus-outline-inset);
+  }
+
+  @media (max-width: 52rem) {
+    --page-nav-button-padding: var(--space-small);
+    --page-nav-button-width: 120px;
+  }
+}
+
+:host([iconsrc]) {
+  @media (max-width: 52rem) {
+    --page-nav-button-width: var(--button-size-icon);
+  }
+}
+
+a[href],
+button {
+  background-color: var(--page-nav-button-background-color);
+  border: 1px solid var(--page-nav-border-color);
+  -moz-context-properties: fill, fill-opacity;
+  fill: var(--icon-color);
+  display: flex;
+  gap: var(--space-medium);
+  align-items: center;
+  font-family: inherit;
+  font-size: inherit;
+  width: var(--page-nav-button-width);
+  font-weight: normal;
+  border-radius: var(--page-nav-button-border-radius);
+  color: var(--page-nav-button-text-color);
+  text-align: start;
+  transition: background-color 150ms;
+  padding: var(--page-nav-button-padding);
+}
+
+a[href] {
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+button:hover {
+  cursor: pointer;
+}
+
+@media not (prefers-contrast) {
+  a[href],
+  button {
+    position: relative;
+  }
+
+  button::before {
+    content: "";
+    display: block;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: 4px;
+    background-color: transparent;
+    border-start-start-radius: var(--page-nav-button-border-radius);
+    border-end-start-radius: var(--page-nav-button-border-radius);
+  }
+
+  button[selected]::before {
+    background-color: var(--color-accent-primary);
+  }
+
+  a[href]:hover,
+  button:hover:not([selected]) {
+    color: var(--page-nav-button-text-color-hover);
+    background-color: var(--page-nav-button-background-color-hover);
+
+    &:active {
+      color: var(--page-nav-button-text-color-active);
+      background-color: var(--page-nav-button-background-color-active);
+    }
+  }
+
+  button[selected] {
+    color: var(--color-accent-primary);
+    background-color: var(--page-nav-button-background-color-selected);
+    font-weight: var(--font-weight-bold);
+  }
+}
+
+a[href]:focus-visible,
+button:focus-visible,
+button[selected]:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: 0;
+  border-radius: var(--border-radius-small);
+}
+
+.page-nav-icon {
+  height: var(--icon-size-default);
+  width: var(--icon-size-default);
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+@media (prefers-contrast) {
+  a[href],
+  button {
+    transition: none;
+    border-color: ButtonText;
+    background-color: var(--button-background-color);
+  }
+
+  a[href]:hover,
+  button:hover {
+    color: SelectedItem;
+  }
+
+  button[selected] {
+    color: SelectedItemText;
+    background-color: SelectedItem;
+    border-color: SelectedItem;
+  }
+}
+
+slot {
+  margin: 0;
+  padding-inline-start: 0;
+  user-select: none;
+}
+
+@media (max-width: 52rem) {
+  slot {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .page-nav-icon + & {
+      display: none;
+    }
+  }
+}
