@@ -405,12 +405,15 @@ const NAVIGATION_DIRECTIONS = {
  * @tagname moz-radio-group
  * @property {boolean} disabled - Whether or not the fieldset is disabled.
  * @property {string} label - Label for the group of moz-radio elements.
+ * @property {string} description - Description for the group of moz-radio elements.
+ * @property {string} supportPage - Support page for the group of moz-radio elements.
  * @property {string} name
  *  Input name of the radio group. Propagates to moz-radio children.
  * @property {string} value
  *  Selected value for the group. Changing the value updates the checked
  *  state of moz-radio children and vice versa.
  * @slot default - The radio group's content, intended for moz-radio elements.
+ * @slot support-link - The radio group's support link intended for moz-radio elements.
  */
 class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   #radioButtons = [];
@@ -419,6 +422,14 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     disabled: {
       type: Boolean,
       reflect: true
+    },
+    description: {
+      type: String,
+      fluent: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     },
     label: {
       type: String,
@@ -553,11 +564,14 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       <moz-fieldset
         part="fieldset"
+        description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.description)}
+        support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.supportPage)}
         role="radiogroup"
         ?disabled=${this.disabled}
         label=${this.label}
-        exportparts="inputs"
+        exportparts="inputs, support-link"
       >
+        ${!this.supportPage ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<slot slot="support-link" name="support-link"></slot>` : ""}
         <slot
           @slotchange=${this.syncStateToRadioButtons}
           @change=${this.handleChange}
@@ -671,6 +685,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "WithAccesskeys": () => (/* binding */ WithAccesskeys),
 /* harmony export */   "WithDescriptions": () => (/* binding */ WithDescriptions),
 /* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
+/* harmony export */   "WithRadioGroupDescription": () => (/* binding */ WithRadioGroupDescription),
+/* harmony export */   "WithRadioGroupSlottedSupportLink": () => (/* binding */ WithRadioGroupSlottedSupportLink),
+/* harmony export */   "WithRadioGroupSupportLink": () => (/* binding */ WithRadioGroupSupportLink),
 /* harmony export */   "WithSlottedSupportLinks": () => (/* binding */ WithSlottedSupportLinks),
 /* harmony export */   "WithSupportLinks": () => (/* binding */ WithSupportLinks),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -753,6 +770,9 @@ moz-radio-described-long-1 =
 moz-radio-described-long-2 =
   .label = Hola ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt diam id ligula faucibus volutpat. Integer quis ultricies elit. In in dolor luctus velit sollicitudin efficitur vel id massa.
   .description = This is the third option.
+moz-radio-group-description =
+  .label = This is the group label
+  .description = This is the group description
     `
   }
 });
@@ -768,13 +788,17 @@ const Template = ({
   showAccesskeys,
   accesskeys,
   supportPage,
-  hasSlottedSupportLinks
+  groupSupportPage,
+  hasSlottedSupportLinks,
+  groupSlottedSupportLink
 }) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
   <moz-radio-group
     name=${groupName}
     data-l10n-id=${groupL10nId}
+    support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(groupSupportPage)}
     ?disabled=${disabled}
   >
+    ${groupSlottedSupportLink ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<a href="/" slot="support-link">Slotted support link</a>` : ""}
     ${greetings.map((greeting, i) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
         <moz-radio
           ?checked=${i == 0 && !unchecked}
@@ -805,7 +829,9 @@ Default.args = {
   showAccesskeys: false,
   accesskeys: accesskeyOptions,
   supportPage: "",
-  hasSlottedSupportLinks: false
+  groupSupportPage: "",
+  hasSlottedSupportLinks: false,
+  groupSlottedSupportLink: false
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
@@ -846,6 +872,23 @@ const WithSlottedSupportLinks = Template.bind({});
 WithSlottedSupportLinks.args = {
   ...Default.args,
   hasSlottedSupportLinks: true
+};
+const WithRadioGroupDescription = Template.bind({});
+WithRadioGroupDescription.args = {
+  ...Default.args,
+  groupL10nId: "moz-radio-group-description"
+};
+const WithRadioGroupSupportLink = Template.bind({});
+WithRadioGroupSupportLink.args = {
+  ...Default.args,
+  groupL10nId: "moz-radio-group-description",
+  groupSupportPage: "this is the group support page"
+};
+const WithRadioGroupSlottedSupportLink = Template.bind({});
+WithRadioGroupSlottedSupportLink.args = {
+  ...Default.args,
+  groupL10nId: "moz-radio-group-description",
+  groupSlottedSupportLink: true
 };
 
 /***/ }),
@@ -986,4 +1029,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.b41db6f6.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.935c8340.iframe.bundle.js.map
