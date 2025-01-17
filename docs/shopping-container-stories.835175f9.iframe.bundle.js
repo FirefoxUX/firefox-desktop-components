@@ -1616,6 +1616,10 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   renderContainer(sidebarContent, {
     showSettings = false
   } = {}) {
+    /* Empty state styles for users that are not yet opted-in are managed separately
+     * by AboutWelcomeChild.sys.mjs and _shopping.scss. To prevent overlap, only apply
+     * the class for these styles if a user is opted-in. */
+    const canStyleEmptyState = !this.isProductPage && !this.isOffline && !this.showOnboarding;
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`<link
         rel="stylesheet"
         href="${browser_components_shopping_content_shopping_container_css__WEBPACK_IMPORTED_MODULE_2__}"
@@ -1632,7 +1636,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         ${this.showHeader ? this.headerTemplate() : null}
         <div
           id="content"
-          class=${!this.isProductPage && !this.isOffline ? "is-empty-state" : ""}
+          class=${canStyleEmptyState ? "is-empty-state" : ""}
           aria-live="polite"
           aria-busy=${!this.data}
         >
@@ -3509,7 +3513,7 @@ module.exports = __webpack_require__.p + "analysis-explainer.c7efc728067d6a3fca5
 /***/ 17990:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "highlight-item.10f1782c069c94c1833d.css";
+module.exports = __webpack_require__.p + "highlight-item.a0b40dac6809895fc568.css";
 
 /***/ }),
 
@@ -3619,4 +3623,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.1ea1af6c.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.835175f9.iframe.bundle.js.map

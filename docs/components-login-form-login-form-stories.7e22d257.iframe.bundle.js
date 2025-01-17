@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[8347],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4877],{
 
 /***/ 55156:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -441,14 +441,14 @@ customElements.define("origin-warning", OriginWarning);
 
 /***/ }),
 
-/***/ 36831:
+/***/ 21668:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "LoginForm": () => (/* binding */ LoginForm)
 /* harmony export */ });
-/* harmony import */ var toolkit_components_satchel_megalist_content_LoginFormComponent_login_form_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(90647);
+/* harmony import */ var toolkit_components_satchel_megalist_content_components_login_form_login_form_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(97246);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
 /* harmony import */ var chrome_browser_content_aboutlogins_components_input_field_login_origin_field_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(60891);
@@ -570,7 +570,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
   #renderDeleteCard() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
         rel="stylesheet"
-        href="${toolkit_components_satchel_megalist_content_LoginFormComponent_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_megalist_content_components_login_form_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <moz-card class="remove-login-card">
         <div class="remove-card-back">
@@ -608,7 +608,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     const heading = this.type !== "edit" ? "passwords-create-label" : "passwords-edit-label";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
         rel="stylesheet"
-        href="${toolkit_components_satchel_megalist_content_LoginFormComponent_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_megalist_content_components_login_form_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <moz-card>
         ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type === "edit", () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -681,7 +681,7 @@ customElements.define("login-form", LoginForm);
 
 /***/ }),
 
-/***/ 53295:
+/***/ 7523:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -691,7 +691,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _login_form_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(36831);
+/* harmony import */ var _login_form_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(21668);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -723,7 +723,7 @@ module.exports = __webpack_require__.p + "login-message-popup.3384c64cdc31112aad
 
 /***/ }),
 
-/***/ 90647:
+/***/ 97246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "login-form.61e65675456ca3ab84fa.css";
@@ -738,4 +738,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=LoginFormComponent-login-form-stories.8baac863.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.7e22d257.iframe.bundle.js.map

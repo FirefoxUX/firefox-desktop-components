@@ -1,11 +1,11 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[2303],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3475],{
 
-/***/ 3186:
+/***/ 92743:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var toolkit_components_satchel_megalist_content_LoginLine_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25797);
+/* harmony import */ var toolkit_components_satchel_megalist_content_components_login_line_login_line_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5363);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
 
@@ -92,7 +92,7 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_components_satchel_megalist_content_LoginLine_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_megalist_content_components_login_line_login_line_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="line-container">
         <div class="input-container">
@@ -196,7 +196,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
         rel="stylesheet"
-        href="${toolkit_components_satchel_megalist_content_LoginLine_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_megalist_content_components_login_line_login_line_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <login-line
         role="option"
@@ -233,17 +233,17 @@ customElements.define("concealed-login-line", ConcealedLoginLine);
 
 /***/ }),
 
-/***/ 63090:
+/***/ 88176:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "PasswordCard": () => (/* binding */ PasswordCard)
 /* harmony export */ });
-/* harmony import */ var toolkit_components_satchel_megalist_content_PasswordCard_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62525);
+/* harmony import */ var toolkit_components_satchel_megalist_content_components_password_card_password_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(53378);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_megalist_LoginLine_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3186);
+/* harmony import */ var chrome_global_content_megalist_components_login_line_login_line_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(92743);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -478,7 +478,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
         rel="stylesheet"
-        href="${toolkit_components_satchel_megalist_content_PasswordCard_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_megalist_content_components_password_card_password_card_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       ${this.renderOriginField()} ${this.renderUsernameField()}
       ${this.renderPasswordField()} ${this.renderButton()}
@@ -490,7 +490,7 @@ customElements.define("password-card", PasswordCard);
 
 /***/ }),
 
-/***/ 2869:
+/***/ 79958:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -500,7 +500,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _PasswordCard_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63090);
+/* harmony import */ var _password_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(88176);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -582,19 +582,19 @@ AllAlertsOn.args = {
 
 /***/ }),
 
-/***/ 25797:
+/***/ 5363:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "LoginLine.6204908c1a0e679d1eb4.css";
+module.exports = __webpack_require__.p + "login-line.6204908c1a0e679d1eb4.css";
 
 /***/ }),
 
-/***/ 62525:
+/***/ 53378:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "PasswordCard.3675af91aff9e58139b0.css";
+module.exports = __webpack_require__.p + "password-card.3675af91aff9e58139b0.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=PasswordCard-stories.a4917ed4.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.1b9c8dc1.iframe.bundle.js.map
