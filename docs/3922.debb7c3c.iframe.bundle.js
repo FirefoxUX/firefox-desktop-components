@@ -132,9 +132,9 @@ customElements.define("moz-card", MozCard);
 /***/ 48058:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-card.39ef3f0004a08615aa31.css";
+module.exports = __webpack_require__.p + "moz-card.902fea065284e16a7756.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=3922.79e1b1ff.iframe.bundle.js.map
+//# sourceMappingURL=3922.debb7c3c.iframe.bundle.js.map

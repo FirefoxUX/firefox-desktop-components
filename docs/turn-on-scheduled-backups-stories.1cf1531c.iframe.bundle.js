@@ -1721,7 +1721,7 @@ module.exports = __webpack_require__.p + "moz-button.a48882edf284d66ca04d.css";
 /***/ 48058:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-card.39ef3f0004a08615aa31.css";
+module.exports = __webpack_require__.p + "moz-card.902fea065284e16a7756.css";
 
 /***/ }),
 
@@ -1740,4 +1740,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.c
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.622abec4.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.1cf1531c.iframe.bundle.js.map

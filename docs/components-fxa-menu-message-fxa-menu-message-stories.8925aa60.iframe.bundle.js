@@ -1,274 +1,142 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[9565,5872,3922,8825,6949],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[2326,5872,3922,8825],{
 
-/***/ 41145:
+/***/ 36247:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "ERRORS": () => (/* binding */ ERRORS),
-/* harmony export */   "STEPS": () => (/* binding */ STEPS)
+/* harmony export */   "default": () => (/* binding */ FxAMenuMessage)
 /* harmony export */ });
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-const ERRORS = Object.freeze({
-  /** User is not authorized to restore a backup archive */
-  UNAUTHORIZED: 1,
-  /** Selected backup archive can't be restored because it is corrupt */
-  CORRUPTED_ARCHIVE: 2,
-  /**
-   * Selected backup archive can't be restored because the backup manifest
-   * version is too old, from the future, or invalid
-   */
-  UNSUPPORTED_BACKUP_VERSION: 3,
-  /** Backup service was not started or is not running */
-  UNINITIALIZED: 4,
-  /** Could not read from or write to the file system */
-  FILE_SYSTEM_ERROR: 5,
-  /** Encryption of backup archive failed */
-  ENCRYPTION_FAILED: 6,
-  /** Decryption of backup archive failed */
-  DECRYPTION_FAILED: 7,
-  /** Recovery of backup failed without a more specific cause */
-  RECOVERY_FAILED: 8,
-  /** Unknown error with backup system without a more specific cause */
-  UNKNOWN: 9,
-  /**
-   * Backup system tried to enable backup encryption but it was
-   * already enabled
-   */
-  ENCRYPTION_ALREADY_ENABLED: 10,
-  /**
-   * Backup system tried to disable backup encryption but it was
-   * already disabled
-   */
-  ENCRYPTION_ALREADY_DISABLED: 11,
-  /** User supplied a new password that is not a valid password */
-  INVALID_PASSWORD: 12,
-  /**
-   * An error internal to the code that is likely caused by a bug
-   * or other programmer error.
-   */
-  INTERNAL_ERROR: 13,
-  /**
-   * A backup cannot be recovered because the backup file was created
-   * by a different application than the currently running application
-   */
-  UNSUPPORTED_APPLICATION: 14
-});
-
-/**
- * These are steps that the BackupService or any of its subcomponents might
- * be going through during configuration, creation, deletion of or restoration
- * from a backup. This is used to provide extra information to our error
- * telemetry.
- */
-const STEPS = Object.freeze({
-  /**
-   * This is the initial step upon creating a backup before any other steps
-   * begin.
-   */
-  CREATE_BACKUP_ENTRYPOINT: 1,
-  /**
-   * Determine the final destination for the written archive.
-   */
-  CREATE_BACKUP_RESOLVE_DESTINATION: 2,
-  /**
-   * Generate the manifest object for the backup.
-   */
-  CREATE_BACKUP_CREATE_MANIFEST: 3,
-  /**
-   * Create the main `backups` working directory in the profile directory if it
-   * doesn't already exist.
-   */
-  CREATE_BACKUP_CREATE_BACKUPS_FOLDER: 4,
-  /**
-   * Create the staging directory for the backup.
-   */
-  CREATE_BACKUP_CREATE_STAGING_FOLDER: 5,
-  /**
-   * Attempt to load the encryption state if one exists.
-   */
-  CREATE_BACKUP_LOAD_ENCSTATE: 6,
-  /**
-   * Run the backup routine for each BackupResource.
-   */
-  CREATE_BACKUP_RUN_BACKUP: 7,
-  /**
-   * After populating with the data from each BackupResource, verify that
-   * the manifest adheres to the BackupManifest schema.
-   */
-  CREATE_BACKUP_VERIFY_MANIFEST: 8,
-  /**
-   * Write the backup manifest to the staging directory.
-   */
-  CREATE_BACKUP_WRITE_MANIFEST: 9,
-  /**
-   * Rename the staging directory with the time code, and clear out any
-   * expired directories.
-   */
-  CREATE_BACKUP_FINALIZE_STAGING: 10,
-  /**
-   * Compress the staging directory into a single file.
-   */
-  CREATE_BACKUP_COMPRESS_STAGING: 11,
-  /**
-   * Generate the single-file archive.
-   */
-  CREATE_BACKUP_CREATE_ARCHIVE: 12,
-  /**
-   * Finalize the single-file archive and move it into the destination
-   * directory.
-   */
-  CREATE_BACKUP_FINALIZE_ARCHIVE: 13
-});
-
-/***/ }),
-
-/***/ 14537:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ DisableBackupEncryption)
-/* harmony export */ });
-/* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12163);
+/* harmony import */ var browser_components_asrouter_content_components_fxa_menu_message_fxa_menu_message_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76668);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15872);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
 
 
 
 // eslint-disable-next-line import/no-unassigned-import
 
-const ERROR_L10N_ID = "backup-error-retry";
 
 /**
- * The widget for disabling password protection if the backup is already
- * encrypted.
+ * This widget is for a message that can be displayed in panelview menus when
+ * the user is signed out to encourage them to sign in.
  */
-class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static shadowRootOptions = {
+    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
   static properties = {
-    // managed by BackupUIChild
-    disableEncryptionErrorCode: {
-      type: Number
+    imageURL: {
+      type: String
+    },
+    buttonText: {
+      type: String
+    },
+    primaryText: {
+      type: String
+    },
+    secondaryText: {
+      type: String
     }
   };
-  static get queries() {
-    return {
-      cancelButtonEl: "#backup-disable-encryption-cancel-button",
-      confirmButtonEl: "#backup-disable-encryption-confirm-button",
-      errorEl: "#disable-backup-encryption-error"
-    };
-  }
+  static queries = {
+    signUpButton: "#sign-up-button",
+    closeButton: "#close-button"
+  };
   constructor() {
     super();
-    this.disableEncryptionErrorCode = 0;
+    this.addEventListener("keydown", event => {
+      let keyCode = event.code;
+      switch (keyCode) {
+        case "ArrowLeft":
+        // Intentional fall-through
+        case "ArrowRight":
+        // Intentional fall-through
+        case "ArrowUp":
+        // Intentional fall-through
+        case "ArrowDown":
+          {
+            if (this.shadowRoot.activeElement === this.signUpButton) {
+              this.closeButton.focus();
+            } else {
+              this.signUpButton.focus();
+            }
+            break;
+          }
+      }
+    }, {
+      capture: true
+    });
   }
-  close() {
-    this.dispatchEvent(new CustomEvent("dialogCancel", {
-      bubbles: true,
-      composed: true
-    }));
-    this.reset();
-  }
-  reset() {
-    this.disableEncryptionErrorCode = 0;
-  }
-  handleConfirm() {
-    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
+  handleClose(event) {
+    // Keep the menu open by stopping the click event from
+    // propagating up.
+    event.stopPropagation();
+    this.dispatchEvent(new CustomEvent("FxAMenuMessage:Close"), {
       bubbles: true
-    }));
+    });
   }
-  errorTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <moz-message-bar
-        id="disable-backup-encryption-error"
-        type="error"
-        .messageL10nId="${ERROR_L10N_ID}"
-      ></moz-message-bar>
-    `;
-  }
-  contentTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <div
-        id="backup-disable-encryption-wrapper"
-        aria-labelledby="backup-disable-encryption-header"
-        aria-describedby="backup-disable-encryption-description"
-      >
-        <h1
-          id="backup-disable-encryption-header"
-          class="heading-medium"
-          data-l10n-id="disable-backup-encryption-header"
-        ></h1>
-        <main id="backup-disable-encryption-content">
-          <div id="backup-disable-encryption-description">
-            <span
-              id="backup-disable-encryption-description-span"
-              data-l10n-id="disable-backup-encryption-description"
-            >
-              <!--TODO: finalize support page links (bug 1900467)-->
-            </span>
-            <a
-              id="backup-disable-encryption-learn-more-link"
-              is="moz-support-link"
-              support-page="todo-backup"
-              data-l10n-id="disable-backup-encryption-support-link"
-            ></a>
-          </div>
-          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
-        </main>
-
-        <moz-button-group id="backup-disable-encryption-button-group">
-          <moz-button
-            id="backup-disable-encryption-cancel-button"
-            @click=${this.close}
-            data-l10n-id="disable-backup-encryption-cancel-button"
-          ></moz-button>
-          <moz-button
-            id="backup-disable-encryption-confirm-button"
-            @click=${this.handleConfirm}
-            type="primary"
-            data-l10n-id="disable-backup-encryption-confirm-button"
-          ></moz-button>
-        </moz-button-group>
-      </div>
-    `;
+  handleSignUp() {
+    this.dispatchEvent(new CustomEvent("FxAMenuMessage:SignUp"), {
+      bubbles: true
+    });
   }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <link
         rel="stylesheet"
-        href="${browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${browser_components_asrouter_content_components_fxa_menu_message_fxa_menu_message_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      ${this.contentTemplate()}
+      <div id="container" ?has-image="${this.imageURL}">
+        <moz-button
+          id="close-button"
+          @click=${this.handleClose}
+          type="ghost"
+          iconsrc="chrome://global/skin/icons/close-12.svg"
+          tabindex="2"
+          data-l10n-id="fxa-menu-message-close-button"
+        >
+        </moz-button>
+        <div id="illustration-container">
+          <img id="illustration" role="presentation" src="${this.imageURL}" />
+        </div>
+        <div id="primary">${this.primaryText}</div>
+        <div id="secondary">${this.secondaryText}</div>
+        <moz-button
+          id="sign-up-button"
+          @click=${this.handleSignUp}
+          type="primary"
+          tabindex="1"
+          autofocus
+          title="${this.buttonText}"
+          aria-label="${this.buttonText}"
+          >${this.buttonText}</moz-button
+        >
+      </div>
     `;
   }
 }
-customElements.define("disable-backup-encryption", DisableBackupEncryption);
+customElements.define("fxa-menu-message", FxAMenuMessage);
 
 /***/ }),
 
-/***/ 7128:
+/***/ 52585:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Default": () => (/* binding */ Default),
-/* harmony export */   "DisableError": () => (/* binding */ DisableError),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
 /* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63922);
-/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41145);
-/* harmony import */ var _disable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14537);
+/* harmony import */ var _fxa_menu_message_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(36247);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -277,39 +145,36 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
-window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
-const SELECTABLE_ERRORS = {
-  "(none)": 0,
-  ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Backup/Disable Encryption",
-  component: "disable-backup-encryption",
-  argTypes: {
-    disableEncryptionErrorCode: {
-      options: Object.keys(SELECTABLE_ERRORS),
-      mapping: SELECTABLE_ERRORS,
-      control: {
-        type: "select"
-      }
-    }
-  }
+  title: "Domain-specific UI Widgets/ASRouter/FxA Menu Message",
+  component: "fxa-menu-message",
+  argTypes: {}
 });
 const Template = ({
-  disableEncryptionErrorCode
+  buttonText,
+  imageURL,
+  primaryText,
+  secondaryText,
+  imageVerticalOffset
 }) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <moz-card style="width: 23.94rem;">
-    <disable-backup-encryption
-      .disableEncryptionErrorCode=${disableEncryptionErrorCode}
-    ></disable-backup-encryption>
+  <moz-card style="width: 22.5rem;">
+    <fxa-menu-message
+      buttonText="${buttonText}"
+      primaryText="${primaryText}"
+      secondaryText="${secondaryText}"
+      imageURL="${imageURL}"
+      style="--illustration-margin-block-offset: ${imageVerticalOffset}px"
+    >
+    </fxa-menu-message>
   </moz-card>
 `;
 const Default = Template.bind({});
-const DisableError = Template.bind({});
-DisableError.args = {
-  disableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.UNKNOWN
+Default.args = {
+  buttonText: "Sign up",
+  imageURL: "chrome://browser/content/asrouter/assets/fox-with-box-on-cloud.svg",
+  primaryText: "Bounce between devices",
+  secondaryText: "Sync and encrypt your bookmarks, passwords, and more on all your devices.",
+  imageVerticalOffset: -20
 };
 
 /***/ }),
@@ -874,215 +739,10 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 46949:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozMessageBar)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(84296);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(15872);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozMessageBar.ftl");
-const messageTypeToIconData = {
-  info: {
-    iconSrc: "chrome://global/skin/icons/info-filled.svg",
-    l10nId: "moz-message-bar-icon-info"
-  },
-  warning: {
-    iconSrc: "chrome://global/skin/icons/warning.svg",
-    l10nId: "moz-message-bar-icon-warning"
-  },
-  success: {
-    iconSrc: "chrome://global/skin/icons/check-filled.svg",
-    l10nId: "moz-message-bar-icon-success"
-  },
-  error: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  },
-  critical: {
-    iconSrc: "chrome://global/skin/icons/error.svg",
-    l10nId: "moz-message-bar-icon-error"
-  }
-};
-
-/**
- * A simple message bar element that can be used to display
- * important information to users.
- *
- * @tagname moz-message-bar
- * @property {string} type - The type of the displayed message.
- * @property {string} heading - The heading of the message.
- * @property {string} message - The message text.
- * @property {boolean} dismissable - Whether or not the element is dismissable.
- * @property {string} messageL10nId - l10n ID for the message.
- * @property {string} messageL10nArgs - Any args needed for the message l10n ID.
- * @fires message-bar:close
- *  Custom event indicating that message bar was closed.
- * @fires message-bar:user-dismissed
- *  Custom event indicating that message bar was dismissed by the user.
- */
-
-class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static queries = {
-    actionsSlot: "slot[name=actions]",
-    actionsEl: ".actions",
-    closeButton: "moz-button.close",
-    messageEl: ".message",
-    supportLinkSlot: "slot[name=support-link]"
-  };
-  static properties = {
-    type: {
-      type: String
-    },
-    heading: {
-      type: String,
-      fluent: true
-    },
-    message: {
-      type: String,
-      fluent: true
-    },
-    dismissable: {
-      type: Boolean
-    },
-    messageL10nId: {
-      type: String
-    },
-    messageL10nArgs: {
-      type: String
-    }
-  };
-  constructor() {
-    super();
-    this.type = "info";
-    this.dismissable = false;
-  }
-  onActionSlotchange() {
-    let actions = this.actionsSlot.assignedNodes();
-    this.actionsEl.classList.toggle("active", actions.length);
-  }
-  onLinkSlotChange() {
-    this.messageEl.classList.toggle("has-link-after", !!this.supportLinkEls.length);
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.setAttribute("role", "alert");
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.dispatchEvent(new CustomEvent("message-bar:close"));
-  }
-  get supportLinkEls() {
-    return this.supportLinkSlot.assignedElements();
-  }
-  iconTemplate() {
-    let iconData = messageTypeToIconData[this.type];
-    if (iconData) {
-      let {
-        iconSrc,
-        l10nId
-      } = iconData;
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <div class="icon-container">
-          <img
-            class="icon"
-            src=${iconSrc}
-            data-l10n-id=${l10nId}
-            data-l10n-attrs="alt"
-          />
-        </div>
-      `;
-    }
-    return "";
-  }
-  headingTemplate() {
-    if (this.heading) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<strong class="heading">${this.heading}</strong>`;
-    }
-    return "";
-  }
-  closeButtonTemplate({
-    size
-  } = {}) {
-    if (this.dismissable) {
-      return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <moz-button
-          type="icon ghost"
-          class="close"
-          size=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(size)}
-          data-l10n-id="moz-message-bar-close-button"
-          @click=${this.dismiss}
-        ></moz-button>
-      `;
-    }
-    return "";
-  }
-  render() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_message_bar_moz_message_bar_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div class="container">
-        <div class="content">
-          <div class="text-container">
-            ${this.iconTemplate()}
-            <div class="text-content">
-              ${this.headingTemplate()}
-              <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
-                <span class="link">
-                  <slot
-                    name="support-link"
-                    @slotchange=${this.onLinkSlotChange}
-                  ></slot>
-                </span>
-              </div>
-            </div>
-          </div>
-          <span class="actions">
-            <slot name="actions" @slotchange=${this.onActionSlotchange}></slot>
-          </span>
-        </div>
-        ${this.closeButtonTemplate()}
-      </div>
-    `;
-  }
-  dismiss() {
-    this.dispatchEvent(new CustomEvent("message-bar:user-dismissed"));
-    this.close();
-  }
-  close() {
-    this.remove();
-  }
-}
-customElements.define("moz-message-bar", MozMessageBar);
-
-/***/ }),
-
-/***/ 12163:
+/***/ 76668:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584db13a46f.css";
+module.exports = __webpack_require__.p + "fxa-menu-message.3ed90baf9baf88e5a2bc.css";
 
 /***/ }),
 
@@ -1096,7 +756,7 @@ module.exports = __webpack_require__.p + "moz-button.a48882edf284d66ca04d.css";
 /***/ 48058:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-card.39ef3f0004a08615aa31.css";
+module.exports = __webpack_require__.p + "moz-card.902fea065284e16a7756.css";
 
 /***/ }),
 
@@ -1105,14 +765,7 @@ module.exports = __webpack_require__.p + "moz-card.39ef3f0004a08615aa31.css";
 
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
-/***/ }),
-
-/***/ 84296:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.css";
-
 /***/ })
 
 }]);
-//# sourceMappingURL=disable-backup-encryption-stories.5e89b888.iframe.bundle.js.map
+//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.8925aa60.iframe.bundle.js.map
