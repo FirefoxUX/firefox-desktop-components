@@ -1167,7 +1167,7 @@ const NAVIGATION_DIRECTIONS = {
  * @slot support-link - The radio group's support link intended for moz-radio elements.
  */
 class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
-  #radioButtons = [];
+  #radioButtons;
   #value;
   static properties = {
     disabled: {
@@ -1188,15 +1188,17 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     },
     name: {
       type: String
+    },
+    value: {
+      type: String
     }
   };
   static queries = {
-    defaultSlot: "slot:not([name])",
     fieldset: "moz-fieldset"
   };
   set value(newValue) {
     this.#value = newValue;
-    this.#radioButtons.forEach(button => {
+    this.radioButtons.forEach(button => {
       button.checked = this.value === button.value;
     });
     this.syncFocusState();
@@ -1206,12 +1208,22 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
   }
   get focusableIndex() {
     if (this.#value) {
-      let selectedIndex = this.#radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
+      let selectedIndex = this.radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
       if (selectedIndex !== -1) {
         return selectedIndex;
       }
     }
-    return this.#radioButtons.findIndex(button => !button.disabled);
+    return this.radioButtons.findIndex(button => !button.disabled);
+  }
+
+  // Query for moz-radio elements the first time they are needed + ensure they
+  // have been upgraded so we can access properties.
+  get radioButtons() {
+    if (!this.#radioButtons) {
+      this.#radioButtons = (this.shadowRoot?.querySelector("slot:not([name])")?.assignedElements() || [...this.children])?.filter(el => el.localName === "moz-radio" && !el.slot);
+      this.#radioButtons.forEach(button => customElements.upgrade(button));
+    }
+    return this.#radioButtons;
   }
   constructor() {
     super();
@@ -1223,11 +1235,10 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
   }
   async getUpdateComplete() {
     await super.getUpdateComplete();
-    await Promise.all(this.#radioButtons.map(button => button.updateComplete));
+    await Promise.all(this.radioButtons.map(button => button.updateComplete));
   }
   syncStateToRadioButtons() {
-    this.#radioButtons = this.defaultSlot?.assignedElements().filter(el => el.localName === "moz-radio");
-    this.#radioButtons.forEach(button => {
+    this.radioButtons.forEach(button => {
       if (button.checked && this.value == undefined) {
         this.value = button.value;
       }
@@ -1237,7 +1248,7 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
   }
   syncFocusState() {
     let focusableIndex = this.focusableIndex;
-    this.#radioButtons.forEach((button, index) => {
+    this.radioButtons.forEach((button, index) => {
       button.inputTabIndex = focusableIndex === index ? 0 : -1;
     });
   }
@@ -1281,11 +1292,11 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
   }
   navigate(direction) {
     let currentIndex = this.focusableIndex;
-    let indexStep = this.#radioButtons.length + NAVIGATION_VALUE[direction];
-    for (let i = 1; i < this.#radioButtons.length; i++) {
-      let nextIndex = (currentIndex + indexStep * i) % this.#radioButtons.length;
-      if (!this.#radioButtons[nextIndex].disabled) {
-        this.#radioButtons[nextIndex].click();
+    let indexStep = this.radioButtons.length + NAVIGATION_VALUE[direction];
+    for (let i = 1; i < this.radioButtons.length; i++) {
+      let nextIndex = (currentIndex + indexStep * i) % this.radioButtons.length;
+      if (!this.radioButtons[nextIndex].disabled) {
+        this.radioButtons[nextIndex].click();
         return;
       }
     }
@@ -1295,13 +1306,13 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
       this.handleSetName();
     }
     if (changedProperties.has("disabled")) {
-      this.#radioButtons.forEach(button => {
+      this.radioButtons.forEach(button => {
         button.requestUpdate();
       });
     }
   }
   handleSetName() {
-    this.#radioButtons.forEach(button => {
+    this.radioButtons.forEach(button => {
       button.name = this.name;
     });
   }
@@ -1310,6 +1321,10 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
   handleChange(event) {
     event.stopPropagation();
     this.dispatchEvent(new Event(event.type));
+  }
+  handleSlotChange() {
+    this.#radioButtons = null;
+    this.syncStateToRadioButtons();
   }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
@@ -1324,7 +1339,7 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
       >
         ${!this.supportPage ? _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<slot slot="support-link" name="support-link"></slot>` : ""}
         <slot
-          @slotchange=${this.syncStateToRadioButtons}
+          @slotchange=${this.handleSlotChange}
           @change=${this.handleChange}
         ></slot>
       </moz-fieldset>
@@ -1371,10 +1386,12 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInputE
       console.error("moz-radio can only be used in moz-radio-group element.");
     }
     this.#controller = hostRadioGroup;
+    if (this.#controller.value) {
+      this.checked = this.value === this.#controller.value;
+    }
   }
   willUpdate(changedProperties) {
     super.willUpdate(changedProperties);
-
     // Handle setting checked directly via JS.
     if (changedProperties.has("checked") && this.checked && this.#controller.value && this.value !== this.#controller.value) {
       this.#controller.value = this.value;
@@ -2317,15 +2334,15 @@ function _createMdxContent(props) {
       }), " HTML element."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-radio-group name=\"contact\" label=\"Select a contact method\"><moz-radio value=\"email\" label=\"Email\" checked /><moz-radio value=\"phone\" label=\"Phone\" /><moz-radio value=\"mail\" label=\"Mail\" /></moz-radio-group></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-radio-group name=\"contact\" label=\"Select a contact method\" value=\"email\"><moz-radio value=\"email\" label=\"Email\" /><moz-radio value=\"phone\" label=\"Phone\" /><moz-radio value=\"mail\" label=\"Mail\" /></moz-radio-group></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
           name: "contact",
           label: "Select a contact method",
+          value: "email",
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
             value: "email",
-            label: "Email",
-            checked: true
+            label: "Email"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
             value: "phone",
             label: "Phone"
@@ -2431,6 +2448,56 @@ function _createMdxContent(props) {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-sh",
         children: "moz-radio can only be used in moz-radio-group element.\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
+      id: "setting-value-for-the-group",
+      children: ["Setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "value"
+      }), " for the group"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "value"
+      }), " property or attribute of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-radio-group"
+      }), " can be used to set the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "checked"
+      }), " state of its ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-radio"
+      }), " elements. While it is also possible to set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "checked"
+      }), " directly individual ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-radio"
+      }), " elements, in most cases it's clearer to set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "value"
+      }), " on the group. This allows ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-radio-group"
+      }), " to serve as the single source of truth for the checked/unchecked state of related ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-radio"
+      }), " elements."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-radio-group name=\"greeting\" label=\"Select a preferred greeting\" value=\"hola\">\n  <moz-radio value=\"hi\" label=\"Hi\"></moz-radio>\n  <moz-radio value=\"hello\" label=\"Hello\"></moz-radio>\n  <moz-radio value=\"hola\" label=\"Hola\"></moz-radio>\n</moz-radio-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-radio-group name=\"greeting\" label=\"Select a preferred greeting\" value=\"hola\"><moz-radio value=\"hi\" label=\"Hi\" /><moz-radio value=\"hello\" label=\"Hello\" /><moz-radio value=\"hola\" label=\"Hola\" /></moz-radio-group></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
+          name: "greeting",
+          label: "Select a preferred greeting",
+          value: "hola",
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
+            value: "hi",
+            label: "Hi"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
+            value: "hello",
+            label: "Hello"
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
+            value: "hola",
+            label: "Hola"
+          })]
+        })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
       id: "setting-name-for-the-group",
@@ -12268,4 +12335,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.7e0e4191.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.31bf0b4f.iframe.bundle.js.map
