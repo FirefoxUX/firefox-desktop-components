@@ -161,8 +161,11 @@ const Template = ({
   <div class="card card-no-hover" style="max-width: 400px">
     <p data-l10n-id="moz-button-group-p"></p>
     <moz-button-group .platform=${platform}>
-      <button class="primary" data-l10n-id="moz-button-group-ok"></button>
-      <button data-l10n-id="moz-button-group-cancel"></button>
+      <moz-button
+        type="primary"
+        data-l10n-id="moz-button-group-ok"
+      ></moz-button>
+      <moz-button data-l10n-id="moz-button-group-cancel"></moz-button>
     </moz-button-group>
   </div>
 `;
@@ -193,4 +196,4 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-group-moz-button-group-stories.f9450789.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-group-moz-button-group-stories.323875c2.iframe.bundle.js.map

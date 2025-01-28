@@ -798,11 +798,13 @@ const Template = ({
     panel-item[icon="settings"]::part(button) {
       background-image: url("chrome://global/skin/icons/settings.svg");
     }
-    button {
+    moz-button {
       position: absolute;
+    }
+    moz-button::part(button) {
       background-image: url("chrome://global/skin/icons/more.svg");
     }
-    button[wide] {
+    moz-button[wide] {
       width: 400px !important;
     }
     .end {
@@ -814,30 +816,33 @@ const Template = ({
     }
   </style>
   ${isOpen ? "" : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-        <button
-          class="ghost-button icon-button"
+        <moz-button
+          type="icon ghost"
           @click=${openMenu}
           @mousedown=${openMenu}
           ?wide="${wideAnchor}"
-        ></button>
-        <button
-          class="ghost-button icon-button end"
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="end"
           @click=${openMenu}
           @mousedown=${openMenu}
           ?wide="${wideAnchor}"
-        ></button>
-        <button
-          class="ghost-button icon-button bottom"
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="bottom"
           @click=${openMenu}
           @mousedown=${openMenu}
           ?wide="${wideAnchor}"
-        ></button>
-        <button
-          class="ghost-button icon-button bottom end"
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="bottom end"
           @click=${openMenu}
           @mousedown=${openMenu}
           ?wide="${wideAnchor}"
-        ></button>
+        ></moz-button>
       `}
   <panel-list
     ?stay-open=${isOpen}
@@ -943,4 +948,4 @@ module.exports = __webpack_require__.p + "panel-list.485a98285b003a09f91f.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-panel-list-stories.a78d0fb5.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.48e6e949.iframe.bundle.js.map

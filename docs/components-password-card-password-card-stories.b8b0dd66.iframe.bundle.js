@@ -194,6 +194,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     this.revealBtn.setAttribute("data-l10n-id", this.#revealBtnLabel);
   }
   render() {
+    const dataL10nId = this.alert ? "password-login-line-with-alert" : "password-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
         rel="stylesheet"
         href="${toolkit_components_satchel_megalist_content_components_login_line_login_line_css__WEBPACK_IMPORTED_MODULE_0__}"
@@ -201,7 +202,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       <login-line
         role="option"
         tabindex="-1"
-        data-l10n-id="password-login-line"
+        data-l10n-id=${dataL10nId}
         lineType="password"
         inputType=${this.#inputType}
         labelL10nId=${this.labelL10nId}
@@ -387,12 +388,13 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     this.handleCommand("Copy", lineIndex);
   }
   renderOriginField() {
+    const dataL10nId = this.origin.breached ? "origin-login-line-with-alert" : "origin-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
         tabindex="-1"
         role="option"
         class="line-item"
-        data-l10n-id="origin-login-line"
+        data-l10n-id=${dataL10nId}
         data-l10n-args="${JSON.stringify({
       url: this.origin.value
     })}"
@@ -411,12 +413,13 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     `;
   }
   renderUsernameField() {
+    const dataL10nId = !this.username.value.length ? "username-login-line-with-alert" : "username-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
         tabindex="-1"
         role="option"
         class="line-item"
-        data-l10n-id="username-login-line"
+        data-l10n-id=${dataL10nId}
         data-l10n-args="${JSON.stringify({
       username: this.username.value
     })}"
@@ -597,4 +600,4 @@ module.exports = __webpack_require__.p + "password-card.3675af91aff9e58139b0.css
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.1b9c8dc1.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.b8b0dd66.iframe.bundle.js.map
