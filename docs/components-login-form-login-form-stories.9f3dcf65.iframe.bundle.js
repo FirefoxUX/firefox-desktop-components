@@ -353,9 +353,10 @@ const stylesTemplate = () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_I
 const MessagePopup = ({
   l10nid,
   message,
-  webTitle = ""
+  webTitle = "",
+  role
 }) => {
-  return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <div class="tooltip-container">
+  return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <div class="tooltip-container" role=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(role)}>
     <div class="arrow-box">
       <p
         class="tooltip-message"
@@ -385,6 +386,9 @@ class PasswordWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
       },
       message: {
         type: String
+      },
+      role: {
+        type: String
       }
     };
   }
@@ -397,16 +401,19 @@ class PasswordWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
     if (this.message) {
       return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
       ${MessagePopup({
-        message: this.message
+        message: this.message,
+        role: this.role
       })}`;
     }
     return this.isNewLogin ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
         ${MessagePopup({
-      l10nid: "about-logins-add-password-tooltip"
+      l10nid: "about-logins-add-password-tooltip",
+      role: this.role
     })}` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
         ${MessagePopup({
       l10nid: "about-logins-edit-password-tooltip",
-      webTitle: this.webTitle
+      webTitle: this.webTitle,
+      role: this.role
     })}`;
   }
 }
@@ -421,6 +428,9 @@ class OriginWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       },
       arrowDirection: {
         type: String
+      },
+      role: {
+        type: String
       }
     };
   }
@@ -432,7 +442,8 @@ class OriginWarning extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${stylesTemplate()}
     ${MessagePopup({
       l10nid: this.l10nId,
-      message: this.message
+      message: this.message,
+      role: this.role
     })}`;
   }
 }
@@ -639,7 +650,10 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
                 .onOriginClick=${this.onOriginClick}
               >
               </login-origin-field>
-              <origin-warning arrowdirection="down"></origin-warning>
+              <origin-warning
+                role="alert"
+                arrowdirection="down"
+              ></origin-warning>
             </div>
             <login-username-field
               name="username"
@@ -656,6 +670,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
                 @input=${e => this.onInput(e)}
               ></login-password-field>
               <password-warning
+                role="alert"
                 isNewLogin
                 arrowdirection="down"
               ></password-warning>
@@ -738,4 +753,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.7e22d257.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.9f3dcf65.iframe.bundle.js.map
