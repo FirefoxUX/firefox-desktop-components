@@ -1299,8 +1299,17 @@ class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitEl
     let indexStep = this.radioButtons.length + NAVIGATION_VALUE[direction];
     for (let i = 1; i < this.radioButtons.length; i++) {
       let nextIndex = (currentIndex + indexStep * i) % this.radioButtons.length;
-      if (!this.radioButtons[nextIndex].disabled) {
-        this.radioButtons[nextIndex].click();
+      let nextButton = this.radioButtons[nextIndex];
+      if (!nextButton.disabled) {
+        this.value = nextButton.value;
+        nextButton.focus();
+        this.dispatchEvent(new Event("input"), {
+          bubbles: true,
+          composed: true
+        });
+        this.dispatchEvent(new Event("change"), {
+          bubbles: true
+        });
         return;
       }
     }
@@ -1417,7 +1426,9 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInputE
   }
   handleClick() {
     this.#controller.value = this.value;
-    this.focus();
+    if (this.getRootNode().activeElement?.localName == "moz-radio") {
+      this.focus();
+    }
   }
 
   // Re-dispatch change event so it propagates out of moz-radio.
@@ -12339,4 +12350,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.58f36385.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.41643b2a.iframe.bundle.js.map

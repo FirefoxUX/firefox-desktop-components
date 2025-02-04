@@ -39,6 +39,7 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
       <input
         id="input"
+        class="with-icon"
         type="search"
         name=${this.name}
         value=${this.value}
@@ -132,9 +133,9 @@ customElements.define("moz-input-text", MozInputText);
 /***/ 80342:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-text.63687a98fff0be7b9a17.css";
+module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=1453.d03baaf1.iframe.bundle.js.map
+//# sourceMappingURL=1453.9982f309.iframe.bundle.js.map
