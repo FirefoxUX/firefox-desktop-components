@@ -30,8 +30,16 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} description - The text for the description element that helps describe the input control
  * @property {string} supportPage - Name of the SUMO support page to link to.
  * @property {string} placeholder - Text to display when the input has no value.
+ * @property {string} ariaLabel
+ *  The aria-label text for cases where there is no visible label.
  */
 class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__WEBPACK_IMPORTED_MODULE_1__["default"] {
+  static properties = {
+    ariaLabel: {
+      type: String,
+      mapped: true
+    }
+  };
   inputStylesTemplate() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`${super.inputStylesTemplate()}`;
   }
@@ -46,6 +54,7 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
         ?disabled=${this.disabled}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
         placeholder=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.placeholder)}
+        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.ariaLabel ?? undefined)}
         aria-describedby="description"
         @input=${this.handleInput}
         @change=${this.redispatchEvent}
@@ -275,4 +284,4 @@ module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-search-moz-input-search-stories.460fb9c2.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-search-moz-input-search-stories.506de766.iframe.bundle.js.map

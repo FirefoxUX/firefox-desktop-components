@@ -34,6 +34,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} currentView - The currently selected view.
  * @property {string} heading - A heading to be displayed at the top of the navigation.
  * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
+ * @slot [subheading] - Used to append page specific search input or notification to the nav.
  */
 class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
@@ -46,7 +47,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   };
   static queries = {
-    headingEl: "#page-nav-header",
+    headingEl: "#page-nav-heading",
     primaryNavGroupSlot: ".primary-nav-group slot",
     secondaryNavGroupSlot: "#secondary-nav-group slot"
   };
@@ -103,15 +104,18 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       <nav class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "has-nav-icons": hasNavIcons
     })}>
-        <div class="page-nav-header-wrapper">
+        <div class="page-nav-heading-wrapper">
           <div class="logo"></div>
-          <h1 class="page-nav-header" id="page-nav-header">${this.heading}</h1>
+          <h1 class="page-nav-heading" id="page-nav-heading">
+            ${this.heading}
+          </h1>
         </div>
+        <slot name="subheading"></slot>
         <div
           class="primary-nav-group"
           role="tablist"
           aria-orientation="vertical"
-          aria-labelledby="page-nav-header"
+          aria-labelledby="page-nav-heading"
         >
           <slot
             @change-view=${this.onChangeView}
@@ -379,9 +383,9 @@ module.exports = __webpack_require__.p + "moz-page-nav-button.661b525f8c047ba89c
 /***/ 13487:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.2043e1d46264cd8cb7b8.css";
+module.exports = __webpack_require__.p + "moz-page-nav.164fd02d6e56af5cb485.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=9687.1a164833.iframe.bundle.js.map
+//# sourceMappingURL=9687.ca2d4696.iframe.bundle.js.map

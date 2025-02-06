@@ -34,6 +34,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} currentView - The currently selected view.
  * @property {string} heading - A heading to be displayed at the top of the navigation.
  * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
+ * @slot [subheading] - Used to append page specific search input or notification to the nav.
  */
 class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
@@ -46,7 +47,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   };
   static queries = {
-    headingEl: "#page-nav-header",
+    headingEl: "#page-nav-heading",
     primaryNavGroupSlot: ".primary-nav-group slot",
     secondaryNavGroupSlot: "#secondary-nav-group slot"
   };
@@ -103,15 +104,18 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       <nav class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "has-nav-icons": hasNavIcons
     })}>
-        <div class="page-nav-header-wrapper">
+        <div class="page-nav-heading-wrapper">
           <div class="logo"></div>
-          <h1 class="page-nav-header" id="page-nav-header">${this.heading}</h1>
+          <h1 class="page-nav-heading" id="page-nav-heading">
+            ${this.heading}
+          </h1>
         </div>
+        <slot name="subheading"></slot>
         <div
           class="primary-nav-group"
           role="tablist"
           aria-orientation="vertical"
-          aria-labelledby="page-nav-header"
+          aria-labelledby="page-nav-heading"
         >
           <slot
             @change-view=${this.onChangeView}
@@ -255,6 +259,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "Default": () => (/* binding */ Default),
 /* harmony export */   "WithFooterLinks": () => (/* binding */ WithFooterLinks),
+/* harmony export */   "WithSearch": () => (/* binding */ WithSearch),
 /* harmony export */   "WithoutIcons": () => (/* binding */ WithoutIcons),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -287,12 +292,16 @@ moz-page-nav-button-five = External Link
   .title = External Link
 moz-page-nav-heading =
   .heading = Heading
+moz-page-nav-search-input =
+  .aria-label = Search Storybook
+  .placeholder = Search Storybook
      `
   }
 });
 const Template = ({
   hasFooterLinks,
-  hasIcons
+  hasIcons,
+  showSearch
 }) => {
   let iconSrc = hasIcons ? "chrome://global/skin/icons/settings.svg" : undefined;
   return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
@@ -316,6 +325,10 @@ const Template = ({
     </style>
     <div id="page">
       <moz-page-nav data-l10n-id="moz-page-nav-heading">
+        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(showSearch, () => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`<moz-input-search
+              slot="subheading"
+              data-l10n-id="moz-page-nav-search-input"
+            ></moz-input-search>`)}
         <moz-page-nav-button
           view="view-one"
           data-l10n-id="moz-page-nav-button-one"
@@ -356,7 +369,8 @@ const Template = ({
 const Default = Template.bind({});
 Default.args = {
   hasFooterLinks: false,
-  hasIcons: true
+  hasIcons: true,
+  showSearch: false
 };
 const WithFooterLinks = Template.bind({});
 WithFooterLinks.args = {
@@ -367,6 +381,11 @@ const WithoutIcons = Template.bind({});
 WithoutIcons.args = {
   ...Default.args,
   hasIcons: false
+};
+const WithSearch = Template.bind({});
+WithSearch.args = {
+  ...Default.args,
+  showSearch: true
 };
 
 /***/ }),
@@ -502,9 +521,9 @@ module.exports = __webpack_require__.p + "moz-page-nav-button.661b525f8c047ba89c
 /***/ 13487:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.2043e1d46264cd8cb7b8.css";
+module.exports = __webpack_require__.p + "moz-page-nav.164fd02d6e56af5cb485.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.be3abc85.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.31d70418.iframe.bundle.js.map

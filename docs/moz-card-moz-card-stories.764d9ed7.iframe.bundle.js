@@ -154,7 +154,7 @@ __webpack_require__.r(__webpack_exports__);
   title: "UI Widgets/Card",
   component: "moz-card",
   parameters: {
-    status: "in-development",
+    status: "stable",
     fluent: `
 moz-card-heading =
   .heading = This is the label
@@ -291,4 +291,4 @@ module.exports = __webpack_require__.p + "moz-card.902fea065284e16a7756.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-card-moz-card-stories.fb724ed4.iframe.bundle.js.map
+//# sourceMappingURL=moz-card-moz-card-stories.764d9ed7.iframe.bundle.js.map
