@@ -570,7 +570,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     }
     const loginForm = {
       origin: this.originValue || this.originField.input.value,
-      username: this.usernameField.input.value,
+      username: this.usernameField.input.value.trim(),
       password: this.passwordField.value
     };
     this.onSaveClick(loginForm);
@@ -753,4 +753,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.9f3dcf65.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.52f44382.iframe.bundle.js.map
