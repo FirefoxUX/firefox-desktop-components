@@ -9,8 +9,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "MozOption": () => (/* binding */ MozOption),
 /* harmony export */   "default": () => (/* binding */ MozSelect)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(73689);
+/* harmony import */ var toolkit_content_widgets_moz_select_moz_select_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(4452);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -32,7 +34,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {array} options - The array of options, populated by <moz-option> children in the
  *     default slot. Do not set directly, these will be overridden by <moz-option> children.
  */
-class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInputElement {
+class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
   static properties = {
     options: {
       type: Array,
@@ -44,7 +46,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInput
     super();
     this.value = "";
     this.options = [];
-    this.slotRef = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.createRef)();
+    this.slotRef = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.createRef)();
     this.optionsMutationObserver = new MutationObserver(this.populateOptions.bind(this));
   }
   firstUpdated(changedProperties) {
@@ -89,8 +91,18 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInput
   handleStateChange(event) {
     this.value = event.target.value;
   }
+
+  /**
+   * @type {MozBaseInputElement['inputStylesTemplate']}
+   */
+  inputStylesTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
+      rel="stylesheet"
+      href="${toolkit_content_widgets_moz_select_moz_select_css__WEBPACK_IMPORTED_MODULE_0__}"
+    />`;
+  }
   inputTemplate() {
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <select
         id="input"
         name=${this.name}
@@ -100,7 +112,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInput
         .disabled=${this.disabled}
         aria-describedby="description"
       >
-        ${this.options.map(option => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+        ${this.options.map(option => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
             <option
               value=${option.value}
               ?selected=${option.value === this.value}
@@ -112,7 +124,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInput
       <slot
         @slotchange=${this.populateOptions}
         hidden
-        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ref)(this.slotRef)}
+        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ref)(this.slotRef)}
       ></slot>
     `;
   }
@@ -126,7 +138,7 @@ customElements.define("moz-select", MozSelect);
  * @property {string} value - The value of the option
  * @property {string} label - The label of the option
  */
-class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     // Reflect the attribute so that moz-select can detect changes with a MutationObserver
     value: {
@@ -319,7 +331,14 @@ PreselectedValue.args = {
   value: "2"
 };
 
+/***/ }),
+
+/***/ 4452:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-select.03a1f27fac40c8b76977.css";
+
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.703039ba.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.79733113.iframe.bundle.js.map
