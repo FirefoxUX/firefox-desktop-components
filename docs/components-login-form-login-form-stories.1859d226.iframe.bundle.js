@@ -636,10 +636,10 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
 
         <form
           role="region"
-          aria-label=${heading}
+          aria-labelledby="moz-fieldset-id"
           @submit=${e => this.onSubmit(e)}
         >
-          <moz-fieldset data-l10n-id=${heading}>
+          <moz-fieldset id="moz-fieldset-id" data-l10n-id=${heading}>
             <div class="field-container">
               <login-origin-field
                 name="origin"
@@ -753,4 +753,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.52f44382.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.1859d226.iframe.bundle.js.map
