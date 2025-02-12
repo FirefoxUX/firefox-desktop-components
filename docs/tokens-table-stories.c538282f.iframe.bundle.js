@@ -48,7 +48,7 @@ const HCM_MAP = {
   AccentColorText: "#2B2B2B",
   VisitedText: "#8080FF"
 };
-const THEMED_TABLES = ["attention-dot", "background-color", "border", "border-color", "opacity", "text-color", "color", "outline", "icon-color", "link"];
+const THEMED_TABLES = ["attention-dot", "background-color", "border", "border-color", "opacity", "text-color", "color", "outline", "icon-color", "icon-fill", "icon-stroke", "link"];
 
 /**
  *
@@ -202,7 +202,9 @@ class TokensTable extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPO
     "font-size": this.fontTemplate,
     "font-weight": this.fontTemplate,
     "icon-color": this.iconTemplate,
+    "icon-fill": this.iconTemplate,
     "icon-size": this.iconTemplate,
+    "icon-stroke": this.iconTemplate,
     link: this.linkTemplate,
     margin: this.spaceAndSizeTemplate,
     "min-height": this.spaceAndSizeTemplate,
@@ -626,8 +628,10 @@ const storybookTables = {
   }, {
     value: {
       default: "transparent",
-      prefersContrast: "var(--button-background-color)",
-      forcedColors: "var(--button-background-color)"
+      brand: {
+        prefersContrast: "var(--button-background-color)",
+        forcedColors: "var(--button-background-color)"
+      }
     },
     name: "--button-background-color-ghost"
   }, {
@@ -636,7 +640,9 @@ const storybookTables = {
   }, {
     value: {
       default: "var(--button-background-color-ghost)",
-      forcedColors: "var(--button-background-color-disabled)"
+      brand: {
+        forcedColors: "var(--button-background-color-disabled)"
+      }
     },
     name: "--button-background-color-ghost-disabled"
   }, {
@@ -896,6 +902,14 @@ const storybookTables = {
   }, {
     value: 600,
     name: "--font-weight-bold"
+  }],
+  "icon-fill": [{
+    value: "currentColor",
+    name: "--button-icon-fill"
+  }],
+  "icon-stroke": [{
+    value: "var(--button-icon-fill)",
+    name: "--button-icon-stroke"
   }],
   "min-height": [{
     value: "var(--size-item-large)",
@@ -1292,12 +1306,6 @@ const storybookTables = {
       default: "light-dark(var(--color-red-50), var(--color-red-30))"
     },
     name: "--icon-color-critical"
-  }, {
-    value: "currentColor",
-    name: "--button-icon-fill"
-  }, {
-    value: "var(--button-icon-fill)",
-    name: "--button-icon-stroke"
   }],
   "icon-size": [{
     value: "var(--size-item-small)",
@@ -1545,13 +1553,17 @@ const variableLookupTable = {
   },
   "button-background-color-ghost": {
     default: "transparent",
-    prefersContrast: "var(--button-background-color)",
-    forcedColors: "var(--button-background-color)"
+    brand: {
+      prefersContrast: "var(--button-background-color)",
+      forcedColors: "var(--button-background-color)"
+    }
   },
   "button-background-color-ghost-active": "var(--button-background-color-active)",
   "button-background-color-ghost-disabled": {
     default: "var(--button-background-color-ghost)",
-    forcedColors: "var(--button-background-color-disabled)"
+    brand: {
+      forcedColors: "var(--button-background-color-disabled)"
+    }
   },
   "button-background-color-ghost-hover": "var(--button-background-color-hover)",
   "button-border": "var(--border-width) solid var(--button-border-color)",
@@ -1963,4 +1975,4 @@ module.exports = __webpack_require__.p + "tokens-table.fa3a1444a24e4f30dac7.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.74926706.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.c538282f.iframe.bundle.js.map

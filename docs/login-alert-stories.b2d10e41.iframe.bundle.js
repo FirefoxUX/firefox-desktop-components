@@ -121,11 +121,8 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.hostname = "";
   }
   get displayHostname() {
-    try {
-      return new URL(this.hostname).hostname;
-    } catch (err) {
-      return this.hostname;
-    }
+    let url = URL.parse(this.hostname);
+    return url?.hostname ?? this.hostname;
   }
   render() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
@@ -268,4 +265,4 @@ module.exports = __webpack_require__.p + "login-alert.2ba9a56cfdfacfe50729.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=login-alert-stories.84fe49ab.iframe.bundle.js.map
+//# sourceMappingURL=login-alert-stories.b2d10e41.iframe.bundle.js.map

@@ -1356,14 +1356,12 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }
   }
   getHostnameFromProductUrl() {
-    let hostname;
-    try {
-      hostname = new URL(this.productUrl)?.hostname;
+    let hostname = URL.parse(this.productUrl)?.hostname;
+    if (hostname) {
       return hostname;
-    } catch (e) {
-      console.warn(`Unknown product url ${this.productUrl}.`);
-      return null;
     }
+    console.warn(`Unknown product url ${this.productUrl}.`);
+    return null;
   }
   analysisDetailsTemplate() {
     /* At present, en is supported as the default language for reviews. As we support more sites,
@@ -3632,4 +3630,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.1af1c7af.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.582d97c1.iframe.bundle.js.map
