@@ -544,12 +544,19 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       warning.classList.remove("invalid-input");
     }
   }
-  #shouldShowWarning(input, warning) {
+  #shouldShowWarning(field, input, warning) {
     if (!input.checkValidity()) {
+      // FIXME: for some reason checkValidity does not apply the :invalid style
+      // to the field. For now, we reset the input value to "" apply :invalid
+      // styling.
+      input.value = "";
+      input.focus();
       warning.setAttribute("message", input.validationMessage);
       warning.classList.add("invalid-input");
+      field.setAttribute("aria-describedby", warning.id);
       return true;
     }
+    field.removeAttribute("aria-describedby");
     this.#removeWarning(warning);
     return false;
   }
@@ -558,14 +565,12 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     const warning = field.name === "origin" ? this.originWarning : this.passwordWarning;
     if (field.input.checkValidity()) {
       this.#removeWarning(warning);
+      field.removeAttribute("aria-describedby");
     }
   }
   onSubmit(e) {
     e.preventDefault();
-    if (this.type !== "edit" && this.#shouldShowWarning(this.originField.input, this.originWarning)) {
-      return;
-    }
-    if (this.#shouldShowWarning(this.passwordField.input, this.passwordWarning)) {
+    if (!this.#isFormValid()) {
       return;
     }
     const loginForm = {
@@ -574,6 +579,18 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       password: this.passwordField.value
     };
     this.onSaveClick(loginForm);
+  }
+  #isFormValid() {
+    let originError = false;
+    let passwordError = false;
+    passwordError = this.#shouldShowWarning(this.passwordField, this.passwordField.input, this.passwordWarning);
+    if (this.type !== "edit") {
+      originError = this.#shouldShowWarning(this.originField, this.originField.input, this.originWarning);
+    }
+    if (passwordError || originError) {
+      return false;
+    }
+    return true;
   }
   #toggleDeleteCard() {
     this._showDeleteCard = !this._showDeleteCard;
@@ -651,6 +668,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               >
               </login-origin-field>
               <origin-warning
+                id="origin-alert"
                 role="alert"
                 arrowdirection="down"
               ></origin-warning>
@@ -670,6 +688,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
                 @input=${e => this.onInput(e)}
               ></login-password-field>
               <password-warning
+                id="password-alert"
                 role="alert"
                 isNewLogin
                 arrowdirection="down"
@@ -753,4 +772,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.1859d226.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.4e8fc2b1.iframe.bundle.js.map
