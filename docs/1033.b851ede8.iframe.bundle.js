@@ -637,6 +637,9 @@ class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInputE
       state: true
     }
   };
+  get controller() {
+    return this.#controller;
+  }
   constructor() {
     super();
     this.checked = false;
@@ -841,4 +844,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=1033.c1aa7d60.iframe.bundle.js.map
+//# sourceMappingURL=1033.b851ede8.iframe.bundle.js.map

@@ -368,7 +368,13 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       snapshotId: lineIndex
     });
   }
+  #recordInteractionType(type) {
+    Glean.contextualManager.recordsInteraction.record({
+      interaction_type: type
+    });
+  }
   async onEditButtonClick() {
+    this.#recordInteractionType("edit");
     const isAuthenticated = await this.reauthCommandHandler(() => this.messageToViewModel("Command", {
       commandId: "Edit",
       snapshotId: this.password.lineIndex
@@ -380,9 +386,11 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   }
   onViewAlertClick() {
     this.handleViewAlertClick();
+    this.#recordInteractionType("view_alert");
   }
   #onOriginLineClick(lineIndex) {
     this.handleCommand("OpenLink", lineIndex);
+    this.#recordInteractionType("url_navigate");
   }
   #onCopyButtonClick(lineIndex) {
     this.handleCommand("Copy", lineIndex);
@@ -429,6 +437,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         .value=${this.username.value}
         .onLineClick=${() => {
       this.#onCopyButtonClick(this.username.lineIndex);
+      this.#recordInteractionType("copy_username");
       return true;
     }}
         ?alert=${!this.username.value.length}
@@ -444,8 +453,17 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         .value=${this.password.value}
         .visible=${!this.password.concealed}
         ?alert=${this.password.vulnerable}
-        .onLineClick=${() => this.reauthCommandHandler(() => this.#onCopyButtonClick(this.password.lineIndex))}
-        .onButtonClick=${() => this.reauthCommandHandler(() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex))}
+        .onLineClick=${() => {
+      this.reauthCommandHandler(() => {
+        this.#onCopyButtonClick(this.password.lineIndex);
+      });
+      this.#recordInteractionType("copy_password");
+    }}
+        .onButtonClick=${() => {
+      const interactionType = this.password.concealed ? "view_password" : "hide_password";
+      this.#recordInteractionType(interactionType);
+      this.reauthCommandHandler(() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex));
+    }}
       >
       </concealed-login-line>
     `;
@@ -600,4 +618,4 @@ module.exports = __webpack_require__.p + "password-card.3675af91aff9e58139b0.css
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.b8b0dd66.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.e02e3bdb.iframe.bundle.js.map
