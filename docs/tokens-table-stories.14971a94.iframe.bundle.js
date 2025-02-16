@@ -1007,7 +1007,11 @@ const storybookTables = {
     name: "--button-text-color-disabled"
   }, {
     value: {
-      default: "var(--button-text-color)"
+      default: "inherit",
+      brand: {
+        prefersContrast: "var(--button-text-color)",
+        forcedColors: "var(--button-text-color)"
+      }
     },
     name: "--button-text-color-ghost"
   }, {
@@ -1017,7 +1021,11 @@ const storybookTables = {
     name: "--button-text-color-ghost-active"
   }, {
     value: {
-      default: "var(--button-text-color-disabled)"
+      default: "inherit",
+      brand: {
+        prefersContrast: "var(--button-text-color-disabled)",
+        forcedColors: "var(--button-text-color-disabled)"
+      }
     },
     name: "--button-text-color-ghost-disabled"
   }, {
@@ -1679,13 +1687,21 @@ const variableLookupTable = {
     forcedColors: "GrayText"
   },
   "button-text-color-ghost": {
-    default: "var(--button-text-color)"
+    default: "inherit",
+    brand: {
+      prefersContrast: "var(--button-text-color)",
+      forcedColors: "var(--button-text-color)"
+    }
   },
   "button-text-color-ghost-active": {
     default: "var(--button-text-color-active)"
   },
   "button-text-color-ghost-disabled": {
-    default: "var(--button-text-color-disabled)"
+    default: "inherit",
+    brand: {
+      prefersContrast: "var(--button-text-color-disabled)",
+      forcedColors: "var(--button-text-color-disabled)"
+    }
   },
   "button-text-color-ghost-hover": {
     default: "var(--button-text-color-hover)"
@@ -1975,4 +1991,4 @@ module.exports = __webpack_require__.p + "tokens-table.fa3a1444a24e4f30dac7.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.c538282f.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.14971a94.iframe.bundle.js.map
