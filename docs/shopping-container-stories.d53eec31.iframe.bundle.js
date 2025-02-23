@@ -715,6 +715,9 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     autoOpenEnabledByUser: {
       type: Boolean
     },
+    autoCloseEnabledByUser: {
+      type: Boolean
+    },
     hostname: {
       type: String
     }
@@ -725,6 +728,8 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       recommendationsToggleEl: "#shopping-settings-recommendations-toggle",
       autoOpenToggleEl: "#shopping-settings-auto-open-toggle",
       autoOpenToggleDescriptionEl: "#shopping-auto-open-description",
+      autoCloseToggleEl: "#shopping-settings-auto-close-toggle",
+      autoCloseToggleDescriptionEl: "#shopping-auto-close-description",
       dividerEl: ".divider",
       optOutButtonEl: "#shopping-settings-opt-out-button",
       shoppingCardEl: "shopping-card",
@@ -750,6 +755,14 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     if (!this.autoOpenEnabledByUser) {
       RPMSetPref("browser.shopping.experience2023.active", false);
     }
+  }
+  onToggleAutoClose() {
+    this.autoCloseEnabledByUser = this.autoCloseToggleEl.pressed;
+    let action = this.autoCloseEnabledByUser ? "enabled" : "disabled";
+    Glean.shopping.surfaceAutoCloseSettingToggled.record({
+      action
+    });
+    RPMSetPref("browser.shopping.experience2023.autoClose.userEnabled", this.autoCloseEnabledByUser);
   }
   onDisableShopping() {
     window.dispatchEvent(new CustomEvent("DisableShopping", {
@@ -795,6 +808,8 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
      */
     let autoOpenDescriptionL10nId;
     let autoOpenDescriptionL10nArgs;
+    let autoCloseDescriptionL10nId;
+    let autoCloseDescriptionL10nArgs;
     switch (this.hostname) {
       case "www.amazon.fr":
       case "www.amazon.de":
@@ -802,10 +817,20 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
         autoOpenDescriptionL10nArgs = {
           currentSite: "Amazon"
         };
+        autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-single-site";
+        autoCloseDescriptionL10nArgs = {
+          currentSite: "Amazon"
+        };
         break;
       default:
         autoOpenDescriptionL10nId = "shopping-settings-auto-open-description-three-sites";
         autoOpenDescriptionL10nArgs = {
+          firstSite: "Amazon",
+          secondSite: "Best Buy",
+          thirdSite: "Walmart"
+        };
+        autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-three-sites";
+        autoCloseDescriptionL10nArgs = {
           firstSite: "Amazon",
           secondSite: "Best Buy",
           thirdSite: "Walmart"
@@ -827,6 +852,24 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             ></span>
           </moz-toggle>
         </div>` : null;
+    let autoCloseToggleMarkup = chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html` <div
+      class="shopping-settings-toggle-option-wrapper"
+    >
+      <moz-toggle
+        id="shopping-settings-auto-close-toggle"
+        ?pressed=${this.autoCloseEnabledByUser}
+        data-l10n-id="shopping-settings-auto-close-toggle"
+        data-l10n-attrs="label"
+        @toggle=${this.onToggleAutoClose}
+      >
+        <span
+          slot="description"
+          id="shopping-auto-close-description"
+          data-l10n-id=${autoCloseDescriptionL10nId}
+          data-l10n-args=${JSON.stringify(autoCloseDescriptionL10nArgs)}
+        ></span>
+      </moz-toggle>
+    </div>`;
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
       <link
         rel="stylesheet"
@@ -848,7 +891,7 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
           slot="content"
         >
           <section id="shopping-settings-toggles-section">
-            ${autoOpenToggleMarkup} ${adsToggleMarkup}
+            ${autoOpenToggleMarkup} ${autoCloseToggleMarkup} ${adsToggleMarkup}
           </section>
           ${this.autoOpenEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="divider" role="separator"></span>` : null}
           <section id="shopping-settings-opt-out-section">
@@ -1162,6 +1205,9 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     autoOpenEnabledByUser: {
       type: Boolean
     },
+    autoCloseEnabledByUser: {
+      type: Boolean
+    },
     showingKeepClosedMessage: {
       type: Boolean
     },
@@ -1220,6 +1266,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     window.document.addEventListener("UpdateRecommendations", this);
     window.document.addEventListener("UpdateAnalysisProgress", this);
     window.document.addEventListener("autoOpenEnabledByUserChanged", this);
+    window.document.addEventListener("autoCloseEnabledByUserChanged", this);
     window.document.addEventListener("ShowKeepClosedMessage", this);
     window.document.addEventListener("HideKeepClosedMessage", this);
     window.dispatchEvent(new CustomEvent("ContentReady", {
@@ -1268,6 +1315,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     focusCloseButton,
     autoOpenEnabled,
     autoOpenEnabledByUser,
+    autoCloseEnabledByUser,
     isProductPage,
     isSupportedSite,
     supportedDomains
@@ -1287,6 +1335,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.focusCloseButton = focusCloseButton;
     this.autoOpenEnabled = autoOpenEnabled ?? this.autoOpenEnabled;
     this.autoOpenEnabledByUser = autoOpenEnabledByUser ?? this.autoOpenEnabledByUser;
+    this.autoCloseEnabledByUser = autoCloseEnabledByUser ?? this.autoCloseEnabledByUser;
     this.isProductPage = isProductPage ?? true;
     this.isSupportedSite = isSupportedSite;
     this.supportedDomains = supportedDomains ?? this.supportedDomains;
@@ -1340,6 +1389,9 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         break;
       case "autoOpenEnabledByUserChanged":
         this.autoOpenEnabledByUser = event.detail?.autoOpenEnabledByUser;
+        break;
+      case "autoCloseEnabledByUserChanged":
+        this.autoCloseEnabledByUser = event.detail?.autoCloseEnabledByUser;
         break;
       case "ShowKeepClosedMessage":
         this.showingKeepClosedMessage = true;
@@ -1663,6 +1715,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       ?adsEnabledByUser=${this.adsEnabledByUser}
       ?autoOpenEnabled=${this.autoOpenEnabled}
       ?autoOpenEnabledByUser=${this.autoOpenEnabledByUser}
+      ?autoCloseEnabledByUser=${this.autoCloseEnabledByUser}
       .hostname=${hostname}
       class=${className}
     ></shopping-settings>`;
@@ -3631,4 +3684,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.c4e68721.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.d53eec31.iframe.bundle.js.map
