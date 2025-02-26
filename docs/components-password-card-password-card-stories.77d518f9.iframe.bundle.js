@@ -454,15 +454,15 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         .visible=${!this.password.concealed}
         ?alert=${this.password.vulnerable}
         .onLineClick=${() => {
-      this.reauthCommandHandler(() => {
+      this.#recordInteractionType("copy_password");
+      return this.reauthCommandHandler(() => {
         this.#onCopyButtonClick(this.password.lineIndex);
       });
-      this.#recordInteractionType("copy_password");
     }}
         .onButtonClick=${() => {
       const interactionType = this.password.concealed ? "view_password" : "hide_password";
       this.#recordInteractionType(interactionType);
-      this.reauthCommandHandler(() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex));
+      return this.reauthCommandHandler(() => this.onPasswordRevealClick(this.password.concealed, this.password.lineIndex));
     }}
       >
       </concealed-login-line>
@@ -606,16 +606,16 @@ AllAlertsOn.args = {
 /***/ 5363:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "login-line.6204908c1a0e679d1eb4.css";
+module.exports = __webpack_require__.p + "login-line.da6851456f1a60bb9b19.css";
 
 /***/ }),
 
 /***/ 53378:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-card.3675af91aff9e58139b0.css";
+module.exports = __webpack_require__.p + "password-card.614325540f79302dfc56.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.baa6ea41.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.77d518f9.iframe.bundle.js.map
