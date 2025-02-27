@@ -1,253 +1,316 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[7328,5872,8825,6949],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[9565,5872,3922,8825,6949],{
 
-/***/ 38582:
+/***/ 41145:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(57143);
-/* harmony import */ var browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(53665);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45717);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(73689);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(46949);
-
-
-/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
- * This Source Code Form is subject to the terms of the Mozilla Public
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "ERRORS": () => (/* binding */ ERRORS),
+/* harmony export */   "STEPS": () => (/* binding */ STEPS)
+/* harmony export */ });
+/* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* eslint-env mozilla/remote-page */
+const ERRORS = Object.freeze({
+  /** User is not authorized to restore a backup archive */
+  UNAUTHORIZED: 1,
+  /** Selected backup archive can't be restored because it is corrupt */
+  CORRUPTED_ARCHIVE: 2,
+  /**
+   * Selected backup archive can't be restored because the backup manifest
+   * version is too old, from the future, or invalid
+   */
+  UNSUPPORTED_BACKUP_VERSION: 3,
+  /** Backup service was not started or is not running */
+  UNINITIALIZED: 4,
+  /** Could not read from or write to the file system */
+  FILE_SYSTEM_ERROR: 5,
+  /** Encryption of backup archive failed */
+  ENCRYPTION_FAILED: 6,
+  /** Decryption of backup archive failed */
+  DECRYPTION_FAILED: 7,
+  /** Recovery of backup failed without a more specific cause */
+  RECOVERY_FAILED: 8,
+  /** Unknown error with backup system without a more specific cause */
+  UNKNOWN: 9,
+  /**
+   * Backup system tried to enable backup encryption but it was
+   * already enabled
+   */
+  ENCRYPTION_ALREADY_ENABLED: 10,
+  /**
+   * Backup system tried to disable backup encryption but it was
+   * already disabled
+   */
+  ENCRYPTION_ALREADY_DISABLED: 11,
+  /** User supplied a new password that is not a valid password */
+  INVALID_PASSWORD: 12,
+  /**
+   * An error internal to the code that is likely caused by a bug
+   * or other programmer error.
+   */
+  INTERNAL_ERROR: 13,
+  /**
+   * A backup cannot be recovered because the backup file was created
+   * by a different application than the currently running application
+   */
+  UNSUPPORTED_APPLICATION: 14
+});
+
+/**
+ * These are steps that the BackupService or any of its subcomponents might
+ * be going through during configuration, creation, deletion of or restoration
+ * from a backup. This is used to provide extra information to our error
+ * telemetry.
+ */
+const STEPS = Object.freeze({
+  /**
+   * This is the initial step upon creating a backup before any other steps
+   * begin.
+   */
+  CREATE_BACKUP_ENTRYPOINT: 1,
+  /**
+   * Determine the final destination for the written archive.
+   */
+  CREATE_BACKUP_RESOLVE_DESTINATION: 2,
+  /**
+   * Generate the manifest object for the backup.
+   */
+  CREATE_BACKUP_CREATE_MANIFEST: 3,
+  /**
+   * Create the main `backups` working directory in the profile directory if it
+   * doesn't already exist.
+   */
+  CREATE_BACKUP_CREATE_BACKUPS_FOLDER: 4,
+  /**
+   * Create the staging directory for the backup.
+   */
+  CREATE_BACKUP_CREATE_STAGING_FOLDER: 5,
+  /**
+   * Attempt to load the encryption state if one exists.
+   */
+  CREATE_BACKUP_LOAD_ENCSTATE: 6,
+  /**
+   * Run the backup routine for each BackupResource.
+   */
+  CREATE_BACKUP_RUN_BACKUP: 7,
+  /**
+   * After populating with the data from each BackupResource, verify that
+   * the manifest adheres to the BackupManifest schema.
+   */
+  CREATE_BACKUP_VERIFY_MANIFEST: 8,
+  /**
+   * Write the backup manifest to the staging directory.
+   */
+  CREATE_BACKUP_WRITE_MANIFEST: 9,
+  /**
+   * Rename the staging directory with the time code, and clear out any
+   * expired directories.
+   */
+  CREATE_BACKUP_FINALIZE_STAGING: 10,
+  /**
+   * Compress the staging directory into a single file.
+   */
+  CREATE_BACKUP_COMPRESS_STAGING: 11,
+  /**
+   * Generate the single-file archive.
+   */
+  CREATE_BACKUP_CREATE_ARCHIVE: 12,
+  /**
+   * Finalize the single-file archive and move it into the destination
+   * directory.
+   */
+  CREATE_BACKUP_FINALIZE_ARCHIVE: 13
+});
+
+/***/ }),
+
+/***/ 14537:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisableBackupEncryption)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(12163);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(46949);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
 
 // eslint-disable-next-line import/no-unassigned-import
 
-const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
-const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
-const SHOPPING_AUTO_OPEN_SIDEBAR_PREF = "browser.shopping.experience2023.autoOpen.userEnabled";
-class ShoppingMessageBar extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
-  #MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING = new Map([["stale", () => this.staleWarningTemplate()], ["generic-error", () => this.genericErrorTemplate()], ["not-enough-reviews", () => this.notEnoughReviewsTemplate()], ["product-not-available", () => this.productNotAvailableTemplate()], ["thanks-for-reporting", () => this.thanksForReportingTemplate()], ["product-not-available-reported", () => this.productNotAvailableReportedTemplate()], ["analysis-in-progress", () => this.analysisInProgressTemplate()], ["reanalysis-in-progress", () => this.reanalysisInProgressTemplate()], ["page-not-supported", () => this.pageNotSupportedTemplate()], ["thank-you-for-feedback", () => this.thankYouForFeedbackTemplate()], ["keep-closed", () => this.keepClosedTemplate()]]);
+const ERROR_L10N_ID = "backup-error-retry";
+
+/**
+ * The widget for disabling password protection if the backup is already
+ * encrypted.
+ */
+class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    type: {
-      type: String
-    },
-    productUrl: {
-      type: String,
-      reflect: true
-    },
-    progress: {
-      type: Number,
-      reflect: true
+    // managed by BackupUIChild
+    disableEncryptionErrorCode: {
+      type: Number
     }
   };
   static get queries() {
     return {
-      reAnalysisButtonEl: "#message-bar-reanalysis-button",
-      productAvailableBtnEl: "#message-bar-report-product-available-btn",
-      yesKeepClosedButtonEl: "#yes-keep-closed-button",
-      noThanksButtonEl: "#no-thanks-button"
+      cancelButtonEl: "#backup-disable-encryption-cancel-button",
+      confirmButtonEl: "#backup-disable-encryption-confirm-button",
+      errorEl: "#disable-backup-encryption-error"
     };
   }
-  onClickAnalysisButton() {
-    this.dispatchEvent(new CustomEvent("ReanalysisRequested", {
+  constructor() {
+    super();
+    this.disableEncryptionErrorCode = 0;
+  }
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
       bubbles: true,
       composed: true
     }));
-    Glean.shopping.surfaceReanalyzeClicked.record();
+    this.reset();
   }
-  onClickProductAvailable() {
-    this.dispatchEvent(new CustomEvent("ReportedProductAvailable", {
-      bubbles: true,
-      composed: true
+  reset() {
+    this.disableEncryptionErrorCode = 0;
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
+      bubbles: true
     }));
   }
-  handleNoThanksClick() {
-    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
-    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
-    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
-      bubbles: true,
-      composed: true
-    }));
-    Glean.shopping.surfaceNoThanksButtonClicked.record();
+  errorTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <moz-message-bar
+        id="disable-backup-encryption-error"
+        type="error"
+        .messageL10nId=${ERROR_L10N_ID}
+      ></moz-message-bar>
+    `;
   }
-  handleKeepClosedClick() {
-    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
-    RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
-    RPMSetPref(SHOPPING_AUTO_OPEN_SIDEBAR_PREF, false);
-    this.dispatchEvent(new CustomEvent("HideKeepClosedMessage", {
-      bubbles: true,
-      composed: true
-    }));
-    Glean.shopping.surfaceYesKeepClosedButtonClicked.record();
-  }
-  staleWarningTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div class="shopping-message-bar">
-      <span class="icon"></span>
-      <article id="message-bar-container" aria-labelledby="header">
-        <span
-          data-l10n-id="shopping-message-bar-warning-stale-analysis-message-2"
-        ></span>
-        <button
-          id="message-bar-reanalysis-button"
-          class="small-button shopping-button"
-          data-l10n-id="shopping-message-bar-warning-stale-analysis-button"
-          @click=${this.onClickAnalysisButton}
-        ></button>
-      </article>
-    </div>`;
-  }
-  genericErrorTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="warning"
-      data-l10n-id="shopping-message-bar-generic-error"
-    >
-    </moz-message-bar>`;
-  }
-  notEnoughReviewsTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-not-enough-reviews"
-    >
-    </moz-message-bar>`;
-  }
-  productNotAvailableTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-product-not-available"
-    >
-      <button
-        slot="actions"
-        id="message-bar-report-product-available-btn"
-        class="small-button shopping-button"
-        data-l10n-id="shopping-message-bar-warning-product-not-available-button2"
-        @click=${this.onClickProductAvailable}
-      ></button>
-    </moz-message-bar>`;
-  }
-  thanksForReportingTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="info"
-      data-l10n-id="shopping-message-bar-thanks-for-reporting"
-    >
-    </moz-message-bar>`;
-  }
-  productNotAvailableReportedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="warning"
-      data-l10n-id="shopping-message-bar-warning-product-not-available-reported"
-    >
-    </moz-message-bar>`;
-  }
-  analysisInProgressTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
-      class="shopping-message-bar analysis-in-progress"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
-      "--analysis-progress-pcent": `${this.progress}%`
-    })}
-    >
-      <span class="icon"></span>
-      <article
-        id="message-bar-container"
-        aria-labelledby="header"
-        type="analysis"
+  contentTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div
+        id="backup-disable-encryption-wrapper"
+        aria-labelledby="backup-disable-encryption-header"
+        aria-describedby="backup-disable-encryption-description"
       >
-        <strong
-          id="header"
-          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
-          data-l10n-args=${JSON.stringify({
-      percentage: Math.round(this.progress)
-    })}
-        ></strong>
-        <span
-          data-l10n-id="shopping-message-bar-analysis-in-progress-message2"
-        ></span>
-      </article>
-    </div>`;
-  }
-  reanalysisInProgressTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
-      class="shopping-message-bar"
-      id="reanalysis-in-progress-message"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.styleMap)({
-      "--analysis-progress-pcent": `${this.progress}%`
-    })}
-    >
-      <span class="icon"></span>
-      <article
-        id="message-bar-container"
-        aria-labelledby="header"
-        type="re-analysis"
-      >
-        <span
-          id="header"
-          data-l10n-id="shopping-message-bar-analysis-in-progress-with-amount"
-          data-l10n-args=${JSON.stringify({
-      percentage: Math.round(this.progress)
-    })}
-        ></span>
-      </article>
-    </div>`;
-  }
-  pageNotSupportedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="warning"
-      data-l10n-id="shopping-message-bar-page-not-supported"
-    >
-    </moz-message-bar>`;
-  }
-  thankYouForFeedbackTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="success"
-      dismissable
-      data-l10n-id="shopping-survey-thanks"
-    >
-    </moz-message-bar>`;
-  }
-  keepClosedTemplate() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<moz-message-bar
-      type="info"
-      data-l10n-id="shopping-message-bar-keep-closed-header"
-    >
-      <moz-button-group slot="actions">
-        <button
-          id="no-thanks-button"
-          class="small-button shopping-button"
-          data-l10n-id="shopping-message-bar-keep-closed-dismiss-button"
-          @click=${this.handleNoThanksClick}
-        ></button>
-        <button
-          id="yes-keep-closed-button"
-          class="primary small-button shopping-button"
-          data-l10n-id="shopping-message-bar-keep-closed-accept-button"
-          @click=${this.handleKeepClosedClick}
-        ></button>
-      </moz-button-group>
-    </moz-message-bar>`;
+        <h1
+          id="backup-disable-encryption-header"
+          class="heading-medium"
+          data-l10n-id="disable-backup-encryption-header"
+        ></h1>
+        <main id="backup-disable-encryption-content">
+          <div id="backup-disable-encryption-description">
+            <span
+              id="backup-disable-encryption-description-span"
+              data-l10n-id="disable-backup-encryption-description"
+            >
+              <!--TODO: finalize support page links (bug 1900467)-->
+            </span>
+            <a
+              id="backup-disable-encryption-learn-more-link"
+              is="moz-support-link"
+              support-page="todo-backup"
+              data-l10n-id="disable-backup-encryption-support-link"
+            ></a>
+          </div>
+          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
+        </main>
+
+        <moz-button-group id="backup-disable-encryption-button-group">
+          <moz-button
+            id="backup-disable-encryption-cancel-button"
+            @click=${this.close}
+            data-l10n-id="disable-backup-encryption-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="backup-disable-encryption-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id="disable-backup-encryption-confirm-button"
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
   }
   render() {
-    let messageBarTemplate = this.#MESSAGE_TYPES_RENDER_TEMPLATE_MAPPING.get(this.type)();
-    if (messageBarTemplate) {
-      if (this.type == "stale") {
-        Glean.shopping.surfaceStaleAnalysisShown.record();
-      }
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`
-        <link
-          rel="stylesheet"
-          href="${browser_components_shopping_content_shopping_message_bar_css__WEBPACK_IMPORTED_MODULE_1__}"
-        />
-        <link
-          rel="stylesheet"
-          href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
-        />
-        ${messageBarTemplate}
-      `;
-    }
-    return null;
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
   }
 }
-customElements.define("shopping-message-bar", ShoppingMessageBar);
+customElements.define("disable-backup-encryption", DisableBackupEncryption);
+
+/***/ }),
+
+/***/ 7128:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "DisableError": () => (/* binding */ DisableError),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(63922);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(41145);
+/* harmony import */ var _disable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14537);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+
+
+
+window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
+const SELECTABLE_ERRORS = {
+  "(none)": 0,
+  ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Backup/Disable Encryption",
+  component: "disable-backup-encryption",
+  argTypes: {
+    disableEncryptionErrorCode: {
+      options: Object.keys(SELECTABLE_ERRORS),
+      mapping: SELECTABLE_ERRORS,
+      control: {
+        type: "select"
+      }
+    }
+  }
+});
+const Template = ({
+  disableEncryptionErrorCode
+}) => lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <moz-card style="width: 23.94rem;">
+    <disable-backup-encryption
+      .disableEncryptionErrorCode=${disableEncryptionErrorCode}
+    ></disable-backup-encryption>
+  </moz-card>
+`;
+const Default = Template.bind({});
+const DisableError = Template.bind({});
+DisableError.args = {
+  disableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.UNKNOWN
+};
 
 /***/ }),
 
@@ -410,6 +473,134 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
   }
 }
 customElements.define("moz-button", MozButton);
+
+/***/ }),
+
+/***/ 63922:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozCard)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(48058);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Cards contain content and actions about a single subject.
+ * There are two card types:
+ * The default type where no type attribute is required and the card
+ * will have no extra functionality.
+ *
+ * The "accordion" type will initially not show any content. The card
+ * will contain an arrow to expand the card so that all of the content
+ * is visible. You can use the "expanded" attribute to force the accordion
+ * card to show its content on initial render.
+ *
+ *
+ * @property {string} heading - The heading text that will be used for the card.
+ * @property {string} icon - (optional) A flag to indicate the header should include an icon
+ * @property {string} type - (optional) The type of card. No type specified
+ *   will be the default card. The other available type is "accordion"
+ * @property {boolean} expanded - A flag to indicate whether the card is
+ *  expanded or not. Can be used to expand the content section of the
+ *  accordion card on initial render.
+ * @slot content - The content to show inside of the card.
+ */
+class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    detailsEl: "#moz-card-details",
+    headingEl: "#heading",
+    contentSlotEl: "#content"
+  };
+  static properties = {
+    heading: {
+      type: String
+    },
+    icon: {
+      type: Boolean
+    },
+    type: {
+      type: String,
+      reflect: true
+    },
+    expanded: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    this.type = "default";
+    this.expanded = false;
+  }
+  headingTemplate() {
+    if (!this.heading) {
+      return "";
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div id="heading-wrapper">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type == "accordion", () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div class="chevron-icon"></div>`)}
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div part="icon" id="heading-icon" role="presentation"></div>`)}
+        <span id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading)} part="heading"
+          >${this.heading}</span
+        >
+      </div>
+    `;
+  }
+  cardTemplate() {
+    if (this.type === "accordion") {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+        <details
+          id="moz-card-details"
+          @toggle=${this.onToggle}
+          ?open=${this.expanded}
+        >
+          <summary part="summary">${this.headingTemplate()}</summary>
+          <div id="content"><slot></slot></div>
+        </details>
+      `;
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <div id="moz-card-details">
+        ${this.headingTemplate()}
+        <div id="content" aria-describedby="content">
+          <slot></slot>
+        </div>
+      </div>
+    `;
+  }
+  onToggle() {
+    this.expanded = this.detailsEl.open;
+    this.dispatchEvent(new ToggleEvent("toggle", {
+      newState: this.detailsEl.open ? "open" : "closed",
+      oldState: this.detailsEl.open ? "closed" : "open"
+    }));
+  }
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <article
+        class="moz-card"
+        aria-labelledby=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading ? "heading" : undefined)}
+      >
+        ${this.cardTemplate()}
+      </article>
+    `;
+  }
+}
+customElements.define("moz-card", MozCard);
 
 /***/ }),
 
@@ -892,69 +1083,10 @@ customElements.define("moz-message-bar", MozMessageBar);
 
 /***/ }),
 
-/***/ 98161:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "DefaultShoppingMessageBar": () => (/* binding */ DefaultShoppingMessageBar),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var browser_components_shopping_content_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(38582);
-var _templateObject;
-function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// eslint-disable-next-line import/no-unresolved
-
-
-window.MozXULElement.insertFTLIfNeeded("browser/shopping.ftl");
-window.MozXULElement.insertFTLIfNeeded("toolkit/branding/brandings.ftl");
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Shopping/Shopping Message Bar",
-  component: "shopping-message-bar",
-  argTypes: {
-    type: {
-      control: {
-        type: "select"
-      },
-      options: ["stale", "generic-error", "not-enough-reviews", "product-not-available", "product-not-available-reported", "thanks-for-reporting", "analysis-in-progress", "reanalysis-in-progress", "page-not-supported", "thank-you-for-feedback"]
-    }
-  },
-  parameters: {
-    status: "in-development",
-    actions: {
-      handles: ["click"]
-    }
-  }
-});
-var Template = function Template(_ref) {
-  var type = _ref.type,
-    progress = _ref.progress;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <shopping-message-bar\n    type=", "\n    progress=", "\n  ></shopping-message-bar>\n"])), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type), (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(progress));
-};
-var DefaultShoppingMessageBar = Template.bind({});
-DefaultShoppingMessageBar.args = {
-  type: "stale",
-  progress: 0
-};
-
-/***/ }),
-
-/***/ 53665:
+/***/ 12163:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "shopping-message-bar.70ce85ff4e48cc311a96.css";
-
-/***/ }),
-
-/***/ 57143:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css";
+module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584db13a46f.css";
 
 /***/ }),
 
@@ -962,6 +1094,13 @@ module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-button.a48882edf284d66ca04d.css";
+
+/***/ }),
+
+/***/ 48058:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-card.902fea065284e16a7756.css";
 
 /***/ }),
 
@@ -975,9 +1114,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 84296:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.css";
+module.exports = __webpack_require__.p + "moz-message-bar.80c0083ab13d099f8e4b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-message-bar-stories.143043bc.iframe.bundle.js.map
+//# sourceMappingURL=disable-backup-encryption-stories.cfa377b3.iframe.bundle.js.map

@@ -3665,7 +3665,7 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 84296:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.css";
+module.exports = __webpack_require__.p + "moz-message-bar.80c0083ab13d099f8e4b.css";
 
 /***/ }),
 
@@ -3684,4 +3684,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.d53eec31.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.5ad62173.iframe.bundle.js.map

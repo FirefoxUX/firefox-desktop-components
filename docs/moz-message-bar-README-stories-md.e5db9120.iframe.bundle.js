@@ -12015,9 +12015,9 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-message-bar.4e56b2c101f0f1d92359.css";
+module.exports = __webpack_require__.p + "moz-message-bar.80c0083ab13d099f8e4b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.df6fb55a.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-README-stories-md.e5db9120.iframe.bundle.js.map
