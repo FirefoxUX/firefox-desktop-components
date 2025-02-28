@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[2571,5872,3922,4535,8825,6949,9896,4003],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[2571,6557,5872,3922,4535,8825,6949,9896,4003],{
 
 /***/ 11479:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -466,6 +466,160 @@ customElements.define("letter-grade", LetterGrade);
 
 /***/ }),
 
+/***/ 67492:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var browser_components_shopping_content_new_position_notification_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49616);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+/* harmony import */ var chrome_browser_content_shopping_shopping_card_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(61048);
+/* harmony import */ var chrome_global_content_elements_moz_button_group_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(16557);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(15872);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* eslint-env mozilla/remote-page */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/* Until caching is implemented (see Bug 1927956), any location change will force another
+ * update and refresh the UI. Furthermore, we probably want to keep the card visible for the
+ * same tab until the user takes action. To prevent the card from being hidden unnecessarily
+ * on location change, and to ensure users have a chance to read the message,
+ * change the pref once the user dismisses the card or opens the sidebar settings panel. */
+const HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF = "browser.shopping.experience2023.newPositionCard.hasSeen";
+class NewPositionNotificationCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    isSidebarStartPosition: {
+      type: Boolean
+    }
+  };
+  static get queries() {
+    return {
+      imgEl: "#notification-card-img",
+      settingsLinkEl: "#notification-card-settings-link",
+      moveLeftButtonEl: "#notification-card-move-left-button",
+      moveRightButtonEl: "#notification-card-move-right-button",
+      dismissButtonEl: "#notification-card-dismiss-button"
+    };
+  }
+  firstUpdated() {
+    super.firstUpdated();
+    Glean.shopping.surfaceNotificationCardImpression.record();
+  }
+  handleClickSettingsLink(event) {
+    event.preventDefault();
+    // Click event listener references get lost if attached to the settings link since it is slotted into the shopping-card.
+    // As a workaround, attach the listener to its parent element and only dispatch events if the target is the settings link.
+    if (event.target == this.settingsLinkEl) {
+      Glean.shopping.surfaceNotificationCardSidebarSettingsClicked.record();
+      window.dispatchEvent(new CustomEvent("ShowSidebarSettings", {
+        bubbles: true,
+        composed: true
+      }));
+      RPMSetPref(HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF, true);
+      window.dispatchEvent(new CustomEvent("HideNewPositionCard", {
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  handleClickPositionButton() {
+    if (this.isSidebarStartPosition) {
+      Glean.shopping.surfaceNotificationCardMoveRightClicked.record();
+      this.isSidebarStartPosition = false;
+      window.dispatchEvent(new CustomEvent("MoveSidebarToRight", {
+        bubbles: true,
+        composed: true
+      }));
+    } else {
+      Glean.shopping.surfaceNotificationCardMoveLeftClicked.record();
+      this.isSidebarStartPosition = true;
+      window.dispatchEvent(new CustomEvent("MoveSidebarToLeft", {
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  handleClickDismissButton() {
+    Glean.shopping.surfaceNotificationCardDismissClicked.record();
+    this.dispatchEvent(new CustomEvent("HideNewPositionCard", {
+      bubbles: true,
+      composed: true
+    }));
+    RPMSetPref(HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF, true);
+    window.dispatchEvent(new CustomEvent("HideNewPositionCard", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${browser_components_shopping_content_new_position_notification_card_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <shopping-card>
+        <div id="notification-card-wrapper" slot="content">
+          <img
+            id="notification-card-img"
+            src="chrome://browser/content/shopping/assets/emptyStateB.svg"
+            alt=""
+            role="presentation"
+          />
+          <h2
+            id="notification-card-header"
+            data-l10n-id="shopping-integrated-new-position-notification-title"
+          ></h2>
+          <p
+            id="notification-card-body"
+            data-l10n-id="shopping-integrated-new-position-notification-subtitle"
+            @click=${this.handleClickSettingsLink}
+          >
+            <a
+              id="notification-card-settings-link"
+              data-l10n-name="sidebar_settings"
+              href="#"
+            ></a>
+          </p>
+          <div id="notification-card-button-group">
+            <moz-button
+              id=${this.isSidebarStartPosition ? "notification-card-move-right-button" : "notification-card-move-left-button"}
+              data-l10n-id=${this.isSidebarStartPosition ? "shopping-integrated-new-position-notification-move-right-button" : "shopping-integrated-new-position-notification-move-left-button"}
+              type="primary"
+              size="small"
+              @click=${this.handleClickPositionButton}
+            >
+            </moz-button>
+            <moz-button
+              id="notification-card-dismiss-button"
+              data-l10n-id="shopping-integrated-new-position-notification-dismiss-button"
+              type="ghost"
+              size="small"
+              @click=${this.handleClickDismissButton}
+            >
+            </moz-button>
+          </div>
+        </div>
+      </shopping-card>
+    `;
+  }
+}
+customElements.define("new-position-notification-card", NewPositionNotificationCard);
+
+/***/ }),
+
 /***/ 13811:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -806,35 +960,27 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
      *
      * Only show if `browser.shopping.experience2023.autoOpen.enabled` is true.
      */
-    let autoOpenDescriptionL10nId;
-    let autoOpenDescriptionL10nArgs;
-    let autoCloseDescriptionL10nId;
-    let autoCloseDescriptionL10nArgs;
-    switch (this.hostname) {
-      case "www.amazon.fr":
-      case "www.amazon.de":
-        autoOpenDescriptionL10nId = "shopping-settings-auto-open-description-single-site";
-        autoOpenDescriptionL10nArgs = {
-          currentSite: "Amazon"
-        };
-        autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-single-site";
-        autoCloseDescriptionL10nArgs = {
-          currentSite: "Amazon"
-        };
-        break;
-      default:
-        autoOpenDescriptionL10nId = "shopping-settings-auto-open-description-three-sites";
-        autoOpenDescriptionL10nArgs = {
-          firstSite: "Amazon",
-          secondSite: "Best Buy",
-          thirdSite: "Walmart"
-        };
-        autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-three-sites";
-        autoCloseDescriptionL10nArgs = {
-          firstSite: "Amazon",
-          secondSite: "Best Buy",
-          thirdSite: "Walmart"
-        };
+    let autoOpenDescriptionL10nId = "shopping-settings-auto-open-description-three-sites";
+    let autoOpenDescriptionL10nArgs = {
+      firstSite: "Amazon",
+      secondSite: "Best Buy",
+      thirdSite: "Walmart"
+    };
+    let autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-three-sites";
+    let autoCloseDescriptionL10nArgs = {
+      firstSite: "Amazon",
+      secondSite: "Best Buy",
+      thirdSite: "Walmart"
+    };
+    if (RPMGetBoolPref("toolkit.shopping.experience2023.defr", false) && (this.hostname === "www.amazon.fr" || this.hostname === "www.amazon.de")) {
+      autoOpenDescriptionL10nId = "shopping-settings-auto-open-description-single-site";
+      autoOpenDescriptionL10nArgs = {
+        currentSite: "Amazon"
+      };
+      autoCloseDescriptionL10nId = "shopping-settings-auto-close-description-single-site";
+      autoCloseDescriptionL10nArgs = {
+        currentSite: "Amazon"
+      };
     }
     let autoOpenToggleMarkup = this.autoOpenEnabled ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html` <div class="shopping-settings-toggle-option-wrapper">
           <moz-toggle
@@ -1119,6 +1265,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_browser_content_shopping_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(38582);
 /* harmony import */ var chrome_browser_content_shopping_unanalyzed_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(99277);
 /* harmony import */ var chrome_browser_content_shopping_recommended_ad_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(13811);
+/* harmony import */ var chrome_browser_content_shopping_new_position_notification_card_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(67492);
 
 
 
@@ -1147,6 +1294,8 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
+// eslint-disable-next-line import/no-unassigned-import
+
 
 // The number of pixels that must be scrolled from the
 // top of the sidebar to show the header box shadow.
@@ -1157,6 +1306,9 @@ const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.s
 const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
 const SIDEBAR_REVAMP_PREF = "sidebar.revamp";
 const INTEGRATED_SIDEBAR_PREF = "browser.shopping.experience2023.integratedSidebar";
+const HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF = "browser.shopping.experience2023.newPositionCard.hasSeen";
+const CLOSED_COUNT_PREVIOUS_MIN = 4;
+const CLOSED_COUNT_PREVIOUS_MAX = 6;
 class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
     data: {
@@ -1227,6 +1379,12 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     isHeaderOverflow: {
       type: Boolean,
       state: true
+    },
+    isSidebarStartPosition: {
+      type: Boolean
+    },
+    showNewPositionCard: {
+      type: Boolean
     }
   };
   static get queries() {
@@ -1247,7 +1405,8 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       emptyStateTextEl: "#shopping-empty-state-text",
       emptyStateSupportedListEl: "#shopping-empty-list-of-supported-domains",
       containerContentEl: "#content",
-      header: "#shopping-header"
+      header: "#shopping-header",
+      newPositionNotificationCardEl: "new-position-notification-card"
     };
   }
   connectedCallback() {
@@ -1269,6 +1428,8 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     window.document.addEventListener("autoCloseEnabledByUserChanged", this);
     window.document.addEventListener("ShowKeepClosedMessage", this);
     window.document.addEventListener("HideKeepClosedMessage", this);
+    window.document.addEventListener("ShowNewPositionCard", this);
+    window.document.addEventListener("HideNewPositionCard", this);
     window.dispatchEvent(new CustomEvent("ContentReady", {
       bubbles: true,
       composed: true
@@ -1298,7 +1459,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         this.formattedDomainList = null;
       }
     }
-    // TODO:
     if (this.focusCloseButton) {
       this.closeButtonEl.focus();
     }
@@ -1318,7 +1478,8 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     autoCloseEnabledByUser,
     isProductPage,
     isSupportedSite,
-    supportedDomains
+    supportedDomains,
+    isSidebarStartPosition
   }) {
     // If we're not opted in or there's no shopping URL in the main browser,
     // the actor will pass `null`, which means this will clear out any existing
@@ -1339,6 +1500,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.isProductPage = isProductPage ?? true;
     this.isSupportedSite = isSupportedSite;
     this.supportedDomains = supportedDomains ?? this.supportedDomains;
+    this.isSidebarStartPosition = isSidebarStartPosition ?? this.isSidebarStartPosition;
   }
   _updateRecommendations({
     recommendationData
@@ -1399,6 +1561,12 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       case "HideKeepClosedMessage":
         this.showingKeepClosedMessage = false;
         break;
+      case "ShowNewPositionCard":
+        this.showNewPositionCard = true;
+        break;
+      case "HideNewPositionCard":
+        this.showNewPositionCard = false;
+        break;
     }
   }
   maybeSetIsHeaderOverflow(entry) {
@@ -1418,17 +1586,13 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   analysisDetailsTemplate() {
     /* At present, en is supported as the default language for reviews. As we support more sites,
      * update `lang` accordingly if highlights need to be displayed in other languages. */
-    let lang;
     let hostname = this.getHostnameFromProductUrl();
-    switch (hostname) {
-      case "www.amazon.fr":
-        lang = "fr";
-        break;
-      case "www.amazon.de":
-        lang = "de";
-        break;
-      default:
-        lang = "en";
+    let lang = "en";
+    let isDEFRSupported = RPMGetBoolPref("toolkit.shopping.experience2023.defr", false);
+    if (isDEFRSupported && hostname === "www.amazon.fr") {
+      lang = "fr";
+    } else if (isDEFRSupported && hostname === "www.amazon.de") {
+      lang = "de";
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`
       <review-reliability letter=${this.data.grade}></review-reliability>
@@ -1663,6 +1827,8 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       ></button>
     </div>`;
   }
+
+  // TODO: (Bug 1949647) do not render "Keep closed" message and notification card simultaneously.
   renderContainer(sidebarContent, {
     showSettings = false
   } = {}) {
@@ -1691,7 +1857,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           aria-busy=${!this.data}
         >
           <slot name="multi-stage-message-slot"></slot>
-          ${this.keepClosedMessageTemplate()}${sidebarContent}
+          ${this.userInteractionMessageTemplate()}${sidebarContent}
           ${showSettings ? this.settingsTemplate(!this.isSupportedSite && !this.isProductPage ? {
       className: "first-footer-card"
     } : "") : null}
@@ -1720,14 +1886,43 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       class=${className}
     ></shopping-settings>`;
   }
-  keepClosedMessageTemplate() {
-    if (this.autoOpenEnabled && this.autoOpenEnabledByUser && this.showingKeepClosedMessage && RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, true)) {
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`<shopping-message-bar
-        id="keep-closed-message-bar"
-        type="keep-closed"
-      ></shopping-message-bar>`;
+  userInteractionMessageTemplate() {
+    /**
+     * There are two types of messages about users' interaction with Review Checker that we want to display
+     * when users keep the auto-open setting enabled:
+     * 1. The "Keep closed" message-bar
+     * 2. The "New position" notification card (integratedSidebar only)
+     *
+     * Only one or the other should be rendered at a time, at the same spot. If a user is eligible
+     * to see the notification card, make sure to show that card first. Once the card is dismissed,
+     * we can then check if the user is eligible to see the "Keep closed" message.
+     */
+    if (!this.autoOpenEnabled || !this.autoOpenEnabledByUser) {
+      return null;
+    }
+    let canShowNotificationCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && this.isSidebarStartPosition &&
+    // Set fallback value to true to prevent weird flickering UI when switching tabs
+    !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
+    let canShowKeepClosedMessage = this.showingKeepClosedMessage && RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, true);
+    if (canShowNotificationCard) {
+      return this.newPositionNotificationCardTemplate();
+    } else if (canShowKeepClosedMessage) {
+      return this.keepClosedMessageTemplate();
     }
     return null;
+  }
+  newPositionNotificationCardTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`
+      <new-position-notification-card
+        isSidebarStartPosition=${this.isSidebarStartPosition}
+      ></new-position-notification-card>
+    `;
+  }
+  keepClosedMessageTemplate() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html`<shopping-message-bar
+      id="keep-closed-message-bar"
+      type="keep-closed"
+    ></shopping-message-bar>`;
   }
   render() {
     let content;
@@ -1751,26 +1946,51 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     });
   }
   handleCloseButtonClick() {
+    let canShowKeepClosedMessage;
     if (this.autoOpenEnabled && this.autoOpenEnabledByUser) {
-      let sidebarClosedCount = RPMGetIntPref(SIDEBAR_CLOSED_COUNT_PREF, 0);
-      if (!this.showingKeepClosedMessage && sidebarClosedCount >= 4 && RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, true)) {
-        this.showingKeepClosedMessage = true;
-        return;
-      }
-      this.showingKeepClosedMessage = false;
-      if (sidebarClosedCount >= 6) {
-        RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
-      }
-      RPMSetPref(SIDEBAR_CLOSED_COUNT_PREF, sidebarClosedCount + 1);
+      canShowKeepClosedMessage = this._canShowKeepClosedMessageOnCloseButtonClick();
     }
-    RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
-    window.dispatchEvent(new CustomEvent("CloseShoppingSidebar", {
-      bubbles: true,
-      composed: true
-    }));
+    if (!canShowKeepClosedMessage) {
+      RPMSetPref(SHOPPING_SIDEBAR_ACTIVE_PREF, false);
+      window.dispatchEvent(new CustomEvent("CloseShoppingSidebar", {
+        bubbles: true,
+        composed: true
+      }));
+    }
     Glean.shopping.surfaceClosed.record({
       source: "closeButton"
     });
+  }
+
+  /**
+   * Delaying close is only applicable to the "Keep closed" message.
+   *
+   * We can show the message under these conditions:
+   * - User has already seen the new location notification card
+   * - The message was never seen before
+   * - User clicked the close button at least 5 times in a session (i.e. met the minimum of 4 counts before this point)
+   * - The number of close attempts in a session is less than 7 (i.e. met the maximum of 6 counts before this point)
+   *
+   * Do not show the message again after the 7th close.
+   */
+  _canShowKeepClosedMessageOnCloseButtonClick() {
+    let yetToSeeNotificationCard = !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, false) && RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false);
+    if (yetToSeeNotificationCard || !RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false)) {
+      return false;
+    }
+    let sidebarClosedCount = RPMGetIntPref(SIDEBAR_CLOSED_COUNT_PREF, 0);
+    let canShowKeepClosedMessage = !this.showingKeepClosedMessage && sidebarClosedCount >= CLOSED_COUNT_PREVIOUS_MIN;
+    if (canShowKeepClosedMessage) {
+      this.showingKeepClosedMessage = true;
+      return true;
+    }
+    this.showingKeepClosedMessage = false;
+    if (sidebarClosedCount >= CLOSED_COUNT_PREVIOUS_MAX) {
+      RPMSetPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false);
+    } else {
+      RPMSetPref(SIDEBAR_CLOSED_COUNT_PREF, sidebarClosedCount + 1);
+    }
+    return false;
   }
 }
 customElements.define("shopping-container", ShoppingContainer);
@@ -2092,6 +2312,121 @@ class UnanalyzedProductCard extends chrome_global_content_lit_utils_mjs__WEBPACK
   }
 }
 customElements.define("unanalyzed-product-card", UnanalyzedProductCard);
+
+/***/ }),
+
+/***/ 16557:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "PLATFORM_LINUX": () => (/* binding */ PLATFORM_LINUX),
+/* harmony export */   "PLATFORM_MACOS": () => (/* binding */ PLATFORM_MACOS),
+/* harmony export */   "PLATFORM_WINDOWS": () => (/* binding */ PLATFORM_WINDOWS),
+/* harmony export */   "default": () => (/* binding */ MozButtonGroup)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_button_group_moz_button_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29827);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(73689);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+const PLATFORM_LINUX = "linux";
+const PLATFORM_MACOS = "macosx";
+const PLATFORM_WINDOWS = "win";
+
+/**
+ * A grouping of buttons. Primary button order will be set automatically based
+ * on class="primary", type="submit" or autofocus attribute. Set slot="primary"
+ * on a primary button that does not have primary styling to set its position.
+ *
+ * @tagname moz-button-group
+ * @property {string} platform - The detected platform, set automatically.
+ */
+class MozButtonGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    defaultSlotEl: "slot:not([name])",
+    primarySlotEl: "slot[name=primary]"
+  };
+  static properties = {
+    platform: {
+      state: true
+    }
+  };
+  constructor() {
+    super();
+    this.#detectPlatform();
+  }
+  #detectPlatform() {
+    if (typeof AppConstants !== "undefined") {
+      this.platform = AppConstants.platform;
+    } else if (navigator.platform.includes("Linux")) {
+      this.platform = PLATFORM_LINUX;
+    } else if (navigator.platform.includes("Mac")) {
+      this.platform = PLATFORM_MACOS;
+    } else {
+      this.platform = PLATFORM_WINDOWS;
+    }
+  }
+  onSlotchange() {
+    for (let child of this.defaultSlotEl.assignedNodes()) {
+      if (!(child instanceof Element)) {
+        // Text nodes won't support classList or getAttribute.
+        continue;
+      }
+      switch (child.localName) {
+        case "button":
+          if (child.classList.contains("primary") || child.getAttribute("type") == "submit" || child.hasAttribute("autofocus") || child.hasAttribute("default")) {
+            child.slot = "primary";
+          }
+          break;
+        case "moz-button":
+          if (child.type == "primary" || child.type == "destructive") {
+            child.slot = "primary";
+          }
+          break;
+      }
+    }
+    this.#reorderLightDom();
+  }
+  #reorderLightDom() {
+    let primarySlottedChildren = [...this.primarySlotEl.assignedNodes()];
+    if (this.platform == PLATFORM_WINDOWS) {
+      primarySlottedChildren.reverse();
+      for (let child of primarySlottedChildren) {
+        child.parentElement.prepend(child);
+      }
+    } else {
+      for (let child of primarySlottedChildren) {
+        // Ensure the primary buttons are at the end of the light DOM.
+        child.parentElement.append(child);
+      }
+    }
+  }
+  updated(changedProperties) {
+    if (changedProperties.has("platform")) {
+      this.#reorderLightDom();
+    }
+  }
+  render() {
+    let slots = [chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot @slotchange=${this.onSlotchange}></slot> `, chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <slot name="primary"></slot> `];
+    if (this.platform == PLATFORM_WINDOWS) {
+      slots = [slots[1], slots[0]];
+    }
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_button_group_moz_button_group_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${slots}
+    `;
+  }
+}
+customElements.define("moz-button-group", MozButtonGroup);
 
 /***/ }),
 
@@ -3585,6 +3920,13 @@ module.exports = __webpack_require__.p + "letter-grade.4bec18081ae0a9d0845c.css"
 
 /***/ }),
 
+/***/ 49616:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "new-position-notification-card.b4e9a0b38c8b06989fc1.css";
+
+/***/ }),
+
 /***/ 98971:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -3630,7 +3972,14 @@ module.exports = __webpack_require__.p + "shopping-page.6a31e49ef5f99086bbbc.css
 /***/ 478:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "unanalyzed.4e25d47f67855937d1f0.css";
+module.exports = __webpack_require__.p + "unanalyzed.51ed5a072544cbe9b7cc.css";
+
+/***/ }),
+
+/***/ 29827:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.css";
 
 /***/ }),
 
@@ -3684,4 +4033,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.5ad62173.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.0f0f8cd7.iframe.bundle.js.map
