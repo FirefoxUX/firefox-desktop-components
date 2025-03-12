@@ -92,6 +92,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} name - The name of the input control
  * @property {string} value - The value of the input control
  * @property {boolean} disabled - The disabled state of the input control
+ * @property {boolean} readonly - The readonly state of the input control
  * @property {string} iconSrc - The src for an optional icon
  * @property {string} description - The text for the description element that helps describe the input control
  * @property {string} supportPage - Name of the SUMO support page to link to.
@@ -102,12 +103,17 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
     placeholder: {
       type: String,
       fluent: true
+    },
+    readonly: {
+      type: Boolean,
+      mapped: true
     }
   };
   static inputLayout = "block";
   constructor() {
     super();
     this.value = "";
+    this.readonly = false;
   }
   inputStylesTemplate() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
@@ -118,14 +124,17 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
   handleInput(e) {
     this.value = e.target.value;
   }
-  inputTemplate() {
+  inputTemplate(classes, styles, inputValue) {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <input
         id="input"
         type="text"
+        class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}
+        style=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(styles)}
         name=${this.name}
-        value=${this.value}
+        value=${inputValue || this.value}
         ?disabled=${this.disabled}
+        ?readonly=${this.readonly}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
         placeholder=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.placeholder)}
         aria-describedby="description"
@@ -147,4 +156,4 @@ module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=1453.b148d19e.iframe.bundle.js.map
+//# sourceMappingURL=1453.b307c800.iframe.bundle.js.map

@@ -1902,7 +1902,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }
     let canShowNotificationCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && this.isSidebarStartPosition &&
     // Set fallback value to true to prevent weird flickering UI when switching tabs
-    !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
+    !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true) && this.isProductPage;
     let canShowKeepClosedMessage = this.showingKeepClosedMessage && RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, true);
     if (canShowNotificationCard) {
       return this.newPositionNotificationCardTemplate();
@@ -3951,7 +3951,7 @@ module.exports = __webpack_require__.p + "shopping-card.4003583ba8460f067d15.css
 /***/ 70115:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "shopping-container.4536314df6969f6d4fca.css";
+module.exports = __webpack_require__.p + "shopping-container.6c28d385ceb83e6625b0.css";
 
 /***/ }),
 
@@ -4033,4 +4033,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.0f0f8cd7.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.1959024a.iframe.bundle.js.map
