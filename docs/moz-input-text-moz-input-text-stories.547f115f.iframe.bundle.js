@@ -59,11 +59,17 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
   handleInput(e) {
     this.value = e.target.value;
   }
-  inputTemplate(classes, styles, inputValue) {
+  inputTemplate(options = {}) {
+    let {
+      type = "text",
+      classes,
+      styles,
+      inputValue
+    } = options;
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <input
         id="input"
-        type="text"
+        type=${type}
         class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}
         style=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(styles)}
         name=${this.name}
@@ -228,4 +234,4 @@ module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-text-moz-input-text-stories.d4903382.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-text-moz-input-text-stories.547f115f.iframe.bundle.js.map

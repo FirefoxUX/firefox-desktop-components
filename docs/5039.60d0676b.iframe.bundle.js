@@ -152,7 +152,11 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     }
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <div class="container">
-        ${super.inputTemplate(classes, styles, inputValue)}
+        ${super.inputTemplate({
+      classes,
+      styles,
+      inputValue
+    })}
         <moz-button
           id="choose-folder-button"
           data-l10n-id="choose-folder-button"
@@ -225,11 +229,17 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
   handleInput(e) {
     this.value = e.target.value;
   }
-  inputTemplate(classes, styles, inputValue) {
+  inputTemplate(options = {}) {
+    let {
+      type = "text",
+      classes,
+      styles,
+      inputValue
+    } = options;
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <input
         id="input"
-        type="text"
+        type=${type}
         class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}
         style=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(styles)}
         name=${this.name}
@@ -264,4 +274,4 @@ module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=5039.cad7accb.iframe.bundle.js.map
+//# sourceMappingURL=5039.60d0676b.iframe.bundle.js.map
