@@ -104,14 +104,14 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               for="login-line-input"
             ></label>
             ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.alert, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <img
-                  data-l10n-id="alert-icon"
+                  data-l10n-id="contextual-manager-alert-icon"
                   class="alert-icon"
                   src="chrome://global/skin/icons/warning-fill-12.svg"
                 />`)}
           </div>
           <div class="value-container">
             ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.favIcon, () => chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <img
-                  data-l10n-id="website-icon"
+                  data-l10n-id="contextual-manager-website-icon"
                   class="fav-icon"
                   src=${this.favIcon}
                 />`)}
@@ -128,12 +128,12 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
             <div class="copy-container">
               <img
-                data-l10n-id="copy-icon"
+                data-l10n-id="contextual-manager-copy-icon"
                 class="copy-icon"
                 src="chrome://global/skin/icons/edit-copy.svg"
               />
               <img
-                data-l10n-id="check-icon"
+                data-l10n-id="contextual-manager-check-icon"
                 class="check-icon"
                 src="chrome://global/skin/icons/check-filled.svg"
               />
@@ -179,7 +179,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return !this.visible ? ConcealedLoginLine.CONCEALED_VALUE_TEXT : this.value;
   }
   get #revealBtnLabel() {
-    return !this.visible ? "show-password-button" : "hide-password-button";
+    return !this.visible ? "contextual-manager-show-password-button" : "contextual-manager-hide-password-button";
   }
   #revealIconSrc() {
     return this.visible ? /* eslint-disable-next-line mozilla/no-browser-refs-in-toolkit */
@@ -194,7 +194,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     this.revealBtn.setAttribute("data-l10n-id", this.#revealBtnLabel);
   }
   render() {
-    const dataL10nId = this.alert ? "password-login-line-with-alert" : "password-login-line";
+    const dataL10nId = this.alert ? "contextual-manager-password-login-line-with-alert" : "contextual-manager-password-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html` <link
         rel="stylesheet"
         href="${toolkit_components_satchel_megalist_content_components_login_line_login_line_css__WEBPACK_IMPORTED_MODULE_0__}"
@@ -396,7 +396,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     this.handleCommand("Copy", lineIndex);
   }
   renderOriginField() {
-    const dataL10nId = this.origin.breached ? "origin-login-line-with-alert" : "origin-login-line";
+    const dataL10nId = this.origin.breached ? "contextual-manager-origin-login-line-with-alert" : "contextual-manager-origin-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
         tabindex="-1"
@@ -408,7 +408,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     })}
         inputType="text"
         lineType="origin"
-        labelL10nId="passwords-origin-label"
+        labelL10nId="contextual-manager-passwords-origin-label"
         .value=${this.origin.value}
         .favIcon=${this.origin.valueIcon}
         ?alert=${this.origin.breached}
@@ -421,7 +421,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     `;
   }
   renderUsernameField() {
-    const dataL10nId = !this.username.value.length ? "username-login-line-with-alert" : "username-login-line";
+    const dataL10nId = !this.username.value.length ? "contextual-manager-username-login-line-with-alert" : "contextual-manager-username-login-line";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <login-line
         tabindex="-1"
@@ -433,7 +433,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     })}
         inputType="text"
         lineType="username"
-        labelL10nId="passwords-username-label"
+        labelL10nId="contextual-manager-passwords-username-label"
         .value=${this.username.value}
         .onLineClick=${() => {
       this.#onCopyButtonClick(this.username.lineIndex);
@@ -449,7 +449,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <concealed-login-line
         class="line-item"
-        labelL10nId="passwords-password-label"
+        labelL10nId="contextual-manager-passwords-password-label"
         .value=${this.password.value}
         .visible=${!this.password.concealed}
         ?alert=${this.password.vulnerable}
@@ -471,7 +471,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   renderButton() {
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<div class="edit-line-container" role="option">
       <moz-button
-        data-l10n-id="edit-login-button"
+        data-l10n-id="contextual-manager-edit-login-button"
         class="edit-button"
         @click=${this.onEditButtonClick}
       ></moz-button>
@@ -482,10 +482,13 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       return "";
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      <moz-message-bar type="warning" data-l10n-id="view-alert-heading">
+      <moz-message-bar
+        type="warning"
+        data-l10n-id="contextual-manager-view-alert-heading"
+      >
         <moz-button
           class="view-alert-button"
-          data-l10n-id="view-alert-button"
+          data-l10n-id="contextual-manager-view-alert-button"
           slot="actions"
           type="icon"
           iconSrc="chrome://browser/skin/forward.svg"
@@ -618,4 +621,4 @@ module.exports = __webpack_require__.p + "password-card.614325540f79302dfc56.css
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.77d518f9.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.48c24828.iframe.bundle.js.map

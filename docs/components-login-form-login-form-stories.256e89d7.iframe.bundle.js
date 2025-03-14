@@ -145,7 +145,7 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       value: this.value,
       required: this.required,
       labelL10nId: "login-item-origin-label",
-      noteL10nId: "passwords-origin-tooltip",
+      noteL10nId: "contextual-manager-passwords-origin-tooltip",
       onBlur: e => this.addHTTPSPrefix(e)
     })}
     `;
@@ -234,7 +234,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       labelL10nId: "login-item-password-label",
-      noteL10nId: "passwords-password-tooltip"
+      noteL10nId: "contextual-manager-passwords-password-tooltip"
     })}
       <moz-button
         data-l10n-id=${this.visible ? "login-item-password-conceal-checkbox" : "login-item-password-reveal-checkbox"}
@@ -318,7 +318,7 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       disabled: this.readonly,
       required: this.required,
       labelL10nId: "login-item-username-label",
-      noteL10nId: "passwords-username-tooltip"
+      noteL10nId: "contextual-manager-passwords-username-tooltip"
     })}
     `;
   }
@@ -608,21 +608,27 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             @click=${this.#toggleDeleteCard}
           >
           </moz-button>
-          <p data-l10n-id="passwords-remove-login-card-back-message"></p>
+          <p
+            data-l10n-id="contextual-manager-passwords-remove-login-card-back-message"
+          ></p>
         </div>
         <div class="remove-card-text">
-          <h3 data-l10n-id="passwords-remove-login-card-title"></h3>
-          <p data-l10n-id="passwords-remove-login-card-message"></p>
+          <h3
+            data-l10n-id="contextual-manager-passwords-remove-login-card-title"
+          ></h3>
+          <p
+            data-l10n-id="contextual-manager-passwords-remove-login-card-message"
+          ></p>
         </div>
         <moz-button-group>
           <moz-button
-            data-l10n-id="passwords-remove-login-card-cancel-button"
+            data-l10n-id="contextual-manager-passwords-remove-login-card-cancel-button"
             @click=${this.#toggleDeleteCard}
           >
           </moz-button>
           <moz-button
             type="destructive"
-            data-l10n-id="passwords-remove-login-card-remove-button"
+            data-l10n-id="contextual-manager-passwords-remove-login-card-remove-button"
             @click=${this.onDeleteClick}
           >
           </moz-button>
@@ -633,7 +639,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     if (this._showDeleteCard) {
       return this.#renderDeleteCard();
     }
-    const heading = this.type !== "edit" ? "passwords-create-label" : "passwords-edit-label";
+    const heading = this.type !== "edit" ? "contextual-manager-passwords-create-label" : "contextual-manager-passwords-edit-label";
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<link
         rel="stylesheet"
         href="${toolkit_components_satchel_megalist_content_components_login_form_login_form_css__WEBPACK_IMPORTED_MODULE_0__}"
@@ -643,7 +649,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             <div class="delete-login-button-container">
               <moz-button
                 class="delete-login-button"
-                data-l10n-id="passwords-remove-label"
+                data-l10n-id="contextual-manager-passwords-remove-label"
                 type="icon"
                 iconSrc="chrome://global/skin/icons/delete.svg"
                 @click=${this.#toggleDeleteCard}
@@ -772,4 +778,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.78c95ada.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.256e89d7.iframe.bundle.js.map

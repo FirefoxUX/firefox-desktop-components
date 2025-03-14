@@ -288,7 +288,7 @@ class LoginOriginField extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       value: this.value,
       required: this.required,
       labelL10nId: "login-item-origin-label",
-      noteL10nId: "passwords-origin-tooltip",
+      noteL10nId: "contextual-manager-passwords-origin-tooltip",
       onBlur: e => this.addHTTPSPrefix(e)
     })}
     `;
@@ -377,7 +377,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       onFocus: this.handleFocus,
       onBlur: this.handleBlur,
       labelL10nId: "login-item-password-label",
-      noteL10nId: "passwords-password-tooltip"
+      noteL10nId: "contextual-manager-passwords-password-tooltip"
     })}
       <moz-button
         data-l10n-id=${this.visible ? "login-item-password-conceal-checkbox" : "login-item-password-reveal-checkbox"}
@@ -461,7 +461,7 @@ class LoginUsernameField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       disabled: this.readonly,
       required: this.required,
       labelL10nId: "login-item-username-label",
-      noteL10nId: "passwords-username-tooltip"
+      noteL10nId: "contextual-manager-passwords-username-tooltip"
     })}
     `;
   }
@@ -485,4 +485,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=input-field-input-field-stories.4f77a35f.iframe.bundle.js.map
+//# sourceMappingURL=input-field-input-field-stories.083f9ab4.iframe.bundle.js.map
