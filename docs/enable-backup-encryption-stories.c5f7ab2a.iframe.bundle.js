@@ -1031,7 +1031,8 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   };
   static properties = {
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     icon: {
       type: Boolean
@@ -1640,4 +1641,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.80c0083ab13d099f8e4b.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.bb152ae1.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.c5f7ab2a.iframe.bundle.js.map

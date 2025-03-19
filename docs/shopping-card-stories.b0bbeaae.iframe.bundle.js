@@ -225,7 +225,8 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   };
   static properties = {
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     icon: {
       type: Boolean
@@ -396,4 +397,4 @@ module.exports = __webpack_require__.p + "moz-card.b49cee559e146396e762.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-card-stories.59fe9316.iframe.bundle.js.map
+//# sourceMappingURL=shopping-card-stories.b0bbeaae.iframe.bundle.js.map

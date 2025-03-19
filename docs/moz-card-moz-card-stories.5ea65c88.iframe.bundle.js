@@ -49,7 +49,8 @@ class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODU
   };
   static properties = {
     heading: {
-      type: String
+      type: String,
+      fluent: true
     },
     icon: {
       type: Boolean
@@ -214,7 +215,6 @@ const Template = ({
   headingWithIcon: hasHeadingIcon
 })}
       data-l10n-id=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-      data-l10n-attrs="heading"
       expanded=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(expanded)}
     >
       <div>${content}</div>
@@ -291,4 +291,4 @@ module.exports = __webpack_require__.p + "moz-card.b49cee559e146396e762.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-card-moz-card-stories.7c6563a7.iframe.bundle.js.map
+//# sourceMappingURL=moz-card-moz-card-stories.5ea65c88.iframe.bundle.js.map
