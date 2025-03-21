@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[2661,8220,1829],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[404,8220],{
 
 /***/ 88220:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -73,19 +73,18 @@ class MozBoxBase extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEleme
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
       class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "text-content": true,
-      "has-icon": this.iconSrc
+      "has-icon": this.iconSrc,
+      "has-description": this.description
     })}
     >
-      ${this.labelTemplate()}${this.descriptionTemplate()}
+      ${this.iconTemplate()}${this.labelTemplate()}${this.descriptionTemplate()}
     </div>`;
   }
   labelTemplate() {
     if (!this.label) {
       return "";
     }
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label-wrapper">
-      ${this.iconTemplate()}<span class="label">${this.label}</span>
-    </span>`;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label">${this.label}</span>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -105,14 +104,14 @@ class MozBoxBase extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEleme
 
 /***/ }),
 
-/***/ 57760:
+/***/ 30404:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozBoxButton)
+/* harmony export */   "default": () => (/* binding */ MozBoxItem)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_box_moz_box_button_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(8474);
+/* harmony import */ var toolkit_content_widgets_moz_box_moz_box_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(68969);
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45717);
 /* harmony import */ var _moz_box_base_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(88220);
 
@@ -124,146 +123,61 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
- * A button custom element used for navigating between sub-pages or opening
- * dialogs.
+ * A custom element used for highlighting important information and/or providing
+ * context for specific settings.
  *
- * @tagname moz-box-button
+ * @tagname moz-box-item
  * @property {string} label - Label for the button.
  * @property {string} description - Descriptive text for the button.
  * @property {string} iconSrc - The src for an optional icon shown next to the label.
- * @property {boolean} disabled - Whether or not the button is disabled.
+ * @property {string} layout - Layout style for the box content, either "default" or "large-icon".
+ * @slot default - Slot for the box item's content, which overrides label and description.
  */
-class MozBoxButton extends _moz_box_base_mjs__WEBPACK_IMPORTED_MODULE_2__["default"] {
-  static shadowRootOptions = {
-    ...super.shadowRootOptions,
-    delegatesFocus: true
-  };
+class MozBoxItem extends _moz_box_base_mjs__WEBPACK_IMPORTED_MODULE_2__["default"] {
   static properties = {
-    disabled: {
-      type: Boolean
+    layout: {
+      type: String,
+      reflect: true
     }
   };
   static queries = {
-    buttonEl: "button",
-    navIcon: ".nav-icon"
+    defaultSlotEl: "slot:not([name])"
   };
   constructor() {
     super();
-    this.disabled = false;
+    this.layout = "default";
   }
-  click() {
-    this.buttonEl.click();
+  stylesTemplate() {
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`${super.stylesTemplate()}
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_box_moz_box_item_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />`;
   }
   render() {
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
-      ${super.stylesTemplate()}
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_box_moz_box_button_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <button ?disabled=${this.disabled}>
-        ${super.textTemplate()}
-        <img
-          class="icon nav-icon"
-          src="chrome://global/skin/icons/arrow-right.svg"
-          role="presentation"
-        />
-      </button>
+      ${this.stylesTemplate()}
+      <div class="box-container">
+        ${this.label ? super.textTemplate() : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`<slot></slot>`}
+      </div>
     `;
   }
 }
-customElements.define("moz-box-button", MozBoxButton);
-
-/***/ }),
-
-/***/ 17728:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "Default": () => (/* binding */ Default),
-/* harmony export */   "Disabled": () => (/* binding */ Disabled),
-/* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
-/* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
-/* harmony import */ var _moz_box_button_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57760);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Box Button",
-  component: "moz-box-button",
-  argTypes: {
-    l10nId: {
-      options: ["moz-box-button-label", "moz-box-button-label-description"],
-      control: {
-        type: "select"
-      }
-    }
-  },
-  parameters: {
-    status: "in-development",
-    fluent: `
-moz-box-button-label =
-  .label = Click me to navigate!
-moz-box-button-label-description =
-  .label = Click me to navigate!
-  .description = Some description of the button
-    `
-  }
-});
-const Template = ({
-  l10nId,
-  disabled,
-  iconSrc
-}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
-  <div style="width: 300px">
-    <moz-box-button
-      data-l10n-id=${l10nId}
-      ?disabled=${disabled}
-      iconsrc=${iconSrc}
-    ></moz-box-button>
-  </div>
-`;
-const Default = Template.bind({});
-Default.args = {
-  l10nId: "moz-box-button-label",
-  disabled: false,
-  iconSrc: ""
-};
-const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true
-};
-const WithDescription = Template.bind({});
-WithDescription.args = {
-  l10nId: "moz-box-button-label-description"
-};
-const WithIcon = Template.bind({});
-WithIcon.args = {
-  ...WithDescription.args,
-  iconSrc: "chrome://global/skin/icons/highlights.svg"
-};
-
-/***/ }),
-
-/***/ 8474:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-box-button.f72ccfbb59c41931c188.css";
+customElements.define("moz-box-item", MozBoxItem);
 
 /***/ }),
 
 /***/ 42575:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-common.603cf2342ade33fb2658.css";
+module.exports = __webpack_require__.p + "moz-box-common.03a7368cecc87735599f.css";
+
+/***/ }),
+
+/***/ 68969:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-box-item.eb0b3f90a21d8eb3528b.css";
 
 /***/ }),
 
@@ -275,4 +189,4 @@ module.exports = __webpack_require__.p + "text-and-typography.f1f851251a78b8016f
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-moz-box-button-stories.fd318525.iframe.bundle.js.map
+//# sourceMappingURL=404.91bdad62.iframe.bundle.js.map

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1829,8220],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[2661,8220,1829],{
 
 /***/ 88220:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -73,19 +73,18 @@ class MozBoxBase extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEleme
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
       class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "text-content": true,
-      "has-icon": this.iconSrc
+      "has-icon": this.iconSrc,
+      "has-description": this.description
     })}
     >
-      ${this.labelTemplate()}${this.descriptionTemplate()}
+      ${this.iconTemplate()}${this.labelTemplate()}${this.descriptionTemplate()}
     </div>`;
   }
   labelTemplate() {
     if (!this.label) {
       return "";
     }
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label-wrapper">
-      ${this.iconTemplate()}<span class="label">${this.label}</span>
-    </span>`;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label">${this.label}</span>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -176,6 +175,83 @@ customElements.define("moz-box-button", MozBoxButton);
 
 /***/ }),
 
+/***/ 17728:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "Default": () => (/* binding */ Default),
+/* harmony export */   "Disabled": () => (/* binding */ Disabled),
+/* harmony export */   "WithDescription": () => (/* binding */ WithDescription),
+/* harmony export */   "WithIcon": () => (/* binding */ WithIcon),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45717);
+/* harmony import */ var _moz_box_button_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57760);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Box Button",
+  component: "moz-box-button",
+  argTypes: {
+    l10nId: {
+      options: ["moz-box-button-label", "moz-box-button-label-description"],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    status: "in-development",
+    fluent: `
+moz-box-button-label =
+  .label = Click me to navigate!
+moz-box-button-label-description =
+  .label = Click me to navigate!
+  .description = Some description of the button
+    `
+  }
+});
+const Template = ({
+  l10nId,
+  disabled,
+  iconSrc
+}) => _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html`
+  <div style="width: 300px">
+    <moz-box-button
+      data-l10n-id=${l10nId}
+      ?disabled=${disabled}
+      iconsrc=${iconSrc}
+    ></moz-box-button>
+  </div>
+`;
+const Default = Template.bind({});
+Default.args = {
+  l10nId: "moz-box-button-label",
+  disabled: false,
+  iconSrc: ""
+};
+const Disabled = Template.bind({});
+Disabled.args = {
+  ...Default.args,
+  disabled: true
+};
+const WithDescription = Template.bind({});
+WithDescription.args = {
+  l10nId: "moz-box-button-label-description"
+};
+const WithIcon = Template.bind({});
+WithIcon.args = {
+  ...WithDescription.args,
+  iconSrc: "chrome://global/skin/icons/highlights.svg"
+};
+
+/***/ }),
+
 /***/ 8474:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -186,7 +262,7 @@ module.exports = __webpack_require__.p + "moz-box-button.f72ccfbb59c41931c188.cs
 /***/ 42575:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-common.603cf2342ade33fb2658.css";
+module.exports = __webpack_require__.p + "moz-box-common.03a7368cecc87735599f.css";
 
 /***/ }),
 
@@ -198,4 +274,4 @@ module.exports = __webpack_require__.p + "text-and-typography.f1f851251a78b8016f
 /***/ })
 
 }]);
-//# sourceMappingURL=1829.94a4aa68.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-moz-box-button-stories.8ff6b201.iframe.bundle.js.map

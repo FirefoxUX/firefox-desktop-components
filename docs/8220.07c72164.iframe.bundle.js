@@ -73,19 +73,18 @@ class MozBoxBase extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEleme
     return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<div
       class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
       "text-content": true,
-      "has-icon": this.iconSrc
+      "has-icon": this.iconSrc,
+      "has-description": this.description
     })}
     >
-      ${this.labelTemplate()}${this.descriptionTemplate()}
+      ${this.iconTemplate()}${this.labelTemplate()}${this.descriptionTemplate()}
     </div>`;
   }
   labelTemplate() {
     if (!this.label) {
       return "";
     }
-    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label-wrapper">
-      ${this.iconTemplate()}<span class="label">${this.label}</span>
-    </span>`;
+    return _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html`<span class="label">${this.label}</span>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -108,7 +107,7 @@ class MozBoxBase extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEleme
 /***/ 42575:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-common.603cf2342ade33fb2658.css";
+module.exports = __webpack_require__.p + "moz-box-common.03a7368cecc87735599f.css";
 
 /***/ }),
 
@@ -120,4 +119,4 @@ module.exports = __webpack_require__.p + "text-and-typography.f1f851251a78b8016f
 /***/ })
 
 }]);
-//# sourceMappingURL=8220.4d8f758a.iframe.bundle.js.map
+//# sourceMappingURL=8220.07c72164.iframe.bundle.js.map
