@@ -1852,7 +1852,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     let canShowNotificationCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && this.isSidebarStartPosition &&
     // Set fallback value to true to prevent weird flickering UI when switching tabs
     !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true) && this.isProductPage;
-    let canShowKeepClosedMessage = this.showingKeepClosedMessage && RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, true);
+    let canShowKeepClosedMessage = this.showingKeepClosedMessage && this.isProductPage;
     if (canShowNotificationCard) {
       return this.newPositionNotificationCardTemplate();
     } else if (canShowKeepClosedMessage) {
@@ -1924,7 +1924,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
    */
   _canShowKeepClosedMessageOnCloseButtonClick() {
     let yetToSeeNotificationCard = !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, false) && RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false);
-    if (yetToSeeNotificationCard || !RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false)) {
+    if (yetToSeeNotificationCard || !RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false) || this.showOnboarding || !this.isProductPage) {
       return false;
     }
     let sidebarClosedCount = RPMGetIntPref(SIDEBAR_CLOSED_COUNT_PREF, 0);
@@ -4002,4 +4002,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.01cf91f1.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.834659ab.iframe.bundle.js.map
