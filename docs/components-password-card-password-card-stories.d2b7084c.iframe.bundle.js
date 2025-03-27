@@ -45,6 +45,10 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       lineContainer: ".line-container"
     };
   }
+  static lineTypeIdMap = {
+    password: "contextual-manager-check-icon-password",
+    username: "contextual-manager-check-icon-username"
+  };
   #canCopy() {
     return this.lineType !== "origin";
   }
@@ -133,7 +137,7 @@ class LoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
                 src="chrome://global/skin/icons/edit-copy.svg"
               />
               <img
-                data-l10n-id="contextual-manager-check-icon"
+                data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(LoginLine.lineTypeIdMap[this.lineType])}
                 class="check-icon"
                 src="chrome://global/skin/icons/check-filled.svg"
               />
@@ -623,4 +627,4 @@ module.exports = __webpack_require__.p + "password-card.614325540f79302dfc56.css
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.7ae46cb9.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.d2b7084c.iframe.bundle.js.map
