@@ -75,7 +75,11 @@ class MozBoxButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBas
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_box_button_moz_box_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <button ?disabled=${this.disabled} accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}>
+      <button
+        class="button"
+        ?disabled=${this.disabled}
+        accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      >
         ${super.textTemplate()}
         <img
           class="icon nav-icon"
@@ -183,9 +187,9 @@ WithAccesskey.args = {
 /***/ 68337:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-button.f72ccfbb59c41931c188.css";
+module.exports = __webpack_require__.p + "moz-box-button.37d32a907c31df13f12d.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-button-moz-box-button-stories.ae5929ce.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-button-moz-box-button-stories.ea88d305.iframe.bundle.js.map

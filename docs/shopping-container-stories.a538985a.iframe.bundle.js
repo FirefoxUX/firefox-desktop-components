@@ -584,7 +584,7 @@ class NewPositionNotificationCard extends chrome_global_content_lit_utils_mjs__W
           ></h2>
           <p
             id="notification-card-body"
-            data-l10n-id="shopping-integrated-new-position-notification-subtitle"
+            data-l10n-id="shopping-integrated-new-position-notification-move-right-subtitle"
             @click=${this.handleClickSettingsLink}
           >
             <a
@@ -4002,4 +4002,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.834659ab.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.a538985a.iframe.bundle.js.map
