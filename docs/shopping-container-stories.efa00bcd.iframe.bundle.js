@@ -610,14 +610,18 @@ class NewPositionNotificationCard extends chrome_global_content_lit_utils_mjs__W
   movePositionButtonTemplate() {
     let buttonId;
     let buttonDataL10nId;
+    let iconSrc;
+    let iconPosition = this.isSidebarStartPosition ? "end" : "start";
 
     // For RTL, the sidebar starts on the right side.
     if (this.isRTL) {
       buttonId = this.isSidebarStartPosition ? "notification-card-move-left-button" : "notification-card-move-right-button";
       buttonDataL10nId = this.isSidebarStartPosition ? "shopping-integrated-new-position-notification-move-left-button" : "shopping-integrated-new-position-notification-move-right-button";
+      iconSrc = this.isSidebarStartPosition ? "chrome://browser/skin/back.svg" : "chrome://browser/skin/forward.svg";
     } else {
       buttonId = this.isSidebarStartPosition ? "notification-card-move-right-button" : "notification-card-move-left-button";
       buttonDataL10nId = this.isSidebarStartPosition ? "shopping-integrated-new-position-notification-move-right-button" : "shopping-integrated-new-position-notification-move-left-button";
+      iconSrc = this.isSidebarStartPosition ? "chrome://browser/skin/forward.svg" : "chrome://browser/skin/back.svg";
     }
     return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html`
       <moz-button
@@ -625,6 +629,8 @@ class NewPositionNotificationCard extends chrome_global_content_lit_utils_mjs__W
         data-l10n-id=${buttonDataL10nId}
         type="primary"
         size="small"
+        iconSrc=${iconSrc}
+        iconPosition=${iconPosition}
         @click=${this.handleClickPositionButton}
       >
       </moz-button>
@@ -1957,6 +1963,14 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   handleCloseButtonClick() {
     let canShowKeepClosedMessage;
+    let showingNewPositionCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
+
+    // Consider the notification card as seen if the user closes RC with the X button
+    // when the card is already rendered.
+    if (showingNewPositionCard) {
+      this.showNewPositionCard = false;
+      RPMSetPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
+    }
     if (this.autoOpenEnabled && this.autoOpenEnabledByUser) {
       canShowKeepClosedMessage = this._canShowKeepClosedMessageOnCloseButtonClick();
     }
@@ -4065,4 +4079,4 @@ module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.7ef831ad.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.efa00bcd.iframe.bundle.js.map
