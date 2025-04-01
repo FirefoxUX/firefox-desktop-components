@@ -1993,7 +1993,7 @@ function _createMdxContent(props) {
       }), ")."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><div style={{ display: \"flex\", justifyContent: \"center\", gap: \"1rem\", flexWrap: \"wrap\" }}><moz-button label=\"Default\">{\"\\\"Default\\\"\"}</moz-button><moz-button type=\"primary\" label=\"Primary\" /><moz-button type=\"destructive\" label=\"Destructive\" /><moz-button iconSrc=\"chrome://global/skin/icons/more.svg\" tooltipText=\"Icon\" /><moz-button iconSrc=\"chrome://global/skin/icons/more.svg\" tooltipText=\"Icon Ghost\" type=\"ghost\" /><moz-button type=\"ghost\" label=\"Ghost\" /></div></with-common-styles>",
+      mdxSource: "<with-common-styles><div style={{ display: \"flex\", justifyContent: \"center\", gap: \"1rem\", flexWrap: \"wrap\" }}><moz-button label=\"Default\">{\"\\\"Default\\\"\"}</moz-button><moz-button type=\"primary\" label=\"Primary\" /><moz-button type=\"destructive\" label=\"Destructive\" /><moz-button iconsrc=\"chrome://global/skin/icons/more.svg\" tooltiptext=\"Icon\" /><moz-button iconsrc=\"chrome://global/skin/icons/more.svg\" tooltiptext=\"Icon Ghost\" type=\"ghost\" /><moz-button type=\"ghost\" label=\"Ghost\" /></div></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
           style: {
@@ -2012,11 +2012,11 @@ function _createMdxContent(props) {
             type: "destructive",
             label: "Destructive"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            iconSrc: "chrome://global/skin/icons/more.svg",
-            tooltipText: "Icon"
+            iconsrc: "chrome://global/skin/icons/more.svg",
+            tooltiptext: "Icon"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            iconSrc: "chrome://global/skin/icons/more.svg",
-            tooltipText: "Icon Ghost",
+            iconsrc: "chrome://global/skin/icons/more.svg",
+            tooltiptext: "Icon Ghost",
             type: "ghost"
           }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
             type: "ghost",
@@ -2038,20 +2038,8 @@ function _createMdxContent(props) {
       id: "when-to-use",
       children: "When to use"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["Use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "moz-button"
-        }), " for actions that require user interaction, such as submitting forms or triggering commands."]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["Use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "type"
-        }), " property to indicate the button's purpose (e.g., ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "primary"
-        }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "destructive"
-        }), ")."]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use an icon button when the purpose of your button may be easily understood or when space is limited."
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Confirm an action or make a change."
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "when-not-to-use",
@@ -2207,22 +2195,24 @@ function _createMdxContent(props) {
       start: "2",
       children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
         children: ["Or you can provide an icon URI via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: ".iconSrc"
+        }), " property / ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
           children: "iconsrc"
-        }), ", in which case setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        }), " attribute, in which case setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
           children: "type=\"icon\""
         }), " is redundant:"]
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-button iconSrc=\"chrome://global/skin/icons/more.svg\"\n            title=\"I am an icon button\"\n            aria-label=\"I am an icon button\">\n</moz-button>\n"
+        children: "<moz-button iconsrc=\"chrome://global/skin/icons/more.svg\"\n            title=\"I am an icon button\"\n            aria-label=\"I am an icon button\">\n</moz-button>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-button iconSrc=\"chrome://global/skin/icons/more.svg\" title=\"I am an icon button\" aria-label=\"I am an icon button\" /></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-button iconsrc=\"chrome://global/skin/icons/more.svg\" title=\"I am an icon button\" aria-label=\"I am an icon button\" /></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-          iconSrc: "chrome://global/skin/icons/more.svg",
+          iconsrc: "chrome://global/skin/icons/more.svg",
           title: "I am an icon button",
           "aria-label": "I am an icon button"
         })
@@ -2236,15 +2226,64 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-button iconSrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\"></moz-button>\n"
+        children: "<moz-button iconsrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\"></moz-button>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-button iconSrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\" /></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-button iconsrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\" /></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-          iconSrc: "chrome://global/skin/icons/edit-copy.svg",
+          iconsrc: "chrome://global/skin/icons/edit-copy.svg",
           label: "Button"
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["To adjust the icon's position, use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".iconPosition"
+      }), " property / ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "iconposition"
+      }), " attribute. It accepts two values: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "start"
+      }), " (the default) or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "end"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-button iconposition=\"end\" iconsrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\"></moz-button>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-button iconposition=\"end\" iconsrc=\"chrome://global/skin/icons/edit-copy.svg\" label=\"Button\" /></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+          iconposition: "end",
+          iconsrc: "chrome://global/skin/icons/edit-copy.svg",
+          label: "Button"
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["To add a badge to the icon button, set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".attention"
+      }), " boolean property to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "true"
+      }), " or add ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "attention"
+      }), " attribute to the markup."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-button iconsrc=\"chrome://global/skin/icons/more.svg\"\n            title=\"I am an icon button\"\n            aria-label=\"I am an icon button\"\n            attention>\n</moz-button>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-button iconsrc=\"chrome://global/skin/icons/more.svg\" title=\"I am an icon button\" aria-label=\"I am an icon button\" attention /></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+          iconsrc: "chrome://global/skin/icons/more.svg",
+          title: "I am an icon button",
+          "aria-label": "I am an icon button",
+          attention: true
         })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h5, {
@@ -2351,6 +2390,19 @@ function _createMdxContent(props) {
           label: "Button",
           accesskey: "t"
         })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
+      id: "customizing-moz-button",
+      children: ["Customizing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-button"
+      })]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["You can add the inner padding on the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-button"
+      }), " to give the button a larger target, and make it clickable when the window and cursor are up against the edge of the screen.\nUse the following variables to achieve this:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "--button-outer-padding-inline - Used to set the outer inline padding of toolbar style buttons.\n--button-outer-padding-block - Used to set the outer block padding of toolbar style buttons.\n--button-outer-padding-inline-start - Used to set the outer inline-start padding of toolbar style buttons.\n--button-outer-padding-inline-end - Used to set the outer inline-end padding of toolbar style buttons.\n--button-outer-padding-block-start - Used to set the outer block-start padding of toolbar style buttons.\n--button-outer-padding-block-end - Used to set the outer block-end padding of toolbar style buttons.\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "fluent-usage",
@@ -12138,4 +12190,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-README-stories-md.017df425.iframe.bundle.js.map
+//# sourceMappingURL=moz-button-README-stories-md.46c393d2.iframe.bundle.js.map
