@@ -1354,46 +1354,26 @@ const storybookTables = {
   }],
   link: [{
     value: {
-      prefersContrast: "LinkText",
-      brand: {
-        default: "var(--color-accent-primary)"
-      },
-      platform: {
-        default: "LinkText"
-      }
+      default: "var(--color-accent-primary)",
+      forcedColors: "LinkText"
     },
     name: "--link-color"
   }, {
     value: {
-      prefersContrast: "LinkText",
-      brand: {
-        default: "var(--color-accent-primary-hover)"
-      },
-      platform: {
-        default: "LinkText"
-      }
+      default: "var(--color-accent-primary-hover)",
+      forcedColors: "LinkText"
     },
     name: "--link-color-hover"
   }, {
     value: {
-      prefersContrast: "ActiveText",
-      brand: {
-        default: "var(--color-accent-primary-active)"
-      },
-      platform: {
-        default: "ActiveText"
-      }
+      default: "var(--color-accent-primary-active)",
+      forcedColors: "ActiveText"
     },
     name: "--link-color-active"
   }, {
     value: {
-      prefersContrast: "var(--link-color)",
-      brand: {
-        default: "var(--link-color)"
-      },
-      platform: {
-        default: "var(--link-color)"
-      }
+      default: "var(--link-color)",
+      forcedColors: "var(--link-color)"
     },
     name: "--link-color-visited"
   }, {
@@ -1974,40 +1954,20 @@ const variableLookupTable = {
   "input-text-min-height": "var(--button-min-height)",
   "input-space-block": "var(--space-xsmall)",
   "link-color": {
-    prefersContrast: "LinkText",
-    brand: {
-      default: "var(--color-accent-primary)"
-    },
-    platform: {
-      default: "LinkText"
-    }
+    default: "var(--color-accent-primary)",
+    forcedColors: "LinkText"
   },
   "link-color-hover": {
-    prefersContrast: "LinkText",
-    brand: {
-      default: "var(--color-accent-primary-hover)"
-    },
-    platform: {
-      default: "LinkText"
-    }
+    default: "var(--color-accent-primary-hover)",
+    forcedColors: "LinkText"
   },
   "link-color-active": {
-    prefersContrast: "ActiveText",
-    brand: {
-      default: "var(--color-accent-primary-active)"
-    },
-    platform: {
-      default: "ActiveText"
-    }
+    default: "var(--color-accent-primary-active)",
+    forcedColors: "ActiveText"
   },
   "link-color-visited": {
-    prefersContrast: "var(--link-color)",
-    brand: {
-      default: "var(--link-color)"
-    },
-    platform: {
-      default: "var(--link-color)"
-    }
+    default: "var(--link-color)",
+    forcedColors: "var(--link-color)"
   },
   "link-focus-outline-offset": "1px",
   "outline-color-error": {
@@ -2112,4 +2072,4 @@ module.exports = __webpack_require__.p + "tokens-table.13555c53f3b80101cb1d.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.d2757d65.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.4431c04b.iframe.bundle.js.map
