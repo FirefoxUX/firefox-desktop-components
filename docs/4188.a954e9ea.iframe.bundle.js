@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4188],{
+
+/***/ 14188:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n\n# This value isn't used directly, but is defined to avoid duplication\n# in the \"credit-card-label-*\" strings.\n#\n# Variables:\n#   $month (String): Numeric month the credit card expires\n#   $year (String): Four-digit year the credit card expires\ncredit-card-expiration = Expires on { $month }/{ $year }\n\n## These labels serve as a description of a credit card.\n## The description must include a credit card number, and may optionally\n## include a cardholder name, an expiration date, or both, so we have\n## four variations.\n\n# Label for a credit card with a number only\n#\n# Variables:\n#   $number (String): Partially-redacted credit card number\n#   $type (String): Credit card type\ncredit-card-label-number-2 = { $number }\n    .aria-label = { $type } { credit-card-label-number-2 }\n\n# Label for a credit card with a number and name\n#\n# Variables:\n#   $number (String): Partially-redacted credit card number\n#   $name (String): Cardholder name\n#   $type (String): Credit card type\ncredit-card-label-number-name-2 = { $number }, { $name }\n    .aria-label = { $type } { credit-card-label-number-name-2 }\n\n# Label for a credit card with a number and expiration date\n#\n# Variables:\n#   $number (String): Partially-redacted credit card number\n#   $type (String): Credit card type\ncredit-card-label-number-expiration-2 = { $number }, { credit-card-expiration }\n    .aria-label = { $type } { credit-card-label-number-expiration-2 }\n\n# Label for a credit card with a number, name, and expiration date\n#\n# Variables:\n#   $number (String): Partially-redacted credit card number\n#   $name (String): Cardholder name\n#   $type (String): Credit card type\ncredit-card-label-number-name-expiration-2 =\n  { $number }, { $name }, { credit-card-expiration }\n    .aria-label = { $type } { credit-card-label-number-name-expiration-2 }\n";
+
+/***/ })
+
+}]);

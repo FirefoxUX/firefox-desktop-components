@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[648],{
+
+/***/ 10648:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\ncsp-error-missing-directive = Policy is missing a required ‘{ $directive }’ directive\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\n#   $keyword (String): the name of a CSP keyword, usually 'unsafe-inline'.\ncsp-error-illegal-keyword = ‘{ $directive }’ directive contains a forbidden { $keyword } keyword\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\n#   $scheme (String): a protocol name, such as \"http\", which appears as \"http:\", as it would in a URL.\ncsp-error-illegal-protocol = ‘{ $directive }’ directive contains a forbidden { $scheme }: protocol source\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\n#   $scheme (String): a protocol name, such as \"http\", which appears as \"http:\", as it would in a URL.\ncsp-error-missing-host = { $scheme }: protocol requires a host in ‘{ $directive }’ directives\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\n#   $source (String): the name of a CSP source, usually 'self'.\ncsp-error-missing-source = ‘{ $directive }’ must include the source { $source }\n\n# Variables:\n#   $directive (String): the name of a CSP directive, such as \"script-src\".\n#   $scheme (String): a protocol name, such as \"http\", which appears as \"http:\", as it would in a URL.\ncsp-error-illegal-host-wildcard = { $scheme }: wildcard sources in ‘{ $directive }’ directives must include at least one non-generic sub-domain (e.g., *.example.com rather than *.com)\n";
+
+/***/ })
+
+}]);
