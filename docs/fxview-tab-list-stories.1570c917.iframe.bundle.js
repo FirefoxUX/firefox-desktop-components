@@ -1136,6 +1136,9 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     url: {
       type: String
     },
+    uri: {
+      type: String
+    },
     searchQuery: {
       type: String
     }
@@ -1156,6 +1159,10 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       focusItem = this.renderRoot.getElementById("fxview-tab-row-main");
     }
     return focusItem;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.uri = this.url;
   }
   focus() {
     this.currentFocusable.focus();
@@ -1607,4 +1614,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.350af055ef90a62c4e67.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.5b3e6112.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.1570c917.iframe.bundle.js.map
