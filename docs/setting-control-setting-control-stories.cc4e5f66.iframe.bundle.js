@@ -78,6 +78,9 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     },
     value: {}
   };
+  static queries = {
+    inputEl: "#input"
+  };
   createRenderRoot() {
     return this;
   }
@@ -109,6 +112,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       case "checkbox":
       default:
         return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-checkbox
+          id="input"
           data-l10n-id=${config.l10nId}
           .iconSrc=${config.iconSrc}
           .checked=${this.value}
@@ -124,4 +128,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.b553a045.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.cc4e5f66.iframe.bundle.js.map
