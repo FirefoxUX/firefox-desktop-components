@@ -11,22 +11,15 @@ jobs:
     steps:
       - name: Checkout main branch
         uses: actions/checkout@v3
-      - name: Checkout git-cinnabar
+      - name: Checkout mozilla-firefox/firefox
         uses: actions/checkout@v3
         with:
-          repository: glandium/git-cinnabar
-          path: git-cinnabar
+          repository: mozilla-firefox/firefox
+          path: firefox
       - name: Main steps
         run: |
-          cd git-cinnabar
-          ./download.py
-          PATH="$GITHUB_WORKSPACE/git-cinnabar:$PATH"
-          git-cinnabar --version
-          cd ..
-          git clone hg::https://hg.mozilla.org/mozilla-unified gecko && cd gecko
-          git checkout bookmarks/central
+          cd firefox
           echo "git revision" && git log -1 --format='%H'
-          echo "hg revision" && git cinnabar git2hg $(git log -1 --format='%H')
           ./mach --no-interactive bootstrap
           ./mach --no-interactive build
           ./mach storybook build
