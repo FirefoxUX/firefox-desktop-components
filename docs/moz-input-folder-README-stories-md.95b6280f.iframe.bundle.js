@@ -428,6 +428,10 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
   get folder() {
     return this.#folder;
   }
+  hasServices() {
+    // Safely check for Services without throwing a ReferenceError.
+    return typeof Services !== "undefined";
+  }
   async getFolderFromPath(path) {
     let folder = null;
     try {
@@ -439,8 +443,9 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     return folder;
   }
   getInputIconSrc(folder) {
-    if (!folder) {
-      return "";
+    if (!folder || !this.hasServices()) {
+      let defaultIconSrc = "chrome://global/skin/icons/folder.svg";
+      return defaultIconSrc;
     }
     let fph = Services.io.getProtocolHandler("file").QueryInterface(Ci.nsIFileProtocolHandler);
     let iconUrlSpec = fph.getURLSpecFromDir(folder);
@@ -11717,4 +11722,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-README-stories-md.e39b4dd4.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-README-stories-md.95b6280f.iframe.bundle.js.map
