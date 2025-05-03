@@ -107,7 +107,7 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
                   id="close-button"
                   @click=${this.handleClose}
                   type="ghost"
-                  iconsrc="chrome://global/skin/icons/close-12.svg"
+                  iconsrc="resource://content-accessible/close-12.svg"
                   tabindex="2"
                   data-l10n-id="fxa-menu-message-close-button"
                 >
@@ -142,7 +142,7 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
                 id="close-button"
                 @click=${this.handleClose}
                 type="ghost"
-                iconsrc="chrome://global/skin/icons/close-12.svg"
+                iconsrc="resource://content-accessible/close-12.svg"
                 tabindex="2"
                 data-l10n-id="fxa-menu-message-close-button"
               >
@@ -856,4 +856,4 @@ Default.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.d3b4358a.iframe.bundle.js.map
+//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.a95575ec.iframe.bundle.js.map

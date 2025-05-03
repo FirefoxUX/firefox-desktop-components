@@ -2439,9 +2439,9 @@ const variableLookupTable = {
 /***/ 86724:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "tokens-table.f01ba5f1dbc159692755.css";
+module.exports = __webpack_require__.p + "tokens-table.ecf7acd1aac2a8d1b898.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.6870a47a.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.bde35c91.iframe.bundle.js.map
