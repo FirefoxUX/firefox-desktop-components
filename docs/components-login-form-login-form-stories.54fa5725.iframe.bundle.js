@@ -528,7 +528,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return !this.newPassword && !this.visible ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   #revealIconSrc(concealed) {
-    return concealed ? "chrome://browser/content/aboutlogins/icons/password-hide.svg" : "chrome://browser/content/aboutlogins/icons/password.svg";
+    return concealed ? "chrome://global/skin/icons/eye-slash.svg" : "chrome://global/skin/icons/eye.svg";
   }
   updated(changedProperties) {
     if (changedProperties.has("visible") && !changedProperties.visible) {
@@ -780,4 +780,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.ef269f08.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.54fa5725.iframe.bundle.js.map

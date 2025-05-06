@@ -186,9 +186,7 @@ class ConcealedLoginLine extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return !this.visible ? "contextual-manager-show-password-button" : "contextual-manager-hide-password-button";
   }
   #revealIconSrc() {
-    return this.visible ? /* eslint-disable-next-line mozilla/no-browser-refs-in-toolkit */
-    "chrome://browser/content/aboutlogins/icons/password-hide.svg" : /* eslint-disable-next-line mozilla/no-browser-refs-in-toolkit */
-    "chrome://browser/content/aboutlogins/icons/password.svg";
+    return this.visible ? "chrome://global/skin/icons/eye-slash.svg" : "chrome://global/skin/icons/eye.svg";
   }
   async #onRevealButtonClick() {
     const isAuthorized = await this.onButtonClick();
@@ -627,4 +625,4 @@ AllAlertsOn.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.94817d5d.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.ee7e9d2e.iframe.bundle.js.map
