@@ -534,7 +534,7 @@ var require_bash=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_0__.__commonJS)
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav-button.661b525f8c047ba89c4c.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.41e32b4d0ddd8dd1767f.css";
 
 /***/ }),
 
@@ -814,22 +814,17 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     });
   }
   render() {
-    let hasNavIcons = [...(this.pageNavButtons ?? []), ...(this.secondaryNavButtons ?? [])].some(button => button.iconSrc);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
-      <nav class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
-      "has-nav-icons": hasNavIcons
-    })}>
-        <div class="page-nav-heading-wrapper">
-          <div class="logo"></div>
-          <h1 class="page-nav-heading" id="page-nav-heading">
-            ${this.heading}
-          </h1>
-        </div>
-        <slot name="subheading"></slot>
+      <div class="page-nav-heading-wrapper">
+        <div class="logo"></div>
+        <h1 class="page-nav-heading" id="page-nav-heading">${this.heading}</h1>
+      </div>
+      <slot name="subheading"></slot>
+      <nav>
         <div
           class="primary-nav-group"
           role="tablist"
@@ -10660,7 +10655,7 @@ module.exports = cloneDeep;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav.164fd02d6e56af5cb485.css";
+module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
 
 /***/ }),
 
@@ -11100,14 +11095,14 @@ function _createMdxContent(props) {
       }), " is a grouping of navigation buttons that is displayed at the page level,\nintended to change the selected view, provide a heading, and have links to external resources."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, \"--page-nav-margin-bottom\": 0, height: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
           heading: "This is a nav",
           style: {
             '--page-nav-margin-top': 0,
-            '--page-nav-margin-bottom': 0,
-            height: '275px'
+            maxWidth: '20ch',
+            maxHeight: '275px'
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
             view: "view-one",
@@ -11238,14 +11233,13 @@ function _createMdxContent(props) {
       children: "And will render like this:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, \"--page-nav-margin-bottom\": 0, height: \"150px\" }}><moz-page-nav-button view=\"A name for the first view\"><p style={{ margin: 0 }}>{\"First iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the second view\"><p style={{ margin: 0 }}>{\"Second iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the third view\"><p style={{ margin: 0 }}>{\"Third iconless button\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"A name for the first view\"><p style={{ margin: 0 }}>{\"First iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the second view\"><p style={{ margin: 0 }}>{\"Second iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the third view\"><p style={{ margin: 0 }}>{\"Third iconless button\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
           heading: "This is a nav",
           style: {
-            '--page-nav-margin-top': 0,
-            '--page-nav-margin-bottom': 0,
-            height: '150px'
+            maxWidth: '20ch',
+            maxHeight: '275px'
           },
           children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
             view: "A name for the first view",
@@ -11717,4 +11711,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.6b050b9e.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.df8023f9.iframe.bundle.js.map

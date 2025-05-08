@@ -4,7 +4,7 @@
 /***/ 10139:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav-button.661b525f8c047ba89c4c.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.41e32b4d0ddd8dd1767f.css";
 
 /***/ }),
 
@@ -102,22 +102,17 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     });
   }
   render() {
-    let hasNavIcons = [...(this.pageNavButtons ?? []), ...(this.secondaryNavButtons ?? [])].some(button => button.iconSrc);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
-      <nav class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
-      "has-nav-icons": hasNavIcons
-    })}>
-        <div class="page-nav-heading-wrapper">
-          <div class="logo"></div>
-          <h1 class="page-nav-heading" id="page-nav-heading">
-            ${this.heading}
-          </h1>
-        </div>
-        <slot name="subheading"></slot>
+      <div class="page-nav-heading-wrapper">
+        <div class="logo"></div>
+        <h1 class="page-nav-heading" id="page-nav-heading">${this.heading}</h1>
+      </div>
+      <slot name="subheading"></slot>
+      <nav>
         <div
           class="primary-nav-group"
           role="tablist"
@@ -389,9 +384,9 @@ function formatUTMParams(contentAttribute, url) {
 /***/ 89472:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.164fd02d6e56af5cb485.css";
+module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=9714.d00e3619.iframe.bundle.js.map
+//# sourceMappingURL=9714.21b7113a.iframe.bundle.js.map

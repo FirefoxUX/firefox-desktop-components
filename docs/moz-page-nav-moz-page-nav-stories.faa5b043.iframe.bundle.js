@@ -4,7 +4,7 @@
 /***/ 10139:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav-button.661b525f8c047ba89c4c.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.41e32b4d0ddd8dd1767f.css";
 
 /***/ }),
 
@@ -102,22 +102,17 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     });
   }
   render() {
-    let hasNavIcons = [...(this.pageNavButtons ?? []), ...(this.secondaryNavButtons ?? [])].some(button => button.iconSrc);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
-      <nav class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
-      "has-nav-icons": hasNavIcons
-    })}>
-        <div class="page-nav-heading-wrapper">
-          <div class="logo"></div>
-          <h1 class="page-nav-heading" id="page-nav-heading">
-            ${this.heading}
-          </h1>
-        </div>
-        <slot name="subheading"></slot>
+      <div class="page-nav-heading-wrapper">
+        <div class="logo"></div>
+        <h1 class="page-nav-heading" id="page-nav-heading">${this.heading}</h1>
+      </div>
+      <slot name="subheading"></slot>
+      <nav>
         <div
           class="primary-nav-group"
           role="tablist"
@@ -389,7 +384,7 @@ function formatUTMParams(contentAttribute, url) {
 /***/ 89472:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.164fd02d6e56af5cb485.css";
+module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
 
 /***/ }),
 
@@ -401,6 +396,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   WithFooterLinks: () => (/* binding */ WithFooterLinks),
 /* harmony export */   WithSearch: () => (/* binding */ WithSearch),
+/* harmony export */   WithSearchScroll: () => (/* binding */ WithSearchScroll),
 /* harmony export */   WithoutIcons: () => (/* binding */ WithoutIcons),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -442,20 +438,24 @@ moz-page-nav-search-input =
 const Template = ({
   hasFooterLinks,
   hasIcons,
-  showSearch
+  showSearch,
+  scrollable
 }) => {
   let iconSrc = hasIcons ? "chrome://global/skin/icons/settings.svg" : undefined;
+  let maxHeight = scrollable ? "190px" : "initial";
   return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <style>
       #page {
         height: 100%;
         display: flex;
+        max-height: ${maxHeight};
 
         @media (max-width: 52rem) {
           grid-template-columns: 82px 1fr;
         }
       }
       moz-page-nav {
+        height: 100%;
         margin-inline-start: 10px;
         --page-nav-margin-top: 10px;
 
@@ -511,7 +511,8 @@ const Default = Template.bind({});
 Default.args = {
   hasFooterLinks: false,
   hasIcons: true,
-  showSearch: false
+  showSearch: false,
+  scrollable: false
 };
 const WithFooterLinks = Template.bind({});
 WithFooterLinks.args = {
@@ -528,8 +529,14 @@ WithSearch.args = {
   ...Default.args,
   showSearch: true
 };
+const WithSearchScroll = Template.bind({});
+WithSearchScroll.args = {
+  ...Default.args,
+  showSearch: true,
+  scrollable: true
+};
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.01216c41.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.faa5b043.iframe.bundle.js.map
