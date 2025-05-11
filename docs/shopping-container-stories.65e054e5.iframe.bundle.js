@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,324,1836,1972,2664,3532,6592,7804,9201],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,324,1836,1972,3532,6592,7804,9201],{
 
 /***/ 2534:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -679,17 +679,10 @@ customElements.define("adjusted-rating", AdjustedRating);
 
 /***/ }),
 
-/***/ 11258:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.css";
-
-/***/ }),
-
 /***/ 11933:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "shopping-container.6c28d385ceb83e6625b0.css";
+module.exports = __webpack_require__.p + "shopping-container.80f9c68b53d36725ff68.css";
 
 /***/ }),
 
@@ -989,227 +982,6 @@ class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
   }
 }
 customElements.define("moz-toggle", MozToggle);
-
-/***/ }),
-
-/***/ 20876:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var browser_components_shopping_content_new_position_notification_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(31122);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-/* harmony import */ var chrome_browser_content_shopping_shopping_card_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3572);
-/* harmony import */ var chrome_global_content_elements_moz_button_group_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(92664);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(31836);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-/* eslint-env mozilla/remote-page */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/* Until caching is implemented (see Bug 1927956), any location change will force another
- * update and refresh the UI. Furthermore, we probably want to keep the card visible for the
- * same tab until the user takes action. To prevent the card from being hidden unnecessarily
- * on location change, and to ensure users have a chance to read the message,
- * change the pref once the user dismisses the card or opens the sidebar settings panel. */
-const HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF = "browser.shopping.experience2023.newPositionCard.hasSeen";
-class NewPositionNotificationCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    isRTL: {
-      type: Boolean,
-      state: true
-    },
-    isSidebarStartPosition: {
-      type: Boolean
-    }
-  };
-  static get queries() {
-    return {
-      imgEl: "#notification-card-img",
-      settingsLinkEl: "#notification-card-settings-link",
-      moveLeftButtonEl: "#notification-card-move-left-button",
-      moveRightButtonEl: "#notification-card-move-right-button",
-      dismissButtonEl: "#notification-card-dismiss-button"
-    };
-  }
-  firstUpdated() {
-    super.firstUpdated();
-    Glean.shopping.surfaceNotificationCardImpression.record();
-  }
-  handleClickSettingsLink(event) {
-    event.preventDefault();
-    // Click event listener references get lost if attached to the settings link since it is slotted into the shopping-card.
-    // As a workaround, attach the listener to its parent element and only dispatch events if the target is the settings link.
-    if (event.target == this.settingsLinkEl) {
-      Glean.shopping.surfaceNotificationCardSidebarSettingsClicked.record();
-      window.dispatchEvent(new CustomEvent("ShowSidebarSettings", {
-        bubbles: true,
-        composed: true
-      }));
-      RPMSetPref(HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF, true);
-      window.dispatchEvent(new CustomEvent("HideNewPositionCard", {
-        bubbles: true,
-        composed: true
-      }));
-    }
-  }
-
-  /**
-   * Flips the sidebar position between starting position
-   * and ending position. Also records Glean click events for
-   * the button. Which event we dispatch depends on the current
-   * sidebar position.
-   *
-   * @see movePositionButtonTemplate
-   */
-  handleClickPositionButton() {
-    if (this.isRTL) {
-      if (this.isSidebarStartPosition) {
-        this.isSidebarStartPosition = false;
-        this._handleMoveLeftButton();
-      } else {
-        this.isSidebarStartPosition = true;
-        this._handleMoveRightButton();
-      }
-      return;
-    }
-    if (this.isSidebarStartPosition) {
-      this.isSidebarStartPosition = false;
-      this._handleMoveRightButton();
-    } else {
-      this.isSidebarStartPosition = true;
-      this._handleMoveLeftButton();
-    }
-  }
-  _handleMoveLeftButton() {
-    Glean.shopping.surfaceNotificationCardMoveLeftClicked.record();
-    window.dispatchEvent(new CustomEvent("MoveSidebarToLeft", {
-      bubbles: true,
-      composed: true
-    }));
-  }
-  _handleMoveRightButton() {
-    Glean.shopping.surfaceNotificationCardMoveRightClicked.record();
-    window.dispatchEvent(new CustomEvent("MoveSidebarToRight", {
-      bubbles: true,
-      composed: true
-    }));
-  }
-  handleClickDismissButton() {
-    Glean.shopping.surfaceNotificationCardDismissClicked.record();
-    this.dispatchEvent(new CustomEvent("HideNewPositionCard", {
-      bubbles: true,
-      composed: true
-    }));
-    RPMSetPref(HAS_SEEN_NEW_POSITION_NOTIFICATION_CARD_PREF, true);
-    window.dispatchEvent(new CustomEvent("HideNewPositionCard", {
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  /**
-   * Renders the move sidebar position button with the appropriate strings.
-   *
-   * For LTR builds:
-   * - starting position = left (button = "move to right")
-   * - ending position = right (button = "move to left")
-   *
-   * For RTL builds:
-   * - starting position = right (button = "move to left")
-   * - ending position = left (button = "move to right")
-   *
-   * @see handleClickPositionButton
-   */
-  movePositionButtonTemplate() {
-    let buttonId;
-    let buttonDataL10nId;
-    let iconSrc;
-    let iconPosition = this.isSidebarStartPosition ? "end" : "start";
-
-    // For RTL, the sidebar starts on the right side.
-    if (this.isRTL) {
-      buttonId = this.isSidebarStartPosition ? "notification-card-move-left-button" : "notification-card-move-right-button";
-      buttonDataL10nId = this.isSidebarStartPosition ? "shopping-integrated-new-position-notification-move-left-button" : "shopping-integrated-new-position-notification-move-right-button";
-      iconSrc = this.isSidebarStartPosition ? "chrome://browser/skin/back.svg" : "chrome://browser/skin/forward.svg";
-    } else {
-      buttonId = this.isSidebarStartPosition ? "notification-card-move-right-button" : "notification-card-move-left-button";
-      buttonDataL10nId = this.isSidebarStartPosition ? "shopping-integrated-new-position-notification-move-right-button" : "shopping-integrated-new-position-notification-move-left-button";
-      iconSrc = this.isSidebarStartPosition ? "chrome://browser/skin/forward.svg" : "chrome://browser/skin/back.svg";
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <moz-button
-        id=${buttonId}
-        data-l10n-id=${buttonDataL10nId}
-        type="primary"
-        size="small"
-        iconSrc=${iconSrc}
-        iconPosition=${iconPosition}
-        @click=${this.handleClickPositionButton}
-      >
-      </moz-button>
-    `;
-  }
-  render() {
-    // this.isSidebarStartPosition = RPMGetBoolPref("sidebar.position_start", false);
-    this.isRTL = window.document.dir === "rtl";
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_shopping_content_new_position_notification_card_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <shopping-card>
-        <div id="notification-card-wrapper" slot="content">
-          <img
-            id="notification-card-img"
-            src="chrome://browser/content/shopping/assets/emptyStateB.svg"
-            alt=""
-            role="presentation"
-          />
-          <h2
-            id="notification-card-header"
-            data-l10n-id="shopping-integrated-new-position-notification-title"
-          ></h2>
-          <p
-            id="notification-card-body"
-            data-l10n-id=${this.isRTL ? "shopping-integrated-new-position-notification-move-left-subtitle" : "shopping-integrated-new-position-notification-move-right-subtitle"}
-            @click=${this.handleClickSettingsLink}
-          >
-            <a
-              id="notification-card-settings-link"
-              data-l10n-name="sidebar_settings"
-              href="#"
-            ></a>
-          </p>
-          <div id="notification-card-button-group">
-            ${this.movePositionButtonTemplate()}
-            <moz-button
-              id="notification-card-dismiss-button"
-              data-l10n-id="shopping-integrated-new-position-notification-dismiss-button"
-              type="ghost"
-              size="small"
-              @click=${this.handleClickDismissButton}
-            >
-            </moz-button>
-          </div>
-        </div>
-      </shopping-card>
-    `;
-  }
-}
-customElements.define("new-position-notification-card", NewPositionNotificationCard);
 
 /***/ }),
 
@@ -1587,13 +1359,6 @@ customElements.define("moz-card", MozCard);
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-button.9297127d41c8bd3995db.css";
-
-/***/ }),
-
-/***/ 31122:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "new-position-notification-card.b4e9a0b38c8b06989fc1.css";
 
 /***/ }),
 
@@ -2145,7 +1910,7 @@ customElements.define("review-reliability", ReviewReliability);
 /***/ 35430:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "unanalyzed.51ed5a072544cbe9b7cc.css";
+module.exports = __webpack_require__.p + "unanalyzed.4e25d47f67855937d1f0.css";
 
 /***/ }),
 
@@ -3224,7 +2989,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_browser_content_shopping_shopping_message_bar_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(4307);
 /* harmony import */ var chrome_browser_content_shopping_unanalyzed_mjs__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(27512);
 /* harmony import */ var chrome_browser_content_shopping_recommended_ad_mjs__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(25532);
-/* harmony import */ var chrome_browser_content_shopping_new_position_notification_card_mjs__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(20876);
 
 
 
@@ -3253,8 +3017,6 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
-// eslint-disable-next-line import/no-unassigned-import
-
 
 // The number of pixels that must be scrolled from the
 // top of the sidebar to show the header box shadow.
@@ -3263,9 +3025,6 @@ const HEADER_NOT_TEXT_WRAPPED_HEIGHT = 32;
 const SIDEBAR_CLOSED_COUNT_PREF = "browser.shopping.experience2023.sidebarClosedCount";
 const SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF = "browser.shopping.experience2023.showKeepSidebarClosedMessage";
 const SHOPPING_SIDEBAR_ACTIVE_PREF = "browser.shopping.experience2023.active";
-const SIDEBAR_REVAMP_PREF = "sidebar.revamp";
-const INTEGRATED_SIDEBAR_PREF = "browser.shopping.experience2023.integratedSidebar";
-const HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF = "browser.shopping.experience2023.newPositionCard.hasSeen";
 const CLOSED_COUNT_PREVIOUS_MIN = 4;
 const CLOSED_COUNT_PREVIOUS_MAX = 6;
 class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
@@ -3319,28 +3078,9 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     showingKeepClosedMessage: {
       type: Boolean
     },
-    isProductPage: {
-      type: Boolean
-    },
-    isSupportedSite: {
-      type: Boolean
-    },
-    supportedDomains: {
-      type: Object
-    },
-    formattedDomainList: {
-      type: Object,
-      state: true
-    },
     isHeaderOverflow: {
       type: Boolean,
       state: true
-    },
-    isSidebarStartPosition: {
-      type: Boolean
-    },
-    showNewPositionCard: {
-      type: Boolean
     }
   };
   static get queries() {
@@ -3356,13 +3096,8 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       loadingEl: "#loading-wrapper",
       closeButtonEl: "#close-button",
       keepClosedMessageBarEl: "#keep-closed-message-bar",
-      emptyStateImgEl: "#shopping-empty-state-img",
-      emptyStateHeaderEl: "#shopping-empty-state-header",
-      emptyStateTextEl: "#shopping-empty-state-text",
-      emptyStateSupportedListEl: "#shopping-empty-list-of-supported-domains",
       containerContentEl: "#content",
-      header: "#shopping-header",
-      newPositionNotificationCardEl: "new-position-notification-card"
+      header: "#shopping-header"
     };
   }
   connectedCallback() {
@@ -3371,7 +3106,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       return;
     }
     this.initialized = true;
-    this.showHeader = !RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF) || RPMGetBoolPref(SIDEBAR_REVAMP_PREF);
     window.document.addEventListener("Update", this);
     window.document.addEventListener("NewAnalysisRequested", this);
     window.document.addEventListener("ReanalysisRequested", this);
@@ -3383,8 +3117,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     window.document.addEventListener("autoOpenEnabledByUserChanged", this);
     window.document.addEventListener("ShowKeepClosedMessage", this);
     window.document.addEventListener("HideKeepClosedMessage", this);
-    window.document.addEventListener("ShowNewPositionCard", this);
-    window.document.addEventListener("HideNewPositionCard", this);
     window.dispatchEvent(new CustomEvent("ContentReady", {
       bubbles: true,
       composed: true
@@ -3397,23 +3129,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.headerResizeObserver = new ResizeObserver(([entry]) => this.maybeSetIsHeaderOverflow(entry));
     this.headerResizeObserver.observe(this.header);
   }
-  updated(changedProperties) {
-    if (changedProperties.has("supportedDomains")) {
-      let oldVal = changedProperties.get("supportedDomains");
-      /**
-       * We expect the domains object to be passed in consistently and not change often.
-       * A shallow comparison seems to be enough.
-       */
-      try {
-        if (JSON.stringify(oldVal) !== JSON.stringify(this.supportedDomains)) {
-          // Let the render function deal with recreating the formatted list.
-          this.formattedDomainList = null;
-        }
-      } catch (e) {
-        console.error(e);
-        this.formattedDomainList = null;
-      }
-    }
+  updated() {
     if (this.focusCloseButton) {
       this.closeButtonEl.focus();
     }
@@ -3429,11 +3145,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     analysisProgress,
     focusCloseButton,
     autoOpenEnabled,
-    autoOpenEnabledByUser,
-    isProductPage,
-    isSupportedSite,
-    supportedDomains,
-    isSidebarStartPosition
+    autoOpenEnabledByUser
   }) {
     // If we're not opted in or there's no shopping URL in the main browser,
     // the actor will pass `null`, which means this will clear out any existing
@@ -3450,10 +3162,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.focusCloseButton = focusCloseButton;
     this.autoOpenEnabled = autoOpenEnabled ?? this.autoOpenEnabled;
     this.autoOpenEnabledByUser = autoOpenEnabledByUser ?? this.autoOpenEnabledByUser;
-    this.isProductPage = isProductPage ?? true;
-    this.isSupportedSite = isSupportedSite;
-    this.supportedDomains = supportedDomains ?? this.supportedDomains;
-    this.isSidebarStartPosition = isSidebarStartPosition ?? this.isSidebarStartPosition;
   }
   _updateRecommendations({
     recommendationData
@@ -3510,12 +3218,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         break;
       case "HideKeepClosedMessage":
         this.showingKeepClosedMessage = false;
-        break;
-      case "ShowNewPositionCard":
-        this.showNewPositionCard = true;
-        break;
-      case "HideNewPositionCard":
-        this.showNewPositionCard = false;
         break;
     }
   }
@@ -3667,98 +3369,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       animate
     });
   }
-  nonPDPTemplate() {
-    // TODO: (Bug 1937924) settings template will throw a warning since this.productUrl is null when viewing a non-PDP
-    const bodyTextTemplate = this.isSupportedSite ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)` <p
-          id="shopping-empty-state-text"
-          data-l10n-id="shopping-empty-state-supported-site"
-        ></p>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`
-          <p
-            id="shopping-empty-state-text"
-            data-l10n-id="shopping-empty-state-non-supported-site"
-          ></p>
-        `;
-    if (!this.formattedDomainList) {
-      this.formattedDomainList = this._formattedDomainListTemplate();
-    }
-    const listTemplate = !this.isSupportedSite ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`<ul id="shopping-empty-list-of-supported-domains">
-          ${this.formattedDomainList}
-        </ul>` : null;
-
-    // Anything wrapped by #shopping-empty-wrapper will be centered on sidebar width changes.
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`<div id="shopping-empty-wrapper">
-        <img
-          id="shopping-empty-state-img"
-          src="chrome://browser/content/shopping/assets/emptyStateA.svg"
-          alt=""
-          role="presentation"
-        />
-        <h2
-          id="shopping-empty-state-header"
-          data-l10n-id="shopping-empty-state-header"
-        ></h2>
-        ${bodyTextTemplate} ${listTemplate}
-      </div>
-      ${this.isSupportedSite ? this.explainerTemplate({
-      className: "first-footer-card"
-    }) : null}`;
-  }
-  _formattedDomainListTemplate() {
-    if (!this.supportedDomains) {
-      return null;
-    }
-    let template = [];
-    let formatter = new Intl.ListFormat(undefined, {
-      style: "narrow",
-      type: "conjunction"
-    });
-    Object.keys(this.supportedDomains).sort().forEach(sitename => {
-      let domainsFromSite = this.supportedDomains[sitename];
-
-      // List of supported domains per sitename, per row, as a string.
-      let anchorsString = domainsFromSite.map(domain => {
-        try {
-          let url = new URL(domain);
-          let hostname = url.hostname;
-          /** ShoppingProduct should already validate the URLs in the ProductConfig for us.
-           * As an extra precaution though, let's verify that we've been passed a valid URL, in case
-           * something goes awry in messages between actors and the shopping-container.
-           *
-           * @see ShoppingProduct
-           */
-          let validProtocolRegex = /^(https:\/\/\w+.*)/;
-          return validProtocolRegex.test(url) ? `<a class="shopping-supported-domain-link" href=${url.href} target="_blank">${hostname}</a>` : null;
-        } catch (e) {
-          // Somehow, we got an invalid URL.
-          console.error(e);
-          return null;
-        }
-      });
-
-      // Now format the string as a list suitable for the current locale.
-      anchorsString = formatter.format(anchorsString);
-
-      // Convert the formatted string into an element that can be inserted into our litElement template.
-      const parser = new DOMParser();
-      let anchorsDOMDoc = parser.parseFromString(anchorsString, "text/html");
-      /**
-       * litElement will lose a reference to the childNodes on re-render if we use a DocumentFragment.
-       * Instead, add the nodes as an array in our template so that we preserve them.
-       */
-      let anchorsTemplate = [];
-      Array.from(anchorsDOMDoc.body.childNodes).forEach(childNode => {
-        anchorsTemplate.push(childNode);
-      });
-      let listTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)` <li
-          id="shopping-empty-state-domains-list-${sitename}"
-          class="shopping-supported-domain-list"
-        >
-          ${anchorsTemplate}
-        </li>`;
-      template.push(listTemplate);
-    });
-    return template;
-  }
   headerTemplate() {
     const headerWrapperClasses = `${this.showHeaderShadow ? "header-wrapper-shadow" : ""} ${this.isHeaderOverflow ? "header-wrapper-overflow" : ""}`;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`<div id="header-wrapper" class=${headerWrapperClasses}>
@@ -3782,10 +3392,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   renderContainer(sidebarContent, {
     showSettings = false
   } = {}) {
-    /* Empty state styles for users that are not yet opted-in are managed separately
-     * by AboutWelcomeChild.sys.mjs and _shopping.scss. To prevent overlap, only apply
-     * the class for these styles if a user is opted-in. */
-    const canStyleEmptyState = !this.isProductPage && !this.isOffline && !this.showOnboarding;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`<link
         rel="stylesheet"
         href="${browser_components_shopping_content_shopping_container_css__WEBPACK_IMPORTED_MODULE_2__}"
@@ -3799,18 +3405,13 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         href="${browser_components_shopping_content_shopping_page_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div id="shopping-container">
-        ${this.showHeader ? this.headerTemplate() : null}
-        <div
-          id="content"
-          class=${canStyleEmptyState ? "is-empty-state" : ""}
-          aria-live="polite"
-          aria-busy=${!this.data}
-        >
+        ${this.headerTemplate()}
+        <div id="content" aria-live="polite" aria-busy=${!this.data}>
           <slot name="multi-stage-message-slot"></slot>
           ${this.userInteractionMessageTemplate()}${sidebarContent}
-          ${showSettings ? this.settingsTemplate(!this.isSupportedSite && !this.isProductPage ? {
+          ${showSettings ? this.settingsTemplate({
       className: "first-footer-card"
-    } : "") : null}
+    }) : null}
         </div>
       </div>`;
   }
@@ -3836,36 +3437,13 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     ></shopping-settings>`;
   }
   userInteractionMessageTemplate() {
-    /**
-     * There are two types of messages about users' interaction with Review Checker that we want to display
-     * when users keep the auto-open setting enabled:
-     * 1. The "Keep closed" message-bar
-     * 2. The "New position" notification card (integratedSidebar only)
-     *
-     * Only one or the other should be rendered at a time, at the same spot. If a user is eligible
-     * to see the notification card, make sure to show that card first. Once the card is dismissed,
-     * we can then check if the user is eligible to see the "Keep closed" message.
-     */
     if (!this.autoOpenEnabled || !this.autoOpenEnabledByUser) {
       return null;
     }
-    let canShowNotificationCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && this.isSidebarStartPosition &&
-    // Set fallback value to true to prevent weird flickering UI when switching tabs
-    !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true) && this.isProductPage;
-    let canShowKeepClosedMessage = this.showingKeepClosedMessage && this.isProductPage;
-    if (canShowNotificationCard) {
-      return this.newPositionNotificationCardTemplate();
-    } else if (canShowKeepClosedMessage) {
+    if (this.showingKeepClosedMessage) {
       return this.keepClosedMessageTemplate();
     }
     return null;
-  }
-  newPositionNotificationCardTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`
-      <new-position-notification-card
-        isSidebarStartPosition=${this.isSidebarStartPosition}
-      ></new-position-notification-card>
-    `;
   }
   keepClosedMessageTemplate() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)`<shopping-message-bar
@@ -3876,16 +3454,13 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   render() {
     let content;
     // this.data may be null because we're viewing a non PDP, or a PDP that does not have data yet.
-    // Use isProductPage and isSupported to distinguish between the two.
-    const isLoadingData = !this.data && this.isProductPage && !this.isSupportedSite;
+    const isLoadingData = !this.data;
     if (this.showOnboarding) {
       content = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_4__.html)``;
     } else if (isLoadingData || this.isOffline) {
       content = this.noDataTemplate({
         animate: !this.isOffline
       });
-    } else if (!this.isProductPage || this.isSupportedSite) {
-      content = this.nonPDPTemplate();
     } else {
       content = this.hasDataTemplate();
     }
@@ -3896,14 +3471,6 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   handleCloseButtonClick() {
     let canShowKeepClosedMessage;
-    let showingNewPositionCard = RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false) && this.showNewPositionCard && !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
-
-    // Consider the notification card as seen if the user closes RC with the X button
-    // when the card is already rendered.
-    if (showingNewPositionCard) {
-      this.showNewPositionCard = false;
-      RPMSetPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, true);
-    }
     if (this.autoOpenEnabled && this.autoOpenEnabledByUser) {
       canShowKeepClosedMessage = this._canShowKeepClosedMessageOnCloseButtonClick();
     }
@@ -3931,8 +3498,7 @@ class ShoppingContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
    * Do not show the message again after the 7th close.
    */
   _canShowKeepClosedMessageOnCloseButtonClick() {
-    let yetToSeeNotificationCard = !RPMGetBoolPref(HAS_SEEN_POSITION_NOTIFICATION_CARD_PREF, false) && RPMGetBoolPref(INTEGRATED_SIDEBAR_PREF, false);
-    if (yetToSeeNotificationCard || !RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false) || this.showOnboarding || !this.isProductPage) {
+    if (!RPMGetBoolPref(SHOW_KEEP_SIDEBAR_CLOSED_MESSAGE_PREF, false) || this.showOnboarding) {
       return false;
     }
     let sidebarClosedCount = RPMGetIntPref(SIDEBAR_CLOSED_COUNT_PREF, 0);
@@ -3966,122 +3532,7 @@ module.exports = __webpack_require__.p + "shopping-card.4003583ba8460f067d15.css
 
 module.exports = __webpack_require__.p + "recommended-ad.b836e7bb3f11395945c1.css";
 
-/***/ }),
-
-/***/ 92664:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   PLATFORM_LINUX: () => (/* binding */ PLATFORM_LINUX),
-/* harmony export */   PLATFORM_MACOS: () => (/* binding */ PLATFORM_MACOS),
-/* harmony export */   PLATFORM_WINDOWS: () => (/* binding */ PLATFORM_WINDOWS),
-/* harmony export */   "default": () => (/* binding */ MozButtonGroup)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_button_group_moz_button_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11258);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-const PLATFORM_LINUX = "linux";
-const PLATFORM_MACOS = "macosx";
-const PLATFORM_WINDOWS = "win";
-
-/**
- * A grouping of buttons. Primary button order will be set automatically based
- * on class="primary", type="submit" or autofocus attribute. Set slot="primary"
- * on a primary button that does not have primary styling to set its position.
- *
- * @tagname moz-button-group
- * @property {string} platform - The detected platform, set automatically.
- */
-class MozButtonGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static queries = {
-    defaultSlotEl: "slot:not([name])",
-    primarySlotEl: "slot[name=primary]"
-  };
-  static properties = {
-    platform: {
-      state: true
-    }
-  };
-  constructor() {
-    super();
-    this.#detectPlatform();
-  }
-  #detectPlatform() {
-    if (typeof AppConstants !== "undefined") {
-      this.platform = AppConstants.platform;
-    } else if (navigator.platform.includes("Linux")) {
-      this.platform = PLATFORM_LINUX;
-    } else if (navigator.platform.includes("Mac")) {
-      this.platform = PLATFORM_MACOS;
-    } else {
-      this.platform = PLATFORM_WINDOWS;
-    }
-  }
-  onSlotchange() {
-    for (let child of this.defaultSlotEl.assignedNodes()) {
-      if (!(child instanceof Element)) {
-        // Text nodes won't support classList or getAttribute.
-        continue;
-      }
-      switch (child.localName) {
-        case "button":
-          if (child.classList.contains("primary") || child.getAttribute("type") == "submit" || child.hasAttribute("autofocus") || child.hasAttribute("default")) {
-            child.slot = "primary";
-          }
-          break;
-        case "moz-button":
-          if (child.type == "primary" || child.type == "destructive") {
-            child.slot = "primary";
-          }
-          break;
-      }
-    }
-    this.#reorderLightDom();
-  }
-  #reorderLightDom() {
-    let primarySlottedChildren = [...this.primarySlotEl.assignedNodes()];
-    if (this.platform == PLATFORM_WINDOWS) {
-      primarySlottedChildren.reverse();
-      for (let child of primarySlottedChildren) {
-        child.parentElement.prepend(child);
-      }
-    } else {
-      for (let child of primarySlottedChildren) {
-        // Ensure the primary buttons are at the end of the light DOM.
-        child.parentElement.append(child);
-      }
-    }
-  }
-  updated(changedProperties) {
-    if (changedProperties.has("platform")) {
-      this.#reorderLightDom();
-    }
-  }
-  render() {
-    let slots = [(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <slot @slotchange=${this.onSlotchange}></slot> `, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <slot name="primary"></slot> `];
-    if (this.platform == PLATFORM_WINDOWS) {
-      slots = [slots[1], slots[0]];
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_button_group_moz_button_group_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${slots}
-    `;
-  }
-}
-customElements.define("moz-button-group", MozButtonGroup);
-
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.3abb2477.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.65e054e5.iframe.bundle.js.map

@@ -103,24 +103,26 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
   }
   inputTemplate() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <select
-        id="input"
-        name=${this.name}
-        accesskey=${this.accessKey}
-        @input=${this.handleStateChange}
-        @change=${this.redispatchEvent}
-        ?disabled=${this.disabled || this.parentDisabled}
-        aria-describedby="description"
-      >
-        ${this.options.map(option => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-            <option
-              value=${option.value}
-              ?selected=${option.value === this.value}
-            >
-              ${option.label}
-            </option>
-          `)}
-      </select>
+      <div class="select-wrapper">
+        <select
+          id="input"
+          name=${this.name}
+          accesskey=${this.accessKey}
+          @input=${this.handleStateChange}
+          @change=${this.redispatchEvent}
+          ?disabled=${this.disabled || this.parentDisabled}
+          aria-describedby="description"
+        >
+          ${this.options.map(option => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+              <option
+                value=${option.value}
+                ?selected=${option.value === this.value}
+              >
+                ${option.label}
+              </option>
+            `)}
+        </select>
+      </div>
       <slot
         @slotchange=${this.populateOptions}
         hidden
@@ -168,9 +170,9 @@ customElements.define("moz-option", MozOption);
 /***/ 44494:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-select.e646dfa1fec9a6897659.css";
+module.exports = __webpack_require__.p + "moz-select.c5c0dbfd84f1c363c915.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=1948.93eb582d.iframe.bundle.js.map
+//# sourceMappingURL=1948.16e46e9f.iframe.bundle.js.map

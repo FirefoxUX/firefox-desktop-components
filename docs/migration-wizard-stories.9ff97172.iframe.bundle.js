@@ -13,6 +13,7 @@ module.exports = __webpack_require__.p + "panel-list.d8acb969a657a21f5e36.css";
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ChromeWindowsPasswordPermissions: () => (/* binding */ ChromeWindowsPasswordPermissions),
 /* harmony export */   CustomizedSelectionPage: () => (/* binding */ CustomizedSelectionPage),
 /* harmony export */   ExtensionsImportFailure: () => (/* binding */ ExtensionsImportFailure),
 /* harmony export */   ExtensionsPartialSuccess: () => (/* binding */ ExtensionsPartialSuccess),
@@ -56,6 +57,7 @@ function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.fre
 
 // Imported for side-effects.
 
+window.MozXULElement.insertFTLIfNeeded("locales-preview/migrationWizardChromeWindows.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Migration Wizard",
   component: "migration-wizard"
@@ -518,6 +520,13 @@ SafariPasswordPermissions.args = {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PAGES.SAFARI_PASSWORD_PERMISSION
   }
 };
+var ChromeWindowsPasswordPermissions = Template.bind({});
+ChromeWindowsPasswordPermissions.args = {
+  dialogMode: true,
+  state: {
+    page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PAGES.CHROME_WINDOWS_PASSWORD_PERMISSION
+  }
+};
 var NoBrowsersFound = Template.bind({});
 NoBrowsersFound.args = {
   dialogMode: true,
@@ -557,7 +566,7 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ 29259:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "migration-wizard.ead716612b335f5f1216.css";
+module.exports = __webpack_require__.p + "migration-wizard.7658e85e7e90bf81c064.css";
 
 /***/ }),
 
@@ -1687,6 +1696,7 @@ const MigrationWizardConstants = Object.freeze({
     FILE_IMPORT_PROGRESS: "file-import-progress",
     SAFARI_PERMISSION: "safari-permission",
     SAFARI_PASSWORD_PERMISSION: "safari-password-permission",
+    CHROME_WINDOWS_PASSWORD_PERMISSION: "chrome-windows-password-permission",
     NO_BROWSERS_FOUND: "no-browsers-found"
   }),
   /**
@@ -1807,8 +1817,6 @@ class MigrationWizard extends HTMLElement {
   #chooseImportFromFile = null;
   #getPermissionsButton = null;
   #safariPermissionButton = null;
-  #safariPasswordImportSkipButton = null;
-  #safariPasswordImportSelectButton = null;
   #selectAllCheckbox = null;
   #resourceSummary = null;
   #expandedDetails = false;
@@ -2027,8 +2035,26 @@ class MigrationWizard extends HTMLElement {
               </li>
             </ol>
             <moz-button-group class="buttons" part="buttons">
-              <button id="safari-password-import-skip" data-l10n-id="migration-safari-password-import-skip-button"></button>
-              <button id="safari-password-import-select" class="primary" data-l10n-id="migration-safari-password-import-select-button"></button>
+              <button class="manual-password-import-skip" data-l10n-id="migration-manual-password-import-skip-button"></button>
+              <button class="manual-password-import-select primary" data-l10n-id="migration-manual-password-import-select-button"></button>
+            </moz-button-group>
+          </div>
+
+          <div name="page-chrome-windows-password-permission">
+            <h1 data-l10n-id="migration-chrome-windows-password-import-header" part="header"></h1>
+            <span data-l10n-id="migration-chrome-windows-password-import-steps-header"></span>
+            <ol>
+              <li data-l10n-id="migration-chrome-windows-password-import-step1"><img class="chrome-icon-3dots" data-l10n-name="chrome-icon-3dots"/></li>
+              <li data-l10n-id="migration-chrome-windows-password-import-step2"></li>
+              <li data-l10n-id="migration-chrome-windows-password-import-step3"></li>
+              <li data-l10n-id="migration-chrome-windows-password-import-step4"></li>
+            </ol>
+            <p>
+              <span data-l10n-id="migration-chrome-windows-password-import-step4"></span>
+            </p>
+            <moz-button-group class="buttons" part="buttons">
+              <button class="manual-password-import-skip" data-l10n-id="migration-manual-password-import-skip-button"></button>
+              <button class="manual-password-import-select primary" data-l10n-id="migration-manual-password-import-select-button"></button>
             </moz-button-group>
           </div>
 
@@ -2107,10 +2133,14 @@ class MigrationWizard extends HTMLElement {
     this.#safariPermissionButton = shadow.querySelector("#safari-request-permissions");
     this.#safariPermissionButton.addEventListener("click", this);
     this.#selectAllCheckbox = shadow.querySelector("#select-all").control;
-    this.#safariPasswordImportSkipButton = shadow.querySelector("#safari-password-import-skip");
-    this.#safariPasswordImportSkipButton.addEventListener("click", this);
-    this.#safariPasswordImportSelectButton = shadow.querySelector("#safari-password-import-select");
-    this.#safariPasswordImportSelectButton.addEventListener("click", this);
+    let manualPasswordImportSkipButtons = shadow.querySelectorAll(".manual-password-import-skip");
+    for (let button of manualPasswordImportSkipButtons) {
+      button.addEventListener("click", this);
+    }
+    let manualPasswordImportSelectButtons = shadow.querySelectorAll(".manual-password-import-select");
+    for (let button of manualPasswordImportSelectButtons) {
+      button.addEventListener("click", this);
+    }
     this.#extensionsSuccessLink = shadow.querySelector("#extensions-success-link");
     this.#extensionsSuccessLink.addEventListener("click", this);
     this.#supportTextLinks = shadow.querySelectorAll(".support-text");
@@ -2695,11 +2725,11 @@ class MigrationWizard extends HTMLElement {
    * @property {boolean} autoMigration
    *   True if the migration is occurring automatically, without the user
    *   having selected any items explicitly from the wizard.
-   * @property {string} [safariPasswordFilePath=null]
+   * @property {string} [manualPasswordFilePath=null]
    *   An optional string argument that points to the path of a passwords
-   *   export file from Safari. This file will have password imported from if
-   *   supplied. This argument is ignored if the key is not for the
-   *   Safari browser.
+   *   export file from another browser. This file will have password imported
+   *   from if supplied. This argument is ignored if the key is not for the
+   *   Safari browser or the Chrome browser on Windows.
    */
 
   /**
@@ -2776,11 +2806,12 @@ class MigrationWizard extends HTMLElement {
 
   /**
    * Sends a request to get a string path for a passwords file exported
-   * from Safari.
+   * from another browser (like Safari on macOS, or Chrome on Windows)
+   * where we cannot currently import automatically.
    */
-  #selectSafariPasswordFile() {
+  #selectManualPasswordFile() {
     let migrationEventDetail = this.#gatherMigrationEventDetails();
-    this.dispatchEvent(new CustomEvent("MigrationWizard:SelectSafariPasswordFile", {
+    this.dispatchEvent(new CustomEvent("MigrationWizard:SelectManualPasswordFile", {
       bubbles: true,
       detail: migrationEventDetail
     }));
@@ -2963,8 +2994,8 @@ class MigrationWizard extends HTMLElement {
           allowOnlyFileMigrators: true
         }
       }));
-    } else if (event.target == this.#safariPasswordImportSkipButton) {
-      // If the user chose to skip importing passwords from Safari, we
+    } else if (event.target.classList.contains("manual-password-import-skip")) {
+      // If the user chose to skip importing passwords manually from a CSV, we
       // programmatically uncheck the PASSWORDS resource type and re-request
       // import.
       let checkbox = this.#shadowRoot.querySelector(`label[data-resource-type="${chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.MigrationWizardConstants.DISPLAYED_RESOURCE_TYPES.PASSWORDS}"]`).control;
@@ -2978,8 +3009,8 @@ class MigrationWizard extends HTMLElement {
       } else {
         this.#doImport();
       }
-    } else if (event.target == this.#safariPasswordImportSelectButton) {
-      this.#selectSafariPasswordFile();
+    } else if (event.target.classList.contains("manual-password-import-select")) {
+      this.#selectManualPasswordFile();
     } else if (event.target == this.#extensionsSuccessLink) {
       this.dispatchEvent(new CustomEvent("MigrationWizard:OpenAboutAddons", {
         bubbles: true
@@ -3160,4 +3191,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.97c8b7f7.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.9ff97172.iframe.bundle.js.map
