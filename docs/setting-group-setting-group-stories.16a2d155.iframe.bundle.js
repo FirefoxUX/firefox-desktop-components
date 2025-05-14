@@ -115,8 +115,12 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     checkbox.id = item.id;
     document.l10n.setAttributes(checkbox, item.l10nId);
     checkbox.addEventListener("command", e => setting.userChange(e.target.checked));
-    setting.on("change", () => checkbox.checked = setting.value);
-    checkbox.checked = setting.value;
+    function setValue() {
+      checkbox.checked = setting.value;
+      checkbox.disabled = setting.locked;
+    }
+    setting.on("change", setValue);
+    setValue();
     if (item.supportPage) {
       let container = document.createXULElement("hbox");
       container.setAttribute("align", "center");
@@ -163,4 +167,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.df552050.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.16a2d155.iframe.bundle.js.map

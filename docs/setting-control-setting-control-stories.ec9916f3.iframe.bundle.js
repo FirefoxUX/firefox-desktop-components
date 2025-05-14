@@ -118,6 +118,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           .checked=${this.value}
           .supportPage=${this.config.supportPage}
           data-subcategory=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.subcategory)}
+          ?disabled=${this.setting.locked}
           @change=${this.onChange}
         ></moz-checkbox>`;
     }
@@ -128,4 +129,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.cc4e5f66.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.ec9916f3.iframe.bundle.js.map
