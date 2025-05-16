@@ -59,10 +59,16 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     secondaryNavGroupSlot: "#secondary-nav-group slot"
   };
   get pageNavButtons() {
-    return this.primaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+    return this.getVisibleSlottedChildren(this.primaryNavGroupSlot);
   }
   get secondaryNavButtons() {
-    return this.secondaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+    return this.getVisibleSlottedChildren(this.secondaryNavGroupSlot);
+  }
+  getVisibleSlottedChildren(el) {
+    return el?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && node.checkVisibility({
+      visibilityProperty: true,
+      opacityProperty: true
+    }));
   }
   onChangeView(e) {
     this.currentView = e.target.view;
@@ -539,4 +545,4 @@ WithSearchScroll.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.faa5b043.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.b260efc6.iframe.bundle.js.map

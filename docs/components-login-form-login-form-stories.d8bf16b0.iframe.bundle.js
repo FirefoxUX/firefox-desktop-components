@@ -154,12 +154,10 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
           <moz-button
             type="icon ghost"
             iconSrc="chrome://browser/skin/back.svg"
+            data-l10n-id="contextual-manager-passwords-remove-login-card-back-message"
             @click=${this.#toggleDeleteCard}
           >
           </moz-button>
-          <p
-            data-l10n-id="contextual-manager-passwords-remove-login-card-back-message"
-          ></p>
         </div>
         <div class="remove-card-text">
           <h3
@@ -780,4 +778,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.54fa5725.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.d8bf16b0.iframe.bundle.js.map
