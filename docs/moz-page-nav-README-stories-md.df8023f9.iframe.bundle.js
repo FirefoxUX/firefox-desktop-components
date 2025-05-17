@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[324,1294,1964,4032,6592,6612],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[324,1294,7946,9714],{
 
 /***/ 2523:
 /***/ ((module) => {
@@ -530,87 +530,11 @@ var require_bash=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_0__.__commonJS)
 
 /***/ }),
 
-/***/ 11964:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 10139:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozFieldset)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(56118);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/**
- * Fieldset wrapper to lay out form inputs consistently.
- *
- * @tagname moz-fieldset
- * @property {string} label - The label for the fieldset's legend.
- * @property {string} description - The description for the fieldset.
- * @property {string} supportPage - Name of the SUMO support page to link to.
- */
-class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    label: {
-      type: String,
-      fluent: true
-    },
-    description: {
-      type: String,
-      fluent: true
-    },
-    supportPage: {
-      type: String,
-      attribute: "support-page"
-    }
-  };
-  descriptionTemplate() {
-    if (this.description) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description text-deemphasized">
-          ${this.description}
-        </span>
-        ${this.supportPageTemplate()}`;
-    }
-    return "";
-  }
-  supportPageTemplate() {
-    if (this.supportPage) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
-        is="moz-support-link"
-        support-page=${this.supportPage}
-        part="support-link"
-      ></a>`;
-    }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="support-link"></slot>`;
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <fieldset
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
-      >
-        <legend part="label">${this.label}</legend>
-        ${!this.description ? this.supportPageTemplate() : ""}
-        ${this.descriptionTemplate()}
-        <div id="inputs" part="inputs">
-          <slot></slot>
-        </div>
-      </fieldset>
-    `;
-  }
-}
-customElements.define("moz-fieldset", MozFieldset);
+module.exports = __webpack_require__.p + "moz-page-nav-button.41e32b4d0ddd8dd1767f.css";
 
 /***/ }),
 
@@ -792,6 +716,253 @@ var require_immutable=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_4__.__comm
 
 
 
+
+/***/ }),
+
+/***/ 19714:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MozPageNavButton: () => (/* binding */ MozPageNavButton),
+/* harmony export */   "default": () => (/* binding */ MozPageNav)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_page_nav_moz_page_nav_button_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(10139);
+/* harmony import */ var toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(89472);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(48334);
+/* harmony import */ var chrome_global_content_elements_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(70324);
+
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * A grouping of navigation buttons that is displayed at the page level,
+ * intended to change the selected view, provide a heading, and have links
+ * to external resources.
+ *
+ * @tagname moz-page-nav
+ * @property {string} currentView - The currently selected view.
+ * @property {string} heading - A heading to be displayed at the top of the navigation.
+ * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
+ * @slot [subheading] - Used to append page specific search input or notification to the nav.
+ */
+class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  static properties = {
+    currentView: {
+      type: String
+    },
+    heading: {
+      type: String,
+      fluent: true
+    }
+  };
+  static queries = {
+    headingEl: "#page-nav-heading",
+    primaryNavGroupSlot: ".primary-nav-group slot",
+    secondaryNavGroupSlot: "#secondary-nav-group slot"
+  };
+  get pageNavButtons() {
+    return this.primaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+  }
+  get secondaryNavButtons() {
+    return this.secondaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+  }
+  onChangeView(e) {
+    this.currentView = e.target.view;
+  }
+  handleFocus(e) {
+    if (e.key == "ArrowDown" || e.key == "ArrowRight") {
+      e.preventDefault();
+      this.focusNextView();
+    } else if (e.key == "ArrowUp" || e.key == "ArrowLeft") {
+      e.preventDefault();
+      this.focusPreviousView();
+    }
+  }
+  focusPreviousView() {
+    let pageNavButtons = this.pageNavButtons;
+    let currentIndex = pageNavButtons.findIndex(b => b.selected);
+    let prev = pageNavButtons[currentIndex - 1];
+    if (prev) {
+      prev.activate();
+      prev.buttonEl.focus();
+    }
+  }
+  focusNextView() {
+    let pageNavButtons = this.pageNavButtons;
+    let currentIndex = pageNavButtons.findIndex(b => b.selected);
+    let next = pageNavButtons[currentIndex + 1];
+    if (next) {
+      next.activate();
+      next.buttonEl.focus();
+    }
+  }
+  onSecondaryNavChange(event) {
+    let secondaryNavElements = event.target.assignedElements();
+    this.hasSecondaryNav = !!secondaryNavElements.length;
+    secondaryNavElements?.forEach(el => {
+      el.classList.add("secondary-nav-item");
+    });
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_css__WEBPACK_IMPORTED_MODULE_1__}"
+      />
+      <div class="page-nav-heading-wrapper">
+        <div class="logo"></div>
+        <h1 class="page-nav-heading" id="page-nav-heading">${this.heading}</h1>
+      </div>
+      <slot name="subheading"></slot>
+      <nav>
+        <div
+          class="primary-nav-group"
+          role="tablist"
+          aria-orientation="vertical"
+          aria-labelledby="page-nav-heading"
+        >
+          <slot
+            @change-view=${this.onChangeView}
+            @keydown=${this.handleFocus}
+          ></slot>
+        </div>
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.hasSecondaryNav, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<hr />`)}
+        <div id="secondary-nav-group" role="group">
+          <slot
+            name="secondary-nav"
+            @slotchange=${this.onSecondaryNavChange}
+          ></slot>
+        </div>
+      </nav>
+    `;
+  }
+  updated() {
+    let isViewSelected = false;
+    let assignedPageNavButtons = this.pageNavButtons;
+    for (let button of assignedPageNavButtons) {
+      button.selected = button.view == this.currentView;
+      isViewSelected = isViewSelected || button.selected;
+    }
+    if (!isViewSelected && assignedPageNavButtons.length) {
+      // Current page nav has no matching view, reset to the first view.
+      assignedPageNavButtons[0].activate();
+    }
+  }
+}
+customElements.define("moz-page-nav", MozPageNav);
+
+/**
+ * A navigation button intended to change the selected view within a page.
+ *
+ * @tagname moz-page-nav-button
+ * @property {string} href - (optional) The url for an external link if not a support page URL
+ * @property {string} iconSrc - The chrome:// url for the icon used for the button.
+ * @property {boolean} selected - Whether or not the button is currently selected.
+ * @property {string} supportPage - (optional) The short name for the support page a secondary link should launch to
+ * @slot [default] - Used to append the l10n string to the button.
+ */
+class MozPageNavButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  static properties = {
+    iconSrc: {
+      type: String,
+      reflect: true
+    },
+    href: {
+      type: String
+    },
+    selected: {
+      type: Boolean
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
+    }
+  };
+  connectedCallback() {
+    super.connectedCallback();
+    this.setAttribute("role", "none");
+  }
+  static queries = {
+    buttonEl: "button",
+    linkEl: "a"
+  };
+  get view() {
+    return this.getAttribute("view");
+  }
+  activate() {
+    this.dispatchEvent(new CustomEvent("change-view", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  itemTemplate() {
+    if (this.href || this.supportPage) {
+      return this.linkTemplate();
+    }
+    return this.buttonTemplate();
+  }
+  buttonTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <button
+        aria-selected=${this.selected}
+        tabindex=${this.selected ? 0 : -1}
+        role="tab"
+        ?selected=${this.selected}
+        @click=${this.activate}
+      >
+        ${this.innerContentTemplate()}
+      </button>
+    `;
+  }
+  linkTemplate() {
+    if (this.supportPage) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+        <a
+          is="moz-support-link"
+          class="moz-page-nav-link"
+          support-page=${this.supportPage}
+        >
+          ${this.innerContentTemplate()}
+        </a>
+      `;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <a href=${this.href} class="moz-page-nav-link" target="_blank">
+        ${this.innerContentTemplate()}
+      </a>
+    `;
+  }
+  innerContentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      ${this.iconSrc ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<img
+            class="page-nav-icon"
+            src=${this.iconSrc}
+            role="presentation"
+          />` : ""}
+      <slot></slot>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_page_nav_moz_page_nav_button_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.itemTemplate()}
+    `;
+  }
+}
+customElements.define("moz-page-nav-button", MozPageNavButton);
 
 /***/ }),
 
@@ -5872,281 +6043,6 @@ var require_markdown=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_0__.__commo
 
 /***/ }),
 
-/***/ 36592:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76150);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-/**
- * An extension of the label element that provides accesskey styling and
- * formatting as well as click handling logic.
- *
- * @tagname moz-label
- * @attribute {string} accesskey - Key used for keyboard access.
- * @attribute {string} shownaccesskey - Key to underline but not set as
- *   accesskey, this is useful to work around an issue where multiple accesskeys
- *   on the same element cause it to be focused isntead of activated.
- */
-class MozTextLabel extends HTMLLabelElement {
-  #insertSeparator = false;
-  #alwaysAppendAccessKey = false;
-  #lastFormattedAccessKey = null;
-  #observer = null;
-
-  // Default to underlining accesskeys for Windows and Linux.
-  static #underlineAccesskey = !navigator.platform.includes("Mac");
-  static get observedAttributes() {
-    return ["accesskey", "shownaccesskey"];
-  }
-  static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
-  constructor() {
-    super();
-    this.#register();
-    this.addEventListener("click", this._onClick);
-  }
-  #register() {
-    if (window.IS_STORYBOOK) {
-      MozTextLabel.#underlineAccesskey = true;
-    } else if (typeof Services !== "undefined") {
-      MozTextLabel.#underlineAccesskey = !!Services.prefs.getIntPref("ui.key.menuAccessKey", Number(!navigator.platform.includes("Mac")));
-      if (MozTextLabel.#underlineAccesskey) {
-        try {
-          const nsIPrefLocalizedString = Ci.nsIPrefLocalizedString;
-          const prefNameInsertSeparator = "intl.menuitems.insertseparatorbeforeaccesskeys";
-          const prefNameAlwaysAppendAccessKey = "intl.menuitems.alwaysappendaccesskeys";
-          let val = Services.prefs.getComplexValue(prefNameInsertSeparator, nsIPrefLocalizedString).data;
-          this.#insertSeparator = val == "true";
-          val = Services.prefs.getComplexValue(prefNameAlwaysAppendAccessKey, nsIPrefLocalizedString).data;
-          this.#alwaysAppendAccessKey = val == "true";
-        } catch (e) {
-          this.#insertSeparator = this.#alwaysAppendAccessKey = true;
-        }
-      }
-    }
-  }
-  connectedCallback() {
-    this.#setStyles();
-    this.formatAccessKey();
-    if (!this.#observer) {
-      this.#observer = new MutationObserver(() => {
-        this.formatAccessKey();
-      }).observe(this, {
-        characterData: true,
-        childList: true,
-        subtree: true
-      });
-    }
-  }
-  disconnectedCallback() {
-    if (this.#observer) {
-      this.#observer.disconnect();
-      this.#observer = null;
-    }
-  }
-
-  // Bug 1820588 - we may want to generalize this into
-  // MozHTMLElement.insertCssIfNeeded(style)
-  #setStyles() {
-    let root = this.getRootNode();
-    if (root.__mozLabelCssAdded) {
-      return;
-    }
-    let container = root.head ?? root;
-    for (let link of container.querySelectorAll("link")) {
-      if (link.getAttribute("href") == this.constructor.stylesheetUrl) {
-        return;
-      }
-    }
-    let style = document.createElement("link");
-    style.rel = "stylesheet";
-    style.href = this.constructor.stylesheetUrl;
-    container.appendChild(style);
-    root.__mozLabelCssAdded = true;
-  }
-  set textContent(val) {
-    super.textContent = val;
-    this.#lastFormattedAccessKey = null;
-    this.formatAccessKey();
-  }
-  get textContent() {
-    return super.textContent;
-  }
-  attributeChangedCallback(attrName, oldValue, newValue) {
-    if (oldValue == newValue) {
-      return;
-    }
-
-    // Note that this is only happening when "accesskey" attribute changes.
-    this.formatAccessKey();
-  }
-  _onClick() {
-    let controlElement = this.labeledControlElement;
-    if (!controlElement || this.disabled) {
-      return;
-    }
-    controlElement.focus();
-    if ((controlElement.localName == "checkbox" || controlElement.localName == "radio") && controlElement.getAttribute("disabled") == "true") {
-      return;
-    }
-    if (controlElement.localName == "checkbox") {
-      controlElement.checked = !controlElement.checked;
-    } else if (controlElement.localName == "radio") {
-      controlElement.control.selectedItem = controlElement;
-    }
-  }
-  set accessKey(val) {
-    this.setAttribute("accesskey", val);
-    let control = this.labeledControlElement;
-    if (control) {
-      control.setAttribute("accesskey", val);
-    }
-  }
-  get accessKey() {
-    let accessKey = this.getAttribute("accesskey");
-    return accessKey ? accessKey[0] : null;
-  }
-  get labeledControlElement() {
-    let control = this.control;
-    return control ? document.getElementById(control) : null;
-  }
-  set control(val) {
-    this.setAttribute("control", val);
-  }
-  get control() {
-    return this.getAttribute("control");
-  }
-
-  // This is used to match the rendering of accesskeys from nsTextBoxFrame.cpp (i.e. when the
-  // label uses [value]). So this is just for when we have textContent.
-  formatAccessKey() {
-    // Skip doing any DOM manipulation whenever possible:
-    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
-    if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
-      return;
-    }
-    this.#lastFormattedAccessKey = accessKey;
-    if (this.accessKeySpan) {
-      // Clear old accesskey
-      mergeElement(this.accessKeySpan);
-      this.accessKeySpan = null;
-    }
-    if (this.hiddenColon) {
-      mergeElement(this.hiddenColon);
-      this.hiddenColon = null;
-    }
-    if (this.accessKeyParens) {
-      this.accessKeyParens.remove();
-      this.accessKeyParens = null;
-    }
-
-    // If we used to have an accessKey but not anymore, we're done here
-    if (!accessKey) {
-      return;
-    }
-    let labelText = this.textContent;
-    let accessKeyIndex = -1;
-    if (!this.#alwaysAppendAccessKey) {
-      accessKeyIndex = labelText.indexOf(accessKey);
-      if (accessKeyIndex < 0) {
-        // Try again in upper case
-        accessKeyIndex = labelText.toUpperCase().indexOf(accessKey.toUpperCase());
-      }
-    } else if (labelText.endsWith(`(${accessKey.toUpperCase()})`)) {
-      accessKeyIndex = labelText.length - (1 + accessKey.length); // = index of accessKey.
-    }
-    const HTML_NS = "http://www.w3.org/1999/xhtml";
-    this.accessKeySpan = document.createElementNS(HTML_NS, "span");
-    this.accessKeySpan.className = "accesskey";
-
-    // Note that if you change the following code, see the comment of
-    // nsTextBoxFrame::UpdateAccessTitle.
-
-    // If accesskey is in the string, underline it:
-    if (accessKeyIndex >= 0) {
-      wrapChar(this, this.accessKeySpan, accessKeyIndex);
-      return;
-    }
-
-    // If accesskey is not in string, append in parentheses
-    // If end is colon, we should insert before colon.
-    // i.e., "label:" -> "label(X):"
-    let colonHidden = false;
-    if (/:$/.test(labelText)) {
-      labelText = labelText.slice(0, -1);
-      this.hiddenColon = document.createElementNS(HTML_NS, "span");
-      this.hiddenColon.className = "hiddenColon";
-      this.hiddenColon.style.display = "none";
-      // Hide the last colon by using span element.
-      // I.e., label<span style="display:none;">:</span>
-      wrapChar(this, this.hiddenColon, labelText.length);
-      colonHidden = true;
-    }
-    // If end is space(U+20),
-    // we should not add space before parentheses.
-    let endIsSpace = false;
-    if (/ $/.test(labelText)) {
-      endIsSpace = true;
-    }
-    this.accessKeyParens = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
-    this.appendChild(this.accessKeyParens);
-    if (this.#insertSeparator && !endIsSpace) {
-      this.accessKeyParens.textContent = " (";
-    } else {
-      this.accessKeyParens.textContent = "(";
-    }
-    this.accessKeySpan.textContent = accessKey.toUpperCase();
-    this.accessKeyParens.appendChild(this.accessKeySpan);
-    if (!colonHidden) {
-      this.accessKeyParens.appendChild(document.createTextNode(")"));
-    } else {
-      this.accessKeyParens.appendChild(document.createTextNode("):"));
-    }
-  }
-}
-customElements.define("moz-label", MozTextLabel, {
-  extends: "label"
-});
-function mergeElement(element) {
-  // If the element has been removed already, return:
-  if (!element.isConnected) {
-    return;
-  }
-  // `isInstance` isn't available to web content (i.e. Storybook) so we need to
-  // fallback to using `instanceof`.
-  if (Text.hasOwnProperty("isInstance") ? Text.isInstance(element.previousSibling) :
-  // eslint-disable-next-line mozilla/use-isInstance
-  element.previousSibling instanceof Text) {
-    element.previousSibling.appendData(element.textContent);
-  } else {
-    element.parentNode.insertBefore(element.firstChild, element);
-  }
-  element.remove();
-}
-function wrapChar(parentNode, element, index) {
-  let treeWalker = document.createNodeIterator(parentNode, NodeFilter.SHOW_TEXT, null);
-  let node = treeWalker.nextNode();
-  while (index >= node.length) {
-    index -= node.length;
-    node = treeWalker.nextNode();
-  }
-  if (index) {
-    node = node.splitText(index);
-  }
-  node.parentNode.insertBefore(element, node);
-  if (node.length > 1) {
-    node.splitText(1);
-  }
-  element.appendChild(node);
-}
-
-/***/ }),
-
 /***/ 37241:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -8720,426 +8616,6 @@ var parse = (data, options2 = {}) => {
 
 /***/ }),
 
-/***/ 55037:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   __page: () => (/* binding */ __page),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(96540);
-/* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68910);
-/* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(85164);
-/* harmony import */ var toolkit_widgets_moz_radio_group_moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(94032);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(74848);
-
-
-
-
-
-
-
-
-
-function _createMdxContent(props) {
-  const _components = Object.assign({
-    h1: "h1",
-    p: "p",
-    code: "code",
-    a: "a",
-    h2: "h2",
-    ul: "ul",
-    li: "li",
-    h3: "h3",
-    pre: "pre"
-  }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Radio Group/README",
-      parameters: {
-        previewTabs: {
-          canvas: {
-            hidden: true
-          }
-        },
-        viewMode: "docs"
-      }
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "mozradiogroup",
-      children: "MozRadioGroup"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " is an element that allows users to select one option from a list of related options. It is designed to be used in tandem with our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " custom element, which is a wrapper around an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "<input type=\"radio\">"
-      }), " HTML element."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-radio-group name=\"contact\" label=\"Select a contact method\" value=\"email\"><moz-radio value=\"email\" label=\"Email\" /><moz-radio value=\"phone\" label=\"Phone\" /><moz-radio value=\"mail\" label=\"Mail\" /></moz-radio-group></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
-          name: "contact",
-          label: "Select a contact method",
-          value: "email",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "email",
-            label: "Email"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "phone",
-            label: "Phone"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "mail",
-            label: "Mail"
-          })]
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["More information about this component including design, writing, and localization guidelines, as well as design assets, can be found on our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://acorn.firefox.com/latest/components/radio/desktop-A9fsJE6U",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Acorn site"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "code",
-      children: "Code"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " can be found under ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-radio-group/",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-radio-group/"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "when-to-use-moz-radio-group",
-      children: ["When to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use a radio group when you are trying to get a user to select only one option from a relatively short list of options."
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
-        children: "Use a radio group over a select when it is advantageous to have all possible options to be immediately visible to the user."
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "when-not-to-use-moz-radio-group",
-      children: ["When not to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
-      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["If it should be possible for the user to select multiple options, use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "moz-checkbox"
-        }), "."]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
-        children: ["If the intention is for a user to turn something off or on with their selection, and for their selection to have an immediate effect, consider using ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-          children: "moz-toggle"
-        }), " instead."]
-      }), "\n"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "how-to-use-moz-radio-group",
-      children: ["How to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "importing-the-element",
-      children: "Importing the element"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Like other custom elements, you should usually be able to rely on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " getting lazy loaded at the time of first use. See ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://firefox-source-docs.mozilla.org/browser/components/storybook/docs/README.reusable-widgets.stories.html#using-new-design-system-components",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "this documentation"
-      }), " for more information on using design system custom elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "combining-moz-radio-and-moz-radio-group",
-      children: ["Combining ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " must be used together in order for the elements to behave as expected. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements must also be direct children of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), "; they should not need to be wrapped in additional elements for purposes of positioning or spacing as those style attributes are provided by ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["If you are using the elements improperly you may see the following ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/a215fbd85843a91fcd8fdc33aa9cd9a357403f35/toolkit/content/widgets/moz-radio-group/moz-radio-group.mjs#260",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "console error"
-      }), ":"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-sh",
-        children: "moz-radio can only be used in moz-radio-group element.\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-value-for-the-group",
-      children: ["Setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "value"
-      }), " for the group"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "value"
-      }), " property or attribute of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " can be used to set the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "checked"
-      }), " state of its ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements. While it is also possible to set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "checked"
-      }), " directly individual ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements, in most cases it's clearer to set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "value"
-      }), " on the group. This allows ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " to serve as the single source of truth for the checked/unchecked state of related ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-radio-group name=\"greeting\" label=\"Select a preferred greeting\" value=\"hola\">\n  <moz-radio value=\"hi\" label=\"Hi\"></moz-radio>\n  <moz-radio value=\"hello\" label=\"Hello\"></moz-radio>\n  <moz-radio value=\"hola\" label=\"Hola\"></moz-radio>\n</moz-radio-group>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-radio-group name=\"greeting\" label=\"Select a preferred greeting\" value=\"hola\"><moz-radio value=\"hi\" label=\"Hi\" /><moz-radio value=\"hello\" label=\"Hello\" /><moz-radio value=\"hola\" label=\"Hola\" /></moz-radio-group></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
-          name: "greeting",
-          label: "Select a preferred greeting",
-          value: "hola",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "hi",
-            label: "Hi"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "hello",
-            label: "Hello"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            value: "hola",
-            label: "Hola"
-          })]
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-name-for-the-group",
-      children: ["Setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " for the group"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " attribute used to associate multiple ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements can only be set on the containing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " element. This is different from HTML ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "<input type=\"radio\">"
-      }), " elements where ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " can be set on each of the individual inputs. With ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "name"
-      }), " propagates down the the child ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-the-disabled-state",
-      children: ["Setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " state"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " state can be set on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " to disable all of its child ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-radio-group name=\"group-disabled\" disabled>\n  <moz-radio value=\"disabled1\" label=\"I'm disabled\"></moz-radio>\n  <moz-radio value=\"disabled2\" label=\"I'm disabled too\"></moz-radio>\n</moz-radio-group>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " can also be set on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements to control their state independently of the rest of the group:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-radio-group name=\"button-disabled\">\n  <moz-radio value=\"enabled\" label=\"I'm enabled\"></moz-radio>\n  <moz-radio value=\"disabled\" label=\"I'm disabled\" disabled></moz-radio>\n</moz-radio-group>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The one caveat to this is that it is not possible to programmatically enable an individual ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " element when the containing group is ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "fluent-usage",
-      children: "Fluent usage"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " properties of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " will generally be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Fluent attributes"
-      }), ". ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " are set automatically, so to get things working you just need to supply a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as you would with any other element."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "For example the following Fluent messages:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group-id =\n  .label = This is the label for the group\nfirst-moz-radio-id =\n  .label = This is the label for the first radio button\nsecond-moz-radio-id =\n  .label = This is the label for the second radio button\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "Would be used to set labels on the different elements as follows:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-radio-group data-l10n-id=\"moz-radio-group-id\">\n  <moz-radio data-l10n-id=\"first-moz-radio-id\"></moz-radio>\n  <moz-radio data-l10n-id=\"second-moz-radio-id\"></moz-radio>\n</moz-radio-group>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "nested-fields",
-      children: "Nested fields"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio"
-      }), " elements support nested or dependent fields via a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "nested"
-      }), " named\nslot. These fields will be rendered below the radio element in which they are\nnested, and will be indented to visually indicate dependence. Any nested fields\nwill mirror the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), " state of the radio and will also become ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "disabled"
-      }), "\nwhenever the radio is not ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "checked"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["When nesting fields under a radio element we do not need to do any additional\nwrapping with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-fieldset"
-      }), ", since ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-radio-group"
-      }), " already relies on\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-fieldset"
-      }), " under the hood:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-radio-group label=\"Label for the group\">\n  <moz-radio label=\"Some radio button\" value=\"bar\"></moz-radio>\n  <moz-radio label=\"another another radio button\" value=\"baz\"></moz-radio>\n  <moz-radio label=\"Parent radio button\" value=\"foo\" checked>\n    <moz-checkbox slot=\"nested\" label=\"Nested checkbox one\" value=\"one\"></moz-checkbox>\n    <moz-checkbox slot=\"nested\" label=\"Nested checkbox two\" value=\"two\" checked></moz-checkbox>\n  </moz-radio>\n</moz-radio-group>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-radio-group label=\"Label for the group\"><moz-radio label=\"Some radio button\" value=\"bar\" /><moz-radio label=\"another another radio button\" value=\"baz\" /><moz-radio label=\"Parent radio button\" value=\"foo\" checked><moz-checkbox slot=\"nested\" label=\"Nested checkbox one\" value=\"one\" /><moz-checkbox slot=\"nested\" label=\"Nested checkbox two\" value=\"two\" checked /></moz-radio></moz-radio-group></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio-group", {
-          label: "Label for the group",
-          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            label: "Some radio button",
-            value: "bar"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-radio", {
-            label: "another another radio button",
-            value: "baz"
-          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-radio", {
-            label: "Parent radio button",
-            value: "foo",
-            checked: true,
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-checkbox", {
-              slot: "nested",
-              label: "Nested checkbox one",
-              value: "one"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-checkbox", {
-              slot: "nested",
-              label: "Nested checkbox two",
-              value: "two",
-              checked: true
-            })]
-          })]
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "args-table",
-      children: "Args Table"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-radio-group"
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  const {
-    wrapper: MDXLayout
-  } = Object.assign({}, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(MDXLayout, {
-    ...props,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_createMdxContent, {
-      ...props
-    })
-  }) : _createMdxContent(props);
-}
-/* ========= */
-const __page = () => {
-  throw new Error("Docs-only story");
-};
-__page.parameters = {
-  docsOnly: true
-};
-const componentMeta = {
-  title: 'UI Widgets/ Radio Group/README',
-  parameters: {
-    previewTabs: {
-      canvas: {
-        hidden: true
-      }
-    },
-    viewMode: "docs"
-  },
-  tags: ['stories-mdx'],
-  includeStories: ["__page"]
-};
-componentMeta.parameters = componentMeta.parameters || {};
-componentMeta.parameters.docs = {
-  ...(componentMeta.parameters.docs || {}),
-  page: MDXContent
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (componentMeta);
-
-/***/ }),
-
 /***/ 55285:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -9237,14 +8713,6 @@ function baseUniq(array, iteratee, comparator) {
 
 module.exports = baseUniq;
 
-
-/***/ }),
-
-/***/ 56118:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-fieldset.b70ad330f48a1183483b.css";
 
 /***/ }),
 
@@ -10712,14 +10180,6 @@ if (true) {
 
 /***/ }),
 
-/***/ 76150:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
-
-/***/ }),
-
 /***/ 76169:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -11191,6 +10651,14 @@ module.exports = cloneDeep;
 
 /***/ }),
 
+/***/ 89472:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
+
+/***/ }),
+
 /***/ 90181:
 /***/ ((module) => {
 
@@ -11572,360 +11040,333 @@ module.exports = cloneSymbol;
 
 /***/ }),
 
-/***/ 94032:
+/***/ 95925:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   MozRadio: () => (/* binding */ MozRadio),
-/* harmony export */   MozRadioGroup: () => (/* binding */ MozRadioGroup)
+/* harmony export */   __page: () => (/* binding */ __page),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48334);
-/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(36592);
-/* harmony import */ var chrome_global_content_elements_moz_fieldset_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(11964);
-/* harmony import */ var chrome_global_content_elements_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(70324);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(96540);
+/* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68910);
+/* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(85164);
+/* harmony import */ var toolkit_widgets_moz_page_nav_moz_page_nav_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(19714);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(74848);
 
 
 
-// eslint-disable-next-line import/no-unassigned-import
 
-// eslint-disable-next-line import/no-unassigned-import
 
-// eslint-disable-next-line import/no-unassigned-import
 
-const NAVIGATION_FORWARD = "forward";
-const NAVIGATION_BACKWARD = "backward";
-const NAVIGATION_VALUE = {
-  [NAVIGATION_FORWARD]: 1,
-  [NAVIGATION_BACKWARD]: -1
+
+
+
+function _createMdxContent(props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p",
+    code: "code",
+    h2: "h2",
+    ul: "ul",
+    li: "li",
+    a: "a",
+    pre: "pre",
+    h3: "h3"
+  }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
+      title: "UI Widgets/ Page Nav/README",
+      parameters: {
+        previewTabs: {
+          canvas: {
+            hidden: true
+          }
+        },
+        viewMode: "docs"
+      }
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
+      id: "mozpagenav",
+      children: "MozPageNav"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " is a grouping of navigation buttons that is displayed at the page level,\nintended to change the selected view, provide a heading, and have links to external resources."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
+          heading: "This is a nav",
+          style: {
+            '--page-nav-margin-top': 0,
+            maxWidth: '20ch',
+            maxHeight: '275px'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-one",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 1"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-two",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 2"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "view-three",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Test 3"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            "support-page": "test",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            slot: "secondary-nav",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Support Link"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            href: "https://www.example.com",
+            iconSrc: "chrome://browser/skin/preferences/category-general.svg",
+            slot: "secondary-nav",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "External Link"
+            })
+          })]
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-to-use",
+      children: "When to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Use moz-page-nav for single-page navigation to switch between different views."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "moz-page-nav also supports footer buttons for external and support links"
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "This component is intended to be used in about: pages such as about:firefoxview, about:preferences, about:addons, about:debugging, etc."
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-not-to-use",
+      children: "When not to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "If you need a navigation menu that does not switch between views within a single page"
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "code",
+      children: "Code"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-page-nav",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "toolkit/content/widgets/moz-page-nav"
+      }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " in use in the Firefox codebase in\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/rev/9783996dbd86f999cab50ea426079a7b10f28a2f/browser/components/firefoxview/firefoxview.html#53-88",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:firefoxview"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".html"
+      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".xhtml"
+      }), " files:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-page-nav.mjs\"></script>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "And used as follows:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav heading=\"This is a nav\">\n  <moz-page-nav-button\n    data-l10n-id=\"id-1\"\n    view=\"A name for the first view\"\n    iconSrc=\"A url for the icon for the first navigation button\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    data-l10n-id=\"id-2\"\n    view=\"A name for the second view\"\n    iconSrc=\"A url for the icon for the second navigation button\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    data-l10n-id=\"id-3\"\n    view=\"A name for the third view\"\n    iconSrc=\"A url for the icon for the third navigation button\">\n  </moz-page-nav-button>\n\n  <!-- Footer Links -->\n\n  <!-- Support Link -->\n  <moz-page-nav-button\n    support-page=\"A name for a support link\"\n    iconSrc=\"A url for the icon for the third navigation button\"\n    slot=\"secondary-nav\">\n  </moz-page-nav-button>\n\n  <!-- External Link -->\n  <moz-page-nav-button\n    href=\"A url for an external link\"\n    iconSrc=\"A url for the icon for the third navigation button\"\n    slot=\"secondary-nav\">\n  </moz-page-nav-button>\n</moz-page-nav>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "iconless-variant",
+      children: "Iconless variant"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "iconSrc"
+      }), " property of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), " is optional. This is intended to support more internal facing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "about:"
+      }), " pages where the addition of icons is not necessary. In these cases, the code will look a bit simpler:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav heading=\"This is a nav\">\n  <moz-page-nav-button\n    data-l10n-id=\"id-1\"\n    view=\"A name for the first view\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    data-l10n-id=\"id-2\"\n    view=\"A name for the second view\">\n  </moz-page-nav-button>\n  <moz-page-nav-button\n    data-l10n-id=\"id-3\"\n    view=\"A name for the third view\">\n  </moz-page-nav-button>\n</moz-page-nav>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "And will render like this:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"A name for the first view\"><p style={{ margin: 0 }}>{\"First iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the second view\"><p style={{ margin: 0 }}>{\"Second iconless button\"}</p></moz-page-nav-button><moz-page-nav-button view=\"A name for the third view\"><p style={{ margin: 0 }}>{\"Third iconless button\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
+          heading: "This is a nav",
+          style: {
+            maxWidth: '20ch',
+            maxHeight: '275px'
+          },
+          children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "A name for the first view",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "First iconless button"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "A name for the second view",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Second iconless button"
+            })
+          }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-page-nav-button", {
+            view: "A name for the third view",
+            children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("p", {
+              style: {
+                margin: 0
+              },
+              children: "Third iconless button"
+            })
+          })]
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Please note that ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " does not currently support mixing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), "s with icons and iconless ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), "s. To avoid display issue your nav should pick one type for primary and secondary nav buttons and stick with it."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "fluent-usage",
+      children: "Fluent usage"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Generally the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "heading"
+      }), " property of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav"
+      }), " will be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "Fluent attributes"
+      }), ".\nTo get this working you will need to format your Fluent message like this:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-heading =\n  .heading = Heading text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " will be set up automatically via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "MozLitElement"
+      }), ", so you can just specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " on your moz-page-nav as you would with any other markup:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav data-l10n-id=\"with-heading\"></moz-page-nav>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["You also need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " for each ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-page-nav-button"
+      }), ":"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-page-nav-button data-l10n-id=\"with-button-text\"></moz-page-nav-button>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-button-text = button text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "args-table",
+      children: "Args Table"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
+      of: "moz-page-nav"
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {
+    wrapper: MDXLayout
+  } = Object.assign({}, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
+  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(MDXLayout, {
+    ...props,
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+/* ========= */
+const __page = () => {
+  throw new Error("Docs-only story");
 };
-const DIRECTION_RIGHT = "Right";
-const DIRECTION_LEFT = "Left";
-const NAVIGATION_DIRECTIONS = {
-  LTR: {
-    FORWARD: DIRECTION_RIGHT,
-    BACKWARD: DIRECTION_LEFT
+__page.parameters = {
+  docsOnly: true
+};
+const componentMeta = {
+  title: 'UI Widgets/ Page Nav/README',
+  parameters: {
+    previewTabs: {
+      canvas: {
+        hidden: true
+      }
+    },
+    viewMode: "docs"
   },
-  RTL: {
-    FORWARD: DIRECTION_LEFT,
-    BACKWARD: DIRECTION_RIGHT
-  }
+  tags: ['stories-mdx'],
+  includeStories: ["__page"]
 };
-
-/**
- * Element used to group and associate moz-radio buttons so that they function
- * as a single form-control element.
- *
- * @tagname moz-radio-group
- * @property {boolean} disabled - Whether or not the fieldset is disabled.
- * @property {string} label - Label for the group of moz-radio elements.
- * @property {string} description - Description for the group of moz-radio elements.
- * @property {string} supportPage - Support page for the group of moz-radio elements.
- * @property {string} name
- *  Input name of the radio group. Propagates to moz-radio children.
- * @property {string} value
- *  Selected value for the group. Changing the value updates the checked
- *  state of moz-radio children and vice versa.
- * @slot default - The radio group's content, intended for moz-radio elements.
- * @slot support-link - The radio group's support link intended for moz-radio elements.
- */
-class MozRadioGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
-  #radioButtons;
-  #value;
-  static properties = {
-    disabled: {
-      type: Boolean,
-      reflect: true
-    },
-    description: {
-      type: String,
-      fluent: true
-    },
-    supportPage: {
-      type: String,
-      attribute: "support-page"
-    },
-    label: {
-      type: String,
-      fluent: true
-    },
-    name: {
-      type: String
-    },
-    value: {
-      type: String
-    },
-    parentDisabled: {
-      type: Boolean,
-      state: true
-    }
-  };
-  static queries = {
-    fieldset: "moz-fieldset"
-  };
-  set value(newValue) {
-    this.#value = newValue;
-    this.radioButtons.forEach(button => {
-      button.checked = this.value === button.value;
-    });
-    this.syncFocusState();
-  }
-  get value() {
-    return this.#value;
-  }
-  get focusableIndex() {
-    if (this.#value) {
-      let selectedIndex = this.radioButtons.findIndex(button => button.value === this.#value && !button.disabled);
-      if (selectedIndex !== -1) {
-        return selectedIndex;
-      }
-    }
-    return this.radioButtons.findIndex(button => !button.disabled);
-  }
-
-  // Query for moz-radio elements the first time they are needed + ensure they
-  // have been upgraded so we can access properties.
-  get radioButtons() {
-    if (!this.#radioButtons) {
-      this.#radioButtons = (this.shadowRoot?.querySelector("slot:not([name])")?.assignedElements() || [...this.children])?.filter(el => el.localName === "moz-radio" && !el.slot);
-      this.#radioButtons.forEach(button => customElements.upgrade(button));
-    }
-    return this.#radioButtons;
-  }
-  constructor() {
-    super();
-    this.disabled = false;
-    this.addEventListener("keydown", e => this.handleKeydown(e));
-  }
-  firstUpdated() {
-    this.syncStateToRadioButtons();
-  }
-  async getUpdateComplete() {
-    await super.getUpdateComplete();
-    await Promise.all(this.radioButtons.map(button => button.updateComplete));
-  }
-  syncStateToRadioButtons() {
-    this.radioButtons.forEach(button => {
-      if (button.checked && this.value == undefined) {
-        this.value = button.value;
-      }
-      button.name = this.name;
-    });
-    this.syncFocusState();
-  }
-  syncFocusState() {
-    let focusableIndex = this.focusableIndex;
-    this.radioButtons.forEach((button, index) => {
-      button.inputTabIndex = focusableIndex === index ? 0 : -1;
-    });
-  }
-
-  // NB: We may need to revise this to avoid bugs when we add more focusable
-  // elements to moz-radio-group / moz-radio.
-  handleKeydown(event) {
-    let directions = this.getNavigationDirections();
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-      case directions.FORWARD:
-      case `Arrow${directions.FORWARD}`:
-        {
-          event.preventDefault();
-          this.navigate(NAVIGATION_FORWARD);
-          break;
-        }
-      case "Up":
-      case "ArrowUp":
-      case directions.BACKWARD:
-      case `Arrow${directions.BACKWARD}`:
-        {
-          event.preventDefault();
-          this.navigate(NAVIGATION_BACKWARD);
-          break;
-        }
-    }
-  }
-  getNavigationDirections() {
-    if (this.isDocumentRTL) {
-      return NAVIGATION_DIRECTIONS.RTL;
-    }
-    return NAVIGATION_DIRECTIONS.LTR;
-  }
-  get isDocumentRTL() {
-    if (typeof Services !== "undefined") {
-      return Services.locale.isAppLocaleRTL;
-    }
-    return document.dir === "rtl";
-  }
-  navigate(direction) {
-    let currentIndex = this.focusableIndex;
-    let indexStep = this.radioButtons.length + NAVIGATION_VALUE[direction];
-    for (let i = 1; i < this.radioButtons.length; i++) {
-      let nextIndex = (currentIndex + indexStep * i) % this.radioButtons.length;
-      let nextButton = this.radioButtons[nextIndex];
-      if (!nextButton.disabled) {
-        this.value = nextButton.value;
-        nextButton.focus();
-        this.dispatchEvent(new Event("input"), {
-          bubbles: true,
-          composed: true
-        });
-        this.dispatchEvent(new Event("change"), {
-          bubbles: true
-        });
-        return;
-      }
-    }
-  }
-  willUpdate(changedProperties) {
-    if (changedProperties.has("name")) {
-      this.handleSetName();
-    }
-    if (changedProperties.has("disabled")) {
-      this.radioButtons.forEach(button => {
-        button.requestUpdate();
-      });
-    }
-  }
-  handleSetName() {
-    this.radioButtons.forEach(button => {
-      button.name = this.name;
-    });
-  }
-
-  // Re-dispatch change event so it's re-targeted to moz-radio-group.
-  handleChange(event) {
-    event.stopPropagation();
-    this.dispatchEvent(new Event(event.type));
-  }
-  handleSlotChange() {
-    this.#radioButtons = null;
-    this.syncStateToRadioButtons();
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-      <moz-fieldset
-        part="fieldset"
-        description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.description)}
-        support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.supportPage)}
-        role="radiogroup"
-        ?disabled=${this.disabled}
-        label=${this.label}
-        exportparts="inputs, support-link"
-      >
-        ${!this.supportPage ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<slot slot="support-link" name="support-link"></slot>` : ""}
-        <slot
-          @slotchange=${this.handleSlotChange}
-          @change=${this.handleChange}
-        ></slot>
-      </moz-fieldset>
-    `;
-  }
-}
-customElements.define("moz-radio-group", MozRadioGroup);
-
-/**
- * Input element that allows a user to select one option from a group of options.
- *
- * @tagname moz-radio
- * @property {boolean} checked - Whether or not the input is selected.
- * @property {string} description - Description for the input.
- * @property {boolean} disabled - Whether or not the input is disabled.
- * @property {string} iconSrc - Path to an icon displayed next to the input.
- * @property {number} inputTabIndex - Tabindex of the input element.
- * @property {string} label - Label for the radio input.
- * @property {string} name
- *  Name of the input control, set by the associated moz-radio-group element.
- * @property {string} supportPage - Name of the SUMO support page to link to.
- * @property {number} value - Value of the radio input.
- */
-class MozRadio extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBaseInputElement {
-  #controller;
-  static properties = {
-    checked: {
-      type: Boolean,
-      reflect: true
-    },
-    inputTabIndex: {
-      type: Number,
-      state: true
-    }
-  };
-  static activatedProperty = "checked";
-  get controller() {
-    return this.#controller;
-  }
-  constructor() {
-    super();
-    this.checked = false;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    let hostRadioGroup = this.parentElement || this.getRootNode().host;
-    if (!(hostRadioGroup instanceof MozRadioGroup)) {
-      console.error("moz-radio can only be used in moz-radio-group element.");
-    }
-    this.#controller = hostRadioGroup;
-    if (this.#controller.value) {
-      this.checked = this.value === this.#controller.value;
-    }
-  }
-  willUpdate(changedProperties) {
-    super.willUpdate(changedProperties);
-    // Handle setting checked directly via JS.
-    if (changedProperties.has("checked") && this.checked && this.#controller.value && this.value !== this.#controller.value) {
-      this.#controller.value = this.value;
-    }
-    // Handle un-checking directly via JS. If the checked input is un-checked,
-    // the value of the associated moz-radio-group needs to be un-set.
-    if (changedProperties.has("checked") && !this.checked && this.#controller.value && this.value === this.#controller.value) {
-      this.#controller.value = "";
-    }
-    if (changedProperties.has("disabled")) {
-      // Prevent enabling a radio button if containing radio-group is disabled.
-      if (this.disabled === false && this.#controller.disabled) {
-        this.disabled = true;
-      } else if (this.checked || !this.#controller.value) {
-        // Update buttons via moz-radio-group for proper keyboard nav behavior.
-        this.#controller.syncFocusState();
-      }
-    }
-  }
-  handleClick() {
-    this.#controller.value = this.value;
-    if (this.getRootNode().activeElement?.localName == "moz-radio") {
-      this.focus();
-    }
-  }
-
-  // Re-dispatch change event so it propagates out of moz-radio.
-  handleChange(e) {
-    this.dispatchEvent(new Event(e.type, e));
-  }
-  inputTemplate() {
-    let isDisabled = this.disabled || this.#controller.disabled || this.parentDisabled || this.#controller.parentDisabled;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<input
-      type="radio"
-      id="input"
-      value=${this.value}
-      name=${this.name}
-      .checked=${this.checked}
-      aria-checked=${this.checked}
-      aria-describedby="description"
-      tabindex=${this.inputTabIndex}
-      ?disabled=${isDisabled}
-      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
-      @click=${this.handleClick}
-      @change=${this.handleChange}
-    />`;
-  }
-}
-customElements.define("moz-radio", MozRadio);
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (componentMeta);
 
 /***/ }),
 
@@ -12270,4 +11711,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.aa966277.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.df8023f9.iframe.bundle.js.map

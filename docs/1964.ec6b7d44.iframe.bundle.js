@@ -40,6 +40,10 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     supportPage: {
       type: String,
       attribute: "support-page"
+    },
+    ariaOrientation: {
+      type: String,
+      mapped: true
     }
   };
   descriptionTemplate() {
@@ -68,7 +72,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <fieldset
-        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : null)}
+        aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : undefined)}
+        aria-orientation=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaOrientation)}
       >
         <legend part="label">${this.label}</legend>
         ${!this.description ? this.supportPageTemplate() : ""}
@@ -87,9 +92,9 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.b70ad330f48a1183483b.css";
+module.exports = __webpack_require__.p + "moz-fieldset.bc295d86b114a6505947.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=1964.1f71df8c.iframe.bundle.js.map
+//# sourceMappingURL=1964.ec6b7d44.iframe.bundle.js.map
