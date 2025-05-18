@@ -485,7 +485,7 @@ FileImportProgress.args = {
   dialogMode: true,
   state: {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PAGES.FILE_IMPORT_PROGRESS,
-    title: "Importing Passwords",
+    title: "Importing passwords",
     progress: _defineProperty({}, chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.DISPLAYED_FILE_RESOURCE_TYPES.PASSWORDS_FROM_FILE, {
       value: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PROGRESS_VALUE.LOADING
     })
@@ -496,7 +496,7 @@ FileImportSuccess.args = {
   dialogMode: true,
   state: {
     page: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PAGES.FILE_IMPORT_PROGRESS,
-    title: "Passwords Imported Successfully",
+    title: "Passwords imported successfully",
     progress: _defineProperty(_defineProperty({}, chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.DISPLAYED_FILE_RESOURCE_TYPES.PASSWORDS_NEW, {
       value: chrome_browser_content_migration_migration_wizard_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.MigrationWizardConstants.PROGRESS_VALUE.SUCCESS,
       message: "2 added"
@@ -3190,4 +3190,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.79aaeee1.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.28780bc4.iframe.bundle.js.map

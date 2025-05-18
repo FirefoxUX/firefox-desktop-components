@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[324,9714],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[324,1256,9714],{
 
 /***/ 10139:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -59,10 +59,17 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     secondaryNavGroupSlot: "#secondary-nav-group slot"
   };
   get pageNavButtons() {
-    return this.primaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+    return this.getVisibleSlottedChildren(this.primaryNavGroupSlot);
   }
   get secondaryNavButtons() {
-    return this.secondaryNavGroupSlot?.assignedNodes().filter(node => node?.localName === "moz-page-nav-button" && !node.hidden);
+    return this.getVisibleSlottedChildren(this.secondaryNavGroupSlot);
+  }
+  getVisibleSlottedChildren(el) {
+    return el?.assignedElements().filter(element => element?.localName === "moz-page-nav-button" && this.checkElementVisibility(element));
+  }
+  checkElementVisibility(element) {
+    let computedStyles = window.getComputedStyle(element);
+    return !element.hidden && computedStyles.getPropertyValue("display") !== "none" && computedStyles.getPropertyValue("visibility") !== "hidden" && computedStyles.getPropertyValue("opacity") > 0;
   }
   onChangeView(e) {
     this.currentView = e.target.view;
@@ -386,7 +393,157 @@ function formatUTMParams(contentAttribute, url) {
 
 module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
 
+/***/ }),
+
+/***/ 89527:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   WithFooterLinks: () => (/* binding */ WithFooterLinks),
+/* harmony export */   WithSearch: () => (/* binding */ WithSearch),
+/* harmony export */   WithSearchScroll: () => (/* binding */ WithSearchScroll),
+/* harmony export */   WithoutIcons: () => (/* binding */ WithoutIcons),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var _moz_page_nav_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19714);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Page Nav",
+  component: "moz-page-nav",
+  parameters: {
+    status: "in-development",
+    actions: {
+      handles: ["change-view"]
+    },
+    fluent: `
+moz-page-nav-button-one = View 1
+  .title = View 1
+moz-page-nav-button-two = View 2
+  .title = View 2
+moz-page-nav-button-three = View 3
+  .title = View 3
+moz-page-nav-button-four = Support Link
+  .title = Support Link
+moz-page-nav-button-five = External Link
+  .title = External Link
+moz-page-nav-heading =
+  .heading = Heading
+moz-page-nav-search-input =
+  .aria-label = Search Storybook
+  .placeholder = Search Storybook
+     `
+  }
+});
+const Template = ({
+  hasFooterLinks,
+  hasIcons,
+  showSearch,
+  scrollable
+}) => {
+  let iconSrc = hasIcons ? "chrome://global/skin/icons/settings.svg" : undefined;
+  let maxHeight = scrollable ? "190px" : "initial";
+  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+    <style>
+      #page {
+        height: 100%;
+        display: flex;
+        max-height: ${maxHeight};
+
+        @media (max-width: 52rem) {
+          grid-template-columns: 82px 1fr;
+        }
+      }
+      moz-page-nav {
+        height: 100%;
+        margin-inline-start: 10px;
+        --page-nav-margin-top: 10px;
+
+        @media (max-width: 52rem) {
+          margin-inline-start: 0;
+        }
+      }
+    </style>
+    <div id="page">
+      <moz-page-nav data-l10n-id="moz-page-nav-heading">
+        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(showSearch, () => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-input-search
+              slot="subheading"
+              data-l10n-id="moz-page-nav-search-input"
+            ></moz-input-search>`)}
+        <moz-page-nav-button
+          view="view-one"
+          data-l10n-id="moz-page-nav-button-one"
+          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+        >
+        </moz-page-nav-button>
+        <moz-page-nav-button
+          view="view-two"
+          data-l10n-id="moz-page-nav-button-two"
+          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+        >
+        </moz-page-nav-button>
+        <moz-page-nav-button
+          view="view-three"
+          data-l10n-id="moz-page-nav-button-three"
+          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+        >
+        </moz-page-nav-button>
+        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(hasFooterLinks, () => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <moz-page-nav-button
+                support-page="test"
+                data-l10n-id="moz-page-nav-button-four"
+                iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+                slot="secondary-nav"
+              >
+              </moz-page-nav-button>
+              <moz-page-nav-button
+                href="https://www.example.com"
+                data-l10n-id="moz-page-nav-button-five"
+                iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+                slot="secondary-nav"
+              >
+              </moz-page-nav-button>`)}
+      </moz-page-nav>
+      <main></main>
+    </div>
+  `;
+};
+const Default = Template.bind({});
+Default.args = {
+  hasFooterLinks: false,
+  hasIcons: true,
+  showSearch: false,
+  scrollable: false
+};
+const WithFooterLinks = Template.bind({});
+WithFooterLinks.args = {
+  ...Default.args,
+  hasFooterLinks: true
+};
+const WithoutIcons = Template.bind({});
+WithoutIcons.args = {
+  ...Default.args,
+  hasIcons: false
+};
+const WithSearch = Template.bind({});
+WithSearch.args = {
+  ...Default.args,
+  showSearch: true
+};
+const WithSearchScroll = Template.bind({});
+WithSearchScroll.args = {
+  ...Default.args,
+  showSearch: true,
+  scrollable: true
+};
+
 /***/ })
 
 }]);
-//# sourceMappingURL=9714.21b7113a.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.dc65f148.iframe.bundle.js.map
