@@ -96,8 +96,29 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       type: Function
     }
   };
+  static queries = {
+    controlEls: {
+      all: "setting-control"
+    }
+  };
   createRenderRoot() {
     return this;
+  }
+  async getUpdateComplete() {
+    let result = await super.getUpdateComplete();
+    await Promise.all([...this.controlEls].map(el => el.updateComplete));
+    return result;
+  }
+
+  /**
+   * Notify child controls when their input has fired an event. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   */
+  onChange(e) {
+    let inputEl = e.target;
+    let control = inputEl.control;
+    control?.onChange(inputEl);
   }
   itemTemplate(item) {
     let setting = this.getSetting(item.id);
@@ -107,59 +128,18 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
       .setting=${setting}
       .config=${item}
+      .getSetting=${this.getSetting}
     ></setting-control>`;
-  }
-  xulCheckboxTemplate(item, setting) {
-    let result;
-    let checkbox = document.createXULElement("checkbox");
-    checkbox.id = item.id;
-    document.l10n.setAttributes(checkbox, item.l10nId);
-    checkbox.addEventListener("command", e => setting.userChange(e.target.checked));
-    function setValue() {
-      checkbox.checked = setting.value;
-      checkbox.disabled = setting.locked;
-    }
-    setting.on("change", setValue);
-    setValue();
-    if (item.supportPage) {
-      let container = document.createXULElement("hbox");
-      container.setAttribute("align", "center");
-      let supportLink = document.createElement("a", {
-        is: "moz-support-link"
-      });
-      supportLink.supportPage = item.supportPage;
-      checkbox.classList.add("tail-with-learn-more");
-      container.append(checkbox, supportLink);
-      result = container;
-    } else {
-      result = checkbox;
-    }
-    if (item.subcategory) {
-      result.dataset.subcategory = item.subcategory;
-    }
-    return result;
-  }
-  xulItemTemplate(item) {
-    let setting = this.getSetting(item.id);
-    if (!setting.visible) {
-      return "";
-    }
-    switch (item.control) {
-      case "checkbox":
-      default:
-        return this.xulCheckboxTemplate(item, setting);
-    }
   }
   render() {
     if (!this.config) {
       return "";
     }
-    if (window.IS_STORYBOOK || Services.prefs.getBoolPref("settings.revamp.design", false)) {
-      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.l10nId)}
-        >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
-      >`;
-    }
-    return this.config.items.map(item => this.xulItemTemplate(item));
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
+      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.l10nId)}
+      @change=${this.onChange}
+      >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
+    >`;
   }
 }
 customElements.define("setting-group", SettingGroup);
@@ -167,4 +147,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.16a2d155.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.a922b0b9.iframe.bundle.js.map

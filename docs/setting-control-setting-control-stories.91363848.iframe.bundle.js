@@ -76,13 +76,25 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     config: {
       type: Object
     },
-    value: {}
+    value: {},
+    parentDisabled: {
+      type: Boolean
+    }
   };
-  static queries = {
-    inputEl: "#input"
-  };
+  constructor() {
+    super();
+    this.inputRef = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.createRef)();
+  }
   createRenderRoot() {
     return this;
+  }
+  get inputEl() {
+    return this.inputRef.value;
+  }
+  async getUpdateComplete() {
+    let result = await super.getUpdateComplete();
+    await this.inputEl.updateComplete;
+    return result;
   }
   onSettingChange = () => {
     this.value = this.setting.value;
@@ -100,27 +112,41 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   getValue() {
     return this.setting.value;
   }
-  onChange(e) {
-    this.setting.userChange(e.target.checked);
+
+  // Called by our parent when our input changed.
+  onChange(el) {
+    this.setting.userChange(el.checked);
     this.value = this.getValue();
   }
   render() {
     let {
       config
     } = this;
+    let itemArgs = config.items?.map(i => ({
+      config: i,
+      setting: this.getSetting(i.id)
+    })).filter(i => i.setting.visible) || [];
     switch (config.control) {
       case "checkbox":
       default:
         return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-checkbox
-          id="input"
+          id=${config.id}
           data-l10n-id=${config.l10nId}
           .iconSrc=${config.iconSrc}
           .checked=${this.value}
           .supportPage=${this.config.supportPage}
+          .parentDisabled=${this.parentDisabled}
+          .control=${this}
           data-subcategory=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.subcategory)}
           ?disabled=${this.setting.locked}
-          @change=${this.onChange}
-        ></moz-checkbox>`;
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ref)(this.inputRef)}
+          >${itemArgs.map(opts => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
+                .config=${opts.config}
+                .setting=${opts.setting}
+                .getSetting=${this.getSetting}
+                slot="nested"
+              ></setting-control>`)}</moz-checkbox
+        >`;
     }
   }
 }
@@ -129,4 +155,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.ec9916f3.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.91363848.iframe.bundle.js.map

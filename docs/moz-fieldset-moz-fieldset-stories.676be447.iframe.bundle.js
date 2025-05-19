@@ -41,6 +41,11 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       type: String,
       attribute: "support-page"
     },
+    ariaLabel: {
+      type: String,
+      fluent: true,
+      mapped: true
+    },
     ariaOrientation: {
       type: String,
       mapped: true
@@ -65,6 +70,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="support-link"></slot>`;
   }
+  legendTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.label}</legend>`;
+  }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
@@ -72,10 +80,11 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         href="${toolkit_content_widgets_moz_fieldset_moz_fieldset_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <fieldset
+        aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         aria-describedby=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.description ? "description" : undefined)}
         aria-orientation=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaOrientation)}
       >
-        <legend part="label">${this.label}</legend>
+        ${this.label ? this.legendTemplate() : ""}
         ${!this.description ? this.supportPageTemplate() : ""}
         ${this.descriptionTemplate()}
         <div id="inputs" part="inputs">
@@ -586,4 +595,4 @@ WithDescriptionAndSlottedSupportLink.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.b7869acc.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.676be447.iframe.bundle.js.map
