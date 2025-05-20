@@ -66,7 +66,7 @@ class Timeline extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
           style=${styles}
           class="action"
           data-l10n-id=${entry.actionId}
-        </div>
+        ></div>
       `;
     });
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -168,4 +168,4 @@ AllSameDayTimeline.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=login-timeline-stories.058fc2e4.iframe.bundle.js.map
+//# sourceMappingURL=login-timeline-stories.919ae563.iframe.bundle.js.map

@@ -534,7 +534,7 @@ var require_bash=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_0__.__commonJS)
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav-button.41e32b4d0ddd8dd1767f.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.97bbe52a28eabfa3e32c.css";
 
 /***/ }),
 
@@ -10662,7 +10662,7 @@ module.exports = cloneDeep;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-page-nav.89f61064dc5e3ea0399a.css";
+module.exports = __webpack_require__.p + "moz-page-nav.95297d0f531209793fe9.css";
 
 /***/ }),
 
@@ -11718,4 +11718,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.a6dadd3f.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.0a34fa8b.iframe.bundle.js.map

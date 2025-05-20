@@ -85,7 +85,7 @@ class ShoppingCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         <span id="heading">${this.label}</span>
         <moz-five-star
           rating=${this.rating === 0 ? 0.5 : this.rating}
-        </moz-five-star>
+        ></moz-five-star>
       </div>`;
     }
     return "";
@@ -399,4 +399,4 @@ module.exports = __webpack_require__.p + "shopping-card.4003583ba8460f067d15.css
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-card-stories.e5858d7f.iframe.bundle.js.map
+//# sourceMappingURL=shopping-card-stories.f729b0ca.iframe.bundle.js.map

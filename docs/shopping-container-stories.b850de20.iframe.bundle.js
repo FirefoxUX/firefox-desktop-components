@@ -90,15 +90,19 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     // Whether we show recommendations at all (including offering a user
     // control for them) is controlled via a nimbus-enabled pref.
     let canShowRecommendationToggle = this.adsEnabled;
-    let adsToggleMarkup = canShowRecommendationToggle ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-        <div class="shopping-settings-toggle-option-wrapper">
+    let adsToggleMarkup = canShowRecommendationToggle ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)` <div class="shopping-settings-toggle-option-wrapper">
           <moz-toggle
             id="shopping-settings-recommendations-toggle"
             ?pressed=${this.adsEnabledByUser}
             data-l10n-id="shopping-settings-recommendations-toggle2"
             data-l10n-attrs="label"
-            @toggle=${this.onToggleRecommendations}>
-            <span id="shopping-ads-learn-more" data-l10n-id="shopping-settings-recommendations-learn-more3" slot="description">
+            @toggle=${this.onToggleRecommendations}
+          >
+            <span
+              id="shopping-ads-learn-more"
+              data-l10n-id="shopping-settings-recommendations-learn-more3"
+              slot="description"
+            >
               <a
                 id="shopping-ads-learn-more-link"
                 target="_blank"
@@ -106,7 +110,7 @@ class ShoppingSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
                 data-l10n-name="review-quality-url"
               ></a>
             </span>
-          </moz-toggle/>
+          </moz-toggle>
         </div>` : null;
 
     /* Auto-open experiment changes how the settings card appears by:
@@ -281,7 +285,7 @@ class ShoppingCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         <span id="heading">${this.label}</span>
         <moz-five-star
           rating=${this.rating === 0 ? 0.5 : this.rating}
-        </moz-five-star>
+        ></moz-five-star>
       </div>`;
     }
     return "";
@@ -2395,7 +2399,7 @@ customElements.define("review-highlights", ReviewHighlights);
 /***/ 56652:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "common.d2c1b3186a09c5fd1fdd.css";
+module.exports = __webpack_require__.p + "common.7048def0475a42d207f6.css";
 
 /***/ }),
 
@@ -3535,4 +3539,4 @@ module.exports = __webpack_require__.p + "recommended-ad.b836e7bb3f11395945c1.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=shopping-container-stories.65e054e5.iframe.bundle.js.map
+//# sourceMappingURL=shopping-container-stories.b850de20.iframe.bundle.js.map

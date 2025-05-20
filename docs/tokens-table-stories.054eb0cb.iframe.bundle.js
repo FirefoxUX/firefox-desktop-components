@@ -642,7 +642,6 @@ const storybookTables = {
     value: {
       default: "transparent",
       brand: {
-        prefersContrast: "var(--button-background-color)",
         forcedColors: "var(--button-background-color)"
       }
     },
@@ -1897,7 +1896,6 @@ const variableLookupTable = {
   "button-background-color-ghost": {
     default: "transparent",
     brand: {
-      prefersContrast: "var(--button-background-color)",
       forcedColors: "var(--button-background-color)"
     }
   },
@@ -2444,4 +2442,4 @@ module.exports = __webpack_require__.p + "tokens-table.ecf7acd1aac2a8d1b898.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.37ee95cc.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.054eb0cb.iframe.bundle.js.map
