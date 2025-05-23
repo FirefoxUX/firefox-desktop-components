@@ -10568,16 +10568,11 @@ function _createMdxContent(props) {
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "about:addons"
-      }), ",\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+      }), " and\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
         href: "https://searchfox.org/mozilla-central/source/browser/base/content/browser-addons.js",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "unified extensions panel"
-      }), " and\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/browser/components/shopping/content/shopping-message-bar.mjs",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "shopping components"
       }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
       id: "how-to-use-moz-message-bar",
@@ -11886,4 +11881,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-README-stories-md.2e683f9f.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-README-stories-md.a413fdba.iframe.bundle.js.map

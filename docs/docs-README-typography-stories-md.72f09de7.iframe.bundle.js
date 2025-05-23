@@ -9370,7 +9370,7 @@ function _createMdxContent(props) {
       }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
         children: ["It comes with helper classes for contexts where designers may visually prefer an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
           children: "h1"
-        }), " to start at the \"medium\" heading size instead of \"large\" (e.g. Shopping sidebar). It also contains text related helpers for truncating and deemphasizing text."]
+        }), " to start at the \"medium\" heading size instead of \"large\". It also contains text related helpers for truncating and deemphasizing text."]
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
       children: "You should rely on typography helper classes and the defaults set by the design system."
@@ -11743,4 +11743,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-typography-stories-md.4c6ed60d.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-typography-stories-md.72f09de7.iframe.bundle.js.map
