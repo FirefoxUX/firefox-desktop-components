@@ -52,7 +52,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     this.optionsMutationObserver.observe(this, {
-      attributeFilter: ["label", "value"],
+      attributeFilter: ["label", "value", "iconsrc"],
       childList: true,
       subtree: true
     });
@@ -64,6 +64,13 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       this.value = this.inputEl.value;
     }
   }
+  get _selectedOptionIconSrc() {
+    if (!this.inputEl) {
+      return "";
+    }
+    const selectedOption = this.options[this.inputEl.selectedIndex];
+    return selectedOption?.iconSrc ?? "";
+  }
 
   /**
    * Internal - populates the select element with options from the light DOM slot.
@@ -74,9 +81,11 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       if (node.localName === "moz-option") {
         const optionValue = node.getAttribute("value");
         const optionLabel = node.getAttribute("label");
+        const optionIconSrc = node.getAttribute("iconsrc");
         this.options.push({
           value: optionValue,
-          label: optionLabel
+          label: optionLabel,
+          iconSrc: optionIconSrc
         });
       }
     }
@@ -101,9 +110,24 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       href="${toolkit_content_widgets_moz_select_moz_select_css__WEBPACK_IMPORTED_MODULE_0__}"
     />`;
   }
+  selectedOptionIconTemplate() {
+    if (this._selectedOptionIconSrc) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img
+        src=${this._selectedOptionIconSrc}
+        role="presentation"
+        class="select-option-icon"
+      />`;
+    }
+    return null;
+  }
   inputTemplate() {
+    const classes = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "select-wrapper": true,
+      "with-icon": !!this._selectedOptionIconSrc
+    });
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div class="select-wrapper">
+      <div class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}>
+        ${this.selectedOptionIconTemplate()}
         <select
           id="input"
           name=${this.name}
@@ -116,12 +140,17 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
           ${this.options.map(option => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
               <option
                 value=${option.value}
-                ?selected=${option.value === this.value}
+                ?selected=${option.value == this.value}
               >
                 ${option.label}
               </option>
             `)}
         </select>
+        <img
+          src="chrome://global/skin/icons/arrow-down.svg"
+          role="presentation"
+          class="select-chevron-icon"
+        />
       </div>
       <slot
         @slotchange=${this.populateOptions}
@@ -139,6 +168,7 @@ customElements.define("moz-select", MozSelect);
  * @tagname moz-option
  * @property {string} value - The value of the option
  * @property {string} label - The label of the option
+ * @property {string} iconSrc - The path to the icon of the the option
  */
 class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -150,6 +180,11 @@ class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     // Reflect the attribute so that moz-select can detect changes with a MutationObserver
     label: {
       type: String,
+      reflect: true,
+      fluent: true
+    },
+    iconSrc: {
+      type: String,
       reflect: true
     }
   };
@@ -157,6 +192,7 @@ class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     super();
     this.value = "";
     this.label = "";
+    this.iconSrc = "";
   }
   render() {
     // This is just a placeholder to pass values into moz-select.
@@ -170,9 +206,9 @@ customElements.define("moz-option", MozOption);
 /***/ 44494:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-select.d3606f9bb016cab250d2.css";
+module.exports = __webpack_require__.p + "moz-select.2e0f4bf67c736780a9b6.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=1948.9c4a4e96.iframe.bundle.js.map
+//# sourceMappingURL=1948.8e3ce1a9.iframe.bundle.js.map

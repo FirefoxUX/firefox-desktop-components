@@ -850,6 +850,9 @@ const storybookTables = {
     value: "8px",
     name: "--border-radius-medium"
   }, {
+    value: "12px",
+    name: "--border-radius-large"
+  }, {
     value: "var(--border-radius-small)",
     name: "--button-border-radius"
   }],
@@ -1850,6 +1853,7 @@ const variableLookupTable = {
   "border-radius-circle": "9999px",
   "border-radius-small": "4px",
   "border-radius-medium": "8px",
+  "border-radius-large": "12px",
   "border-width": "1px",
   "button-background-color": {
     forcedColors: "ButtonFace",
@@ -2460,4 +2464,4 @@ module.exports = __webpack_require__.p + "tokens-table.fe454720fd8304d2587e.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.c06930a6.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.c6ae7bd6.iframe.bundle.js.map

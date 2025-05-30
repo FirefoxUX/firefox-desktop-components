@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
+/* harmony export */   WithSelectedOptionIcon: () => (/* binding */ WithSelectedOptionIcon),
 /* harmony export */   WithSlottedDescription: () => (/* binding */ WithSlottedDescription),
 /* harmony export */   WithSlottedSupportLink: () => (/* binding */ WithSlottedSupportLink),
 /* harmony export */   WithSupportLink: () => (/* binding */ WithSupportLink),
@@ -55,31 +56,71 @@ moz-select-label =
 moz-select-description =
   .label = Select an option
   .description = This is a description for the select dropdown
+moz-option-1 =
+    .label = Option 1
+moz-option-2 =
+    .label = Option 2
+moz-option-3 =
+    .label = Option 3
+moz-option-a =
+    .label = Option A
+moz-option-b =
+    .label = Option B
+moz-option-c =
+    .label = Option C
+moz-option-d =
+    .label = Option D
     `
   }
 });
 const DEFAULT_OPTIONS = [{
   value: "1",
-  label: "Option 1"
+  l10nId: "moz-option-1"
 }, {
   value: "2",
-  label: "Option 2"
+  l10nId: "moz-option-2"
 }, {
   value: "3",
-  label: "Option 3"
+  l10nId: "moz-option-3"
 }];
 const OTHER_OPTIONS = [{
   value: "A",
-  label: "Option A"
+  l10nId: "moz-option-a"
 }, {
   value: "B",
-  label: "Option B"
+  l10nId: "moz-option-b"
 }, {
   value: "C",
-  label: "Option C"
+  l10nId: "moz-option-c"
 }, {
   value: "D",
-  label: "Option D"
+  l10nId: "moz-option-d"
+}];
+const WITH_ICON_DEFAULT_OPTIONS = [{
+  value: "1",
+  l10nId: "moz-option-1",
+  iconSrc: "chrome://global/skin/icons/settings.svg"
+}, {
+  value: "2",
+  l10nId: "moz-option-2",
+  iconSrc: "chrome://global/skin/icons/info.svg"
+}, {
+  value: "3",
+  l10nId: "moz-option-3",
+  iconSrc: "chrome://global/skin/icons/warning.svg"
+}];
+const WITH_ICON_OTHER_OPTIONS = [{
+  value: "A",
+  l10nId: "moz-option-a",
+  iconSrc: "chrome://global/skin/icons/heart.svg"
+}, {
+  value: "B",
+  l10nId: "moz-option-b",
+  iconSrc: "chrome://global/skin/icons/edit.svg"
+}, {
+  value: "C",
+  l10nId: "moz-option-c",
+  iconSrc: "chrome://global/skin/icons/delete.svg"
 }];
 const Template = ({
   name,
@@ -107,7 +148,11 @@ const Template = ({
     >
       ${hasSlottedDescription ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div slot="description">${description}</div>` : ""}
       ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
-      ${options.map(opt => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-option value=${opt.value} label=${opt.label}></moz-option>`)}
+      ${options.map(opt => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-option
+            value=${opt.value}
+            data-l10n-id=${opt.l10nId}
+            iconsrc=${opt.iconSrc}
+          ></moz-option>`)}
     </moz-select>
   </div>
 `;
@@ -140,6 +185,17 @@ WithSlottedDescription.args = {
   ...Default.args,
   description: "This is a custom slotted description.",
   hasSlottedDescription: true
+};
+const WithSelectedOptionIcon = args => {
+  const options = args.useOtherOptions ? WITH_ICON_OTHER_OPTIONS : WITH_ICON_DEFAULT_OPTIONS;
+  return Template({
+    ...args,
+    options
+  });
+};
+WithSelectedOptionIcon.args = {
+  ...Default.args,
+  useOtherOptions: false
 };
 const Disabled = Template.bind({});
 Disabled.args = {
@@ -222,7 +278,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
   firstUpdated(changedProperties) {
     super.firstUpdated(changedProperties);
     this.optionsMutationObserver.observe(this, {
-      attributeFilter: ["label", "value"],
+      attributeFilter: ["label", "value", "iconsrc"],
       childList: true,
       subtree: true
     });
@@ -234,6 +290,13 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       this.value = this.inputEl.value;
     }
   }
+  get _selectedOptionIconSrc() {
+    if (!this.inputEl) {
+      return "";
+    }
+    const selectedOption = this.options[this.inputEl.selectedIndex];
+    return selectedOption?.iconSrc ?? "";
+  }
 
   /**
    * Internal - populates the select element with options from the light DOM slot.
@@ -244,9 +307,11 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       if (node.localName === "moz-option") {
         const optionValue = node.getAttribute("value");
         const optionLabel = node.getAttribute("label");
+        const optionIconSrc = node.getAttribute("iconsrc");
         this.options.push({
           value: optionValue,
-          label: optionLabel
+          label: optionLabel,
+          iconSrc: optionIconSrc
         });
       }
     }
@@ -271,9 +336,24 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
       href="${toolkit_content_widgets_moz_select_moz_select_css__WEBPACK_IMPORTED_MODULE_0__}"
     />`;
   }
+  selectedOptionIconTemplate() {
+    if (this._selectedOptionIconSrc) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img
+        src=${this._selectedOptionIconSrc}
+        role="presentation"
+        class="select-option-icon"
+      />`;
+    }
+    return null;
+  }
   inputTemplate() {
+    const classes = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "select-wrapper": true,
+      "with-icon": !!this._selectedOptionIconSrc
+    });
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div class="select-wrapper">
+      <div class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}>
+        ${this.selectedOptionIconTemplate()}
         <select
           id="input"
           name=${this.name}
@@ -286,12 +366,17 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
           ${this.options.map(option => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
               <option
                 value=${option.value}
-                ?selected=${option.value === this.value}
+                ?selected=${option.value == this.value}
               >
                 ${option.label}
               </option>
             `)}
         </select>
+        <img
+          src="chrome://global/skin/icons/arrow-down.svg"
+          role="presentation"
+          class="select-chevron-icon"
+        />
       </div>
       <slot
         @slotchange=${this.populateOptions}
@@ -309,6 +394,7 @@ customElements.define("moz-select", MozSelect);
  * @tagname moz-option
  * @property {string} value - The value of the option
  * @property {string} label - The label of the option
+ * @property {string} iconSrc - The path to the icon of the the option
  */
 class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -320,6 +406,11 @@ class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     // Reflect the attribute so that moz-select can detect changes with a MutationObserver
     label: {
       type: String,
+      reflect: true,
+      fluent: true
+    },
+    iconSrc: {
+      type: String,
       reflect: true
     }
   };
@@ -327,6 +418,7 @@ class MozOption extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     super();
     this.value = "";
     this.label = "";
+    this.iconSrc = "";
   }
   render() {
     // This is just a placeholder to pass values into moz-select.
@@ -340,9 +432,9 @@ customElements.define("moz-option", MozOption);
 /***/ 44494:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-select.d3606f9bb016cab250d2.css";
+module.exports = __webpack_require__.p + "moz-select.2e0f4bf67c736780a9b6.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.6bf06e27.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.bb184047.iframe.bundle.js.map
