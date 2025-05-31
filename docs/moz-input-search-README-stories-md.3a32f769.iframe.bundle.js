@@ -5734,8 +5734,29 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
       mapped: true
     }
   };
+
+  // The amount of milliseconds that we wait before firing the "search" event.
+  static #searchDebounceDelayMs = 500;
+  #searchTimer = null;
+  #clearSearchTimer() {
+    if (this.#searchTimer) {
+      clearTimeout(this.#searchTimer);
+    }
+    this.#searchTimer = null;
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#clearSearchTimer();
+  }
   inputStylesTemplate() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`${super.inputStylesTemplate()}`;
+  }
+  handleInput(e) {
+    super.handleInput(e);
+    this.#clearSearchTimer();
+    this.#searchTimer = setTimeout(() => {
+      this.dispatchEvent(new CustomEvent("MozInputSearch:search"));
+    }, MozInputSearch.#searchDebounceDelayMs);
   }
   inputTemplate() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
@@ -11643,4 +11664,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-search-README-stories-md.61c2215e.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-search-README-stories-md.3a32f769.iframe.bundle.js.map
