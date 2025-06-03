@@ -343,7 +343,7 @@ exports.unstable_shouldYield=M;exports.unstable_wrapCallback=function(a){var b=y
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.css";
+module.exports = __webpack_require__.p + "moz-input-text.588373e099f6e14cee2d.css";
 
 /***/ }),
 
@@ -5744,6 +5744,15 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
     }
     this.#searchTimer = null;
   }
+  #dispatchSearch() {
+    this.dispatchEvent(new CustomEvent("MozInputSearch:search", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        query: this.value
+      }
+    }));
+  }
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#clearSearchTimer();
@@ -5755,8 +5764,17 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
     super.handleInput(e);
     this.#clearSearchTimer();
     this.#searchTimer = setTimeout(() => {
-      this.dispatchEvent(new CustomEvent("MozInputSearch:search"));
+      this.#dispatchSearch();
     }, MozInputSearch.#searchDebounceDelayMs);
+  }
+
+  // Clears the value and synchronously dispatches a search event if needed.
+  clear() {
+    this.#clearSearchTimer();
+    if (this.value) {
+      this.value = "";
+      this.#dispatchSearch();
+    }
   }
   inputTemplate() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
@@ -11664,4 +11682,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-search-README-stories-md.3a32f769.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-search-README-stories-md.a3a35bd7.iframe.bundle.js.map

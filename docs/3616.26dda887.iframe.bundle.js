@@ -1,10 +1,49 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1020],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1020,3616],{
 
 /***/ 9538:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.css";
+module.exports = __webpack_require__.p + "moz-input-text.588373e099f6e14cee2d.css";
+
+/***/ }),
+
+/***/ 73616:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozInputPassword)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_elements_moz_input_text_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(91020);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/**
+ * A password input custom element.
+ *
+ * @tagname moz-input-password
+ * @property {string} label - The text of the label element
+ * @property {string} name - The name of the input control
+ * @property {string} value - The value of the input control
+ * @property {boolean} disabled - The disabled state of the input control
+ * @property {boolean} readonly - The readonly state of the input control
+ * @property {string} iconSrc - The src for an optional icon
+ * @property {string} description - The text for the description element that helps describe the input control
+ * @property {string} supportPage - Name of the SUMO support page to link to.
+ * @property {string} placeholder - Text to display when the input has no value.
+ */
+class MozInputPassword extends chrome_global_content_elements_moz_input_text_mjs__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  inputTemplate() {
+    return super.inputTemplate({
+      type: "password"
+    });
+  }
+}
+customElements.define("moz-input-password", MozInputPassword);
 
 /***/ }),
 
@@ -97,4 +136,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=1020.51e4e88f.iframe.bundle.js.map
+//# sourceMappingURL=3616.26dda887.iframe.bundle.js.map

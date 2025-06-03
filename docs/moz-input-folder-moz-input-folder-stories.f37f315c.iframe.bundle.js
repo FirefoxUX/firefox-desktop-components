@@ -322,7 +322,7 @@ customElements.define("moz-input-folder", MozInputFolder);
 /***/ 9538:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-text.56f85620c987d329223a.css";
+module.exports = __webpack_require__.p + "moz-input-text.588373e099f6e14cee2d.css";
 
 /***/ }),
 
@@ -422,4 +422,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-moz-input-folder-stories.8f918db3.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-moz-input-folder-stories.f37f315c.iframe.bundle.js.map
