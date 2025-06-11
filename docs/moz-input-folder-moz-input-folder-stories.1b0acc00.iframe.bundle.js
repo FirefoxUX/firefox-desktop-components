@@ -8,6 +8,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   Disabled: () => (/* binding */ Disabled),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithPlaceholder: () => (/* binding */ WithPlaceholder),
 /* harmony export */   WithSlottedDescription: () => (/* binding */ WithSlottedDescription),
@@ -30,7 +31,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-input-folder",
   argTypes: {
     l10nId: {
-      options: ["moz-input-folder-label", "moz-input-folder-placeholder", "moz-input-folder-description"],
+      options: ["moz-input-folder-label", "moz-input-folder-placeholder", "moz-input-folder-description", "moz-input-folder-long-label"],
       control: {
         type: "select"
       }
@@ -49,6 +50,8 @@ moz-input-folder-description =
   .label = Save files to
   .description = Description text
   .placeholder = Select folder
+moz-input-folder-long-label =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
     `
   }
 });
@@ -61,7 +64,8 @@ const Template = ({
   description,
   supportPage,
   hasSlottedDescription,
-  hasSlottedSupportLink
+  hasSlottedSupportLink,
+  ellipsized
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <div style="width: 400px;">
     <moz-input-folder
@@ -80,6 +84,9 @@ const Template = ({
   },
   capture: true
 }}
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+  "text-truncated-ellipsis": ellipsized
+})}
     >
       ${hasSlottedDescription ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div slot="description">${description}</div>` : ""}
       ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
@@ -140,6 +147,12 @@ WithSlottedSupportLink.args = {
   ...Default.args,
   hasSlottedSupportLink: true,
   l10nId: "moz-input-folder-description"
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-input-folder-long-label"
 };
 
 /***/ }),
@@ -423,4 +436,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-moz-input-folder-stories.0f0bf3de.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-moz-input-folder-stories.1b0acc00.iframe.bundle.js.map

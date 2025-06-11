@@ -446,6 +446,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   DisabledRadioGroup: () => (/* binding */ DisabledRadioGroup),
 /* harmony export */   WithAccesskeys: () => (/* binding */ WithAccesskeys),
 /* harmony export */   WithDescriptions: () => (/* binding */ WithDescriptions),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithNestedFields: () => (/* binding */ WithNestedFields),
 /* harmony export */   WithRadioGroupDescription: () => (/* binding */ WithRadioGroupDescription),
@@ -554,7 +555,8 @@ const Template = ({
   groupSupportPage,
   hasSlottedSupportLinks,
   groupSlottedSupportLink,
-  nestedFields
+  nestedFields,
+  ellipsized
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-radio-group
     name=${groupName}
@@ -572,6 +574,9 @@ const Template = ({
           iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showIcons ? icons[i] : "")}
           accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(showAccesskeys ? accesskeys[i] : "")}
           support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
+          class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+  "text-truncated-ellipsis": ellipsized
+})}
         >
           ${hasSlottedSupportLinks ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">
                 Click me!
@@ -663,6 +668,12 @@ const WithNestedFields = Template.bind({});
 WithNestedFields.args = {
   ...Default.args,
   nestedFields: true
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-checkbox-long-label"
 };
 
 /***/ }),
@@ -758,4 +769,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.70d2bd0c.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.a444f47f.iframe.bundle.js.map

@@ -36,8 +36,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} description - The text for the description element that helps describe the input control
  * @property {string} supportPage - Name of the SUMO support page to link to.
  * @property {string} placeholder - Text to display when the input has no value.
- * @property {string} ariaLabel
- *  The aria-label text for cases where there is no visible label.
+ * @property {string} ariaLabel - The aria-label text for cases where there is no visible label.
  */
 class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__WEBPACK_IMPORTED_MODULE_1__["default"] {
   // The amount of milliseconds that we wait before firing the "search" event.
@@ -81,11 +80,15 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
       this.#dispatchSearch();
     }
   }
+  #hasIcon() {
+    // If unspecified, search inputs still have a default search icon.
+    return this.iconSrc === undefined || !!this.iconSrc;
+  }
   inputTemplate() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
       <input
         id="input"
-        class="with-icon"
+        class=${this.#hasIcon() ? "with-icon" : ""}
         type="search"
         name=${this.name}
         value=${this.value}
@@ -194,4 +197,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=2310.f4dd9504.iframe.bundle.js.map
+//# sourceMappingURL=2310.b34000ec.iframe.bundle.js.map

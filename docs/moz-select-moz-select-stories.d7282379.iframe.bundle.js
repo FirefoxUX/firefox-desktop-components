@@ -11,6 +11,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   PreselectedValue: () => (/* binding */ PreselectedValue),
 /* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithSelectedOptionIcon: () => (/* binding */ WithSelectedOptionIcon),
 /* harmony export */   WithSlottedDescription: () => (/* binding */ WithSlottedDescription),
@@ -31,7 +32,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-select",
   argTypes: {
     l10nId: {
-      options: ["moz-select-label", "moz-select-description"],
+      options: ["moz-select-label", "moz-select-description", "moz-select-long-label"],
       control: {
         type: "select"
       }
@@ -53,6 +54,8 @@ __webpack_require__.r(__webpack_exports__);
     fluent: `
 moz-select-label =
   .label = Select an option
+moz-select-long-label =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
 moz-select-description =
   .label = Select an option
   .description = This is a description for the select dropdown
@@ -134,7 +137,8 @@ const Template = ({
   hasSlottedDescription,
   useOtherOptions,
   options = useOtherOptions ? OTHER_OPTIONS : DEFAULT_OPTIONS,
-  hasSlottedSupportLink
+  hasSlottedSupportLink,
+  ellipsized
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <div style="width:300px">
     <moz-select
@@ -145,6 +149,9 @@ const Template = ({
       data-l10n-id=${l10nId}
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage || null)}
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accessKey || null)}
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+  "text-truncated-ellipsis": ellipsized
+})}
     >
       ${hasSlottedDescription ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div slot="description">${description}</div>` : ""}
       ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
@@ -168,7 +175,8 @@ Default.args = {
   accessKey: "",
   hasSlottedDescription: false,
   useOtherOptions: false,
-  hasSlottedSupportLink: false
+  hasSlottedSupportLink: false,
+  ellipsized: false
 };
 const WithIcon = Template.bind({});
 WithIcon.args = {
@@ -223,6 +231,12 @@ const PreselectedValue = Template.bind({});
 PreselectedValue.args = {
   ...Default.args,
   value: "2"
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-select-long-label"
 };
 
 /***/ }),
@@ -438,4 +452,4 @@ module.exports = __webpack_require__.p + "moz-select.2e0f4bf67c736780a9b6.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.0fc30ebe.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.d7282379.iframe.bundle.js.map

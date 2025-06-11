@@ -101,6 +101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   ToggleOnly: () => (/* binding */ ToggleOnly),
 /* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithNestedFields: () => (/* binding */ WithNestedFields),
 /* harmony export */   WithSlottedSupportLink: () => (/* binding */ WithSlottedSupportLink),
@@ -122,7 +123,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-toggle",
   argTypes: {
     l10nId: {
-      options: ["moz-toggle-label", "moz-toggle-aria-label", "moz-toggle-description"],
+      options: ["moz-toggle-label", "moz-toggle-aria-label", "moz-toggle-description", "moz-toggle-long-label"],
       control: {
         type: "select"
       }
@@ -141,6 +142,8 @@ moz-toggle-label =
 moz-toggle-description =
   .label = This is the label
   .description = This is the description.
+moz-toggle-long-label =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
     `
   }
 });
@@ -155,7 +158,8 @@ const Template = ({
   accessKey,
   iconSrc,
   hasSlottedSupportLink,
-  nestedFields
+  nestedFields,
+  ellipsized
 }) => {
   let toggleTemplate = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <moz-toggle
@@ -168,6 +172,9 @@ const Template = ({
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accessKey)}
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
       iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+    "text-truncated-ellipsis": ellipsized
+  })}
     >
       ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
       ${nestedFields ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-checkbox slot="nested" data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}>
@@ -233,6 +240,12 @@ const WithNestedFields = Template.bind({});
 WithNestedFields.args = {
   ...Default.args,
   nestedFields: true
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-toggle-long-label"
 };
 
 /***/ }),
@@ -653,4 +666,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.e660de6a.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.0932163d.iframe.bundle.js.map

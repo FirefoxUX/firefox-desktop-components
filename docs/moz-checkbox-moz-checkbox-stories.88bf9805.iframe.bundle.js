@@ -419,6 +419,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Disabled: () => (/* binding */ Disabled),
 /* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithNestedFields: () => (/* binding */ WithNestedFields),
 /* harmony export */   WithSlottedDescription: () => (/* binding */ WithSlottedDescription),
@@ -439,7 +440,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-checkbox",
   argTypes: {
     l10nId: {
-      options: ["moz-checkbox-label", "moz-checkbox-label-description", "moz-checkbox-long-label"],
+      options: ["moz-checkbox-label", "moz-checkbox-label-description", "moz-checkbox-long-label", "moz-checkbox-long-description"],
       control: {
         type: "select"
       }
@@ -456,6 +457,9 @@ moz-checkbox-label-description =
   .description = This is a description
 moz-checkbox-long-label =
   .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
+moz-checkbox-long-description =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
+  .description = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
     `
   }
 });
@@ -470,7 +474,8 @@ const Template = ({
   accesskey,
   supportPage,
   hasSlottedSupportLink,
-  nestedFields
+  nestedFields,
+  ellipsized
 }) => {
   let checkboxTemplate = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <moz-checkbox
@@ -482,6 +487,9 @@ const Template = ({
       ?disabled=${disabled}
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+    "text-truncated-ellipsis": ellipsized
+  })}
     >
       ${hasSlottedDescription ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div slot="description">test slot text</div>` : ""}
       ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
@@ -493,9 +501,9 @@ const Template = ({
             </moz-checkbox> ` : ""}
     </moz-checkbox>
   `;
-  return nestedFields ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset label="Checkbox with nested fields"
-        >${checkboxTemplate}</moz-fieldset
-      >` : checkboxTemplate;
+  return nestedFields ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset label="Checkbox with nested fields">
+        ${checkboxTemplate}
+      </moz-fieldset>` : checkboxTemplate;
 };
 const Default = Template.bind({});
 Default.args = {
@@ -510,7 +518,8 @@ Default.args = {
   accesskey: "",
   supportPage: "",
   hasSlottedSupportLink: false,
-  nestedFields: false
+  nestedFields: false,
+  ellipsized: false
 };
 const WithIcon = Template.bind({});
 WithIcon.args = {
@@ -556,6 +565,12 @@ const WithNestedFields = Template.bind({});
 WithNestedFields.args = {
   ...Default.args,
   nestedFields: true
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-checkbox-long-label"
 };
 
 /***/ }),
@@ -641,4 +656,4 @@ customElements.define("moz-checkbox", MozCheckbox);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.2abdc1a8.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.88bf9805.iframe.bundle.js.map
