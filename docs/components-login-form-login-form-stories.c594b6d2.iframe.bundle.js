@@ -117,6 +117,15 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       field.removeAttribute("aria-describedby");
     }
   }
+  onCancel(e) {
+    e.preventDefault();
+    const loginForm = {
+      origin: this.originValue || this.originField.input.value,
+      username: this.usernameField.input.value.trim(),
+      password: this.passwordField.value
+    };
+    this.onClose(loginForm);
+  }
   onSubmit(e) {
     e.preventDefault();
     if (!this.#isFormValid()) {
@@ -250,7 +259,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
             <moz-button-group>
               <moz-button
                 data-l10n-id="login-item-cancel-button"
-                @click=${this.onClose}
+                @click=${this.onCancel}
               ></moz-button>
               <moz-button
                 data-l10n-id="login-item-save-new-button"
@@ -644,7 +653,7 @@ customElements.define("login-username-field", LoginUsernameField);
 /***/ 50342:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "input-field.bcaff3aef712aca9f6fa.css";
+module.exports = __webpack_require__.p + "input-field.23a947a184395a60f05c.css";
 
 /***/ }),
 
@@ -781,4 +790,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.14ae5542.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.c594b6d2.iframe.bundle.js.map
