@@ -62,9 +62,6 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     passwordVisible: {
       type: Boolean
     },
-    onPasswordRevealClick: {
-      type: Function
-    },
     _showDeleteCard: {
       type: Boolean,
       state: true
@@ -84,9 +81,6 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     this.usernameValue = "";
     this.passwordValue = "";
     this._showDeleteCard = false;
-    this.onPasswordRevealClick = () => {
-      this.passwordVisible = !this.passwordVisible;
-    };
   }
   #removeWarning(warning) {
     if (warning.classList.contains("invalid-input")) {
@@ -243,10 +237,8 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
               <login-password-field
                 name="password"
                 required
-                ?visible=${this.passwordVisible}
                 ?newPassword=${this.type !== "edit"}
                 .value=${this.passwordValue}
-                .onRevealClick=${this.onPasswordRevealClick}
                 @input=${e => this.onInput(e)}
               ></login-password-field>
               <password-warning
@@ -504,16 +496,13 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     newPassword: {
       type: Boolean
     },
-    visible: {
+    concealed: {
       type: Boolean,
       reflect: true
     },
     required: {
       type: Boolean,
       reflect: true
-    },
-    onRevealClick: {
-      type: Function
     }
   };
   static queries = {
@@ -524,6 +513,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   constructor() {
     super();
     this.value = "";
+    this.concealed = true;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -532,16 +522,13 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     });
   }
   get #type() {
-    return this.visible ? "text" : "password";
+    return this.concealed ? "password" : "text";
   }
   get #password() {
-    return !this.newPassword && !this.visible ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
-  }
-  #revealIconSrc(concealed) {
-    return concealed ? "chrome://global/skin/icons/eye-slash.svg" : "chrome://global/skin/icons/eye.svg";
+    return !this.newPassword && this.concealed ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   updated(changedProperties) {
-    if (changedProperties.has("visible") && !changedProperties.visible) {
+    if (changedProperties.has("concealed") && !changedProperties.concealed) {
       this.input.selectionStart = this.value.length;
     }
   }
@@ -559,35 +546,16 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       labelL10nId: "login-item-password-label",
       noteL10nId: "contextual-manager-passwords-password-tooltip"
     })}
-      <moz-button
-        data-l10n-id=${this.visible ? "login-item-password-conceal-checkbox" : "login-item-password-reveal-checkbox"}
-        class="reveal-password-button"
-        type="icon ghost"
-        iconSrc=${this.#revealIconSrc(this.visible)}
-        @mousedown=${() => {
-      /* Programmatically focus the button on mousedown instead of waiting for focus on click
-       * because the blur event occurs before the click event.
-       */
-      this.button.focus();
-    }}
-        @click=${this.onRevealClick}
-      ></moz-button>
     `;
   }
   handleFocus() {
-    if (this.visible) {
-      return;
-    }
-    this.onRevealClick();
+    this.concealed = false;
   }
   handleBlur(ev) {
-    if (ev.relatedTarget === this.button || ev.relatedTarget === this.label) {
+    if (ev.relatedTarget === this.label) {
       return;
     }
-    if (!this.visible) {
-      return;
-    }
-    this.onRevealClick();
+    this.concealed = true;
   }
 }
 customElements.define("login-password-field", LoginPasswordField);
@@ -790,4 +758,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.c594b6d2.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.5f46d533.iframe.bundle.js.map
