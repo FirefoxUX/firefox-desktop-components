@@ -883,6 +883,17 @@ const storybookTables = {
   }, {
     value: {
       brand: {
+        default: "0.733rem",
+        comment: "11px / Note this token is to be used in rare cases because its hard to read. Please consult with the Design Systems and A11y teams for case-by-case feedback."
+      },
+      platform: {
+        default: "unset"
+      }
+    },
+    name: "--font-size-xsmall"
+  }, {
+    value: {
+      brand: {
         default: "0.867rem",
         comment: "13px"
       },
@@ -2258,6 +2269,15 @@ const variableLookupTable = {
       default: "unset"
     }
   },
+  "font-size-xsmall": {
+    brand: {
+      default: "0.733rem",
+      comment: "11px / Note this token is to be used in rare cases because its hard to read. Please consult with the Design Systems and A11y teams for case-by-case feedback."
+    },
+    platform: {
+      default: "unset"
+    }
+  },
   "font-size-small": {
     brand: {
       default: "0.867rem",
@@ -2472,4 +2492,4 @@ module.exports = __webpack_require__.p + "tokens-table.fe454720fd8304d2587e.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.706e74a9.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.ca4d1d82.iframe.bundle.js.map
