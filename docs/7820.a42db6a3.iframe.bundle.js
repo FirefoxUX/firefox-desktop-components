@@ -25,6 +25,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozBoxBase.ftl");
 
 /**
  * A link with a box-like shape that allows for custom title and description.
@@ -76,11 +77,17 @@ class MozBoxLink extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozBoxBase 
             class="button"
             is="moz-support-link"
             support-page=${supportPage}
+            data-l10n-id="moz-box-link-anchor"
           >
             ${template}
-          </a>` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<a class="button" href=${this.href} target="_blank"
-            >${template}</a
-          >`}
+          </a>` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<a
+            class="button"
+            href=${this.href}
+            target="_blank"
+            data-l10n-id="moz-box-link-anchor"
+          >
+            ${template}
+          </a>`}
     `;
   }
 }
@@ -89,4 +96,4 @@ customElements.define("moz-box-link", MozBoxLink);
 /***/ })
 
 }]);
-//# sourceMappingURL=7820.46c4a8f7.iframe.bundle.js.map
+//# sourceMappingURL=7820.a42db6a3.iframe.bundle.js.map
