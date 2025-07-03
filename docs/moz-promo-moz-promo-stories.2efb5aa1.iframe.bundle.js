@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.665d7695c91a49189703.css";
+module.exports = __webpack_require__.p + "moz-promo.49357a147fe2ef3add8b.css";
 
 /***/ }),
 
@@ -34,7 +34,9 @@ __webpack_require__.r(__webpack_exports__);
  *  "default" or "vibrant". Determines the colors of the promotional
  *  element
  * @property {string} heading - The heading of the promo element.
- * @property {string} message - THe message of the promo element.
+ * @property {string} message - The message of the promo element.
+ * @property {string} imageSrc - The main image of the promo element.
+ * @property {string} iconAlignment - How the icon should be aligned. Can be "start", "end", "center".
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -49,11 +51,26 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     message: {
       type: String,
       fluent: true
+    },
+    imageSrc: {
+      type: String,
+      reflect: true
+    },
+    imageAlignment: {
+      type: String,
+      reflect: true
     }
   };
   constructor() {
     super();
     this.type = "default";
+    this.imageAlignment = "start";
+  }
+  updated(changedProperties) {
+    // super.updated?.(changedProperties);
+    if (changedProperties.has("imageSrc") && this.imageSrc) {
+      this.style.setProperty("--promo-image-url", `url("${this.imageSrc}")`);
+    }
   }
   headingTemplate() {
     if (this.heading) {
@@ -63,17 +80,26 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     }
     return "";
   }
+  imageTemplate() {
+    if (this.imageSrc) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <div class="image-container"></div> `;
+    }
+    return "";
+  }
   render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
+    let imageStartAligned = this.imageAlignment == "start";
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_promo_moz_promo_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="container">
-        ${this.headingTemplate()}
-        <p class="message">${this.message}</p>
-      </div>
-    `;
+        ${imageStartAligned ? this.imageTemplate() : ""}
+        <div class="text-container">
+          ${this.headingTemplate()}
+          <p class="message">${this.message}</p>
+        </div>
+        ${!imageStartAligned ? this.imageTemplate() : ""}
+      </div>`;
   }
 }
 customElements.define("moz-promo", MozPromo);
@@ -86,6 +112,11 @@ customElements.define("moz-promo", MozPromo);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   ImageAtCenter: () => (/* binding */ ImageAtCenter),
+/* harmony export */   ImageAtEnd: () => (/* binding */ ImageAtEnd),
+/* harmony export */   ImageAtStart: () => (/* binding */ ImageAtStart),
+/* harmony export */   RectangleImage: () => (/* binding */ RectangleImage),
+/* harmony export */   SquareImage: () => (/* binding */ SquareImage),
 /* harmony export */   Vibrant: () => (/* binding */ Vibrant),
 /* harmony export */   WithHeading: () => (/* binding */ WithHeading),
 /* harmony export */   WithWrappedMessage: () => (/* binding */ WithWrappedMessage),
@@ -130,6 +161,12 @@ const fluentStrings = ["moz-promo-message", "moz-promo-message-heading", "moz-pr
       control: {
         type: "number"
       }
+    },
+    imageAlignment: {
+      options: ["start", "end", "center"],
+      control: {
+        type: "select"
+      }
     }
   },
   parameters: {
@@ -151,7 +188,9 @@ const Template = ({
   heading,
   message,
   l10nId,
-  width
+  width,
+  imageSrc,
+  imageAlignment
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <div style="width: ${width}px">
     <moz-promo
@@ -159,6 +198,8 @@ const Template = ({
       heading=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(heading)}
       message=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(message)}
       data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
+      imageSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageSrc)}
+      imageAlignment=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageAlignment)}
     ></moz-promo>
   </div>
 `;
@@ -184,8 +225,33 @@ WithWrappedMessage.args = {
   width: 400,
   l10nId: "moz-promo-message-heading-long"
 };
+const ImageAtStart = Template.bind({});
+ImageAtStart.args = {
+  ...Default.args,
+  imageSrc: "chrome://global/skin/illustrations/about-license.svg",
+  imageAlignment: "start"
+};
+const ImageAtEnd = Template.bind({});
+ImageAtEnd.args = {
+  ...ImageAtStart.args,
+  imageAlignment: "end"
+};
+const ImageAtCenter = Template.bind({});
+ImageAtCenter.args = {
+  ...ImageAtStart.args,
+  imageAlignment: "center"
+};
+const SquareImage = Template.bind({});
+SquareImage.args = {
+  ...ImageAtStart.args
+};
+const RectangleImage = Template.bind({});
+RectangleImage.args = {
+  ...ImageAtStart.args,
+  imageSrc: "chrome://global/content/aboutconfig/background.svg"
+};
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-promo-moz-promo-stories.1deb0f64.iframe.bundle.js.map
+//# sourceMappingURL=moz-promo-moz-promo-stories.2efb5aa1.iframe.bundle.js.map

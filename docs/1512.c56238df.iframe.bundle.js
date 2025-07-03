@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.665d7695c91a49189703.css";
+module.exports = __webpack_require__.p + "moz-promo.49357a147fe2ef3add8b.css";
 
 /***/ }),
 
@@ -34,7 +34,9 @@ __webpack_require__.r(__webpack_exports__);
  *  "default" or "vibrant". Determines the colors of the promotional
  *  element
  * @property {string} heading - The heading of the promo element.
- * @property {string} message - THe message of the promo element.
+ * @property {string} message - The message of the promo element.
+ * @property {string} imageSrc - The main image of the promo element.
+ * @property {string} iconAlignment - How the icon should be aligned. Can be "start", "end", "center".
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -49,11 +51,26 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     message: {
       type: String,
       fluent: true
+    },
+    imageSrc: {
+      type: String,
+      reflect: true
+    },
+    imageAlignment: {
+      type: String,
+      reflect: true
     }
   };
   constructor() {
     super();
     this.type = "default";
+    this.imageAlignment = "start";
+  }
+  updated(changedProperties) {
+    // super.updated?.(changedProperties);
+    if (changedProperties.has("imageSrc") && this.imageSrc) {
+      this.style.setProperty("--promo-image-url", `url("${this.imageSrc}")`);
+    }
   }
   headingTemplate() {
     if (this.heading) {
@@ -63,17 +80,26 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     }
     return "";
   }
+  imageTemplate() {
+    if (this.imageSrc) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <div class="image-container"></div> `;
+    }
+    return "";
+  }
   render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
+    let imageStartAligned = this.imageAlignment == "start";
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <link
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_promo_moz_promo_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="container">
-        ${this.headingTemplate()}
-        <p class="message">${this.message}</p>
-      </div>
-    `;
+        ${imageStartAligned ? this.imageTemplate() : ""}
+        <div class="text-container">
+          ${this.headingTemplate()}
+          <p class="message">${this.message}</p>
+        </div>
+        ${!imageStartAligned ? this.imageTemplate() : ""}
+      </div>`;
   }
 }
 customElements.define("moz-promo", MozPromo);
@@ -81,4 +107,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=1512.32cf5cac.iframe.bundle.js.map
+//# sourceMappingURL=1512.c56238df.iframe.bundle.js.map
