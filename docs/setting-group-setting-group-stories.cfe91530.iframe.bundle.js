@@ -41,7 +41,8 @@ function getSetting() {
     on() {},
     off() {},
     userChange() {},
-    visible: () => true
+    visible: () => true,
+    getControlConfig: c => c
   };
 }
 const Template = ({
@@ -147,4 +148,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.a922b0b9.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.cfe91530.iframe.bundle.js.map
