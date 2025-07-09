@@ -1567,6 +1567,19 @@ const storybookTables = {
     },
     name: "--outline-color-error"
   }],
+  "heading-font": [{
+    value: "var(--font-size-xxlarge)",
+    name: "--heading-font-size-xlarge"
+  }, {
+    value: "var(--font-size-xlarge)",
+    name: "--heading-font-size-large"
+  }, {
+    value: "var(--font-size-large)",
+    name: "--heading-font-size-medium"
+  }, {
+    value: "var(--font-weight-bold)",
+    name: "--heading-font-weight"
+  }],
   "icon-color": [{
     value: {
       light: "var(--color-gray-70)",
@@ -2319,6 +2332,10 @@ const variableLookupTable = {
   },
   "font-weight": "normal",
   "font-weight-bold": 600,
+  "heading-font-size-xlarge": "var(--font-size-xxlarge)",
+  "heading-font-size-large": "var(--font-size-xlarge)",
+  "heading-font-size-medium": "var(--font-size-large)",
+  "heading-font-weight": "var(--font-weight-bold)",
   "icon-color": {
     light: "var(--color-gray-70)",
     dark: "var(--color-gray-05)",
@@ -2496,4 +2513,4 @@ module.exports = __webpack_require__.p + "tokens-table.fe454720fd8304d2587e.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.8b3e5577.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.b3418477.iframe.bundle.js.map

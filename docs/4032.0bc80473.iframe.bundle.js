@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1964,8807,9080],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1964,4032,8807],{
 
 /***/ 11964:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -19,6 +19,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// Functions to wrap a string in a heading.
+const HEADING_LEVEL_TEMPLATES = {
+  1: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h1>${label}</h1>`,
+  2: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h2>${label}</h2>`,
+  3: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h3>${label}</h3>`,
+  4: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h4>${label}</h4>`,
+  5: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h5>${label}</h5>`,
+  6: label => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h6>${label}</h6>`
+};
+
 /**
  * Fieldset wrapper to lay out form inputs consistently.
  *
@@ -26,6 +36,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} label - The label for the fieldset's legend.
  * @property {string} description - The description for the fieldset.
  * @property {string} supportPage - Name of the SUMO support page to link to.
+ * @property {number} headingLevel - Render the legend in a heading of this level.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -49,8 +60,15 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     ariaOrientation: {
       type: String,
       mapped: true
+    },
+    headingLevel: {
+      type: Number
     }
   };
+  constructor() {
+    super();
+    this.headingLevel = -1;
+  }
   descriptionTemplate() {
     if (this.description) {
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description text-deemphasized">
@@ -71,7 +89,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="support-link"></slot>`;
   }
   legendTemplate() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.label}</legend>`;
+    let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${label}</legend>`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -101,14 +120,7 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.0e17b178a0f925477a06.css";
-
-/***/ }),
-
-/***/ 58680:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-visual-picker-item.3a616645684a79619b6e.css";
+module.exports = __webpack_require__.p + "moz-fieldset.d3664db0bb023c72b3fe.css";
 
 /***/ }),
 
@@ -515,19 +527,17 @@ const SelectControlItemMixin = superClass => class extends superClass {
 
 /***/ }),
 
-/***/ 89080:
+/***/ 94032:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   MozVisualPicker: () => (/* binding */ MozVisualPicker),
-/* harmony export */   MozVisualPickerItem: () => (/* binding */ MozVisualPickerItem)
+/* harmony export */   MozRadio: () => (/* binding */ MozRadio),
+/* harmony export */   MozRadioGroup: () => (/* binding */ MozRadioGroup)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_visual_picker_moz_visual_picker_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(58680);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(68807);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(48334);
-
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68807);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -536,126 +546,76 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-
 /**
- * An element that groups related items and allows a user to navigate between
- * them to select an item. The appearance of the items of the group is
- * determined by the consumer.
+ * Element used to group and associate moz-radio buttons so that they function
+ * as a single form-control element.
  *
- * @tagname moz-visual-picker
- * @property {string} label - Label for the group of elements.
- * @property {string} description - Description for the group of elements.
+ * @tagname moz-radio-group
+ * @property {boolean} disabled - Whether or not the fieldset is disabled.
+ * @property {string} label - Label for the group of moz-radio elements.
+ * @property {string} description - Description for the group of moz-radio elements.
+ * @property {string} supportPage - Support page for the group of moz-radio elements.
  * @property {string} name
- *  Name used to associate items in the group. Propagates to
- *  moz-visual-picker's children.
+ *  Input name of the radio group. Propagates to moz-radio children.
  * @property {string} value
  *  Selected value for the group. Changing the value updates the checked
- *  state of moz-visual-picker-item children and vice versa.
- * @slot default - The picker's content, intended for moz-visual-picker-items.
+ *  state of moz-radio children and vice versa.
+ * @slot default - The radio group's content, intended for moz-radio elements.
+ * @slot support-link - The radio group's support link intended for moz-radio elements.
  */
-class MozVisualPicker extends _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SelectControlBaseElement {
-  static childElementName = "moz-visual-picker-item";
-  static orientation = "horizontal";
+class MozRadioGroup extends _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__.SelectControlBaseElement {
+  static childElementName = "moz-radio";
+  static orientation = "vertical";
+  static properties = {
+    parentDisabled: {
+      type: Boolean,
+      state: true
+    }
+  };
 }
-customElements.define("moz-visual-picker", MozVisualPicker);
+customElements.define("moz-radio-group", MozRadioGroup);
 
 /**
- * Element that allows a user to select one option from a group of options.
- * Visual appearance is determined by the slotted content.
+ * Input element that allows a user to select one option from a group of options.
  *
- * @tagname moz-visual-picker-item
- * @property {boolean} checked - Whether or not the item is selected.
- * @property {boolean} disabled - Whether or not the item is disabled.
- * @property {number} itemTabIndex
- *  Tabindex of the input element. Only one item is focusable at a time.
+ * @tagname moz-radio
+ * @property {boolean} checked - Whether or not the input is selected.
+ * @property {string} description - Description for the input.
+ * @property {boolean} disabled - Whether or not the input is disabled.
+ * @property {string} iconSrc - Path to an icon displayed next to the input.
+ * @property {number} itemTabIndex - Tabindex of the input element.
+ * @property {string} label - Label for the radio input.
  * @property {string} name
- *  Name of the item, set by the associated moz-visual-picker parent element.
- * @property {string} value - Value of the item.
- * @slot default - The item's content, used for what gets displayed.
+ *  Name of the input control, set by the associated moz-radio-group element.
+ * @property {string} supportPage - Name of the SUMO support page to link to.
+ * @property {string} value - Value of the radio input.
  */
-class MozVisualPickerItem extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SelectControlItemMixin)(_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement) {
-  static properties = {
-    label: {
-      type: String
-    },
-    ariaLabel: {
-      type: String,
-      fluent: true,
-      mapped: true
-    }
-  };
-  static queries = {
-    itemEl: ".picker-item"
-  };
-  click() {
-    this.itemEl.click();
+class MozRadio extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__.SelectControlItemMixin)(_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement) {
+  static activatedProperty = "checked";
+  get isDisabled() {
+    return super.isDisabled || this.parentDisabled || this.controller.parentDisabled;
   }
-  focus() {
-    this.itemEl.focus();
-  }
-  blur() {
-    this.itemEl.blur();
-  }
-  handleKeydown(event) {
-    if (event.code == "Space" || event.code == "Enter") {
-      this.handleClick(event);
-    }
-  }
-  handleClick(event) {
-    // re-target click events from the slot to the item and handle clicks from
-    // space bar keydown.
-    event.stopPropagation();
-    this.dispatchEvent(new Event("click", {
-      bubbles: true,
-      composed: true
-    }));
-    super.handleClick();
-
-    // Manually dispatch events since we're not using an input.
-    this.dispatchEvent(new Event("input", {
-      bubbles: true,
-      composed: true
-    }));
-    this.dispatchEvent(new Event("change", {
-      bubbles: true
-    }));
-  }
-  handleSlotchange(event) {
-    // If the user hasn't provide a visual or accessible label fallback to
-    // labelling the picker item based on slotted content.
-    if (!this.label && !this.ariaLabel) {
-      let elements = event.target.assignedElements();
-      this.itemEl.ariaLabelledByElements = elements;
-    }
-  }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_visual_picker_moz_visual_picker_item_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div
-        class="picker-item"
-        role=${this.role}
-        value=${this.value}
-        aria-label=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
-        aria-checked=${this.role == "radio" ? this.checked : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-        aria-selected=${this.role == "option" ? this.checked : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-        tabindex=${this.itemTabIndex}
-        ?checked=${this.checked}
-        ?disabled=${this.isDisabled}
-        @click=${this.handleClick}
-        @keydown=${this.handleKeydown}
-        @slotchange=${this.handleSlotchange}
-      >
-        ${this.label ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="label">${this.label}</p>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
-      </div>
-    `;
+  inputTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<input
+      type="radio"
+      id="input"
+      value=${this.value}
+      name=${this.name}
+      .checked=${this.checked}
+      aria-checked=${this.checked}
+      aria-describedby="description"
+      tabindex=${this.itemTabIndex}
+      ?disabled=${this.isDisabled}
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
+      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.ariaLabel ?? undefined)}
+      @click=${this.handleClick}
+      @change=${this.handleChange}
+    />`;
   }
 }
-customElements.define("moz-visual-picker-item", MozVisualPickerItem);
+customElements.define("moz-radio", MozRadio);
 
 /***/ })
 
 }]);
-//# sourceMappingURL=9080.64b3ba10.iframe.bundle.js.map
+//# sourceMappingURL=4032.0bc80473.iframe.bundle.js.map
