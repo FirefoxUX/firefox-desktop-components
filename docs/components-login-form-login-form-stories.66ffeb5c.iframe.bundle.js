@@ -113,24 +113,24 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
   }
   onCancel(e) {
     e.preventDefault();
-    const loginForm = {
+    const loginFromForm = {
       origin: this.originValue || this.originField.input.value,
       username: this.usernameField.input.value.trim(),
       password: this.passwordField.value
     };
-    this.onClose(loginForm);
+    this.onClose(loginFromForm);
   }
   onSubmit(e) {
     e.preventDefault();
     if (!this.#isFormValid()) {
       return;
     }
-    const loginForm = {
+    const loginFromForm = {
       origin: this.originValue || this.originField.input.value,
       username: this.usernameField.input.value.trim(),
       password: this.passwordField.value
     };
-    this.onSaveClick(loginForm);
+    this.onSaveClick(loginFromForm);
   }
   #isFormValid() {
     let originError = false;
@@ -765,4 +765,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.4a243456.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.66ffeb5c.iframe.bundle.js.map
