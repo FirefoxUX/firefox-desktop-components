@@ -258,7 +258,7 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
     this._mayEnableCharacterEncodingMenu = null;
     this._contentPrincipal = null;
     this._contentPartitionedPrincipal = null;
-    this._csp = null;
+    this._policyContainer = null;
     this._referrerInfo = null;
     this._contentRequestContextID = null;
     this._rdmFullZoom = 1.0;
@@ -524,8 +524,8 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
   get cookieJarSettings() {
     return this.isRemoteBrowser ? this.browsingContext?.currentWindowGlobal?.cookieJarSettings : this.contentDocument.cookieJarSettings;
   }
-  get csp() {
-    return this.isRemoteBrowser ? this._csp : this.contentDocument.csp;
+  get policyContainer() {
+    return this.isRemoteBrowser ? this._policyContainer : this.contentDocument.policyContainer;
   }
   get contentRequestContextID() {
     if (this.isRemoteBrowser) {
@@ -856,9 +856,9 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
       let ssm = Services.scriptSecurityManager;
       this._contentPrincipal = ssm.getLoadContextContentPrincipal(aboutBlank, this.loadContext);
       this._contentPartitionedPrincipal = this._contentPrincipal;
-      // CSP for about:blank is null; if we ever change _contentPrincipal above,
-      // we should re-evaluate the CSP here.
-      this._csp = null;
+      // policyContainer for about:blank is null; if we ever change _contentPrincipal above,
+      // we should re-evaluate the policyContainer here.
+      this._policyContainer = null;
       if (!this.hasAttribute("disablehistory")) {
         Services.obs.addObserver(this.observer, "browser:purge-session-history", true);
       }
@@ -943,7 +943,7 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
       this._remoteWebNavigation._canGoForward = aCanGoForward;
     }
   }
-  updateForLocationChange(aLocation, aCharset, aMayEnableCharacterEncodingMenu, aDocumentURI, aTitle, aContentPrincipal, aContentPartitionedPrincipal, aCSP, aReferrerInfo, aIsSynthetic, aHaveRequestContextID, aRequestContextID, aContentType) {
+  updateForLocationChange(aLocation, aCharset, aMayEnableCharacterEncodingMenu, aDocumentURI, aTitle, aContentPrincipal, aContentPartitionedPrincipal, aPolicyContainer, aReferrerInfo, aIsSynthetic, aHaveRequestContextID, aRequestContextID, aContentType) {
     if (this.isRemoteBrowser && this.messageManager) {
       if (aCharset != null) {
         this._characterSet = aCharset;
@@ -956,7 +956,7 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
       this._documentURI = aDocumentURI;
       this._contentPrincipal = aContentPrincipal;
       this._contentPartitionedPrincipal = aContentPartitionedPrincipal;
-      this._csp = aCSP;
+      this._policyContainer = aPolicyContainer;
       this._referrerInfo = aReferrerInfo;
       this._isSyntheticDocument = aIsSynthetic;
       this._contentRequestContextID = aHaveRequestContextID ? aRequestContextID : null;
@@ -1620,4 +1620,4 @@ customElements.define("browser", MozBrowser);
 /***/ })
 
 }]);
-//# sourceMappingURL=660.3e28cfb6.iframe.bundle.js.map
+//# sourceMappingURL=660.40e18ee9.iframe.bundle.js.map
