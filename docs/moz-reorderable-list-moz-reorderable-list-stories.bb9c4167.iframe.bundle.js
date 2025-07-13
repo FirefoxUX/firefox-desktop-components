@@ -6,7 +6,9 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ReorderableList: () => (/* binding */ ReorderableList),
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   DragSelector: () => (/* binding */ DragSelector),
+/* harmony export */   ShadowDOM: () => (/* binding */ ShadowDOM),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
@@ -18,30 +20,64 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
+const DEFAULT = "Default";
+const SHADOW_DOM = "Shadow DOM";
+const DRAG_SELECTOR = "Drag selector";
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "UI Widgets/Reorderable List",
   component: "moz-reorderable-list",
+  argTypes: {
+    demoType: {
+      options: [DEFAULT, SHADOW_DOM, DRAG_SELECTOR],
+      control: {
+        type: "select"
+      }
+    }
+  },
   parameters: {
+    status: "in-development",
     actions: {
       handles: ["reorder"]
     }
   }
 });
+class ShadowDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+  static shadowRootOptions = {
+    ..._vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+  static properties = {
+    item: {
+      type: String
+    }
+  };
+  render() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<style>
+        #shadowed {
+          border: var(--border-width) solid var(--border-color);
+          border-radius: var(--border-radius-small);
+          background-color: var(--background-color-box);
+          display: flex;
+          align-items: center;
+          padding: var(--space-small);
+        }
+      </style>
+      <button id="shadowed">${this.item}</button>`;
+  }
+}
+customElements.define("shadow-demo", ShadowDemo);
 class ReorderableDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement {
   static properties = {
     items: {
       type: Array,
       state: true
     },
-    itemSelector: {
-      type: String
-    },
-    focusableSelector: {
+    type: {
       type: String
     }
   };
 
-  // Chosing not to use Shadow DOM here for demo purposes.
+  // Choosing not to use Shadow DOM here for demo purposes.
   createRenderRoot() {
     return this;
   }
@@ -50,22 +86,31 @@ class ReorderableDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.L
     this.items = ["Item 1", "Item 2", "Item 3", "Item 4"];
   }
   async reorderItems(draggedElement, targetElement, before = false) {
-    const draggedIndex = this.items.indexOf(draggedElement.textContent);
-    const targetIndex = this.items.indexOf(targetElement.textContent);
+    const draggedIndex = this.items.indexOf(draggedElement.textContent.trim());
+    const targetIndex = this.items.indexOf(targetElement.textContent.trim());
     let nextItems = [...this.items];
     const [draggedItem] = nextItems.splice(draggedIndex, 1);
     let adjustedTargetIndex = targetIndex;
     if (draggedIndex < targetIndex) {
       adjustedTargetIndex--;
     }
-    if (before) {
-      nextItems.splice(adjustedTargetIndex, 0, draggedItem);
-    } else {
-      nextItems.splice(adjustedTargetIndex + 1, 0, draggedItem);
+    if (!before) {
+      adjustedTargetIndex = adjustedTargetIndex + 1;
     }
+    nextItems.splice(adjustedTargetIndex, 0, draggedItem);
     this.items = nextItems;
     await this.updateComplete;
-    targetElement.firstElementChild.focus();
+    let movedItem = this.querySelectorAll("li")[adjustedTargetIndex];
+    let focusableEl = this.getFocusableEl(movedItem);
+    focusableEl?.focus();
+  }
+  getFocusableEl(item) {
+    if (this.type == DRAG_SELECTOR) {
+      return item.querySelector(this.selectors.dragSelector);
+    }
+
+    // Look for shadow DOM first, fallback to firstElementChild
+    return item.shadowRoot?.querySelector(this.selectors.itemSelector) ?? item.firstElementChild;
   }
   handleReorder(e) {
     const {
@@ -76,44 +121,92 @@ class ReorderableDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.L
     this.reorderItems(draggedElement, targetElement, position === -1);
   }
   handleKeydown(e) {
+    e.stopPropagation();
     const result = this.children[1].evaluateKeyDownEvent(e);
     if (!result) {
       return;
     }
-    const {
-      draggedElement,
-      targetElement
-    } = result;
-    this.reorderItems(draggedElement, targetElement);
+    this.handleReorder({
+      detail: result
+    });
   }
   addItem() {
     this.items = [...this.items, `Item ${this.items.length + 1}`];
   }
+  get selectors() {
+    switch (this.type) {
+      case DEFAULT:
+        return {
+          itemSelector: "li"
+        };
+      case SHADOW_DOM:
+        return {
+          itemSelector: "#shadowed"
+        };
+      case DRAG_SELECTOR:
+        return {
+          itemSelector: "li",
+          dragSelector: ".handle"
+        };
+      default:
+        return {};
+    }
+  }
+  contentTemplate(item) {
+    if (this.type == DEFAULT) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<button>${item}</button>`;
+    } else if (this.type == DRAG_SELECTOR) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="draggable">
+        <div class="handle" tabindex="0"></div>
+        <span>${item}</span>
+      </div>`;
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<shadow-demo item=${item}></shadow-demo>`;
+  }
   render() {
+    let {
+      itemSelector,
+      dragSelector
+    } = this.selectors;
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
       <style>
         ul {
           padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-small);
         }
         li {
           list-style: none;
-          display: flex;
         }
-        button {
-          display: block;
-          padding: 10px;
-          background-color: #eee;
+        .handle {
+          width: var(--button-size-icon);
+          height: var(--button-size-icon);
+          cursor: pointer;
+          background-image: url("chrome://global/skin/icons/more.svg");
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: var(--button-border-radius);
+          -moz-context-properties: fill;
+          fill: currentColor;
+        }
+        .draggable {
+          border: var(--border-width) solid var(--border-color);
+          border-radius: var(--border-radius-small);
+          background-color: var(--background-color-box);
+          display: flex;
+          align-items: center;
+          gap: var(--space-small);
         }
       </style>
       <moz-reorderable-list
-        itemselector=${this.itemSelector}
-        focusableselector=${this.focusableSelector}
+        itemselector=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(itemSelector)}
+        dragselector=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(dragSelector)}
         @reorder=${this.handleReorder}
+        @keydown=${this.handleKeydown}
       >
         <ul>
-          ${this.items.map(item => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-              <li><button @keydown=${this.handleKeydown}>${item}</button></li>
-            `)}
+          ${this.items.map(item => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <li>${this.contentTemplate(item)}</li> `)}
         </ul>
       </moz-reorderable-list>
       <button @click=${this.addItem}>Add another item</button>
@@ -122,32 +215,21 @@ class ReorderableDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.L
 }
 customElements.define("reorderable-demo", ReorderableDemo);
 const Template = ({
-  itemSelector,
-  focusableSelector
+  demoType
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    ul {
-      padding: 0;
-    }
-    li {
-      list-style: none;
-      display: flex;
-    }
-    button {
-      display: block;
-      padding: 10px;
-      background-color: #eee;
-    }
-  </style>
-  <reorderable-demo
-    .itemSelector=${itemSelector}
-    .focusableSelector=${focusableSelector}
-  ></reorderable-demo>
+  <reorderable-demo type=${demoType}></reorderable-demo>
 `;
-const ReorderableList = Template.bind({});
-ReorderableList.args = {
-  itemSelector: "li",
-  focusableSelector: "li > button"
+const Default = Template.bind({});
+Default.args = {
+  demoType: DEFAULT
+};
+const ShadowDOM = Template.bind({});
+ShadowDOM.args = {
+  demoType: SHADOW_DOM
+};
+const DragSelector = Template.bind({});
+DragSelector.args = {
+  demoType: DRAG_SELECTOR
 };
 
 /***/ }),
@@ -208,8 +290,11 @@ const REORDER_PROP = "__mozReorderableIndex";
  *   sufficient.
  *
  * @tagname moz-reorderable-list
- * @property {string} itemSelector - Selector for elements that should be
- *   reorderable.
+ * @property {string} itemSelector
+ *   Selector for elements that should be reorderable.
+ * @property {string} dragSelector
+ *   Selector used when only part of the reorderable element should be draggable,
+ *   e.g. we use a button or an icon as a "handle" to drag the element.
  * @fires reorder - Fired when an item is dropped in a new position.
  * @fires dragstarted - Fired when an item is dragged.
  * @fires dragended - Fired when an item is dropped.
@@ -221,6 +306,9 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   };
   static properties = {
     itemSelector: {
+      type: String
+    },
+    dragSelector: {
       type: String
     }
   };
@@ -247,7 +335,6 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   firstUpdated() {
     super.firstUpdated();
     this.getItems();
-    this.addDraggableAttribute();
   }
   connectedCallback() {
     super.connectedCallback();
@@ -265,26 +352,27 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     for (const mutation of mutationList) {
       if (mutation.addedNodes.length || mutation.removedNodes.length) {
         needsUpdate = true;
-      }
-      for (const addedNode of mutation.addedNodes) {
-        if (addedNode.nodeType === Node.ELEMENT_NODE) {
-          this.addDraggableAttribute(addedNode);
-        }
+        break;
       }
     }
     if (needsUpdate) {
-      this.getItems();
+      // Defer re-querying for items until the next paint to ensure any
+      // asynchronously rendered (i.e. Lit-based) elements are in the DOM.
+      requestAnimationFrame(() => {
+        this.getItems();
+      });
     }
   }
 
   /**
-   * Add the draggable attribute to all items that match the selector.
-   *
-   * @see getItems for information about the root parameter.
+   * Add the draggable attribute non-XUL elements.
    */
-  addDraggableAttribute(root) {
-    let items = root ? this.getAssignedElementsBySelector(this.itemSelector, root) : this.#items;
-    for (const item of items) {
+  addDraggableAttribute(items) {
+    let draggableItems = items;
+    if (this.dragSelector) {
+      draggableItems = this.getAssignedElementsBySelector(this.dragSelector, items);
+    }
+    for (const item of draggableItems) {
       // Unlike XUL elements, HTML elements are not draggable by default.
       // So we need to set the draggable attribute on all items that match the selector.
       if (!this.isXULElement(item)) {
@@ -293,7 +381,7 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     }
   }
   onDragStart(event) {
-    let draggedElement = event.target.closest(this.itemSelector);
+    let draggedElement = this.getTargetItemFromEvent(event);
     if (!draggedElement) {
       return;
     }
@@ -305,6 +393,21 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     this.emitEvent(DRAGSTART_EVENT, {
       draggedElement
     });
+
+    // In privileged documents, use a canvas element combined with the
+    // drawWindow API to create a more accurate drag image. This is especially
+    // useful when dragging composite custom elements.
+    if (window.document.nodePrincipal?.isSystemPrincipal) {
+      let rect = this.getBounds(draggedElement);
+      let scale = window.devicePixelRatio || 1;
+      let canvas = document.createElement("canvas");
+      canvas.width = rect.width * scale;
+      canvas.height = rect.height * scale;
+      let context = canvas.getContext("2d");
+      context.scale(scale, scale);
+      context.drawWindow(window, rect.left, rect.top, rect.width, rect.height, "rgb(255,255,255)");
+      event.dataTransfer.setDragImage(canvas, 0, 0);
+    }
 
     // XUL elements need dataTransfer values to be set for drag and drop to work.
     if (this.isXULElement(draggedElement)) {
@@ -343,7 +446,9 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     }
   }
   onDragLeave(event) {
-    if (!event.target.matches(this.itemSelector)) {
+    let path = event.composedPath();
+    let draggedEl = path.find(el => el.matches?.(this.itemSelector));
+    if (!draggedEl) {
       return;
     }
     let target = event.relatedTarget;
@@ -442,13 +547,17 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   }
 
   /**
-   * Returns all draggable items based on the itemSelector
+   * Returns all draggable items based on the itemSelector. Adds reorderable
+   * indices and ensures elements are draggable.
    *
    * @see getAssignedElementsBySelector for parameters
    */
   getItems() {
     let items = this.getAssignedElementsBySelector(this.itemSelector);
-    items.forEach((item, i) => item[REORDER_PROP] = i);
+    this.addDraggableAttribute(items);
+    items.forEach((item, i) => {
+      item[REORDER_PROP] = i;
+    });
     this.#items = items;
   }
 
@@ -466,14 +575,20 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     } else if (!Array.isArray(root)) {
       root = [root];
     }
-    return root.reduce((acc, item) => {
-      if (item.matches(selector)) {
-        acc.push(item);
-      } else {
-        acc.push(...item.querySelectorAll(selector));
-      }
-      return acc;
-    }, []);
+    const collectEls = items => {
+      return items.flatMap(item => {
+        if (item.matches(selector)) {
+          return item;
+        }
+        let nestedEls = item.shadowRoot?.querySelectorAll(selector) ?? item.querySelectorAll(selector);
+        if (nestedEls.length) {
+          return [...nestedEls];
+        }
+        let nextEls = item.localName == "slot" ? item.assignedElements() : item.children;
+        return collectEls([...(nextEls ?? [])]);
+      });
+    };
+    return collectEls(root);
   }
 
   /**
@@ -512,8 +627,7 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
    * target
    */
   getTargetItemFromEvent(event) {
-    const target = event.target;
-    const targetItem = target.closest(this.itemSelector);
+    const targetItem = event.target.closest(this.itemSelector) || event.originalTarget.closest(this.itemSelector);
     return targetItem;
   }
   render() {
@@ -554,4 +668,4 @@ customElements.define("moz-reorderable-list", MozReorderableList);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-reorderable-list-moz-reorderable-list-stories.d35460e8.iframe.bundle.js.map
+//# sourceMappingURL=moz-reorderable-list-moz-reorderable-list-stories.bb9c4167.iframe.bundle.js.map

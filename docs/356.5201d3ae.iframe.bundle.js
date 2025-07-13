@@ -6,6 +6,7 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   GROUP_TYPES: () => (/* binding */ GROUP_TYPES),
 /* harmony export */   "default": () => (/* binding */ MozBoxGroup)
 /* harmony export */ });
 /* harmony import */ var toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23066);
@@ -18,13 +19,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const GROUP_TYPES = {
+  list: "list",
+  reorderable: "reorderable-list"
+};
 
 /**
  * An element used to group combinations of moz-box-item, moz-box-link, and
  * moz-box-button elements and provide the expected styles.
  *
  * @tagname moz-box-group
- * @property {string} type - The type of the group, either "list" or undefined.
+ * @property {string} type
+ *   The type of the group, either "list", "reorderable-list", or undefined.
+ *   Note that "reorderable-list" only works with moz-box-item elements for now.
  * @slot default - Slot for rendering various moz-box-* elements.
  * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
  *   the group is type="list".
@@ -40,13 +47,29 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       state: true
     }
   };
+  static queries = {
+    reorderableList: "moz-reorderable-list"
+  };
   constructor() {
     super();
     this.listItems = [];
   }
+  contentTemplate() {
+    if (this.type == GROUP_TYPES.reorderable) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
+        itemselector="moz-box-item"
+        dragselector=".handle"
+        @reorder=${this.handleReorder}
+      >
+        ${this.slotTemplate()}
+      </moz-reorderable-list>`;
+    }
+    return this.slotTemplate();
+  }
   slotTemplate() {
-    if (this.type == "list") {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<ul
+    if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
+      let listTag = this.type == GROUP_TYPES.reorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
           class="list"
           aria-orientation="vertical"
           @keydown=${this.handleKeydown}
@@ -58,12 +81,38 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
               <slot name=${i}></slot>
             </li> `;
       })}
-        </ul>
-        <slot hidden @slotchange=${this.handleSlotchange}></slot>`;
+        </${listTag}>
+        <slot hidden @slotchange=${this.updateItems}></slot>`;
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`;
   }
+  handleReorder(event) {
+    let {
+      draggedElement,
+      targetElement,
+      position
+    } = event.detail;
+    let parent = targetElement.parentNode;
+    let moveBefore = position === -1;
+    if (moveBefore) {
+      parent.insertBefore(draggedElement, targetElement);
+    } else {
+      parent.insertBefore(draggedElement, targetElement.nextElementSibling);
+    }
+    draggedElement.focus();
+    this.updateItems();
+  }
   handleKeydown(event) {
+    if (this.type == GROUP_TYPES.reorderable && event.originalTarget == event.target.handleEl) {
+      let detail = this.reorderableList.evaluateKeyDownEvent(event);
+      if (detail) {
+        event.stopPropagation();
+        this.handleReorder({
+          detail
+        });
+        return;
+      }
+    }
     let positionAttr = event.target.getAttribute("position") ??
     // handles the case where an interactive element is nested in a moz-box-item
     event.target.closest("moz-box-item").getAttribute("position");
@@ -101,7 +150,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       });
     }
   }
-  handleSlotchange() {
+  updateItems() {
     let boxElements = this.querySelectorAll("moz-box-item, moz-box-button, moz-box-link");
     this.listItems = Array.from(boxElements);
   }
@@ -111,7 +160,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         rel="stylesheet"
         href="${toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      ${this.slotTemplate()}
+      ${this.contentTemplate()}
     `;
   }
   updated(changedProperties) {
@@ -135,4 +184,4 @@ module.exports = __webpack_require__.p + "moz-box-group.6389d0297d78dadf0b13.css
 /***/ })
 
 }]);
-//# sourceMappingURL=356.e72159f0.iframe.bundle.js.map
+//# sourceMappingURL=356.5201d3ae.iframe.bundle.js.map

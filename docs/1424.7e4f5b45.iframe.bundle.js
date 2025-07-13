@@ -57,8 +57,11 @@ const REORDER_PROP = "__mozReorderableIndex";
  *   sufficient.
  *
  * @tagname moz-reorderable-list
- * @property {string} itemSelector - Selector for elements that should be
- *   reorderable.
+ * @property {string} itemSelector
+ *   Selector for elements that should be reorderable.
+ * @property {string} dragSelector
+ *   Selector used when only part of the reorderable element should be draggable,
+ *   e.g. we use a button or an icon as a "handle" to drag the element.
  * @fires reorder - Fired when an item is dropped in a new position.
  * @fires dragstarted - Fired when an item is dragged.
  * @fires dragended - Fired when an item is dropped.
@@ -70,6 +73,9 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   };
   static properties = {
     itemSelector: {
+      type: String
+    },
+    dragSelector: {
       type: String
     }
   };
@@ -96,7 +102,6 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   firstUpdated() {
     super.firstUpdated();
     this.getItems();
-    this.addDraggableAttribute();
   }
   connectedCallback() {
     super.connectedCallback();
@@ -114,26 +119,27 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     for (const mutation of mutationList) {
       if (mutation.addedNodes.length || mutation.removedNodes.length) {
         needsUpdate = true;
-      }
-      for (const addedNode of mutation.addedNodes) {
-        if (addedNode.nodeType === Node.ELEMENT_NODE) {
-          this.addDraggableAttribute(addedNode);
-        }
+        break;
       }
     }
     if (needsUpdate) {
-      this.getItems();
+      // Defer re-querying for items until the next paint to ensure any
+      // asynchronously rendered (i.e. Lit-based) elements are in the DOM.
+      requestAnimationFrame(() => {
+        this.getItems();
+      });
     }
   }
 
   /**
-   * Add the draggable attribute to all items that match the selector.
-   *
-   * @see getItems for information about the root parameter.
+   * Add the draggable attribute non-XUL elements.
    */
-  addDraggableAttribute(root) {
-    let items = root ? this.getAssignedElementsBySelector(this.itemSelector, root) : this.#items;
-    for (const item of items) {
+  addDraggableAttribute(items) {
+    let draggableItems = items;
+    if (this.dragSelector) {
+      draggableItems = this.getAssignedElementsBySelector(this.dragSelector, items);
+    }
+    for (const item of draggableItems) {
       // Unlike XUL elements, HTML elements are not draggable by default.
       // So we need to set the draggable attribute on all items that match the selector.
       if (!this.isXULElement(item)) {
@@ -142,7 +148,7 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     }
   }
   onDragStart(event) {
-    let draggedElement = event.target.closest(this.itemSelector);
+    let draggedElement = this.getTargetItemFromEvent(event);
     if (!draggedElement) {
       return;
     }
@@ -154,6 +160,21 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     this.emitEvent(DRAGSTART_EVENT, {
       draggedElement
     });
+
+    // In privileged documents, use a canvas element combined with the
+    // drawWindow API to create a more accurate drag image. This is especially
+    // useful when dragging composite custom elements.
+    if (window.document.nodePrincipal?.isSystemPrincipal) {
+      let rect = this.getBounds(draggedElement);
+      let scale = window.devicePixelRatio || 1;
+      let canvas = document.createElement("canvas");
+      canvas.width = rect.width * scale;
+      canvas.height = rect.height * scale;
+      let context = canvas.getContext("2d");
+      context.scale(scale, scale);
+      context.drawWindow(window, rect.left, rect.top, rect.width, rect.height, "rgb(255,255,255)");
+      event.dataTransfer.setDragImage(canvas, 0, 0);
+    }
 
     // XUL elements need dataTransfer values to be set for drag and drop to work.
     if (this.isXULElement(draggedElement)) {
@@ -192,7 +213,9 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     }
   }
   onDragLeave(event) {
-    if (!event.target.matches(this.itemSelector)) {
+    let path = event.composedPath();
+    let draggedEl = path.find(el => el.matches?.(this.itemSelector));
+    if (!draggedEl) {
       return;
     }
     let target = event.relatedTarget;
@@ -291,13 +314,17 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
   }
 
   /**
-   * Returns all draggable items based on the itemSelector
+   * Returns all draggable items based on the itemSelector. Adds reorderable
+   * indices and ensures elements are draggable.
    *
    * @see getAssignedElementsBySelector for parameters
    */
   getItems() {
     let items = this.getAssignedElementsBySelector(this.itemSelector);
-    items.forEach((item, i) => item[REORDER_PROP] = i);
+    this.addDraggableAttribute(items);
+    items.forEach((item, i) => {
+      item[REORDER_PROP] = i;
+    });
     this.#items = items;
   }
 
@@ -315,14 +342,20 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
     } else if (!Array.isArray(root)) {
       root = [root];
     }
-    return root.reduce((acc, item) => {
-      if (item.matches(selector)) {
-        acc.push(item);
-      } else {
-        acc.push(...item.querySelectorAll(selector));
-      }
-      return acc;
-    }, []);
+    const collectEls = items => {
+      return items.flatMap(item => {
+        if (item.matches(selector)) {
+          return item;
+        }
+        let nestedEls = item.shadowRoot?.querySelectorAll(selector) ?? item.querySelectorAll(selector);
+        if (nestedEls.length) {
+          return [...nestedEls];
+        }
+        let nextEls = item.localName == "slot" ? item.assignedElements() : item.children;
+        return collectEls([...(nextEls ?? [])]);
+      });
+    };
+    return collectEls(root);
   }
 
   /**
@@ -361,8 +394,7 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
    * target
    */
   getTargetItemFromEvent(event) {
-    const target = event.target;
-    const targetItem = target.closest(this.itemSelector);
+    const targetItem = event.target.closest(this.itemSelector) || event.originalTarget.closest(this.itemSelector);
     return targetItem;
   }
   render() {
@@ -403,4 +435,4 @@ customElements.define("moz-reorderable-list", MozReorderableList);
 /***/ })
 
 }]);
-//# sourceMappingURL=1424.8d313417.iframe.bundle.js.map
+//# sourceMappingURL=1424.7e4f5b45.iframe.bundle.js.map
