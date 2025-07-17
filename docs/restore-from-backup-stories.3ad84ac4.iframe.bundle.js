@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,201,1836,3532,6592],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,1836,3532,5895,6592],{
 
 /***/ 13532:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -206,137 +206,10 @@ customElements.define("moz-message-bar", MozMessageBar);
 
 /***/ }),
 
-/***/ 17240:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 19483:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ PasswordRulesTooltip)
-/* harmony export */ });
-/* harmony import */ var browser_components_backup_content_password_rules_tooltip_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62782);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/**
- * The widget for enabling password protection if the backup is not yet
- * encrypted.
- */
-class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    hasCommon: {
-      type: Boolean
-    },
-    hasEmail: {
-      type: Boolean
-    },
-    tooShort: {
-      type: Boolean
-    },
-    supportBaseLink: {
-      type: String
-    }
-  };
-  static get queries() {
-    return {
-      passwordRulesEl: "#password-rules-wrapper"
-    };
-  }
-  constructor() {
-    super();
-    this.hasCommon = false;
-    this.hasEmail = false;
-    this.tooShort = false;
-    this.supportBaseLink = "";
-  }
-  getRuleStateConstants(hasInvalidCondition) {
-    if (hasInvalidCondition) {
-      return {
-        class: "warning",
-        icon: "chrome://global/skin/icons/warning.svg",
-        l10nId: "password-rules-a11y-warning"
-      };
-    }
-    return {
-      class: "success",
-      icon: "chrome://global/skin/icons/check-filled.svg",
-      l10nId: "password-rules-a11y-success"
-    };
-  }
-  render() {
-    let lengthConstants = this.getRuleStateConstants(this.tooShort);
-    let emailConstants = this.getRuleStateConstants(this.hasEmail);
-    // TODO: (bug 1905140) read list of common passwords - default to success state for now
-    let commonConstants = this.getRuleStateConstants(this.hasCommon);
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_backup_content_password_rules_tooltip_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div id="password-rules-wrapper" aria-live="polite">
-        <h2
-          id="password-rules-header"
-          data-l10n-id="password-rules-header"
-        ></h2>
-        <ul>
-          <li>
-            <img
-              data-l10n-id=${lengthConstants.l10nId}
-              class="icon ${lengthConstants.class}"
-              src=${lengthConstants.icon}
-            />
-            <span
-              data-l10n-id="password-rules-length-description"
-              class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              data-l10n-id=${emailConstants.l10nId}
-              class="icon ${emailConstants.class}"
-              src=${emailConstants.icon}
-            />
-            <span
-              data-l10n-id="password-rules-email-description"
-              class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              data-l10n-id=${commonConstants.l10nId}
-              class="icon ${commonConstants.class}"
-              src=${commonConstants.icon}
-            />
-            <span
-              data-l10n-id="password-rules-common-description"
-              class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              class="icon"
-              src="chrome://browser/skin/preferences/category-privacy-security.svg"
-            />
-            <span data-l10n-id="password-rules-disclaimer"
-              ><a
-                data-l10n-name="password-support-link"
-                target="_blank"
-                href=${`${this.supportBaseLink}password-strength`}
-              ></a
-            ></span>
-          </li>
-        </ul>
-      </div>
-    `;
-  }
-}
-customElements.define("password-rules-tooltip", PasswordRulesTooltip);
+module.exports = __webpack_require__.p + "restore-from-backup.e9e9e7c5dcfcd337f396.css";
 
 /***/ }),
 
@@ -600,6 +473,7 @@ class MenuController {
  * @property {string} ariaExpandedAttribute - Internal, map aria-expanded attribute to the ariaExpanded JS property.
  * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {boolean} attention - Show a dot notification on the button if true.
+ * @property {boolean} parentDisabled - When the parent of this component is disabled.
  * @property {string} iconPosition - The icon's position relative to the button label.
  *   Options: start, end.
  * @property {string} menuId - A CSS selector string that identifies the associated menu element controlled by the button.
@@ -678,6 +552,9 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     menuId: {
       type: String,
       reflect: true
+    },
+    parentDisabled: {
+      type: Boolean
     }
   };
   static queries = {
@@ -694,6 +571,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     this.attention = false;
     this.iconPosition = "start";
     this.menuId = "";
+    this.parentDisabled = undefined;
   }
   willUpdate(changedProperties) {
     super.willUpdate(changedProperties);
@@ -733,7 +611,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <button
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.parentDisabled}
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         aria-expanded=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaExpanded)}
@@ -1042,96 +920,6 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
-/***/ 37808:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ChangePassword: () => (/* binding */ ChangePassword),
-/* harmony export */   ChangePasswordError: () => (/* binding */ ChangePasswordError),
-/* harmony export */   SetPassword: () => (/* binding */ SetPassword),
-/* harmony export */   SetPasswordError: () => (/* binding */ SetPasswordError),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30048);
-/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43039);
-/* harmony import */ var _enable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(44029);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// eslint-disable-next-line import/no-unresolved
-
-
-
-
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
-window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
-const SELECTABLE_ERRORS = {
-  "(none)": 0,
-  ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Backup/Enable Encryption",
-  component: "enable-backup-encryption",
-  argTypes: {
-    type: {
-      control: {
-        type: "select"
-      },
-      options: ["set-password", "change-password"]
-    },
-    enableEncryptionErrorCode: {
-      options: Object.keys(SELECTABLE_ERRORS),
-      mapping: SELECTABLE_ERRORS,
-      control: {
-        type: "select"
-      }
-    },
-    rerunEncryptionErrorCode: {
-      options: Object.keys(SELECTABLE_ERRORS),
-      mapping: SELECTABLE_ERRORS,
-      control: {
-        type: "select"
-      }
-    }
-  }
-});
-const Template = ({
-  type,
-  enableEncryptionErrorCode,
-  rerunEncryptionErrorCode
-}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <moz-card style="width: 23.94rem; position: relative;">
-    <enable-backup-encryption
-      type=${type}
-      .enableEncryptionErrorCode=${enableEncryptionErrorCode}
-      .rerunEncryptionErrorCode=${rerunEncryptionErrorCode}
-    ></enable-backup-encryption>
-  </moz-card>
-`;
-const SetPassword = Template.bind({});
-SetPassword.args = {
-  type: "set-password"
-};
-const ChangePassword = Template.bind({});
-ChangePassword.args = {
-  type: "change-password"
-};
-const SetPasswordError = Template.bind({});
-SetPasswordError.args = {
-  type: "set-password",
-  enableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.INVALID_PASSWORD
-};
-const ChangePasswordError = Template.bind({});
-ChangePasswordError.args = {
-  type: "change-password",
-  rerunEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.INVALID_PASSWORD
-};
-
-/***/ }),
-
 /***/ 43039:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1258,249 +1046,6 @@ const STEPS = Object.freeze({
 
 /***/ }),
 
-/***/ 44029:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ EnableBackupEncryption)
-/* harmony export */ });
-/* harmony import */ var browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(72195);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13532);
-/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(63706);
-/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(43039);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-
-/**
- * Valid attributes for the enable-backup-encryption dialog type.
- *
- * @see EnableBackupEncryption.type
- */
-const VALID_TYPES = Object.freeze({
-  SET_PASSWORD: "set-password",
-  CHANGE_PASSWORD: "change-password"
-});
-const VALID_L10N_IDS = new Map([[VALID_TYPES.SET_PASSWORD, "enable-backup-encryption-header"], [VALID_TYPES.CHANGE_PASSWORD, "change-backup-encryption-header"]]);
-const ERROR_L10N_IDS = Object.freeze({
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.INVALID_PASSWORD]: "backup-error-password-requirements",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN]: "backup-error-retry"
-});
-
-/**
- * @param {number} errorCode Error code from backup-constants.mjs
- * @returns {string} Localization ID for error message
- */
-function getErrorL10nId(errorCode) {
-  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN];
-}
-
-/**
- * The widget for enabling password protection if the backup is not yet
- * encrypted.
- */
-class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    // internal state
-    _inputPassValue: {
-      type: String,
-      state: true
-    },
-    _passwordsMatch: {
-      type: Boolean,
-      state: true
-    },
-    // passed from parents
-    supportBaseLink: {
-      type: String
-    },
-    /**
-     * The "type" attribute changes the layout.
-     *
-     * @see VALID_TYPES
-     */
-    type: {
-      type: String,
-      reflect: true
-    },
-    // managed by BackupUIChild
-    enableEncryptionErrorCode: {
-      type: Number
-    },
-    rerunEncryptionErrorCode: {
-      type: Number
-    }
-  };
-  static get queries() {
-    return {
-      cancelButtonEl: "#backup-enable-encryption-cancel-button",
-      confirmButtonEl: "#backup-enable-encryption-confirm-button",
-      contentEl: "#backup-enable-encryption-content",
-      textHeaderEl: "#backup-enable-encryption-header",
-      textDescriptionEl: "#backup-enable-encryption-description",
-      passwordInputsEl: "#backup-enable-encryption-password-inputs",
-      errorEl: "#enable-backup-encryption-error"
-    };
-  }
-  constructor() {
-    super();
-    this.supportBaseLink = "";
-    this.type = VALID_TYPES.SET_PASSWORD;
-    this._inputPassValue = "";
-    this._passwordsMatch = false;
-    this.enableEncryptionErrorCode = 0;
-    this.rerunEncryptionErrorCode = 0;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    // Listening to events from child <password-validation-inputs>
-    this.addEventListener("ValidPasswordsDetected", this);
-    this.addEventListener("InvalidPasswordsDetected", this);
-  }
-  handleEvent(event) {
-    if (event.type == "ValidPasswordsDetected") {
-      let {
-        password
-      } = event.detail;
-      this._passwordsMatch = true;
-      this._inputPassValue = password;
-    } else if (event.type == "InvalidPasswordsDetected") {
-      this._passwordsMatch = false;
-      this._inputPassValue = "";
-    }
-  }
-  close() {
-    this.dispatchEvent(new CustomEvent("dialogCancel", {
-      bubbles: true,
-      composed: true
-    }));
-    this.reset();
-  }
-  reset() {
-    this._inputPassValue = "";
-    this._passwordsMatch = false;
-    this.passwordInputsEl.reset();
-    this.enableEncryptionErrorCode = 0;
-  }
-  handleConfirm() {
-    switch (this.type) {
-      case VALID_TYPES.SET_PASSWORD:
-        this.dispatchEvent(new CustomEvent("BackupUI:EnableEncryption", {
-          bubbles: true,
-          detail: {
-            password: this._inputPassValue
-          }
-        }));
-        break;
-      case VALID_TYPES.CHANGE_PASSWORD:
-        this.dispatchEvent(new CustomEvent("BackupUI:RerunEncryption", {
-          bubbles: true,
-          detail: {
-            password: this._inputPassValue
-          }
-        }));
-        break;
-    }
-  }
-  descriptionTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div id="backup-enable-encryption-description">
-        <span
-          id="backup-enable-encryption-description-span"
-          data-l10n-id="enable-backup-encryption-description"
-        >
-          <!--TODO: finalize support page links (bug 1900467)-->
-        </span>
-        <a
-          id="backup-enable-encryption-learn-more-link"
-          is="moz-support-link"
-          support-page="todo-backup"
-          data-l10n-id="enable-backup-encryption-support-link"
-        ></a>
-      </div>
-    `;
-  }
-  buttonGroupTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <moz-button-group id="backup-enable-encryption-button-group">
-        <moz-button
-          id="backup-enable-encryption-cancel-button"
-          @click=${this.close}
-          data-l10n-id="enable-backup-encryption-cancel-button"
-        ></moz-button>
-        <moz-button
-          id="backup-enable-encryption-confirm-button"
-          @click=${this.handleConfirm}
-          type="primary"
-          data-l10n-id="enable-backup-encryption-confirm-button"
-          ?disabled=${!this._passwordsMatch}
-        ></moz-button>
-      </moz-button-group>
-    `;
-  }
-  errorTemplate() {
-    let messageId = this.enableEncryptionErrorCode ? getErrorL10nId(this.enableEncryptionErrorCode) : getErrorL10nId(this.rerunEncryptionErrorCode);
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <moz-message-bar
-        id="enable-backup-encryption-error"
-        type="error"
-        .messageL10nId=${messageId}
-      ></moz-message-bar>
-    `;
-  }
-  contentTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div
-        id="backup-enable-encryption-wrapper"
-        aria-labelledby="backup-enable-encryption-header"
-        aria-describedby="backup-enable-encryption-description"
-      >
-        <h1
-          id="backup-enable-encryption-header"
-          class="heading-medium"
-          data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(VALID_L10N_IDS.get(this.type))}
-        ></h1>
-        <div id="backup-enable-encryption-content">
-          ${this.type === VALID_TYPES.SET_PASSWORD ? this.descriptionTemplate() : null}
-          <password-validation-inputs
-            id="backup-enable-encryption-password-inputs"
-            .supportBaseLink=${this.supportBaseLink}
-          >
-          </password-validation-inputs>
-
-          ${this.enableEncryptionErrorCode || this.rerunEncryptionErrorCode ? this.errorTemplate() : null}
-        </div>
-        ${this.buttonGroupTemplate()}
-      </div>
-    `;
-  }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.contentTemplate()}
-    `;
-  }
-}
-customElements.define("enable-backup-encryption", EnableBackupEncryption);
-
-/***/ }),
-
 /***/ 44170:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1508,24 +1053,18 @@ module.exports = __webpack_require__.p + "moz-card.591acdfc5b6a9c67bad9.css";
 
 /***/ }),
 
-/***/ 62782:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "password-rules-tooltip.2f46b8b6ff81717b007d.css";
-
-/***/ }),
-
-/***/ 63706:
+/***/ 45603:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ PasswordValidationInputs)
+/* harmony export */   "default": () => (/* binding */ RestoreFromBackup)
 /* harmony export */ });
-/* harmony import */ var browser_components_backup_content_password_validation_inputs_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(78312);
+/* harmony import */ var browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19483);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-/* harmony import */ var chrome_browser_content_backup_password_rules_tooltip_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(17240);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13532);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(43039);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1537,215 +1076,360 @@ __webpack_require__.r(__webpack_exports__);
 // eslint-disable-next-line import/no-unassigned-import
 
 
+
 /**
- * The widget for enabling password protection if the backup is not yet
- * encrypted.
+ * Any recovery error messaging should be defined in Fluent with both
+ * a `heading` attribute and a `message` attribute.
  */
-class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+const RECOVERY_ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNAUTHORIZED]: "restore-from-backup-error-incorrect-password",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.CORRUPTED_ARCHIVE]: "restore-from-backup-error-corrupt-file",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "restore-from-backup-error-unsupported-version",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNINITIALIZED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.FILE_SYSTEM_ERROR]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.DECRYPTION_FAILED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.RECOVERY_FAILED]: "restore-from-backup-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN]: "restore-from-backup-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.INTERNAL_ERROR]: "restore-from-backup-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_APPLICATION]: "restore-from-backup-error-unsupported-application"
+});
+
+/**
+ * @param {number} errorCode
+ *   Error code from backup-constants.mjs:ERRORS
+ * @returns {string}
+ *   L10N ID for error messaging for the given error code; the L10N
+ *   ID should have both a `heading` and a `message` attribute
+ */
+function getRecoveryErrorL10nId(errorCode) {
+  return RECOVERY_ERROR_L10N_IDS[errorCode] ?? RECOVERY_ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN];
+}
+
+/**
+ * The widget for allowing users to select and restore from a
+ * a backup file.
+ */
+class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  #placeholderFileIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
-    _hasCommon: {
-      type: Boolean,
-      state: true
-    },
-    _hasEmail: {
-      type: Boolean,
-      state: true
-    },
-    _passwordsMatch: {
-      type: Boolean,
-      state: true
-    },
-    _passwordsValid: {
-      type: Boolean,
-      state: true
-    },
-    _showRules: {
-      type: Boolean,
-      state: true
-    },
-    _tooShort: {
-      type: Boolean,
-      state: true
-    },
-    /**
-     * If, by chance, there is focus on a focusable element in the tooltip,
-     * track the focus state so that we can keep the tooltip open.
-     */
-    _tooltipFocus: {
-      type: Boolean,
-      state: true
-    },
-    supportBaseLink: {
+    backupFilePath: {
       type: String
+    },
+    backupFileToRestore: {
+      type: String,
+      reflect: true
+    },
+    backupFileInfo: {
+      type: Object
+    },
+    _fileIconURL: {
+      type: String
+    },
+    recoveryInProgress: {
+      type: Boolean
+    },
+    recoveryErrorCode: {
+      type: Number
     }
   };
   static get queries() {
     return {
-      formEl: "#password-inputs-form",
-      inputNewPasswordEl: "#new-password-input",
-      inputRepeatPasswordEl: "#repeat-password-input",
-      passwordRulesEl: "#password-rules"
+      filePicker: "#backup-filepicker-input",
+      passwordInput: "#backup-password-input",
+      cancelButtonEl: "#restore-from-backup-cancel-button",
+      confirmButtonEl: "#restore-from-backup-confirm-button",
+      chooseButtonEl: "#backup-filepicker-button",
+      errorMessageEl: "#restore-from-backup-error"
     };
   }
   constructor() {
     super();
-    this.supportBaseLink = "";
-    this._tooShort = true;
-    this._hasCommon = false;
-    this._hasEmail = false;
-    this._passwordsMatch = false;
-    this._passwordsValid = false;
-    this._tooltipFocus = false;
-  }
-  reset() {
-    this.formEl.reset();
-    this._showRules = false;
-    this._hasCommon = false;
-    this._hasEmail = false;
-    this._tooShort = true;
-    this._passwordsMatch = false;
-    this._passwordsValid = false;
-    this._tooltipFocus = false;
-  }
-  handleFocusNewPassword() {
-    this._showRules = true;
-  }
-  handleBlurNewPassword(event) {
-    this._showRules = !event.target.checkValidity();
-  }
-  handleChangeNewPassword() {
-    this.updatePasswordValidity();
-  }
-  handleChangeRepeatPassword() {
-    this.updatePasswordValidity();
-  }
-  updatePasswordValidity() {
-    const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
-    this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
-    if (this._hasEmail) {
-      // TODO: we need a localized string for this error (bug 1909983)
-      this.inputNewPasswordEl.setCustomValidity("TODO: no emails");
-    } else {
-      this.inputNewPasswordEl.setCustomValidity("");
-    }
-    const newPassValidity = this.inputNewPasswordEl.validity;
-    this._tooShort = newPassValidity?.valueMissing || newPassValidity?.tooShort;
-    this._passwordsMatch = this.inputNewPasswordEl.value == this.inputRepeatPasswordEl.value;
-    if (!this._passwordsMatch) {
-      // TODO: we need a localized string for this error  (bug 1909983)
-      this.inputRepeatPasswordEl.setCustomValidity("TODO: not matching");
-    } else {
-      this.inputRepeatPasswordEl.setCustomValidity("");
-    }
-    const repeatPassValidity = this.inputRepeatPasswordEl.validity;
-    this._passwordsValid = newPassValidity?.valid && repeatPassValidity?.valid && this._passwordsMatch;
-
-    /**
-     * This step may involve async validation with BackupService. For instance, we have to
-     * check against a list of common passwords (bug 1905140) and display an error message if an
-     * issue occurs (bug 1905145).
-     */
-  }
-  handleTooltipFocus() {
-    this._tooltipFocus = true;
-  }
-  handleTooltipBlur() {
-    this._tooltipFocus = false;
+    this._fileIconURL = "";
   }
 
   /**
-   * Dispatches a custom event whenever validity changes.
-   *
-   * @param {Map<string, any>} changedProperties a Map of recently changed properties and their new values
+   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
+   * DOM, which registers with BackupUIChild for BackupService state updates.
    */
-  updated(changedProperties) {
-    if (!changedProperties.has("_passwordsValid")) {
-      return;
+  connectedCallback() {
+    super.connectedCallback();
+    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
+      bubbles: true
+    }));
+    if (this.backupFileToRestore && !this.backupFileInfo) {
+      this.getBackupFileInfo();
     }
-    if (this._passwordsValid) {
-      this.dispatchEvent(new CustomEvent("ValidPasswordsDetected", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          password: this.inputNewPasswordEl.value
-        }
-      }));
-    } else {
-      this.dispatchEvent(new CustomEvent("InvalidPasswordsDetected", {
-        bubbles: true,
-        composed: true
-      }));
+    this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
+  }
+  handleEvent(event) {
+    if (event.type == "BackupUI:SelectNewFilepickerPath") {
+      let {
+        path,
+        iconURL
+      } = event.detail;
+      this.backupFileToRestore = path;
+      this._fileIconURL = iconURL;
     }
   }
-  contentTemplate() {
+  willUpdate(changedProperties) {
+    if (changedProperties.has("backupFileToRestore")) {
+      this.backupFileInfo = null;
+      this.getBackupFileInfo();
+    }
+  }
+  async handleChooseBackupFile() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
+      bubbles: true,
+      detail: {
+        win: window.browsingContext,
+        filter: "filterHTML",
+        displayDirectoryPath: this.backupFileToRestore
+      }
+    }));
+  }
+  getBackupFileInfo() {
+    let backupFile = this.backupFileToRestore;
+    if (!backupFile) {
+      return;
+    }
+    this.dispatchEvent(new CustomEvent("getBackupFileInfo", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        backupFile
+      }
+    }));
+  }
+  handleCancel() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleConfirm() {
+    let backupFile = this.backupFileToRestore;
+    if (!backupFile || this.recoveryInProgress) {
+      return;
+    }
+    let backupPassword = this.passwordInput?.value;
+    this.dispatchEvent(new CustomEvent("restoreFromBackupConfirm", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        backupFile,
+        backupPassword
+      }
+    }));
+  }
+  controlsTemplate() {
+    let iconURL = this.backupFileToRestore && (this._fileIconURL || this.#placeholderFileIconURL);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div id="password-inputs-wrapper" aria-live="polite">
-        <form id="password-inputs-form">
-          <!--TODO: (bug 1909983) change first input field label for the "change-password" dialog-->
-          <label id="new-password-label" for="new-password-input">
-            <div id="new-password-label-wrapper-span-input">
-              <span
-                id="new-password-span"
-                data-l10n-id="enable-backup-encryption-create-password-label"
-              ></span>
-              <input
-                type="password"
-                id="new-password-input"
-                minlength="8"
-                required
-                @input=${this.handleChangeNewPassword}
-                @focus=${this.handleFocusNewPassword}
-                @blur=${this.handleBlurNewPassword}
-              />
-              <!--TODO: (bug 1909984) improve how we read out the first input field for screen readers-->
-            </div>
-          </label>
-          <!--TODO: (bug 1909984) look into how the tooltip vs dialog behaves when pressing the ESC key-->
-          <password-rules-tooltip
-            id="password-rules"
-            class=${!this._showRules && !this._tooltipFocus ? "hidden" : ""}
-            .hasCommon=${this._hasCommon}
-            .hasEmail=${this._hasEmail}
-            .tooShort=${this._tooShort}
-            .supportBaseLink=${this.supportBaseLink}
-            @focus=${this.handleTooltipFocus}
-            @blur=${this.handleTooltipBlur}
-          ></password-rules-tooltip>
-          <label id="repeat-password-label" for="repeat-password-input">
-            <span
-              id="repeat-password-span"
-              data-l10n-id="enable-backup-encryption-repeat-password-label"
-            ></span>
+      <fieldset id="backup-restore-controls">
+        <fieldset id="backup-filepicker-controls">
+          <label
+            id="backup-filepicker-label"
+            for="backup-filepicker-input"
+            data-l10n-id="restore-from-backup-filepicker-label"
+          ></label>
+          <div id="backup-filepicker">
             <input
-              type="password"
-              id="repeat-password-input"
-              minlength="8"
-              required
-              @input=${this.handleChangeRepeatPassword}
+              id="backup-filepicker-input"
+              type="text"
+              readonly
+              value=${this.backupFileToRestore}
+              style="background-image: url(${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(iconURL)})"
             />
-          </label>
-        </form>
+            <moz-button
+              id="backup-filepicker-button"
+              @click=${this.handleChooseBackupFile}
+              data-l10n-id="restore-from-backup-file-choose-button"
+              aria-controls="backup-filepicker-input"
+            ></moz-button>
+          </div>
+        </fieldset>
+
+        <fieldset id="password-entry-controls">
+          ${this.backupFileInfo?.isEncrypted ? this.passwordEntryTemplate() : null}
+        </fieldset>
+      </fieldset>
+    `;
+  }
+  passwordEntryTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <fieldset id="backup-password">
+      <label id="backup-password-label" for="backup-password-input">
+        <span
+          id="backup-password-span"
+          data-l10n-id="restore-from-backup-password-label"
+        ></span>
+        <input type="password" id="backup-password-input" />
+      </label>
+      <label
+        id="backup-password-description"
+        data-l10n-id="restore-from-backup-password-description"
+      ></label>
+    </fieldset>`;
+  }
+  contentTemplate() {
+    let buttonL10nId = !this.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="restore-from-backup-wrapper"
+        aria-labelledby="restore-from-backup-header"
+        aria-describedby="restore-from-backup-description"
+      >
+        <h1
+          id="restore-from-backup-header"
+          class="heading-medium"
+          data-l10n-id="restore-from-backup-header"
+        ></h1>
+        <main id="restore-from-backup-content">
+          ${this.recoveryErrorCode ? this.errorTemplate() : null}
+          ${this.backupFileInfo ? this.descriptionTemplate() : null}
+          ${this.controlsTemplate()}
+        </main>
+
+        <moz-button-group id="restore-from-backup-button-group">
+          <moz-button
+            id="restore-from-backup-cancel-button"
+            @click=${this.handleCancel}
+            data-l10n-id="restore-from-backup-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="restore-from-backup-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id=${buttonL10nId}
+            ?disabled=${!this.backupFileToRestore || this.recoveryInProgress}
+          ></moz-button>
+        </moz-button-group>
       </div>
+    `;
+  }
+  descriptionTemplate() {
+    let {
+      date
+    } = this.backupFileInfo;
+    let dateTime = date && new Date(date).getTime();
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="restore-from-backup-description">
+        <span
+          id="restore-from-backup-description-span"
+          data-l10n-id="restore-from-backup-description-with-metadata"
+          data-l10n-args=${JSON.stringify({
+      date: dateTime
+    })}
+        ></span>
+        <a
+          id="restore-from-backup-learn-more-link"
+          is="moz-support-link"
+          support-page="todo-backup"
+          data-l10n-id="restore-from-backup-support-link"
+        ></a>
+      </div>
+    `;
+  }
+  errorTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="restore-from-backup-error"
+        type="error"
+        data-l10n-id=${getRecoveryErrorL10nId(this.recoveryErrorCode)}
+      >
+      </moz-message-bar>
     `;
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
-        href="${browser_components_backup_content_password_validation_inputs_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       ${this.contentTemplate()}
     `;
   }
 }
-customElements.define("password-validation-inputs", PasswordValidationInputs);
+customElements.define("restore-from-backup", RestoreFromBackup);
 
 /***/ }),
 
-/***/ 72195:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 57514:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "enable-backup-encryption.8d743fbc875915662a93.css";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BackupFound: () => (/* binding */ BackupFound),
+/* harmony export */   EncryptedBackupFound: () => (/* binding */ EncryptedBackupFound),
+/* harmony export */   NoBackupFound: () => (/* binding */ NoBackupFound),
+/* harmony export */   RecoveryInProgress: () => (/* binding */ RecoveryInProgress),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30048);
+/* harmony import */ var _restore_from_backup_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(45603);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Backup/Restore from Backup",
+  component: "restore-from-backup",
+  argTypes: {}
+});
+const Template = ({
+  backupFilePath,
+  backupFileToRestore,
+  backupFileInfo,
+  recoveryInProgress,
+  recoveryErrorCode
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <moz-card style="width: fit-content;">
+    <restore-from-backup
+      .backupFilePath=${backupFilePath}
+      .backupFileToRestore=${backupFileToRestore}
+      .backupFileInfo=${backupFileInfo}
+      .recoveryInProgress=${recoveryInProgress}
+      .recoveryErrorCode=${recoveryErrorCode}
+    ></restore-from-backup>
+  </moz-card>
+`;
+const BackupFound = Template.bind({});
+BackupFound.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date(),
+    isEncrypted: null
+  },
+  recoveryErrorCode: 0
+};
+const EncryptedBackupFound = Template.bind({});
+EncryptedBackupFound.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date(),
+    isEncrypted: true
+  },
+  recoveryErrorCode: 0
+};
+const RecoveryInProgress = Template.bind({});
+RecoveryInProgress.args = {
+  backupFilePath: "/Some/User/Documents",
+  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+  backupFileInfo: {
+    date: new Date()
+  },
+  recoveryInProgress: true
+};
+const NoBackupFound = Template.bind({});
 
 /***/ }),
 
@@ -1753,13 +1437,6 @@ module.exports = __webpack_require__.p + "enable-backup-encryption.8d743fbc87591
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
-
-/***/ }),
-
-/***/ 78312:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "password-validation-inputs.bdfc44f0779cbe50ecc7.css";
 
 /***/ }),
 
@@ -1771,4 +1448,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.f08a6c6f.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.3ad84ac4.iframe.bundle.js.map

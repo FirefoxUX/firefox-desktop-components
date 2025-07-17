@@ -468,6 +468,7 @@ class MenuController {
  * @property {string} ariaExpandedAttribute - Internal, map aria-expanded attribute to the ariaExpanded JS property.
  * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {boolean} attention - Show a dot notification on the button if true.
+ * @property {boolean} parentDisabled - When the parent of this component is disabled.
  * @property {string} iconPosition - The icon's position relative to the button label.
  *   Options: start, end.
  * @property {string} menuId - A CSS selector string that identifies the associated menu element controlled by the button.
@@ -546,6 +547,9 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     menuId: {
       type: String,
       reflect: true
+    },
+    parentDisabled: {
+      type: Boolean
     }
   };
   static queries = {
@@ -562,6 +566,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     this.attention = false;
     this.iconPosition = "start";
     this.menuId = "";
+    this.parentDisabled = undefined;
   }
   willUpdate(changedProperties) {
     super.willUpdate(changedProperties);
@@ -601,7 +606,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <button
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.parentDisabled}
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         aria-expanded=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaExpanded)}
@@ -1052,4 +1057,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.5bef16ff.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.12073c14.iframe.bundle.js.map

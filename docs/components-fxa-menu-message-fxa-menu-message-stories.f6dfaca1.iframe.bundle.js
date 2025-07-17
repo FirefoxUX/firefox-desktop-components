@@ -1,5 +1,317 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1490,1836,6592],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,1836,4927,6592],{
+
+/***/ 21276:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ FxAMenuMessage)
+/* harmony export */ });
+/* harmony import */ var browser_components_asrouter_content_components_fxa_menu_message_fxa_menu_message_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29402);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(31836);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * This widget is for a message that can be displayed in panelview menus when
+ * the user is signed out to encourage them to sign in.
+ */
+class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static shadowRootOptions = {
+    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+  static properties = {
+    imageURL: {
+      type: String
+    },
+    buttonText: {
+      type: String
+    },
+    primaryText: {
+      type: String
+    },
+    secondaryText: {
+      type: String
+    },
+    layout: {
+      type: String,
+      reflect: true
+    }
+  };
+  static queries = {
+    signUpButton: "#sign-up-button",
+    closeButton: "#close-button"
+  };
+  constructor() {
+    super();
+    this.layout = "column"; // Default layout
+    this.addEventListener("keydown", event => {
+      let keyCode = event.code;
+      switch (keyCode) {
+        case "ArrowLeft":
+        // Intentional fall-through
+        case "ArrowRight":
+        // Intentional fall-through
+        case "ArrowUp":
+        // Intentional fall-through
+        case "ArrowDown":
+          {
+            if (this.shadowRoot.activeElement === this.signUpButton) {
+              this.closeButton.focus();
+            } else {
+              this.signUpButton.focus();
+            }
+            break;
+          }
+      }
+    }, {
+      capture: true
+    });
+  }
+  handleClose(event) {
+    // Keep the menu open by stopping the click event from
+    // propagating up.
+    event.stopPropagation();
+    this.dispatchEvent(new CustomEvent("FxAMenuMessage:Close"), {
+      bubbles: true
+    });
+  }
+  handleSignUp() {
+    this.dispatchEvent(new CustomEvent("FxAMenuMessage:SignUp"), {
+      bubbles: true
+    });
+  }
+  get isRowLayout() {
+    return this.layout === "row";
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<link
+        rel="stylesheet"
+        href="${browser_components_asrouter_content_components_fxa_menu_message_fxa_menu_message_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div id="container" layout=${this.layout} ?has-image=${this.imageURL}>
+        ${this.isRowLayout ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+              <div id="top-row">
+                <moz-button
+                  id="close-button"
+                  @click=${this.handleClose}
+                  type="ghost"
+                  iconsrc="resource://content-accessible/close-12.svg"
+                  tabindex="2"
+                  data-l10n-id="fxa-menu-message-close-button"
+                >
+                </moz-button>
+                <div id="primary">${this.primaryText}</div>
+              </div>
+              <div id="bottom-row">
+                <div id="body-container">
+                  <div id="secondary">${this.secondaryText}</div>
+                  <moz-button
+                    id="sign-up-button"
+                    @click=${this.handleSignUp}
+                    type="primary"
+                    tabindex="1"
+                    autofocus
+                    title=${this.buttonText}
+                    aria-label=${this.buttonText}
+                  >
+                    ${this.buttonText}
+                  </moz-button>
+                </div>
+                <div id="illustration-container">
+                  <img
+                    id="illustration"
+                    role="presentation"
+                    src=${this.imageURL}
+                  />
+                </div>
+              </div>
+            ` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+              <moz-button
+                id="close-button"
+                @click=${this.handleClose}
+                type="ghost"
+                iconsrc="resource://content-accessible/close-12.svg"
+                tabindex="2"
+                data-l10n-id="fxa-menu-message-close-button"
+              >
+              </moz-button>
+              <div id="illustration-container">
+                <img
+                  id="illustration"
+                  role="presentation"
+                  src=${this.imageURL}
+                />
+              </div>
+              <div id="primary">${this.primaryText}</div>
+              <div id="secondary">${this.secondaryText}</div>
+              <moz-button
+                id="sign-up-button"
+                @click=${this.handleSignUp}
+                type="primary"
+                tabindex="1"
+                autofocus
+                title=${this.buttonText}
+                aria-label=${this.buttonText}
+              >
+                ${this.buttonText}
+              </moz-button>
+            `}
+      </div>`;
+  }
+}
+customElements.define("fxa-menu-message", FxAMenuMessage);
+
+/***/ }),
+
+/***/ 29402:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "fxa-menu-message.df69ba06fdf492250ada.css";
+
+/***/ }),
+
+/***/ 30048:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozCard)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44170);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Cards contain content and actions about a single subject.
+ * There are two card types:
+ * The default type where no type attribute is required and the card
+ * will have no extra functionality.
+ *
+ * The "accordion" type will initially not show any content. The card
+ * will contain an arrow to expand the card so that all of the content
+ * is visible. You can use the "expanded" attribute to force the accordion
+ * card to show its content on initial render.
+ *
+ *
+ * @property {string} heading - The heading text that will be used for the card.
+ * @property {string} icon - (optional) A flag to indicate the header should include an icon
+ * @property {string} type - (optional) The type of card. No type specified
+ *   will be the default card. The other available type is "accordion"
+ * @property {boolean} expanded - A flag to indicate whether the card is
+ *  expanded or not. Can be used to expand the content section of the
+ *  accordion card on initial render.
+ * @slot content - The content to show inside of the card.
+ */
+class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    detailsEl: "#moz-card-details",
+    headingEl: "#heading",
+    contentEl: "#content",
+    summaryEl: "summary",
+    contentSlotEl: "#content-slot"
+  };
+  static properties = {
+    heading: {
+      type: String,
+      fluent: true
+    },
+    icon: {
+      type: Boolean
+    },
+    type: {
+      type: String,
+      reflect: true
+    },
+    expanded: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    this.type = "default";
+    this.expanded = false;
+  }
+  headingTemplate() {
+    if (!this.heading) {
+      return "";
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="heading-wrapper" part="moz-card-heading-wrapper">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type == "accordion", () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="chevron-icon"></div>`)}
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div part="icon" id="heading-icon" role="presentation"></div>`)}
+        <span id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading)} part="heading"
+          >${this.heading}</span
+        >
+      </div>
+    `;
+  }
+  cardTemplate() {
+    if (this.type === "accordion") {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <details
+          id="moz-card-details"
+          @toggle=${this.onToggle}
+          ?open=${this.expanded}
+        >
+          <summary part="summary">${this.headingTemplate()}</summary>
+          <div id="content"><slot id="content-slot"></slot></div>
+        </details>
+      `;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="moz-card-details">
+        ${this.headingTemplate()}
+        <div id="content" aria-describedby="content">
+          <slot></slot>
+        </div>
+      </div>
+    `;
+  }
+  onToggle() {
+    this.expanded = this.detailsEl.open;
+    this.dispatchEvent(new ToggleEvent("toggle", {
+      newState: this.detailsEl.open ? "open" : "closed",
+      oldState: this.detailsEl.open ? "closed" : "open"
+    }));
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <article
+        class="moz-card"
+        aria-labelledby=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading ? "heading" : undefined)}
+      >
+        ${this.cardTemplate()}
+      </article>
+    `;
+  }
+}
+customElements.define("moz-card", MozCard);
+
+/***/ }),
 
 /***/ 30082:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -130,6 +442,7 @@ class MenuController {
  * @property {string} ariaExpandedAttribute - Internal, map aria-expanded attribute to the ariaExpanded JS property.
  * @property {string} hasVisibleLabel - Internal, tracks whether or not the button has a visible label.
  * @property {boolean} attention - Show a dot notification on the button if true.
+ * @property {boolean} parentDisabled - When the parent of this component is disabled.
  * @property {string} iconPosition - The icon's position relative to the button label.
  *   Options: start, end.
  * @property {string} menuId - A CSS selector string that identifies the associated menu element controlled by the button.
@@ -208,6 +521,9 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     menuId: {
       type: String,
       reflect: true
+    },
+    parentDisabled: {
+      type: Boolean
     }
   };
   static queries = {
@@ -224,6 +540,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
     this.attention = false;
     this.iconPosition = "start";
     this.menuId = "";
+    this.parentDisabled = undefined;
   }
   willUpdate(changedProperties) {
     super.willUpdate(changedProperties);
@@ -263,7 +580,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
         href="${toolkit_content_widgets_moz_button_moz_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <button
-        ?disabled=${this.disabled}
+        ?disabled=${this.disabled || this.parentDisabled}
         title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title || this.tooltipText)}
         aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
         aria-expanded=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaExpanded)}
@@ -572,6 +889,13 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
+/***/ 44170:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-card.591acdfc5b6a9c67bad9.css";
+
+/***/ }),
+
 /***/ 76150:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -579,211 +903,72 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
 /***/ }),
 
-/***/ 82389:
+/***/ 82805:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Badged: () => (/* binding */ Badged),
 /* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   DefaultSmall: () => (/* binding */ DefaultSmall),
-/* harmony export */   Destructive: () => (/* binding */ Destructive),
-/* harmony export */   Disabled: () => (/* binding */ Disabled),
-/* harmony export */   Icon: () => (/* binding */ Icon),
-/* harmony export */   IconGhost: () => (/* binding */ IconGhost),
-/* harmony export */   IconPositionEnd: () => (/* binding */ IconPositionEnd),
-/* harmony export */   IconSmall: () => (/* binding */ IconSmall),
-/* harmony export */   IconText: () => (/* binding */ IconText),
-/* harmony export */   MenuButton: () => (/* binding */ MenuButton),
-/* harmony export */   Primary: () => (/* binding */ Primary),
-/* harmony export */   Toolbar: () => (/* binding */ Toolbar),
-/* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var _moz_button_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(31836);
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30048);
+/* harmony import */ var _fxa_menu_message_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(21276);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// eslint-disable-next-line import/no-unresolved
+
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Button",
-  component: "moz-button",
-  argTypes: {
-    l10nId: {
-      options: ["moz-button-labelled", "moz-button-titled", "moz-button-aria-labelled"],
-      control: {
-        type: "select"
-      }
-    },
-    size: {
-      options: ["default", "small"],
-      control: {
-        type: "radio"
-      }
-    },
-    type: {
-      options: ["default", "primary", "destructive", "icon", "icon ghost"],
-      control: {
-        type: "select"
-      }
-    },
-    iconPosition: {
-      options: ["start", "end"],
-      control: {
-        type: "select"
-      }
-    }
-  },
-  parameters: {
-    actions: {
-      handles: ["click"]
-    },
-    status: "stable",
-    fluent: `
-moz-button-labelled =
-  .label = Button
-moz-button-primary = Primary
-moz-button-destructive = Destructive
-moz-button-titled =
-  .title = View logins
-moz-button-aria-labelled =
-  .aria-label = View logins
-moz-button-more-options =
-  .aria-label = More options
-  .title = More options
-`
-  }
+  title: "Domain-specific UI Widgets/ASRouter/FxA Menu Message",
+  component: "fxa-menu-message",
+  argTypes: {}
 });
 const Template = ({
-  type,
-  size,
-  l10nId,
-  iconSrc,
-  disabled,
-  accesskey,
-  clickHandler,
-  showOuterPadding,
-  attention,
-  iconPosition,
-  menuId
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    .show-outer-padding {
-      --button-outer-padding-inline: var(--space-medium);
-      --button-outer-padding-block: var(--space-medium);
-    }
-  </style>
-  <moz-button
-    @click=${clickHandler}
-    data-l10n-id=${l10nId}
-    data-l10n-attrs="label"
-    type=${type}
-    size=${size}
-    ?disabled=${disabled}
-    iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-    accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
-    ?attention=${attention}
-    iconPosition=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconPosition)}
-    menuId=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(menuId)}
-    class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
-  "show-outer-padding": showOuterPadding
-})}
-  ></moz-button>
-  ${menuId ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <panel-list id="panel-list">
-        <panel-item>Item One</panel-item>
-        <panel-item>Item Two</panel-item>
-        <panel-item>Item Three</panel-item>
-      </panel-list>` : ""}
+  buttonText,
+  imageURL,
+  primaryText,
+  secondaryText,
+  imageVerticalTopOffset,
+  imageVerticalBottomOffset,
+  containerVerticalBottomOffset,
+  layout,
+  imageHeight
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <moz-card style="width: 22.5rem;">
+    <fxa-menu-message
+      buttonText=${buttonText}
+      primaryText=${primaryText}
+      secondaryText=${secondaryText}
+      imageURL=${imageURL}
+      style="
+        --illustration-margin-block-start-offset: ${imageVerticalTopOffset}px;
+        --illustration-margin-block-end-offset: ${imageVerticalBottomOffset}px;
+        --container-margin-block-end-offset: ${containerVerticalBottomOffset}px;
+        --image-height: ${imageHeight}px;
+      "
+      layout=${layout}
+    >
+    </fxa-menu-message>
+  </moz-card>
 `;
 const Default = Template.bind({});
 Default.args = {
-  type: "default",
-  size: "default",
-  l10nId: "moz-button-labelled",
-  iconSrc: "",
-  disabled: false,
-  showOuterPadding: false,
-  attention: false,
-  iconPosition: "start"
-};
-const DefaultSmall = Template.bind({});
-DefaultSmall.args = {
-  ...Default.args,
-  size: "small"
-};
-const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true
-};
-const Primary = Template.bind({});
-Primary.args = {
-  ...Default.args,
-  type: "primary",
-  l10nId: "moz-button-primary"
-};
-const Destructive = Template.bind({});
-Destructive.args = {
-  ...Default.args,
-  type: "destructive",
-  l10nId: "moz-button-destructive"
-};
-const Icon = Template.bind({});
-Icon.args = {
-  ...Default.args,
-  iconSrc: "chrome://global/skin/icons/more.svg",
-  l10nId: "moz-button-titled"
-};
-const IconSmall = Template.bind({});
-IconSmall.args = {
-  ...Icon.args,
-  size: "small"
-};
-const IconGhost = Template.bind({});
-IconGhost.args = {
-  ...Icon.args,
-  type: "ghost"
-};
-const IconText = Template.bind({});
-IconText.args = {
-  ...Default.args,
-  iconSrc: "chrome://global/skin/icons/edit-copy.svg",
-  l10nId: "moz-button-labelled"
-};
-const IconPositionEnd = Template.bind({});
-IconPositionEnd.args = {
-  ...IconText.args,
-  iconPosition: "end"
-};
-const WithAccesskey = Template.bind({});
-WithAccesskey.args = {
-  ...Default.args,
-  accesskey: "t",
-  clickHandler: () => alert("Activating the accesskey clicks the button")
-};
-const Toolbar = Template.bind({});
-Toolbar.args = {
-  ...Default.args,
-  showOuterPadding: true
-};
-const Badged = Template.bind({});
-Badged.args = {
-  ...Icon.args,
-  type: "icon",
-  attention: true
-};
-const MenuButton = Template.bind({});
-MenuButton.args = {
-  ...Icon.args,
-  type: "icon",
-  l10nId: "moz-button-more-options",
-  menuId: "panel-list"
+  buttonText: "Sign up",
+  imageURL: "chrome://browser/content/asrouter/assets/fox-with-box-on-cloud.svg",
+  primaryText: "Bounce between devices",
+  secondaryText: "Sync and encrypt your bookmarks, passwords, and more on all your devices.",
+  imageVerticalTopOffset: -20,
+  imageVerticalBottomOffset: 0,
+  containerVerticalBottomOffset: 0,
+  layout: "column",
+  imageHeight: 120
 };
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-moz-button-stories.b64d1136.iframe.bundle.js.map
+//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.f6dfaca1.iframe.bundle.js.map
