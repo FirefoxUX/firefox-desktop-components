@@ -67,7 +67,6 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     this.imageAlignment = "start";
   }
   updated(changedProperties) {
-    // super.updated?.(changedProperties);
     if (changedProperties.has("imageSrc") && this.imageSrc) {
       this.style.setProperty("--promo-image-url", `url("${this.imageSrc}")`);
     }
@@ -107,4 +106,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=1512.c56238df.iframe.bundle.js.map
+//# sourceMappingURL=1512.ac96fff0.iframe.bundle.js.map
