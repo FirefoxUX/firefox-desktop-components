@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.49357a147fe2ef3add8b.css";
+module.exports = __webpack_require__.p + "moz-promo.58168f49d38a8806508b.css";
 
 /***/ }),
 
@@ -39,6 +39,10 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} iconAlignment - How the icon should be aligned. Can be "start", "end", "center".
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    actionsSlot: "slot[name=actions]",
+    supportLinkSlot: "slot[name=support-link]"
+  };
   static properties = {
     type: {
       type: String,
@@ -96,6 +100,10 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         <div class="text-container">
           ${this.headingTemplate()}
           <p class="message">${this.message}</p>
+          <div class="actions-and-support-link-wrapper">
+            <slot name="actions"></slot>
+            <slot name="support-link"></slot>
+          </div>
         </div>
         ${!imageStartAligned ? this.imageTemplate() : ""}
       </div>`;
@@ -106,4 +114,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=1512.ac96fff0.iframe.bundle.js.map
+//# sourceMappingURL=1512.bf3fbe05.iframe.bundle.js.map
