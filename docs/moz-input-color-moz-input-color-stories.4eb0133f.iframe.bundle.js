@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[5280],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4790,5280],{
 
 /***/ 32558:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-color.8ecb2cd5a169b8a377cd.css";
+module.exports = __webpack_require__.p + "moz-input-color.01390a5cd67dab3aeebc.css";
 
 /***/ }),
 
@@ -120,7 +120,56 @@ class MozInputColor extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
 }
 customElements.define("moz-input-color", MozInputColor);
 
+/***/ }),
+
+/***/ 66121:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var _moz_input_color_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55280);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Input Color",
+  component: "moz-input-color",
+  argTypes: {},
+  parameters: {
+    status: "in-development",
+    fluent: `
+moz-input-color-label =
+  .label = Background
+    `
+  }
+});
+const Template = ({
+  value,
+  label,
+  l10nId
+}) => {
+  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+    <moz-input-color
+      value=${value}
+      label=${label}
+      data-l10n-id=${l10nId}
+    ></moz-input-color>
+  `;
+};
+const Default = Template.bind({});
+Default.args = {
+  value: "#7293C9",
+  l10nId: "moz-input-color-label"
+};
+
 /***/ })
 
 }]);
-//# sourceMappingURL=5280.135623c8.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-color-moz-input-color-stories.4eb0133f.iframe.bundle.js.map
