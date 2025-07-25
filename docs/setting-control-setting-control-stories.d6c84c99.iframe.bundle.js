@@ -242,7 +242,8 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       ".parentDisabled": this.parentDisabled,
       ".control": this,
       "data-subcategory": config.subcategory,
-      "?disabled": this.setting.locked
+      "?disabled": this.setting.locked,
+      ...config.controlAttrs
     };
     if (config.l10nArgs) {
       props["data-l10n-args"] = JSON.stringify(config.l10nArgs);
@@ -321,4 +322,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.ab86957d.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.d6c84c99.iframe.bundle.js.map

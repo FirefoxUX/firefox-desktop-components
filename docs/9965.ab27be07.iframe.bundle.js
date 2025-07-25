@@ -260,8 +260,18 @@ __webpack_require__.r(__webpack_exports__);
         this.setAttribute("align", align);
         this.setAttribute("valign", valign);
         hostElement.style.overflow = "";
-        this.style.left = `${leftOffset + winScrollX}px`;
-        this.style.top = `${topOffset + winScrollY}px`;
+        // Decide positioning based on where this panel will be rendered
+        const offsetParentIsBody = this.offsetParent === document?.body || !this.offsetParent;
+        if (offsetParentIsBody) {
+          // viewport-based
+          this.style.left = `${leftOffset + winScrollX}px`;
+          this.style.top = `${topOffset + winScrollY}px`;
+        } else {
+          // container-relative
+          const offsetParentRect = this.offsetParent.getBoundingClientRect();
+          this.style.left = `${leftOffset - offsetParentRect.left + winScrollX}px`;
+          this.style.top = `${topOffset - offsetParentRect.top + winScrollY}px`;
+        }
       }
       this.style.minWidth = this.hasAttribute("min-width-from-anchor") ? `${anchorWidth}px` : "";
       this.removeAttribute("showing");
@@ -740,4 +750,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=9965.9c4e4542.iframe.bundle.js.map
+//# sourceMappingURL=9965.ab27be07.iframe.bundle.js.map

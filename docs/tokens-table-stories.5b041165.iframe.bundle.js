@@ -1680,31 +1680,6 @@ const storybookTables = {
     value: "var(--size-item-large)",
     name: "--icon-size-xlarge"
   }],
-  space: [{
-    value: "var(--space-xsmall)",
-    name: "--input-space-block"
-  }, {
-    value: "calc(0.5 * var(--space-xsmall))",
-    name: "--space-xxsmall"
-  }, {
-    value: "0.267rem",
-    name: "--space-xsmall"
-  }, {
-    value: "calc(2 * var(--space-xsmall))",
-    name: "--space-small"
-  }, {
-    value: "calc(3 * var(--space-xsmall))",
-    name: "--space-medium"
-  }, {
-    value: "calc(4 * var(--space-xsmall))",
-    name: "--space-large"
-  }, {
-    value: "calc(6 * var(--space-xsmall))",
-    name: "--space-xlarge"
-  }, {
-    value: "calc(8 * var(--space-xsmall))",
-    name: "--space-xxlarge"
-  }],
   link: [{
     value: {
       forcedColors: "LinkText",
@@ -1752,6 +1727,28 @@ const storybookTables = {
   }, {
     value: "1px",
     name: "--link-focus-outline-offset"
+  }],
+  space: [{
+    value: "calc(0.5 * var(--space-xsmall))",
+    name: "--space-xxsmall"
+  }, {
+    value: "0.267rem",
+    name: "--space-xsmall"
+  }, {
+    value: "calc(2 * var(--space-xsmall))",
+    name: "--space-small"
+  }, {
+    value: "calc(3 * var(--space-xsmall))",
+    name: "--space-medium"
+  }, {
+    value: "calc(4 * var(--space-xsmall))",
+    name: "--space-large"
+  }, {
+    value: "calc(6 * var(--space-xsmall))",
+    name: "--space-xlarge"
+  }, {
+    value: "calc(8 * var(--space-xsmall))",
+    name: "--space-xxlarge"
   }],
   "box-shadow": [{
     value: "0 0 1px var(--box-shadow-color-darker-layer-1), 0 1px 2px var(--box-shadow-color-darker-layer-2)",
@@ -2405,7 +2402,6 @@ const variableLookupTable = {
   "icon-size-large": "24px",
   "icon-size-xlarge": "var(--size-item-large)",
   "input-text-min-height": "var(--button-min-height)",
-  "input-space-block": "var(--space-xsmall)",
   "link-color": {
     forcedColors: "LinkText",
     brand: {
@@ -2545,4 +2541,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.610a69ed.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.5b041165.iframe.bundle.js.map
