@@ -363,7 +363,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       if (newIndex < 0 || newIndex >= numElements) {
         return;
       }
-      this.#focusableElementsList[newIndex].focus();
+      this.#focusableElementsList[newIndex]?.focus();
     };
     const isLoginLine = element === this.passwordLine.loginLine;
     const isRevealBtn = element === this.passwordLine.revealBtn.buttonEl;
@@ -554,6 +554,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
           class="view-alert-button"
           data-l10n-id="contextual-manager-view-alert-button-2"
           data-l10n-args=${alertCountArg}
+          tabindex="-1"
           slot="actions"
           type="icon"
           iconSrc=${getIconSrc()}
@@ -674,4 +675,4 @@ AllAlertsOn.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.a1e040c6.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.4a39dbf7.iframe.bundle.js.map
