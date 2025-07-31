@@ -1577,8 +1577,8 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           // container-relative
           const offsetParentRect = this.offsetParent.getBoundingClientRect();
-          this.style.left = `${leftOffset - offsetParentRect.left + winScrollX}px`;
-          this.style.top = `${topOffset - offsetParentRect.top + winScrollY}px`;
+          this.style.left = `${leftOffset - offsetParentRect.left}px`;
+          this.style.top = `${topOffset - offsetParentRect.top}px`;
         }
       }
       this.style.minWidth = this.hasAttribute("min-width-from-anchor") ? `${anchorWidth}px` : "";
@@ -12211,4 +12211,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.ad9644e9.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.d614d067.iframe.bundle.js.map

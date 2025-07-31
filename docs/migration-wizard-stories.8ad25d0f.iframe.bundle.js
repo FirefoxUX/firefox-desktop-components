@@ -824,8 +824,8 @@ __webpack_require__.r(__webpack_exports__);
         } else {
           // container-relative
           const offsetParentRect = this.offsetParent.getBoundingClientRect();
-          this.style.left = `${leftOffset - offsetParentRect.left + winScrollX}px`;
-          this.style.top = `${topOffset - offsetParentRect.top + winScrollY}px`;
+          this.style.left = `${leftOffset - offsetParentRect.left}px`;
+          this.style.top = `${topOffset - offsetParentRect.top}px`;
         }
       }
       this.style.minWidth = this.hasAttribute("min-width-from-anchor") ? `${anchorWidth}px` : "";
@@ -3208,4 +3208,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.ba83418a.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.8ad25d0f.iframe.bundle.js.map
