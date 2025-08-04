@@ -5764,7 +5764,7 @@ class MozInputSearch extends chrome_global_content_elements_moz_input_text_mjs__
   clear() {
     this.#clearSearchTimer();
     if (this.value) {
-      this.value = "";
+      this.value = this.inputEl.value = "";
       this.#dispatchSearch();
     }
   }
@@ -11679,4 +11679,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-search-README-stories-md.ced94445.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-search-README-stories-md.93e9e27e.iframe.bundle.js.map
