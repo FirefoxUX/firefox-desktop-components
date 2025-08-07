@@ -38,6 +38,7 @@ const HEADING_LEVEL_TEMPLATES = {
  * @property {string} supportPage - Name of the SUMO support page to link to.
  * @property {number} headingLevel - Render the legend in a heading of this level.
  * @property {boolean} disabled - Whether the fieldset and its children are disabled.
+ * @property {string} iconSrc - The src for an optional icon.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -68,12 +69,16 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     disabled: {
       type: Boolean,
       reflect: true
+    },
+    iconSrc: {
+      type: String
     }
   };
   constructor() {
     super();
     this.headingLevel = -1;
     this.disabled = false;
+    this.iconSrc = "";
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -115,7 +120,13 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   legendTemplate() {
     let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${label}</legend>`;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.iconTemplate()}${label}</legend>`;
+  }
+  iconTemplate() {
+    if (!this.iconSrc) {
+      return "";
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img src=${this.iconSrc} role="presentation" class="icon" />`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -340,7 +351,7 @@ WithItemLabels.args = {
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.d3664db0bb023c72b3fe.css";
+module.exports = __webpack_require__.p + "moz-fieldset.655ddbd7b08939ea451d.css";
 
 /***/ }),
 
@@ -897,4 +908,4 @@ customElements.define("moz-visual-picker-item", MozVisualPickerItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.45419d67.iframe.bundle.js.map
+//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.be05bd9a.iframe.bundle.js.map

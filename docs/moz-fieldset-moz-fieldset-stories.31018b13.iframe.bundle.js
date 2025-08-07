@@ -38,6 +38,7 @@ const HEADING_LEVEL_TEMPLATES = {
  * @property {string} supportPage - Name of the SUMO support page to link to.
  * @property {number} headingLevel - Render the legend in a heading of this level.
  * @property {boolean} disabled - Whether the fieldset and its children are disabled.
+ * @property {string} iconSrc - The src for an optional icon.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -68,12 +69,16 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     disabled: {
       type: Boolean,
       reflect: true
+    },
+    iconSrc: {
+      type: String
     }
   };
   constructor() {
     super();
     this.headingLevel = -1;
     this.disabled = false;
+    this.iconSrc = "";
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -115,7 +120,13 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   legendTemplate() {
     let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${label}</legend>`;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.iconTemplate()}${label}</legend>`;
+  }
+  iconTemplate() {
+    if (!this.iconSrc) {
+      return "";
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img src=${this.iconSrc} role="presentation" class="icon" />`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -824,7 +835,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.d3664db0bb023c72b3fe.css";
+module.exports = __webpack_require__.p + "moz-fieldset.655ddbd7b08939ea451d.css";
 
 /***/ }),
 
@@ -1249,6 +1260,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   WithDescriptionAndSlottedSupportLink: () => (/* binding */ WithDescriptionAndSlottedSupportLink),
 /* harmony export */   WithDescriptionAndSupportLink: () => (/* binding */ WithDescriptionAndSupportLink),
 /* harmony export */   WithHeadingLegend: () => (/* binding */ WithHeadingLegend),
+/* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithSlottedSupportLink: () => (/* binding */ WithSlottedSupportLink),
 /* harmony export */   WithSupportLink: () => (/* binding */ WithSupportLink),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -1281,9 +1293,16 @@ __webpack_require__.r(__webpack_exports__);
         type: "select"
       }
     },
-    disabled: {
+    l10nId: {
+      options: ["moz-fieldset-label", "moz-fieldset-description"],
       control: {
-        type: "boolean"
+        type: "select"
+      }
+    },
+    iconSrc: {
+      options: ["", "chrome://global/skin/icons/info.svg", "chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/warning.svg", "chrome://global/skin/icons/heart.svg", "chrome://global/skin/icons/edit.svg"],
+      control: {
+        type: "select"
       }
     }
   },
@@ -1305,7 +1324,8 @@ const Template = ({
   supportPage,
   hasSlottedSupportLinks,
   headingLevel,
-  disabled
+  disabled,
+  iconSrc
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-fieldset
     data-l10n-id=${l10nId}
@@ -1315,6 +1335,7 @@ const Template = ({
     .disabled=${disabled}
     support-page=${supportPage}
     style="width: 400px;"
+    iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
   >
     <moz-toggle
       pressed
@@ -1347,7 +1368,8 @@ Default.args = {
   supportPage: "",
   l10nId: "moz-fieldset-label",
   hasSlottedSupportLinks: false,
-  disabled: false
+  disabled: false,
+  iconSrc: ""
 };
 const WithDescription = Template.bind({});
 WithDescription.args = {
@@ -1383,6 +1405,11 @@ const Disabled = Template.bind({});
 Disabled.args = {
   ...WithDescription.args,
   disabled: true
+};
+const WithIcon = Template.bind({});
+WithIcon.args = {
+  ...WithSupportLink.args,
+  iconSrc: "chrome://global/skin/icons/info.svg"
 };
 
 /***/ }),
@@ -1478,4 +1505,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.5511193f.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.31018b13.iframe.bundle.js.map

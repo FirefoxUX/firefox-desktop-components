@@ -1423,6 +1423,9 @@ const storybookTables = {
     },
     name: "--page-main-content-width"
   }, {
+    value: "12px",
+    name: "--size-item-xsmall"
+  }, {
     value: "16px",
     name: "--size-item-small"
   }, {
@@ -1431,6 +1434,9 @@ const storybookTables = {
   }, {
     value: "32px",
     name: "--size-item-large"
+  }, {
+    value: "48px",
+    name: "--size-item-xlarge"
   }],
   "text-color": [{
     value: {
@@ -1669,7 +1675,7 @@ const storybookTables = {
     value: "var(--icon-size-small)",
     name: "--icon-size"
   }, {
-    value: "12px",
+    value: "var(--size-item-xsmall)",
     name: "--icon-size-xsmall"
   }, {
     value: "var(--size-item-small)",
@@ -1678,7 +1684,7 @@ const storybookTables = {
     value: "20px",
     name: "--icon-size-medium"
   }, {
-    value: "24px",
+    value: "var(--size-item-medium)",
     name: "--icon-size-large"
   }, {
     value: "var(--size-item-large)",
@@ -2404,10 +2410,10 @@ const variableLookupTable = {
     default: "light-dark(var(--color-red-60), var(--color-red-20))"
   },
   "icon-size": "var(--icon-size-small)",
-  "icon-size-xsmall": "12px",
+  "icon-size-xsmall": "var(--size-item-xsmall)",
   "icon-size-small": "var(--size-item-small)",
   "icon-size-medium": "20px",
-  "icon-size-large": "24px",
+  "icon-size-large": "var(--size-item-medium)",
   "icon-size-xlarge": "var(--size-item-large)",
   "input-text-min-height": "var(--button-min-height)",
   "link-color": {
@@ -2458,9 +2464,11 @@ const variableLookupTable = {
       default: "664px"
     }
   },
+  "size-item-xsmall": "12px",
   "size-item-small": "16px",
   "size-item-medium": "24px",
   "size-item-large": "32px",
+  "size-item-xlarge": "48px",
   "space-xxsmall": "calc(0.5 * var(--space-xsmall))",
   "space-xsmall": "0.267rem",
   "space-small": "calc(2 * var(--space-xsmall))",
@@ -2549,4 +2557,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.61247ca9.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.e85980b2.iframe.bundle.js.map
