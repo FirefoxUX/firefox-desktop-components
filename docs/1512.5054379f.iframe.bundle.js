@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.58168f49d38a8806508b.css";
+module.exports = __webpack_require__.p + "moz-promo.007b53a7fafad53435bc.css";
 
 /***/ }),
 
@@ -77,9 +77,7 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
   }
   headingTemplate() {
     if (this.heading) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<strong class="heading heading-medium"
-        >${this.heading}</strong
-      >`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h2 class="heading heading-medium">${this.heading}</h2>`;
     }
     return "";
   }
@@ -114,4 +112,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=1512.bf3fbe05.iframe.bundle.js.map
+//# sourceMappingURL=1512.5054379f.iframe.bundle.js.map
