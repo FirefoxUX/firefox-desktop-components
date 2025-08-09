@@ -219,15 +219,20 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     await this.controlEl.updateComplete;
     return result;
   }
+  onSettingChange = () => {
+    this.setValue();
+    this.requestUpdate();
+  };
   willUpdate(changedProperties) {
     if (changedProperties.has("setting")) {
       if (this.#lastSetting) {
-        this.#lastSetting.off("change", this.setValue);
+        this.#lastSetting.off("change", this.onSettingChange);
       }
       this.#lastSetting = this.setting;
       this.setValue();
-      this.setting.on("change", this.setValue);
+      this.setting.on("change", this.onSettingChange);
     }
+    this.hidden = !this.setting.visible;
   }
 
   /**
@@ -276,7 +281,6 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   // Called by our parent when our input changed.
   onChange(el) {
     this.setting.userChange(this.controlValue(el));
-    this.setValue();
   }
   render() {
     // Allow the Setting to override the static config if necessary.
@@ -289,7 +293,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     let itemArgs = config.items?.map(i => ({
       config: i,
       setting: this.getSetting(i.id)
-    })).filter(i => i.setting.visible) || [];
+    })) || [];
     let nestedSettings = itemArgs.map(opts => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
           .config=${opts.config}
           .setting=${opts.setting}
@@ -322,4 +326,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.d6c84c99.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.fff54983.iframe.bundle.js.map

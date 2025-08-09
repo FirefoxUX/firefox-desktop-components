@@ -123,9 +123,6 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   }
   itemTemplate(item) {
     let setting = this.getSetting(item.id);
-    if (!setting.visible) {
-      return "";
-    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
       .setting=${setting}
       .config=${item}
@@ -148,4 +145,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.cfe91530.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.9eca5fac.iframe.bundle.js.map
