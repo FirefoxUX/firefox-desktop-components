@@ -669,12 +669,22 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class DialogButton extends chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_0__["default"] {
+  /**
+   * @param {string} dialog - The chrome url of the dialog to open.
+   * @param {string} features - The window features for the dialog. They get
+   * directly passed into window.openDialog.
+   * @param {Array} dialogArgs - The arguments to pass into the dialog's content
+   * window. These arguments are dialog specific.
+   */
   static properties = {
     dialog: {
       type: String
     },
     features: {
       type: String
+    },
+    dialogArgs: {
+      type: Array
     }
   };
   constructor() {
@@ -688,10 +698,11 @@ class DialogButton extends chrome_global_content_elements_moz_button_mjs__WEBPAC
   onClick() {
     let dialog = this.getAttribute("dialog");
     let features = this.getAttribute("features");
-    let args = features ? {
+    let dialogOptions = features ? {
       features
     } : undefined;
-    window.gSubDialog.open(dialog, args);
+    let targetDialogWindowArguments = this.dialogArgs ?? [];
+    window.gSubDialog.open(dialog, dialogOptions, ...targetDialogWindowArguments);
   }
 }
 customElements.define("dialog-button", DialogButton);
@@ -699,4 +710,4 @@ customElements.define("dialog-button", DialogButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=dialog-button-dialog-button-stories.2c6470eb.iframe.bundle.js.map
+//# sourceMappingURL=dialog-button-dialog-button-stories.64ad523f.iframe.bundle.js.map
