@@ -123,7 +123,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-toggle",
   argTypes: {
     l10nId: {
-      options: ["moz-toggle-label", "moz-toggle-aria-label", "moz-toggle-description", "moz-toggle-long-label"],
+      options: ["moz-toggle-label", "moz-toggle-only", "moz-toggle-aria-label", "moz-toggle-description", "moz-toggle-long-label"],
       control: {
         type: "select"
       }
@@ -136,7 +136,10 @@ __webpack_require__.r(__webpack_exports__);
     },
     fluent: `
 moz-toggle-aria-label =
+  .label = This is the label
   .aria-label = This is the aria-label
+moz-toggle-only =
+  .aria-label = This is the toggle-only aria-label
 moz-toggle-label =
   .label = This is the label
 moz-toggle-description =
@@ -209,12 +212,13 @@ Disabled.args = {
 const ToggleOnly = Template.bind({});
 ToggleOnly.args = {
   ...Default.args,
-  l10nId: "moz-toggle-aria-label"
+  l10nId: "moz-toggle-only"
 };
 const WithAccesskey = Template.bind({});
 WithAccesskey.args = {
   ...Default.args,
-  accessKey: "h"
+  accessKey: "h",
+  l10nId: "moz-toggle-aria-label"
 };
 const WithDescription = Template.bind({});
 WithDescription.args = {
@@ -688,4 +692,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.4bbcc191.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.05d63602.iframe.bundle.js.map
