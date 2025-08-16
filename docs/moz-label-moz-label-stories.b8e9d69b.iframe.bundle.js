@@ -315,7 +315,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-MozXULElement.insertFTLIfNeeded("locales-preview/moz-label.storybook.ftl");
+const fluentStrings = ["moz-label-default-label", "moz-label-label-with-colon", "moz-label-label-disabled"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "UI Widgets/Label",
   component: "moz-label",
@@ -324,6 +324,22 @@ MozXULElement.insertFTLIfNeeded("locales-preview/moz-label.storybook.ftl");
       options: ["checkbox", "radio"],
       control: {
         type: "select"
+      }
+    },
+    l10nId: {
+      options: fluentStrings,
+      control: {
+        type: "select"
+      }
+    },
+    textContent: {
+      table: {
+        disable: true
+      }
+    },
+    "data-l10n-id": {
+      table: {
+        disable: true
       }
     }
   },
@@ -334,14 +350,19 @@ MozXULElement.insertFTLIfNeeded("locales-preview/moz-label.storybook.ftl");
         title: "Learn more",
         href: "?path=/docs/ui-widgets-label-readme--page#component-status"
       }]
-    }
+    },
+    fluent: `
+moz-label-default-label = I love cheese 🧀
+moz-label-label-with-colon = I love cheese 🧀:
+moz-label-label-disabled = I love cheese 🧀
+    `
   }
 });
 const Template = ({
   accesskey,
   inputType,
   disabled,
-  "data-l10n-id": dataL10nId
+  l10nId
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <style>
     div {
@@ -357,7 +378,7 @@ const Template = ({
     <label
       is="moz-label"
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
-      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(dataL10nId)}
+      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
       for="cheese"
     >
     </label>
@@ -375,18 +396,19 @@ AccessKey.args = {
   accesskey: "c",
   inputType: "checkbox",
   disabled: false,
-  "data-l10n-id": "default-label"
+  l10nId: "moz-label-default-label"
 };
 const AccessKeyNotInLabel = Template.bind({});
 AccessKeyNotInLabel.args = {
   ...AccessKey.args,
   accesskey: "x",
-  "data-l10n-id": "label-with-colon"
+  l10nId: "moz-label-label-with-colon"
 };
 const DisabledCheckbox = Template.bind({});
 DisabledCheckbox.args = {
   ...AccessKey.args,
-  disabled: true
+  disabled: true,
+  l10nId: "moz-label-label-disabled"
 };
 
 /***/ }),
@@ -399,4 +421,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-label-moz-label-stories.8bd2a1f2.iframe.bundle.js.map
+//# sourceMappingURL=moz-label-moz-label-stories.b8e9d69b.iframe.bundle.js.map

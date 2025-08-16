@@ -8,8 +8,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Primary: () => (/* binding */ Primary),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
-/* harmony export */   withAMOUrl: () => (/* binding */ withAMOUrl),
-/* harmony export */   withFluentId: () => (/* binding */ withFluentId)
+/* harmony export */   withAMOUrl: () => (/* binding */ withAMOUrl)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
 /* harmony import */ var _moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(70324);
@@ -19,35 +18,42 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-MozXULElement.insertFTLIfNeeded("locales-preview/moz-support-link-storybook.ftl");
-MozXULElement.insertFTLIfNeeded("toolkit/global/mozSupportLink.ftl");
-const fluentStrings = ["storybook-amo-test", "storybook-fluent-test", "moz-support-link-text"];
+const fluentStrings = ["moz-support-link-text-amo", "moz-support-link-text"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "UI Widgets/Support Link",
   component: "moz-support-link",
   argTypes: {
-    "data-l10n-id": {
-      options: [fluentStrings[0], fluentStrings[1], fluentStrings[2]],
+    l10nId: {
+      options: fluentStrings,
       control: {
         type: "select"
       }
     },
     onClick: {
       action: "clicked"
+    },
+    "data-l10n-id": {
+      table: {
+        disable: true
+      }
     }
   },
   parameters: {
-    status: "stable"
+    status: "stable",
+    fluent: `
+moz-support-link-text-amo = Learn more about add-ons
+moz-support-link-text = Learn more
+    `
   }
 });
 const Template = ({
-  "data-l10n-id": dataL10nId,
+  l10nId,
   "support-page": supportPage,
   "utm-content": utmContent
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <a
     is="moz-support-link"
-    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(dataL10nId)}
+    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
     support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
     utm-content=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(utmContent)}
   >
@@ -55,18 +61,12 @@ const Template = ({
 `;
 const withAMOUrl = Template.bind({});
 withAMOUrl.args = {
-  "data-l10n-id": fluentStrings[0],
+  l10nId: "moz-support-link-text-amo",
   "support-page": "addons",
   "utm-content": "promoted-addon-badge"
 };
 const Primary = Template.bind({});
 Primary.args = {
-  "support-page": "preferences",
-  "utm-content": ""
-};
-const withFluentId = Template.bind({});
-withFluentId.args = {
-  "data-l10n-id": fluentStrings[1],
   "support-page": "preferences",
   "utm-content": ""
 };
@@ -201,4 +201,4 @@ function formatUTMParams(contentAttribute, url) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-support-link-moz-support-link-stories.ad3d7d04.iframe.bundle.js.map
+//# sourceMappingURL=moz-support-link-moz-support-link-stories.b34aae24.iframe.bundle.js.map
