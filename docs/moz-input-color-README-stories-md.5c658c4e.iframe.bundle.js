@@ -8461,7 +8461,7 @@ class MozInputColor extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
         href="${toolkit_content_widgets_moz_input_color_moz_input_color_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
 
-      <label>
+      <label title=${this.value}>
         <input
           type="color"
           name=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.name)}
@@ -11292,4 +11292,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-color-README-stories-md.7db08279.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-color-README-stories-md.5c658c4e.iframe.bundle.js.map
