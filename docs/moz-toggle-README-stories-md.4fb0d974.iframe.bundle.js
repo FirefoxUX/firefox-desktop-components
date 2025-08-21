@@ -1,4 +1,4 @@
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[356,1294,1970,7322],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1294,6592,7804,8699],{
 
 /***/ 2523:
 /***/ ((module) => {
@@ -339,6 +339,273 @@ exports.unstable_shouldYield=M;exports.unstable_wrapCallback=function(a){var b=y
 
 /***/ }),
 
+/***/ 8256:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   __page: () => (/* binding */ __page),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(96540);
+/* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68910);
+/* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(85164);
+/* harmony import */ var toolkit_widgets_moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(17804);
+/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(74848);
+
+
+
+
+
+
+
+
+
+function _createMdxContent(props) {
+  const _components = Object.assign({
+    h1: "h1",
+    p: "p",
+    code: "code",
+    h2: "h2",
+    ul: "ul",
+    li: "li",
+    a: "a",
+    pre: "pre",
+    h3: "h3"
+  }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
+  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
+    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
+      title: "UI Widgets/ Toggle/README",
+      parameters: {
+        previewTabs: {
+          canvas: {
+            hidden: true
+          }
+        },
+        viewMode: "docs"
+      }
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
+      id: "moztoggle",
+      children: "MozToggle"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " is a toggle element that can be used to switch between two states.\nIt may be helpful to think of it as a button that can be pressed or unpressed,\ncorresponding with \"on\" and \"off\" states."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-toggle pressed label=\"Toggle label\" description=\"This is a demo toggle for the docs.\" /></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-toggle", {
+          pressed: true,
+          label: "Toggle label",
+          description: "This is a demo toggle for the docs."
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-to-use",
+      children: "When to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Use a toggle for binary controls like on/off or enabled/disabled."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Use when the action is performed immediately and doesn't require confirmation\nor form submission."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "A toggle is like a switch. If it would be appropriate to use a switch in the\nphysical world for this action, it is likely appropriate to use a toggle in\nsoftware."
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "when-not-to-use",
+      children: "When not to use"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "If another action is required to execute the choice, use a checkbox (i.e. a\ntoggle should not generally be used as part of a form)."
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "code",
+      children: "Code"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " can be found under\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-toggle/moz-toggle.mjs",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "toolkit/content/widgets/moz-toggle"
+      }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/browser/components/preferences/privacy.inc.xhtml#696",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:preferences"
+      }), "\nand ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://searchfox.org/mozilla-central/source/toolkit/mozapps/extensions/content/aboutaddons.html#182",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "about:addons"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " can be imported into ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".html"
+      }), "/", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: ".xhtml"
+      }), " files:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<script type=\"module\" src=\"chrome://global/content/elements/moz-toggle.mjs\"></script>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "And used as follows:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-toggle pressed\n            label=\"Label for the toggle\"\n            description=\"Longer explanation of what the toggle is for\"\n            aria-label=\"Toggle label if label text isn't visible\"></moz-toggle>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "fluent-usage",
+      children: "Fluent usage"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Generally the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "label"
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "description"
+      }), ", and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "aria-label"
+      }), " properties of\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " will be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "Fluent attributes"
+      }), ".\nTo get this working you will need to specify a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-id"
+      }), " as well as\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " if you're providing a label and a description:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-toggle data-l10n-id=\"with-label-and-description\"\n            data-l10n-attrs=\"label, description\"></moz-toggle>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "In which case your Fluent messages will look something like this:"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-label-and-description =\n  .label = Label text goes here\n  .description = Description text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["You do not have to specify ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "data-l10n-attrs"
+      }), " if you're only using an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "aria-label"
+      }), ":"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-toggle data-l10n-id=\"with-aria-label-only\"></moz-toggle>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "with-aria-label-only =\n  .aria-label = aria-label text goes here\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "nested-fields",
+      children: "Nested fields"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-toggle"
+      }), " supports nested or dependent fields via a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "nested"
+      }), " named slot.\nThese fields will be rendered below the toggle element, and will be indented to\nvisually indicate dependence. Any nested fields will mirror the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "disabled"
+      }), " state\nof the toggle and will also become ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "disabled"
+      }), " whenever the toggle is not ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "pressed"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["When nesting fields it's important to wrap the elements in a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-fieldset"
+      }), " to\nindicate to assistive technologies that the fields are related, and to provide a\nlabel for the group of controls:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-fieldset label=\"Label for the group\">\n  <moz-toggle label=\"Parent toggle\" pressed>\n    <moz-checkbox slot=\"nested\" label=\"Nested checkbox one\" value=\"one\"></moz-checkbox>\n    <moz-checkbox slot=\"nested\" label=\"Nested checkbox two\" value=\"two\" checked></moz-checkbox>\n  </moz-toggle>\n</moz-fieldset>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><moz-fieldset label=\"Label for the group\"><moz-toggle label=\"Parent toggle\" pressed><moz-checkbox slot=\"nested\" label=\"Nested checkbox one\" value=\"one\" /><moz-checkbox slot=\"nested\" label=\"Nested checkbox two\" value=\"two\" checked /></moz-toggle></moz-fieldset></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-fieldset", {
+          label: "Label for the group",
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-toggle", {
+            label: "Parent toggle",
+            pressed: true,
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-checkbox", {
+              slot: "nested",
+              label: "Nested checkbox one",
+              value: "one"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-checkbox", {
+              slot: "nested",
+              label: "Nested checkbox two",
+              value: "two",
+              checked: true
+            })]
+          })
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
+      id: "args-table",
+      children: "Args Table"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
+      of: "moz-toggle"
+    })]
+  });
+}
+function MDXContent(props = {}) {
+  const {
+    wrapper: MDXLayout
+  } = Object.assign({}, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
+  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(MDXLayout, {
+    ...props,
+    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_createMdxContent, {
+      ...props
+    })
+  }) : _createMdxContent(props);
+}
+/* ========= */
+const __page = () => {
+  throw new Error("Docs-only story");
+};
+__page.parameters = {
+  docsOnly: true
+};
+const componentMeta = {
+  title: 'UI Widgets/ Toggle/README',
+  parameters: {
+    previewTabs: {
+      canvas: {
+        hidden: true
+      }
+    },
+    viewMode: "docs"
+  },
+  tags: ['stories-mdx'],
+  includeStories: ["__page"]
+};
+componentMeta.parameters = componentMeta.parameters || {};
+componentMeta.parameters.docs = {
+  ...(componentMeta.parameters.docs || {}),
+  page: MDXContent
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (componentMeta);
+
+/***/ }),
+
 /***/ 9999:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -666,6 +933,97 @@ module.exports = assignValue;
 
 /***/ }),
 
+/***/ 17804:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozToggle)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32970);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
+/* harmony import */ var chrome_global_content_elements_moz_label_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(36592);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at htp://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * A simple toggle element that can be used to switch between two states.
+ *
+ * @tagname moz-toggle
+ * @property {boolean} pressed - Whether or not the element is pressed.
+ * @property {boolean} disabled - Whether or not the element is disabled.
+ * @property {string} label - The label text.
+ * @property {string} description - The description text.
+ * @property {string} ariaLabel
+ *  The aria-label text for cases where there is no visible label.
+ * @slot support-link - Used to append a moz-support-link to the description.
+ * @fires toggle
+ *  Custom event indicating that the toggle's pressed state has changed.
+ */
+class MozToggle extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
+  static properties = {
+    pressed: {
+      type: Boolean,
+      reflect: true
+    }
+  };
+  static activatedProperty = "pressed";
+  get buttonEl() {
+    return this.inputEl;
+  }
+  constructor() {
+    super();
+    this.pressed = false;
+  }
+  handleClick() {
+    this.pressed = !this.pressed;
+    this.dispatchOnUpdateComplete(new CustomEvent("toggle", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  inputTemplate() {
+    const {
+      pressed,
+      disabled,
+      ariaLabel,
+      handleClick
+    } = this;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<button
+      id="input"
+      part="button"
+      type="button"
+      class="toggle-button"
+      name=${this.name}
+      value=${this.value}
+      ?disabled=${disabled}
+      aria-pressed=${pressed}
+      aria-describedby="description"
+      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(ariaLabel ?? undefined)}
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
+      @click=${handleClick}
+    ></button>`;
+  }
+  inputStylesTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<link
+      rel="stylesheet"
+      href="${toolkit_content_widgets_moz_toggle_moz_toggle_css__WEBPACK_IMPORTED_MODULE_0__}"
+    />`;
+  }
+}
+customElements.define("moz-toggle", MozToggle);
+
+/***/ }),
+
 /***/ 17959:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -708,184 +1066,6 @@ var require_immutable=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_4__.__comm
 
 
 
-
-/***/ }),
-
-/***/ 20356:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   GROUP_TYPES: () => (/* binding */ GROUP_TYPES),
-/* harmony export */   "default": () => (/* binding */ MozBoxGroup)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23066);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-const GROUP_TYPES = {
-  list: "list",
-  reorderable: "reorderable-list"
-};
-
-/**
- * An element used to group combinations of moz-box-item, moz-box-link, and
- * moz-box-button elements and provide the expected styles.
- *
- * @tagname moz-box-group
- * @property {string} type
- *   The type of the group, either "list", "reorderable-list", or undefined.
- *   Note that "reorderable-list" only works with moz-box-item elements for now.
- * @slot default - Slot for rendering various moz-box-* elements.
- * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
- *   the group is type="list".
- */
-class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #tabbable = true;
-  static properties = {
-    type: {
-      type: String
-    },
-    listItems: {
-      type: Array,
-      state: true
-    }
-  };
-  static queries = {
-    reorderableList: "moz-reorderable-list"
-  };
-  constructor() {
-    super();
-    this.listItems = [];
-  }
-  contentTemplate() {
-    if (this.type == GROUP_TYPES.reorderable) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
-        itemselector="moz-box-item"
-        dragselector=".handle"
-        @reorder=${this.handleReorder}
-      >
-        ${this.slotTemplate()}
-      </moz-reorderable-list>`;
-    }
-    return this.slotTemplate();
-  }
-  slotTemplate() {
-    if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-      let listTag = this.type == GROUP_TYPES.reorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
-          class="list"
-          aria-orientation="vertical"
-          @keydown=${this.handleKeydown}
-          @focusin=${this.handleFocus}
-          @focusout=${this.handleBlur}
-        >
-          ${this.listItems.map((_, i) => {
-        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
-              <slot name=${i}></slot>
-            </li> `;
-      })}
-        </${listTag}>
-        <slot hidden @slotchange=${this.updateItems}></slot>`;
-    }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`;
-  }
-  handleReorder(event) {
-    let {
-      draggedElement,
-      targetElement,
-      position
-    } = event.detail;
-    let parent = targetElement.parentNode;
-    let moveBefore = position === -1;
-    if (moveBefore) {
-      parent.insertBefore(draggedElement, targetElement);
-    } else {
-      parent.insertBefore(draggedElement, targetElement.nextElementSibling);
-    }
-    draggedElement.focus();
-    this.updateItems();
-  }
-  handleKeydown(event) {
-    if (this.type == GROUP_TYPES.reorderable && event.originalTarget == event.target.handleEl) {
-      let detail = this.reorderableList.evaluateKeyDownEvent(event);
-      if (detail) {
-        event.stopPropagation();
-        this.handleReorder({
-          detail
-        });
-        return;
-      }
-    }
-    let positionAttr = event.target.getAttribute("position") ??
-    // handles the case where an interactive element is nested in a moz-box-item
-    event.target.closest("moz-box-item").getAttribute("position");
-    let currentPosition = parseInt(positionAttr);
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-        {
-          let nextItem = this.listItems[currentPosition + 1];
-          nextItem?.focus(event);
-          break;
-        }
-      case "Up":
-      case "ArrowUp":
-        {
-          let prevItem = this.listItems[currentPosition - 1];
-          prevItem?.focus(event);
-          break;
-        }
-    }
-  }
-  handleFocus() {
-    if (this.#tabbable) {
-      this.#tabbable = false;
-      this.listItems.forEach(item => {
-        item.setAttribute("tabindex", "-1");
-      });
-    }
-  }
-  handleBlur() {
-    if (!this.#tabbable) {
-      this.#tabbable = true;
-      this.listItems.forEach(item => {
-        item.removeAttribute("tabindex");
-      });
-    }
-  }
-  updateItems() {
-    let boxElements = this.querySelectorAll(":is(moz-box-item, moz-box-button, moz-box-link):not([slot='header'], [slot='footer'])");
-    this.listItems = Array.from(boxElements);
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <slot name="header"></slot>
-      ${this.contentTemplate()}
-      <slot name="footer"></slot>
-    `;
-  }
-  updated(changedProperties) {
-    if (changedProperties.has("listItems") && this.listItems.length) {
-      this.listItems.forEach((item, i) => {
-        item.slot = i;
-        item.setAttribute("position", i);
-      });
-    }
-  }
-}
-customElements.define("moz-box-group", MozBoxGroup);
 
 /***/ }),
 
@@ -1379,14 +1559,6 @@ module.exports = copyArray;
 
 /***/ }),
 
-/***/ 23066:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-box-group.85fac703f01e9f171aae.css";
-
-/***/ }),
-
 /***/ 27153:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1407,170 +1579,6 @@ function _construct(t, e, r) {
   return r && (0,_setPrototypeOf_js__WEBPACK_IMPORTED_MODULE_1__["default"])(p, r.prototype), p;
 }
 
-
-/***/ }),
-
-/***/ 27322:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozBoxItem)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_box_item_moz_box_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(70020);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-/* harmony import */ var chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(20356);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-const DIRECTION_RIGHT = "Right";
-const DIRECTION_LEFT = "Left";
-const NAVIGATION_DIRECTIONS = {
-  LTR: {
-    FORWARD: DIRECTION_RIGHT,
-    BACKWARD: DIRECTION_LEFT
-  },
-  RTL: {
-    FORWARD: DIRECTION_LEFT,
-    BACKWARD: DIRECTION_RIGHT
-  }
-};
-
-/**
- * A custom element used for highlighting important information and/or providing
- * context for specific settings.
- *
- * @tagname moz-box-item
- * @property {string} label - Label for the button.
- * @property {string} description - Descriptive text for the button.
- * @property {string} iconSrc - The src for an optional icon shown next to the label.
- * @property {string} layout - Layout style for the box content, either "default" or "large-icon".
- * @slot default - Slot for the box item's content, which overrides label and description.
- * @slot actions - Slot for the actions positioned at the end of the component container.
- * @slot actions-start - Slot for the actions positioned at the start of the component container.
- */
-class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase {
-  #actionEls = [];
-  static properties = {
-    layout: {
-      type: String,
-      reflect: true
-    }
-  };
-  static queries = {
-    defaultSlotEl: "slot:not([name])",
-    actionsStartSlotEl: "slot[name=actions-start]",
-    actionsSlotEl: "slot[name=actions]",
-    handleEl: ".handle"
-  };
-  constructor() {
-    super();
-    this.layout = "default";
-    this.addEventListener("keydown", e => this.handleKeydown(e));
-  }
-  firstUpdated() {
-    this.getActionEls();
-  }
-  handleKeydown(event) {
-    let isHandleEvent = event.originalTarget === this.handleEl;
-    if (!isHandleEvent && event.target?.slot !== "actions" && event.target?.slot !== "actions-start") {
-      return;
-    }
-    let target = isHandleEvent ? event.originalTarget : event.target;
-    let directions = this.getNavigationDirections();
-    switch (event.key) {
-      case directions.FORWARD:
-      case `Arrow${directions.FORWARD}`:
-        {
-          let nextIndex = this.#actionEls.indexOf(target) + 1;
-          let nextEl = this.#actionEls[nextIndex];
-          nextEl?.focus();
-          break;
-        }
-      case directions.BACKWARD:
-      case `Arrow${directions.BACKWARD}`:
-        {
-          let prevIndex = this.#actionEls.indexOf(target) - 1;
-          let prevEl = this.#actionEls[prevIndex];
-          prevEl?.focus();
-          break;
-        }
-    }
-  }
-  getNavigationDirections() {
-    if (this.isDocumentRTL) {
-      return NAVIGATION_DIRECTIONS.RTL;
-    }
-    return NAVIGATION_DIRECTIONS.LTR;
-  }
-  get isDocumentRTL() {
-    if (typeof Services !== "undefined") {
-      return Services.locale.isAppLocaleRTL;
-    }
-    return document.dir === "rtl";
-  }
-  get isDraggable() {
-    return this.parentElement?.type == chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__.GROUP_TYPES.reorderable && this.slot != "header" && this.slot != "footer";
-  }
-  focus(event) {
-    if (event?.key == "Up" || event?.key == "ArrowUp") {
-      let actionEls = this.actionsSlotEl.assignedElements();
-      let lastActions = actionEls.length ? actionEls : this.actionsStartSlotEl?.assignedElements();
-      let lastAction = lastActions?.[lastActions.length - 1] ?? this.handleEl;
-      lastAction?.focus();
-    } else {
-      let firstAction = this.handleEl ?? this.actionsStartSlotEl?.assignedElements()?.[0] ?? this.actionsSlotEl.assignedElements()?.[0];
-      firstAction?.focus();
-    }
-  }
-  getActionEls() {
-    let handleEl = this.handleEl ? [this.handleEl] : [];
-    let startActions = this.actionsStartSlotEl?.assignedElements() ?? [];
-    let endActions = this.actionsSlotEl.assignedElements();
-    this.#actionEls = [...handleEl, ...startActions, ...endActions];
-  }
-  stylesTemplate() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`${super.stylesTemplate()}
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_box_item_moz_box_item_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />`;
-  }
-  slotTemplate(name) {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <span
-        role="group"
-        aria-labelledby="label"
-        aria-describedby="description"
-        class="actions"
-        @slotchange=${this.getActionEls}
-      >
-        <slot name=${name}></slot>
-      </span>
-    `;
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${this.stylesTemplate()}
-      <div class="box-container">
-        ${this.isDraggable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span tabindex="0" class="handle"></span>` : ""}
-        ${this.slotTemplate("actions-start")}
-        <div class="box-content">
-          ${this.label ? super.textTemplate() : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
-        </div>
-        ${this.slotTemplate("actions")}
-      </div>
-    `;
-  }
-}
-customElements.define("moz-box-item", MozBoxItem);
 
 /***/ }),
 
@@ -6037,6 +6045,14 @@ function transitions() {
 
 /***/ }),
 
+/***/ 32970:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "moz-toggle.0159282b9292b3fd0e9f.css";
+
+/***/ }),
+
 /***/ 33303:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -6135,6 +6151,303 @@ var require_markdown=(0,_chunk_JRLSWQMA_mjs__WEBPACK_IMPORTED_MODULE_0__.__commo
 
 
 
+
+/***/ }),
+
+/***/ 36592:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76150);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * An extension of the label element that provides accesskey styling and
+ * formatting as well as click handling logic.
+ *
+ * @tagname moz-label
+ * @attribute {string} accesskey - Key used for keyboard access.
+ * @attribute {string} shownaccesskey - Key to underline but not set as
+ *   accesskey, this is useful to work around an issue where multiple accesskeys
+ *   on the same element cause it to be focused isntead of activated.
+ */
+class MozTextLabel extends HTMLLabelElement {
+  #insertSeparator = false;
+  #alwaysAppendAccessKey = false;
+  #lastFormattedAccessKey = null;
+  #observer = null;
+
+  // Default to underlining accesskeys for Windows and Linux.
+  static #underlineAccesskey = !navigator.platform.includes("Mac");
+  static get observedAttributes() {
+    return ["accesskey", "shownaccesskey"];
+  }
+  static stylesheetUrl = toolkit_content_widgets_moz_label_moz_label_css__WEBPACK_IMPORTED_MODULE_0__;
+  constructor() {
+    super();
+    this.#register();
+    this.addEventListener("click", this._onClick);
+  }
+  #register() {
+    if (window.IS_STORYBOOK) {
+      MozTextLabel.#underlineAccesskey = true;
+    } else if (typeof Services !== "undefined") {
+      MozTextLabel.#underlineAccesskey = !!Services.prefs.getIntPref("ui.key.menuAccessKey", Number(!navigator.platform.includes("Mac")));
+      if (MozTextLabel.#underlineAccesskey) {
+        try {
+          const nsIPrefLocalizedString = Ci.nsIPrefLocalizedString;
+          const prefNameInsertSeparator = "intl.menuitems.insertseparatorbeforeaccesskeys";
+          const prefNameAlwaysAppendAccessKey = "intl.menuitems.alwaysappendaccesskeys";
+          let val = Services.prefs.getComplexValue(prefNameInsertSeparator, nsIPrefLocalizedString).data;
+          this.#insertSeparator = val == "true";
+          val = Services.prefs.getComplexValue(prefNameAlwaysAppendAccessKey, nsIPrefLocalizedString).data;
+          this.#alwaysAppendAccessKey = val == "true";
+        } catch (e) {
+          this.#insertSeparator = this.#alwaysAppendAccessKey = true;
+        }
+      }
+    }
+  }
+  #startMutationObserver() {
+    if (!this.#observer) {
+      return;
+    }
+    this.#observer.observe(this, {
+      characterData: true,
+      childList: true,
+      subtree: true
+    });
+  }
+  #stopMutationObserver() {
+    if (!this.#observer) {
+      return;
+    }
+    this.#observer.disconnect();
+  }
+  connectedCallback() {
+    this.#setStyles();
+    this.formatAccessKey();
+    if (!this.#observer) {
+      this.#observer = new MutationObserver(() => {
+        this.#lastFormattedAccessKey = null;
+        this.formatAccessKey();
+      });
+      this.#startMutationObserver();
+    }
+  }
+  disconnectedCallback() {
+    if (this.#observer) {
+      this.#stopMutationObserver();
+      this.#observer = null;
+    }
+  }
+
+  // Bug 1820588 - we may want to generalize this into
+  // MozHTMLElement.insertCssIfNeeded(style)
+  #setStyles() {
+    let root = this.getRootNode();
+    if (root.__mozLabelCssAdded) {
+      return;
+    }
+    let container = root.head ?? root;
+    for (let link of container.querySelectorAll("link")) {
+      if (link.getAttribute("href") == this.constructor.stylesheetUrl) {
+        return;
+      }
+    }
+    let style = document.createElement("link");
+    style.rel = "stylesheet";
+    style.href = this.constructor.stylesheetUrl;
+    container.appendChild(style);
+    root.__mozLabelCssAdded = true;
+  }
+  set textContent(val) {
+    super.textContent = val;
+    this.#lastFormattedAccessKey = null;
+    this.formatAccessKey();
+  }
+  get textContent() {
+    return super.textContent;
+  }
+  attributeChangedCallback(attrName, oldValue, newValue) {
+    if (oldValue == newValue) {
+      return;
+    }
+
+    // Note that this is only happening when "accesskey" attribute changes.
+    this.formatAccessKey();
+  }
+  _onClick() {
+    let controlElement = this.labeledControlElement;
+    if (!controlElement || this.disabled) {
+      return;
+    }
+    controlElement.focus();
+    if ((controlElement.localName == "checkbox" || controlElement.localName == "radio") && controlElement.getAttribute("disabled") == "true") {
+      return;
+    }
+    if (controlElement.localName == "checkbox") {
+      controlElement.checked = !controlElement.checked;
+    } else if (controlElement.localName == "radio") {
+      controlElement.control.selectedItem = controlElement;
+    }
+  }
+  set accessKey(val) {
+    this.setAttribute("accesskey", val);
+    let control = this.labeledControlElement;
+    if (control) {
+      control.setAttribute("accesskey", val);
+    }
+  }
+  get accessKey() {
+    let accessKey = this.getAttribute("accesskey");
+    return accessKey ? accessKey[0] : null;
+  }
+  get labeledControlElement() {
+    let control = this.control;
+    return control ? document.getElementById(control) : null;
+  }
+  set control(val) {
+    this.setAttribute("control", val);
+  }
+  get control() {
+    return this.getAttribute("control");
+  }
+
+  // This is used to match the rendering of accesskeys from nsTextBoxFrame.cpp (i.e. when the
+  // label uses [value]). So this is just for when we have textContent.
+  formatAccessKey() {
+    // Skip doing any DOM manipulation whenever possible:
+    let accessKey = this.accessKey || this.getAttribute("shownaccesskey");
+    if (!MozTextLabel.#underlineAccesskey || this.#lastFormattedAccessKey == accessKey || !this.textContent || !this.textContent.trim()) {
+      return;
+    }
+    this.#stopMutationObserver();
+    try {
+      this.#formatAccessKey(accessKey);
+    } finally {
+      queueMicrotask(() => this.#startMutationObserver());
+    }
+  }
+  #formatAccessKey(accessKey) {
+    this.#lastFormattedAccessKey = accessKey;
+    if (this.accessKeySpan) {
+      // Clear old accesskey
+      mergeElement(this.accessKeySpan);
+      this.accessKeySpan = null;
+    }
+    if (this.hiddenColon) {
+      mergeElement(this.hiddenColon);
+      this.hiddenColon = null;
+    }
+    if (this.accessKeyParens) {
+      this.accessKeyParens.remove();
+      this.accessKeyParens = null;
+    }
+
+    // If we used to have an accessKey but not anymore, we're done here
+    if (!accessKey) {
+      return;
+    }
+    let labelText = this.textContent;
+    let accessKeyIndex = -1;
+    if (!this.#alwaysAppendAccessKey) {
+      accessKeyIndex = labelText.indexOf(accessKey);
+      if (accessKeyIndex < 0) {
+        // Try again in upper case
+        accessKeyIndex = labelText.toUpperCase().indexOf(accessKey.toUpperCase());
+      }
+    } else if (labelText.endsWith(`(${accessKey.toUpperCase()})`)) {
+      accessKeyIndex = labelText.length - (1 + accessKey.length); // = index of accessKey.
+    }
+    const HTML_NS = "http://www.w3.org/1999/xhtml";
+    this.accessKeySpan = document.createElementNS(HTML_NS, "span");
+    this.accessKeySpan.className = "accesskey";
+
+    // Note that if you change the following code, see the comment of
+    // nsTextBoxFrame::UpdateAccessTitle.
+
+    // If accesskey is in the string, underline it:
+    if (accessKeyIndex >= 0) {
+      wrapChar(this, this.accessKeySpan, accessKeyIndex);
+      return;
+    }
+
+    // If accesskey is not in string, append in parentheses
+    // If end is colon, we should insert before colon.
+    // i.e., "label:" -> "label(X):"
+    let colonHidden = false;
+    if (/:$/.test(labelText)) {
+      labelText = labelText.slice(0, -1);
+      this.hiddenColon = document.createElementNS(HTML_NS, "span");
+      this.hiddenColon.className = "hiddenColon";
+      this.hiddenColon.style.display = "none";
+      // Hide the last colon by using span element.
+      // I.e., label<span style="display:none;">:</span>
+      wrapChar(this, this.hiddenColon, labelText.length);
+      colonHidden = true;
+    }
+    // If end is space(U+20),
+    // we should not add space before parentheses.
+    let endIsSpace = false;
+    if (/ $/.test(labelText)) {
+      endIsSpace = true;
+    }
+    this.accessKeyParens = document.createElementNS("http://www.w3.org/1999/xhtml", "span");
+    this.appendChild(this.accessKeyParens);
+    if (this.#insertSeparator && !endIsSpace) {
+      this.accessKeyParens.textContent = " (";
+    } else {
+      this.accessKeyParens.textContent = "(";
+    }
+    this.accessKeySpan.textContent = accessKey.toUpperCase();
+    this.accessKeyParens.appendChild(this.accessKeySpan);
+    if (!colonHidden) {
+      this.accessKeyParens.appendChild(document.createTextNode(")"));
+    } else {
+      this.accessKeyParens.appendChild(document.createTextNode("):"));
+    }
+  }
+}
+customElements.define("moz-label", MozTextLabel, {
+  extends: "label"
+});
+function mergeElement(element) {
+  // If the element has been removed already, return:
+  if (!element.isConnected) {
+    return;
+  }
+  // `isInstance` isn't available to web content (i.e. Storybook) so we need to
+  // fallback to using `instanceof`.
+  if (Text.hasOwnProperty("isInstance") ? Text.isInstance(element.previousSibling) :
+  // eslint-disable-next-line mozilla/use-isInstance
+  element.previousSibling instanceof Text) {
+    element.previousSibling.appendData(element.textContent);
+  } else {
+    element.parentNode.insertBefore(element.firstChild, element);
+  }
+  element.remove();
+}
+function wrapChar(parentNode, element, index) {
+  let treeWalker = document.createNodeIterator(parentNode, NodeFilter.SHOW_TEXT, null);
+  let node = treeWalker.nextNode();
+  while (index >= node.length) {
+    index -= node.length;
+    node = treeWalker.nextNode();
+  }
+  if (index) {
+    node = node.splitText(index);
+  }
+  node.parentNode.insertBefore(element, node);
+  if (node.length > 1) {
+    node.splitText(1);
+  }
+  element.appendChild(node);
+}
 
 /***/ }),
 
@@ -9327,14 +9640,6 @@ if (true) {
 
 /***/ }),
 
-/***/ 70020:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-"use strict";
-module.exports = __webpack_require__.p + "moz-box-item.53da65f68a8b22ed9339.css";
-
-/***/ }),
-
 /***/ 70308:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -10155,6 +10460,14 @@ if (true) {
 
 /***/ }),
 
+/***/ 76150:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+"use strict";
+module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
+
+/***/ }),
+
 /***/ 76169:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -10623,392 +10936,6 @@ function cloneDeep(value) {
 
 module.exports = cloneDeep;
 
-
-/***/ }),
-
-/***/ 88857:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   __page: () => (/* binding */ __page),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(96540);
-/* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(68910);
-/* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(85164);
-/* harmony import */ var toolkit_widgets_moz_box_item_moz_box_item_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(27322);
-/* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(74848);
-
-
-
-
-
-
-
-
-
-function _createMdxContent(props) {
-  const _components = Object.assign({
-    h1: "h1",
-    p: "p",
-    code: "code",
-    h2: "h2",
-    a: "a",
-    h3: "h3",
-    pre: "pre"
-  }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
-    children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Box Item/README",
-      parameters: {
-        previewTabs: {
-          canvas: {
-            hidden: true
-          }
-        },
-        viewMode: "docs"
-      }
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "mozboxitem",
-      children: "MozBoxItem"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " is a component that can be used separately or together with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-button"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-link"
-      }), " as a part of a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-group"
-      }), " to display related content and actions."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "code",
-      children: "Code"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " can be found under ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/source/toolkit/content/widgets/moz-box-item",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-box-item/"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "how-to-use-moz-box-item",
-      children: ["How to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "importing-the-element",
-      children: "Importing the element"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Like other custom elements, you should usually be able to rely on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " getting lazy loaded at the time of first use.\nSee ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://firefox-source-docs.mozilla.org/browser/components/storybook/docs/README.reusable-widgets.stories.html#using-new-design-system-components",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "this documentation"
-      }), " for more information on using design system custom elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-the-label-and-description",
-      children: ["Setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["In order to set a label and description, use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      }), " attributes.\nIn general, the label and description should be controlled by Fluent."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\" description=\"Some description of the item\"></moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "setting-an-icon",
-      children: "Setting an icon"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["In order to have an icon appear next to the label, use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: ".iconSrc"
-      }), " property or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "iconsrc"
-      }), " attribute."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\"\n              description=\"Some description of the item\"\n              iconsrc=\"chrome://global/skin/icons/highlights.svg\">\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" iconsrc=\"chrome://global/skin/icons/highlights.svg\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item",
-          iconsrc: "chrome://global/skin/icons/highlights.svg"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "setting-the-layout-of-the-content",
-      children: "Setting the layout of the content"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["You can set a layout style for the box content using the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "layout"
-      }), " attribute.  There are 2 layout options: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "default"
-      }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "large-icon"
-      }), ".\nThe ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "default"
-      }), " layout will set a smaller icon next to the label. Use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "large-icon"
-      }), " layout to display a bigger, vertically centered icon."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\"\n              description=\"Some description of the item\"\n              layout=\"large-icon\"\n              iconsrc=\"chrome://global/skin/icons/info.svg\">\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" layout=\"large-icon\" iconsrc=\"chrome://global/skin/icons/info.svg\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item",
-          layout: "large-icon",
-          iconsrc: "chrome://global/skin/icons/info.svg"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "adding-actions-to-the-moz-box-item",
-      children: ["Adding actions to the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " component supports 2 slots for actions: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions-start"
-      }), ". You should set the correct ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "aria-label"
-      }), " for any icon buttons that are included in actions using fluent, since we cannot programmatically associate the button with the label in the shadow DOM."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions"
-      }), " slot goes after the label/description/etc. Using this slot is a preferred way to ad actions to the component."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\">\n  <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            label: "Click me!",
-            slot: "actions"
-          })
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "slot=\"actions-start\""
-      }), " if you need to place an action at the beginning of the container. If ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " is a part of the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-group"
-      }), ", the number of items in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions-start"
-      }), " slot should be consistent across the entire group."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\">\n  <moz-button iconsrc=\"chrome://global/skin/icons/delete.svg\"\n              aria-label=\"Delete I'm a box item\"\n              slot=\"actions-start\">\n  </moz-button>\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\"><moz-button iconsrc=\"chrome://global/skin/icons/delete.svg\" aria-label=\"Delete I'm a box item\" slot=\"actions-start\" /></moz-box-item></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            iconsrc: "chrome://global/skin/icons/delete.svg",
-            "aria-label": "Delete I'm a box item",
-            slot: "actions-start"
-          })
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "using-the-default-slot",
-      children: "Using the default slot"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Use the default slot if you need to place a custom content into the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), "."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item>\n  <div class=\"slotted\">\n    <img src=\"chrome://global/skin/illustrations/security-error.svg\" />\n    <span>This is an example message</span>\n    <span class=\"text-deemphasized\">\n      Message description would go down here\n    </span>\n  </div>\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"280px\" }}><div style={{ display: \"flex\", justifyContent: \"center\", alignItems: \"center\", flexDirection: \"column\", textAlign: \"center\" }}><img src=\"chrome://global/skin/illustrations/security-error.svg\" style={{ width: \"150px\", marginBlockEnd: \"16px\" }} /><span>{\"This is an example message\"}</span><span class=\"text-deemphasized\"><p>{\"Message description would go down here\"}</p></span></div></moz-box-item></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "280px"
-          },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            style: {
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              textAlign: "center"
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
-              src: "chrome://global/skin/illustrations/security-error.svg",
-              style: {
-                width: "150px",
-                marginBlockEnd: "16px"
-              }
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              children: "This is an example message"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              class: "text-deemphasized",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-                children: "Message description would go down here"
-              })
-            })]
-          })
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "fluent-usage",
-      children: "Fluent usage"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      }), " attributes of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " will generally be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Fluent attributes"
-      }), ".\nThe relevant ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " are set automatically, so to get things working you just need to supply a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as you would with any other element."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "For example, the following Fluent messages:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item-label =\n  .label = I'm a box item\nmoz-box-item-label-description =\n  .label = I'm a box item\n  .description = Some description of the item\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["would be used to set attributes on the different ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " elements as follows:"]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item data-l10n-id=\"moz-box-item-label\"></moz-box-item>\n<moz-box-item data-l10n-id=\"moz-box-item-label-description\"></moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
-      id: "args-table",
-      children: "Args Table"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-box-item"
-    })]
-  });
-}
-function MDXContent(props = {}) {
-  const {
-    wrapper: MDXLayout
-  } = Object.assign({}, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_gecko_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
-  return MDXLayout ? /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(MDXLayout, {
-    ...props,
-    children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_createMdxContent, {
-      ...props
-    })
-  }) : _createMdxContent(props);
-}
-/* ========= */
-const __page = () => {
-  throw new Error("Docs-only story");
-};
-__page.parameters = {
-  docsOnly: true
-};
-const componentMeta = {
-  title: 'UI Widgets/ Box Item/README',
-  parameters: {
-    previewTabs: {
-      canvas: {
-        hidden: true
-      }
-    },
-    viewMode: "docs"
-  },
-  tags: ['stories-mdx'],
-  includeStories: ["__page"]
-};
-componentMeta.parameters = componentMeta.parameters || {};
-componentMeta.parameters.docs = {
-  ...(componentMeta.parameters.docs || {}),
-  page: MDXContent
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (componentMeta);
 
 /***/ }),
 
@@ -11734,4 +11661,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.6fccb4e3.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-README-stories-md.4fb0d974.iframe.bundle.js.map
