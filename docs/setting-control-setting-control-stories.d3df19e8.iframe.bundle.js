@@ -1,18 +1,28 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[8050],{
 
+/***/ 38626:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "setting-control.0cf7be30bb8594bc36c4.css";
+
+/***/ }),
+
 /***/ 56225:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Checkbox: () => (/* binding */ Checkbox),
+/* harmony export */   ExtensionControlled: () => (/* binding */ ExtensionControlled),
 /* harmony export */   Radio: () => (/* binding */ Radio),
 /* harmony export */   Select: () => (/* binding */ Select),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(87480);
+/* harmony import */ var browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38626);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(87480);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -48,28 +58,37 @@ radio-option-1 =
   .description = It's a full moz-radio
 radio-option-2 =
   .label = Option 2
+extension-controlled-input =
+  .label = Setting controlled by extension
+extension-controlled-message = <strong>My Extension</strong> requires Controlled Setting.
 `
   }
 });
 const Template = ({
   config,
   setting
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <setting-control .config=${config} .setting=${setting}></setting-control>
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+  <link
+    rel="stylesheet"
+    href="${browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__}"
+  /><setting-control .config=${config} .setting=${setting}></setting-control>
 `;
+const DEFAULT_SETTING = {
+  value: 1,
+  on() {},
+  off() {},
+  userChange() {},
+  getControlConfig: c => c,
+  controllingExtensionInfo: {},
+  visible: true
+};
 const Checkbox = Template.bind({});
 Checkbox.args = {
   config: {
     id: "checkbox-example",
     l10nId: "checkbox-example-input"
   },
-  setting: {
-    value: true,
-    on() {},
-    off() {},
-    userChange() {},
-    getControlConfig: c => c
-  }
+  setting: DEFAULT_SETTING
 };
 const Select = Template.bind({});
 Select.args = {
@@ -89,13 +108,7 @@ Select.args = {
       l10nId: "select-option-2"
     }]
   },
-  setting: {
-    value: 1,
-    on() {},
-    off() {},
-    userChange() {},
-    getControlConfig: c => c
-  }
+  setting: DEFAULT_SETTING
 };
 const Radio = Template.bind({});
 Radio.args = {
@@ -116,12 +129,29 @@ Radio.args = {
       l10nId: "radio-option-2"
     }]
   },
+  setting: DEFAULT_SETTING
+};
+const ExtensionControlled = Template.bind({});
+ExtensionControlled.args = {
+  config: {
+    id: "extension-controlled-example",
+    l10nId: "extension-controlled-input",
+    pref: "privacy.userContext.enabled",
+    controllingExtensionInfo: {
+      storeId: "privacy.containers",
+      /* Example of a Fluent string used for the message bar:
+       * extension-controlled-message = <strong>{ $name }</strong> requires Container Tabs.
+       * */
+      l10nId: "extension-controlled-message"
+    }
+  },
   setting: {
-    value: 1,
-    on() {},
-    off() {},
-    userChange() {},
-    getControlConfig: c => c
+    ...DEFAULT_SETTING,
+    controllingExtensionInfo: {
+      id: "extension-controlled-example",
+      l10nId: "extension-controlled-message",
+      name: "My Extension"
+    }
   }
 };
 
@@ -276,6 +306,8 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
 
   /**
    * The default properties that a control accepts.
+   * Note: for the disabled property, a setting can either be locked,
+   * or controlled by an extension but not both.
    */
   getPropertyMapping(config) {
     const props = {
@@ -286,7 +318,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       ".parentDisabled": this.parentDisabled,
       ".control": this,
       "data-subcategory": config.subcategory,
-      "?disabled": this.setting.disabled || this.setting.locked,
+      "?disabled": this.setting.disabled || this.setting.locked || this.isControlledByExtension(),
       ...config.controlAttrs
     };
     if (config.l10nArgs) {
@@ -320,6 +352,18 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   // Called by our parent when our input changed.
   onChange(el) {
     this.setting.userChange(this.controlValue(el));
+  }
+  async disableExtension() {
+    this.setting.disableControllingExtension();
+  }
+  isControlledByExtension() {
+    return this.setting.controllingExtensionInfo.id && this.setting.controllingExtensionInfo.name;
+  }
+  get extensionName() {
+    return this.setting.controllingExtensionInfo.name;
+  }
+  get extensionMessageId() {
+    return this.setting.controllingExtensionInfo.l10nId;
   }
   render() {
     // Allow the Setting to override the static config if necessary.
@@ -362,7 +406,21 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     // These will be applied to the control using the spread directive.
     let controlProps = this.getPropertyMapping(config);
     let tag = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(config.control || "moz-checkbox");
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`<${tag}
+    let messageBar;
+    if (this.isControlledByExtension()) {
+      let args = {
+        name: this.extensionName
+      };
+      messageBar = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-message-bar
+        class="extension-controlled-message-bar"
+        .messageL10nId=${this.extensionMessageId}
+        .messageL10nArgs=${args}
+      >
+      </moz-message-bar>`;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`
+    ${messageBar}
+    <${tag}
       ${spread(controlProps)}
       ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ref)(this.controlRef)}
     >${controlChildren}${nestedSettings}</${tag}>`;
@@ -373,4 +431,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.a0b7338b.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.d3df19e8.iframe.bundle.js.map
