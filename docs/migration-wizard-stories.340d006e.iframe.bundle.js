@@ -761,13 +761,14 @@ __webpack_require__.r(__webpack_exports__);
           let anchorBounds = getBounds(anchorElement);
           let panelBounds = getBounds(this);
           let clientWidth = document.scrollingElement.clientWidth;
+          let panelHeight = this.scrollHeight > panelBounds.height ? this.scrollHeight : panelBounds.height;
           resolve({
             anchorBottom: anchorBounds.bottom,
             anchorHeight: anchorBounds.height,
             anchorLeft: anchorBounds.left,
             anchorTop: anchorBounds.top,
             anchorWidth: anchorBounds.width,
-            panelHeight: panelBounds.height,
+            panelHeight,
             panelWidth: panelBounds.width,
             winHeight: innerHeight,
             winScrollX: scrollX,
@@ -3208,4 +3209,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.4fc6b0f5.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.340d006e.iframe.bundle.js.map

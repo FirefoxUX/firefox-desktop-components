@@ -406,13 +406,14 @@ __webpack_require__.r(__webpack_exports__);
           let anchorBounds = getBounds(anchorElement);
           let panelBounds = getBounds(this);
           let clientWidth = document.scrollingElement.clientWidth;
+          let panelHeight = this.scrollHeight > panelBounds.height ? this.scrollHeight : panelBounds.height;
           resolve({
             anchorBottom: anchorBounds.bottom,
             anchorHeight: anchorBounds.height,
             anchorLeft: anchorBounds.left,
             anchorTop: anchorBounds.top,
             anchorWidth: anchorBounds.width,
-            panelHeight: panelBounds.height,
+            panelHeight,
             panelWidth: panelBounds.width,
             winHeight: innerHeight,
             winScrollX: scrollX,
@@ -950,4 +951,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-panel-list-stories.80912148.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.b378f62e.iframe.bundle.js.map
