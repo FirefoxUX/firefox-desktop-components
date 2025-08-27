@@ -11193,7 +11193,7 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
         class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}
         style=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(styles)}
         name=${this.name}
-        value=${inputValue || this.value}
+        .value=${inputValue || this.value}
         ?disabled=${this.disabled || this.parentDisabled}
         ?readonly=${this.readonly}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
@@ -11723,4 +11723,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-README-stories-md.fd89fbfd.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-README-stories-md.162bc339.iframe.bundle.js.map

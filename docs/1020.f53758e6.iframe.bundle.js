@@ -80,7 +80,7 @@ class MozInputText extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseIn
         class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(classes)}
         style=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(styles)}
         name=${this.name}
-        value=${inputValue || this.value}
+        .value=${inputValue || this.value}
         ?disabled=${this.disabled || this.parentDisabled}
         ?readonly=${this.readonly}
         accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.accessKey)}
@@ -98,4 +98,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=1020.b11ce553.iframe.bundle.js.map
+//# sourceMappingURL=1020.f53758e6.iframe.bundle.js.map

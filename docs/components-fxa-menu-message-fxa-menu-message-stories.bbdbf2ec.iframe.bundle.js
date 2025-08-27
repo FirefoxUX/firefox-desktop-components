@@ -23,8 +23,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
- * This widget is for a message that can be displayed in panelview menus when
- * the user is signed out to encourage them to sign in.
+ * This widget is for messages that can be displayed in panelview menus.
+ * Can be used to message signed out users encouraging them to sign in or
+ * asking users to set firefox as default.
  */
 class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static shadowRootOptions = {
@@ -35,8 +36,15 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     imageURL: {
       type: String
     },
+    logoURL: {
+      type: String
+    },
     buttonText: {
       type: String
+    },
+    primaryButtonSize: {
+      type: String,
+      reflect: true
     },
     primaryText: {
       type: String
@@ -50,12 +58,13 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     }
   };
   static queries = {
-    signUpButton: "#sign-up-button",
+    primaryButton: "#primary-button",
     closeButton: "#close-button"
   };
   constructor() {
     super();
     this.layout = "column"; // Default layout
+    this.primaryButtonSize = "default"; // Default button size
     this.addEventListener("keydown", event => {
       let keyCode = event.code;
       switch (keyCode) {
@@ -67,10 +76,10 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         // Intentional fall-through
         case "ArrowDown":
           {
-            if (this.shadowRoot.activeElement === this.signUpButton) {
+            if (this.shadowRoot.activeElement === this.primaryButton) {
               this.closeButton.focus();
             } else {
-              this.signUpButton.focus();
+              this.primaryButton.focus();
             }
             break;
           }
@@ -83,12 +92,12 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     // Keep the menu open by stopping the click event from
     // propagating up.
     event.stopPropagation();
-    this.dispatchEvent(new CustomEvent("FxAMenuMessage:Close"), {
+    this.dispatchEvent(new CustomEvent("MenuMessage:Close"), {
       bubbles: true
     });
   }
-  handleSignUp() {
-    this.dispatchEvent(new CustomEvent("FxAMenuMessage:SignUp"), {
+  handlePrimaryButton() {
+    this.dispatchEvent(new CustomEvent("MenuMessage:PrimaryButton"), {
       bubbles: true
     });
   }
@@ -100,9 +109,17 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         rel="stylesheet"
         href="${browser_components_asrouter_content_components_fxa_menu_message_fxa_menu_message_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <div id="container" layout=${this.layout} ?has-image=${this.imageURL}>
+      <div
+        id="container"
+        layout=${this.layout}
+        ?has-image=${this.imageURL}
+        ?has-logo=${this.logoURL}
+      >
         ${this.isRowLayout ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
               <div id="top-row">
+                <div id="logo-container">
+                  <img id="logo" role="presentation" src=${this.logoURL} />
+                </div>
                 <moz-button
                   id="close-button"
                   @click=${this.handleClose}
@@ -112,15 +129,16 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
                   data-l10n-id="fxa-menu-message-close-button"
                 >
                 </moz-button>
-                <div id="primary">${this.primaryText}</div>
               </div>
               <div id="bottom-row">
-                <div id="body-container">
-                  <div id="secondary">${this.secondaryText}</div>
+                <div id="primary">${this.primaryText}</div>
+                <div id="secondary">${this.secondaryText}</div>
+                <div id="illustration-button-container">
                   <moz-button
-                    id="sign-up-button"
-                    @click=${this.handleSignUp}
+                    id="primary-button"
+                    @click=${this.handlePrimaryButton}
                     type="primary"
+                    size=${this.primaryButtonSize}
                     tabindex="1"
                     autofocus
                     title=${this.buttonText}
@@ -128,25 +146,30 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
                   >
                     ${this.buttonText}
                   </moz-button>
-                </div>
-                <div id="illustration-container">
-                  <img
-                    id="illustration"
-                    role="presentation"
-                    src=${this.imageURL}
-                  />
+                  <div id="illustration-container">
+                    <img
+                      id="illustration"
+                      role="presentation"
+                      src=${this.imageURL}
+                    />
+                  </div>
                 </div>
               </div>
             ` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-              <moz-button
-                id="close-button"
-                @click=${this.handleClose}
-                type="ghost"
-                iconsrc="resource://content-accessible/close-12.svg"
-                tabindex="2"
-                data-l10n-id="fxa-menu-message-close-button"
-              >
-              </moz-button>
+              <div id="top-row">
+                <div id="logo-container">
+                  <img id="logo" role="presentation" src=${this.logoURL} />
+                </div>
+                <moz-button
+                  id="close-button"
+                  @click=${this.handleClose}
+                  type="ghost"
+                  iconsrc="resource://content-accessible/close-12.svg"
+                  tabindex="2"
+                  data-l10n-id="fxa-menu-message-close-button"
+                >
+                </moz-button>
+              </div>
               <div id="illustration-container">
                 <img
                   id="illustration"
@@ -157,9 +180,10 @@ class FxAMenuMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
               <div id="primary">${this.primaryText}</div>
               <div id="secondary">${this.secondaryText}</div>
               <moz-button
-                id="sign-up-button"
-                @click=${this.handleSignUp}
+                id="primary-button"
+                @click=${this.handlePrimaryButton}
                 type="primary"
+                size=${this.primaryButtonSize}
                 tabindex="1"
                 autofocus
                 title=${this.buttonText}
@@ -178,7 +202,7 @@ customElements.define("fxa-menu-message", FxAMenuMessage);
 /***/ 29402:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "fxa-menu-message.df69ba06fdf492250ada.css";
+module.exports = __webpack_require__.p + "fxa-menu-message.9aebe6eabe7719ebc43f.css";
 
 /***/ }),
 
@@ -961,25 +985,31 @@ __webpack_require__.r(__webpack_exports__);
 const Template = ({
   buttonText,
   imageURL,
+  logoURL,
   primaryText,
   secondaryText,
+  primaryButtonSize,
   imageVerticalTopOffset,
   imageVerticalBottomOffset,
   containerVerticalBottomOffset,
   layout,
-  imageHeight
+  imageWidth,
+  logoWidth
 }) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-card style="width: 22.5rem;">
     <fxa-menu-message
       buttonText=${buttonText}
       primaryText=${primaryText}
+      primaryButtonSize=${primaryButtonSize}
       secondaryText=${secondaryText}
       imageURL=${imageURL}
+      logoURL=${logoURL}
       style="
         --illustration-margin-block-start-offset: ${imageVerticalTopOffset}px;
         --illustration-margin-block-end-offset: ${imageVerticalBottomOffset}px;
         --container-margin-block-end-offset: ${containerVerticalBottomOffset}px;
-        --image-height: ${imageHeight}px;
+        --image-width: ${imageWidth}px;
+        --logo-width: ${logoWidth}px;
       "
       layout=${layout}
     >
@@ -989,17 +1019,20 @@ const Template = ({
 const Default = Template.bind({});
 Default.args = {
   buttonText: "Sign up",
+  logoURL: "chrome://branding/content/about-logo.svg",
   imageURL: "chrome://browser/content/asrouter/assets/fox-with-box-on-cloud.svg",
   primaryText: "Bounce between devices",
+  primaryButtonSize: "default",
   secondaryText: "Sync and encrypt your bookmarks, passwords, and more on all your devices.",
   imageVerticalTopOffset: -20,
   imageVerticalBottomOffset: 0,
   containerVerticalBottomOffset: 0,
   layout: "column",
-  imageHeight: 120
+  imageWidth: 120,
+  logoWidth: 18
 };
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.c880182e.iframe.bundle.js.map
+//# sourceMappingURL=components-fxa-menu-message-fxa-menu-message-stories.bbdbf2ec.iframe.bundle.js.map
