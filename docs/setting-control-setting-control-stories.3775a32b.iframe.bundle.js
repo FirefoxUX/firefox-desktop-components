@@ -353,6 +353,9 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   onChange(el) {
     this.setting.userChange(this.controlValue(el));
   }
+  onClick(event) {
+    this.setting.userClick(event);
+  }
   async disableExtension() {
     this.setting.disableControllingExtension();
   }
@@ -431,4 +434,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.d3df19e8.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.3775a32b.iframe.bundle.js.map

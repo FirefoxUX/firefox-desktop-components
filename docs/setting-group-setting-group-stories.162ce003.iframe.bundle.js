@@ -119,6 +119,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const CLICK_HANDLERS = ["moz-box-link"];
 class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   static properties = {
     config: {
@@ -156,6 +157,14 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     let control = inputEl.control;
     control?.onChange(inputEl);
   }
+  onClick(e) {
+    if (!CLICK_HANDLERS.includes(e.target.localName)) {
+      return;
+    }
+    let inputEl = e.target;
+    let control = inputEl.control;
+    control?.onClick(e);
+  }
   itemTemplate(item) {
     let setting = this.getSetting(item.id);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
@@ -171,6 +180,7 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.l10nId)}
       @change=${this.onChange}
+      @click=${this.onClick}
       >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
     >`;
   }
@@ -180,4 +190,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.f334a7ed.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.162ce003.iframe.bundle.js.map
