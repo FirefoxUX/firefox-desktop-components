@@ -36,7 +36,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} heading - The heading of the promo element.
  * @property {string} message - The message of the promo element.
  * @property {string} imageSrc - The main image of the promo element.
- * @property {string} iconAlignment - How the icon should be aligned. Can be "start", "end", "center".
+ * @property {string} imageAlignment - How the image should be aligned. Can be "start", "end", "center".
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static queries = {
@@ -112,4 +112,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=1512.5054379f.iframe.bundle.js.map
+//# sourceMappingURL=1512.f0ec1bb4.iframe.bundle.js.map

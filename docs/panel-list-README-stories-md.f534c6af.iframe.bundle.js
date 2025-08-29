@@ -1553,7 +1553,7 @@ __webpack_require__.r(__webpack_exports__);
 
         // Only want to valign top when there's more space between the bottom of the anchor element and the top of the viewport.
         // If there's more space between the bottom of the anchor element and the bottom of the viewport, we valign bottom.
-        if (anchorBottom > bottomSpaceY && anchorBottom + panelHeight > winHeight) {
+        if (anchorBottom > bottomSpaceY && anchorBottom + panelHeight + VIEWPORT_PANEL_MIN_MARGIN > winHeight) {
           // Never want to have a negative value for topOffset, so ensure it's at least 10px.
           topOffset = Math.max(anchorTop - panelHeight, VIEWPORT_PANEL_MIN_MARGIN);
           // Provide a max-height for larger elements which will provide scrolling as needed.
@@ -12212,4 +12212,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.bc8300ef.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.f534c6af.iframe.bundle.js.map
