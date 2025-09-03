@@ -4,7 +4,7 @@
 /***/ 5153:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.980bbb7a9c91e2e9d9a6.css";
+module.exports = __webpack_require__.p + "panel-list.49c70172da9b1c8afd3d.css";
 
 /***/ }),
 
@@ -552,7 +552,7 @@ FileImportError.args = {
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-item.6b30008e576e52863855.css";
+module.exports = __webpack_require__.p + "panel-item.99199edbdbb0168dfb20.css";
 
 /***/ }),
 
@@ -3209,4 +3209,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.a4dbcc41.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.2a75fa18.iframe.bundle.js.map

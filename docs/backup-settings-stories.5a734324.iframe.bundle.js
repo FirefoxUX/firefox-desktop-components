@@ -2049,8 +2049,16 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   }
   handleShowRestoreDialog() {
     if (this.restoreFromBackupDialogEl) {
+      // check if a backup exists already before opening the modal
+      // don't block opening the modal
+      this.handleFindIfABackupFileExists();
       this.restoreFromBackupDialogEl.showModal();
     }
+  }
+  handleFindIfABackupFileExists() {
+    this.dispatchEvent(new CustomEvent("BackupUI:FindIfABackupFileExists", {
+      bubbles: true
+    }));
   }
   handleShowBackupLocation() {
     this.dispatchEvent(new CustomEvent("BackupUI:ShowBackupLocation", {
@@ -3082,4 +3090,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.36431e76.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.5a734324.iframe.bundle.js.map
