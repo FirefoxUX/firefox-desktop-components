@@ -759,11 +759,23 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
   };
   static queries = {
-    reorderableList: "moz-reorderable-list"
+    reorderableList: "moz-reorderable-list",
+    headerSlot: "slot[name='header']",
+    footerSlot: "slot[name='footer']"
   };
   constructor() {
     super();
     this.listItems = [];
+    this.listMutationObserver = new MutationObserver(this.updateItems.bind(this));
+  }
+  firstUpdated(changedProperties) {
+    super.firstUpdated(changedProperties);
+    this.listMutationObserver.observe(this, {
+      attributeFilter: ["hidden"],
+      subtree: true,
+      childList: true
+    });
+    this.updateItems();
   }
   contentTemplate() {
     if (this.type == GROUP_TYPES.reorderable) {
@@ -793,7 +805,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
             </li> `;
       })}
         </${listTag}>
-        <slot hidden @slotchange=${this.updateItems}></slot>`;
+        <slot hidden></slot>`;
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`;
   }
@@ -826,12 +838,13 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
     let positionAttr = event.target.getAttribute("position") ??
     // handles the case where an interactive element is nested in a moz-box-item
-    event.target.closest("moz-box-item").getAttribute("position");
+    event.target.closest("[position]").getAttribute("position");
     let currentPosition = parseInt(positionAttr);
     switch (event.key) {
       case "Down":
       case "ArrowDown":
         {
+          event.preventDefault();
           let nextItem = this.listItems[currentPosition + 1];
           nextItem?.focus(event);
           break;
@@ -839,6 +852,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       case "Up":
       case "ArrowUp":
         {
+          event.preventDefault();
           let prevItem = this.listItems[currentPosition - 1];
           prevItem?.focus(event);
           break;
@@ -862,8 +876,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
   }
   updateItems() {
-    let boxElements = this.querySelectorAll(":is(moz-box-item, moz-box-button, moz-box-link):not([slot='header'], [slot='footer'])");
-    this.listItems = Array.from(boxElements);
+    this.listItems = [...this.children].filter(child => child.slot !== "header" && child.slot !== "footer" && !child.hidden);
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -877,11 +890,22 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     `;
   }
   updated(changedProperties) {
+    let headerNode = this.headerSlot.assignedNodes()[0];
+    let footerNode = this.footerSlot.assignedNodes().at(-1);
+    headerNode?.classList.add("first");
+    footerNode?.classList.add("last");
     if (changedProperties.has("listItems") && this.listItems.length) {
       this.listItems.forEach((item, i) => {
-        item.slot = i;
-        item.setAttribute("position", i);
+        if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
+          item.slot = i;
+          item.setAttribute("position", i);
+        }
+        item.classList.toggle("first", i == 0 && !headerNode);
+        item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
       });
+    }
+    if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
+      this.updateItems();
     }
   }
 }
@@ -1383,7 +1407,7 @@ module.exports = copyArray;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 "use strict";
-module.exports = __webpack_require__.p + "moz-box-group.85fac703f01e9f171aae.css";
+module.exports = __webpack_require__.p + "moz-box-group.4b6a2f940d96801ebc40.css";
 
 /***/ }),
 
@@ -11734,4 +11758,4 @@ function _wrapNativeSuper(t) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.5994305b.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.c17889d7.iframe.bundle.js.map

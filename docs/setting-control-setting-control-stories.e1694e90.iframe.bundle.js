@@ -258,7 +258,23 @@ function getControlInstance(control = "moz-checkbox") {
   }
   return controlInstances.get(control);
 }
+
+/**
+ * Mapping of parent control tag names to the literal tag name for their
+ * expected children. eg. "moz-radio-group"->literal`moz-radio`.
+ * @type Map<string, literal>
+ */
 const KNOWN_OPTIONS = new Map([["moz-radio-group", (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.literal)`moz-radio`], ["moz-select", (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.literal)`moz-option`]]);
+
+/**
+ * Mapping of parent control tag names to the expected slot for their children.
+ * If there's no entry here for a control then it's expected that its children
+ * should go in the default slot.
+ * @type Map<string, string>
+ */
+const ITEM_SLOT_BY_PARENT = new Map([["moz-checkbox", "nested"], ["moz-input-text", "nested"], ["moz-input-search", "nested"], ["moz-input-folder", "nested"], ["moz-input-password", "nested"], ["moz-radio-group", "nested"],
+// NOTE: moz-select does not support the nested slot.
+["moz-toggle", "nested"]]);
 class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   #lastSetting;
   static properties = {
@@ -279,6 +295,9 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   }
   createRenderRoot() {
     return this;
+  }
+  focus() {
+    this.controlRef.value.focus();
   }
   get controlEl() {
     return this.controlRef.value;
@@ -305,25 +324,37 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   }
 
   /**
-   * The default properties that a control accepts.
-   * Note: for the disabled property, a setting can either be locked,
-   * or controlled by an extension but not both.
+   * The default properties that controls and options accept.
    */
-  getPropertyMapping(config) {
-    const props = {
+  getCommonPropertyMapping(config) {
+    return {
       id: config.id,
       "data-l10n-id": config.l10nId,
+      "data-l10n-args": config.l10nArgs ? JSON.stringify(config.l10nArgs) : undefined,
       ".iconSrc": config.iconSrc,
       ".supportPage": config.supportPage,
-      ".parentDisabled": this.parentDisabled,
-      ".control": this,
       "data-subcategory": config.subcategory,
-      "?disabled": this.setting.disabled || this.setting.locked || this.isControlledByExtension(),
       ...config.controlAttrs
     };
-    if (config.l10nArgs) {
-      props["data-l10n-args"] = JSON.stringify(config.l10nArgs);
-    }
+  }
+
+  /**
+   * The default properties for an option.
+   */
+  getOptionPropertyMapping(config) {
+    const props = this.getCommonPropertyMapping(config);
+    props[".value"] = config.value;
+    return props;
+  }
+
+  /**
+   * The default properties for this control.
+   */
+  getControlPropertyMapping(config) {
+    const props = this.getCommonPropertyMapping(config);
+    props[".parentDisabled"] = this.parentDisabled;
+    props[".control"] = this;
+    props["?disabled"] = this.setting.disabled || this.setting.locked || this.isControlledByExtension();
 
     // Set the value based on the control's API.
     let instance = getControlInstance(config.control);
@@ -374,6 +405,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     let {
       config
     } = this;
+    let control = config.control || "moz-checkbox";
     let getItemArgs = items => items?.map(i => ({
       config: i,
       setting: this.getSetting(i.id)
@@ -385,7 +417,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         .config=${opts.config}
         .setting=${opts.setting}
         .getSetting=${this.getSetting}
-        slot="nested"
+        slot=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(ITEM_SLOT_BY_PARENT.get(control))}
       ></setting-control>`;
     let nestedSettings = itemArgs.map(itemTemplate);
 
@@ -393,22 +425,17 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     let controlChildren = chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing;
     if (config.options) {
       controlChildren = config.options.map(opt => {
-        let optionTag = opt.control ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(opt.control) : KNOWN_OPTIONS.get(config.control);
+        let optionTag = opt.control ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(opt.control) : KNOWN_OPTIONS.get(control);
         return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`<${optionTag}
-              id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(opt.id)}
-              .value=${opt.value}
-              .supportPage=${opt.supportPage}
-              .control=${this}
-              data-l10n-id=${opt.l10nId}
-              data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(opt.l10nArgs && JSON.stringify(opt.l10nArgs))}
-            >${opt.items ? getItemArgs(opt.items).map(itemTemplate) : ""}</${optionTag}>`;
+          ${spread(this.getOptionPropertyMapping(opt))}
+        >${opt.items ? getItemArgs(opt.items).map(itemTemplate) : ""}</${optionTag}>`;
       });
     }
 
     // Get the properties for this element: id, fluent, disabled, etc.
     // These will be applied to the control using the spread directive.
-    let controlProps = this.getPropertyMapping(config);
-    let tag = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(config.control || "moz-checkbox");
+    let controlProps = this.getControlPropertyMapping(config);
+    let tag = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(control);
     let messageBar;
     if (this.isControlledByExtension()) {
       let args = {
@@ -434,4 +461,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.3775a32b.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.e1694e90.iframe.bundle.js.map

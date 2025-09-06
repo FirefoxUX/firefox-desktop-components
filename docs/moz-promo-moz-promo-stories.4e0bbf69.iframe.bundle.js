@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.007b53a7fafad53435bc.css";
+module.exports = __webpack_require__.p + "moz-promo.196f8ec2137d18da7d3e.css";
 
 /***/ }),
 
@@ -1019,4 +1019,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-promo-moz-promo-stories.673f182c.iframe.bundle.js.map
+//# sourceMappingURL=moz-promo-moz-promo-stories.4e0bbf69.iframe.bundle.js.map

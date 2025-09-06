@@ -935,6 +935,19 @@ const tokensTable = {
     name: "--background-color-box"
   }, {
     value: {
+      prefersContrast: "var(--background-color-canvas)",
+      brand: {
+        light: "var(--color-gray-20)",
+        dark: "var(--color-gray-80)",
+        default: "light-dark(var(--color-gray-20), var(--color-gray-80))"
+      },
+      platform: {
+        default: "color-mix(in srgb, currentColor 20%, transparent)"
+      }
+    },
+    name: "--background-color-box-info"
+  }, {
+    value: {
       prefersContrast: "Canvas",
       brand: {
         light: "var(--color-white)",
@@ -1085,6 +1098,9 @@ const tokensTable = {
     value: "var(--button-background-color-hover)",
     name: "--button-background-color-ghost-hover"
   }, {
+    value: "var(--background-color-box-info)",
+    name: "--promo-background-color"
+  }, {
     value: {
       default: "var(--background-color-canvas)"
     },
@@ -1098,9 +1114,9 @@ const tokensTable = {
         default: "light-dark(#f0f0f4, var(--color-gray-80))"
       },
       platform: {
-        light: "rgba(0,0,0,5%)",
-        dark: "rgba(255,255,255,5%)",
-        default: "light-dark(rgba(0,0,0,5%), rgba(255,255,255,5%))"
+        light: "rgba(0, 0, 0, 0.05)",
+        dark: "rgba(255, 255, 255, 0.05)",
+        default: "light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05))"
       }
     },
     name: "--table-row-background-color-alternate"
@@ -1827,6 +1843,17 @@ const variableLookupTable = {
     prefersContrast: "var(--background-color-canvas)",
     default: "light-dark(var(--color-white), var(--color-gray-80))"
   },
+  "background-color-box-info": {
+    prefersContrast: "var(--background-color-canvas)",
+    brand: {
+      light: "var(--color-gray-20)",
+      dark: "var(--color-gray-80)",
+      default: "light-dark(var(--color-gray-20), var(--color-gray-80))"
+    },
+    platform: {
+      default: "color-mix(in srgb, currentColor 20%, transparent)"
+    }
+  },
   "background-color-canvas": {
     prefersContrast: "Canvas",
     brand: {
@@ -2459,6 +2486,7 @@ const variableLookupTable = {
       default: "664px"
     }
   },
+  "promo-background-color": "var(--background-color-box-info)",
   "size-item-xsmall": "12px",
   "size-item-small": "16px",
   "size-item-medium": "24px",
@@ -2510,9 +2538,9 @@ const variableLookupTable = {
       default: "light-dark(#f0f0f4, var(--color-gray-80))"
     },
     platform: {
-      light: "rgba(0,0,0,5%)",
-      dark: "rgba(255,255,255,5%)",
-      default: "light-dark(rgba(0,0,0,5%), rgba(255,255,255,5%))"
+      light: "rgba(0, 0, 0, 0.05)",
+      dark: "rgba(255, 255, 255, 0.05)",
+      default: "light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05))"
     }
   },
   "text-color": {
@@ -2552,4 +2580,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.d6dcc757.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.fdd38aef.iframe.bundle.js.map
