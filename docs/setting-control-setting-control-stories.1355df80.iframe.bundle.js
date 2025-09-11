@@ -388,10 +388,10 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     this.setting.userClick(event);
   }
   async disableExtension() {
-    this.setting.disableControllingExtension();
+    await this.setting.disableControllingExtension();
   }
   isControlledByExtension() {
-    return this.setting.controllingExtensionInfo.id && this.setting.controllingExtensionInfo.name;
+    return this.setting.controllingExtensionInfo?.id && this.setting.controllingExtensionInfo?.name;
   }
   get extensionName() {
     return this.setting.controllingExtensionInfo.name;
@@ -446,6 +446,11 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         .messageL10nId=${this.extensionMessageId}
         .messageL10nArgs=${args}
       >
+        <moz-button
+          slot="actions"
+          @click=${this.disableExtension}
+          data-l10n-id="disable-extension"
+        ></moz-button>
       </moz-message-bar>`;
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`
@@ -461,4 +466,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.e1694e90.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.1355df80.iframe.bundle.js.map

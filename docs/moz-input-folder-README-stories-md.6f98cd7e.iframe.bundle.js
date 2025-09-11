@@ -165,6 +165,7 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
         <moz-button
           id="choose-folder-button"
           data-l10n-id="choose-folder-button"
+          data-l10n-attrs="accesskey"
           ?disabled=${this.disabled || this.parentDisabled}
           @click=${this.openFolderPicker}
         ></moz-button>
@@ -915,4 +916,4 @@ function MDXProvider({components, children, disableParentContext}) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-README-stories-md.bc9f84aa.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-README-stories-md.6f98cd7e.iframe.bundle.js.map
