@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[988,3770],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3770],{
 
 /***/ 51389:
 /***/ (() => {
@@ -42,21 +42,23 @@
    */
   class NamedDeckButton extends HTMLButtonElement {
     connectedCallback() {
+      this._rootNode = this.getRootNode();
       this.id = `${this.deckId}-button-${this.name}`;
       if (!this.hasAttribute("role")) {
         this.setAttribute("role", "tab");
       }
       this.setSelectedFromDeck();
       this.addEventListener("click", this);
-      this.getRootNode().addEventListener("view-changed", this, {
+      this._rootNode.addEventListener("view-changed", this, {
         capture: true
       });
     }
     disconnectedCallback() {
       this.removeEventListener("click", this);
-      this.getRootNode().removeEventListener("view-changed", this, {
+      this._rootNode.removeEventListener("view-changed", this, {
         capture: true
       });
+      this._rootNode = null;
     }
     attributeChangedCallback(name, oldVal, newVal) {
       if (name == "selected") {
@@ -70,7 +72,7 @@
       this.setAttribute("deck", val);
     }
     get deck() {
-      return this.getRootNode().querySelector(`#${this.deckId}`);
+      return this._rootNode.querySelector(`#${this.deckId}`);
     }
     handleEvent(e) {
       if (e.type == "view-changed" && e.target.id == this.deckId) {
@@ -116,6 +118,7 @@
       return ["orientation"];
     }
     connectedCallback() {
+      this._rootNode = this.getRootNode();
       this.setAttribute("role", "tablist");
       if (!this.observer) {
         this.observer = new MutationObserver(changes => {
@@ -148,14 +151,15 @@
       this.addEventListener("button-group:selected", this);
       this.addEventListener("keydown", this);
       this.addEventListener("mousedown", this);
-      this.getRootNode().addEventListener("keypress", this);
+      this._rootNode.addEventListener("keypress", this);
     }
     disconnectedCallback() {
       this.observer.disconnect();
       this.removeEventListener("button-group:selected", this);
       this.removeEventListener("keydown", this);
       this.removeEventListener("mousedown", this);
-      this.getRootNode().removeEventListener("keypress", this);
+      this._rootNode.removeEventListener("keypress", this);
+      this._rootNode = null;
     }
     attributeChangedCallback(name) {
       if (name == "orientation") {
@@ -264,7 +268,7 @@
               return NodeFilter.FILTER_REJECT;
             }
             node.focus();
-            return this.getRootNode().activeElement == node ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            return this._rootNode.activeElement == node ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
           }
         });
       }
@@ -381,62 +385,7 @@
   customElements.define("named-deck", NamedDeck);
 }
 
-/***/ }),
-
-/***/ 90513:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   FocusGroup: () => (/* binding */ FocusGroup),
-/* harmony export */   ListMenu: () => (/* binding */ ListMenu),
-/* harmony export */   Tabs: () => (/* binding */ Tabs),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var toolkit_widgets_named_deck_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(51389);
-/* harmony import */ var toolkit_widgets_named_deck_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(toolkit_widgets_named_deck_js__WEBPACK_IMPORTED_MODULE_1__);
-var _templateObject, _templateObject2, _templateObject3;
-function _taggedTemplateLiteral(e, t) { return t || (t = e.slice(0)), Object.freeze(Object.defineProperties(e, { raw: { value: Object.freeze(t) } })); }
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-// Imported for side-effects.
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Named Deck",
-  component: "named-deck",
-  parameters: {
-    status: "stable",
-    fluent: "\nnamed-deck-tab-one = Tab 1\nnamed-deck-tab-two = Tab 2\nnamed-deck-tab-three = Tab 3\nnamed-deck-content-one = This is tab 1\nnamed-deck-content-two = This is tab 2\nnamed-deck-content-three = This is tab 3\nbutton-group-one = One\nbutton-group-two = Two\nbutton-group-three = Three\nbutton-group-four = Four\n    "
-  }
-});
-var Tabs = function Tabs() {
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject || (_templateObject = _taggedTemplateLiteral(["\n  <style>\n    button[selected] {\n      outline: 2px dashed var(--focus-outline-color);\n    }\n  </style>\n  <button-group>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-1\" data-l10n-id=\"named-deck-tab-one\"></button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-2\" data-l10n-id=\"named-deck-tab-two\"></button>\n    <button is=\"named-deck-button\" deck=\"tabs-deck\" name=\"tab-3\" data-l10n-id=\"named-deck-tab-three\"></button>\n  </button-group>\n  <named-deck id=\"tabs-deck\" is-tabbed>\n    <p name=\"tab-1\" data-l10n-id=\"named-deck-content-one\"></p>\n    <p name=\"tab-2\" data-l10n-id=\"named-deck-content-two\"></p>\n    <p name=\"tab-3\" data-l10n-id=\"named-deck-content-three\"></p>\n  </named-deck>\n\n  <hr>\n\n  <p>\n    The dashed outline is added for emphasis here. It applies to the button with\n    the <code>selected</code> attribute, but matches the deck's\n    <code>selected-view</code> name.\n  </p>\n\n  <p>\n    These tabs are a combination of <code>button-group</code>,\n    <code>named-deck-button</code>, and <code>named-deck</code>.\n    <ul>\n      <li>\n        <code>button-group</code> makes the tabs a single focusable group,\n        using left/right to switch between focused buttons.\n      </li>\n      <li>\n        <code>named-deck-button</code>s are <code>button</code> subclasses\n        that are used to control the <code>named-deck</code>.\n      </li>\n      <li>\n        <code>named-deck</code> show only one selected child at a time.\n      </li>\n    </ul>\n  </p>\n"])));
-};
-var ListMenu = function ListMenu() {
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject2 || (_templateObject2 = _taggedTemplateLiteral(["\n  <style>\n    .icon-button {\n      background-image: url(\"chrome://global/skin/icons/arrow-left.svg\");\n    }\n\n    .vertical-group {\n      display: flex;\n      flex-direction: column;\n      width: 200px;\n    }\n  </style>\n  <named-deck id=\"list-deck\" is-tabbed>\n    <section name=\"list\">\n      <button-group orientation=\"vertical\" class=\"vertical-group\">\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-1\">\n          Tab 1\n        </button>\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-2\">\n          Tab 2\n        </button>\n        <button is=\"named-deck-button\" deck=\"list-deck\" name=\"tab-3\">\n          Tab 3\n        </button>\n      </button-group>\n    </section>\n    <section name=\"tab-1\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 1</p>\n    </section>\n    <section name=\"tab-2\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 2</p>\n    </section>\n    <section name=\"tab-3\">\n      <button\n        class=\"icon-button ghost-button\"\n        is=\"named-deck-button\"\n        deck=\"list-deck\"\n        name=\"list\"\n      ></button>\n      <p>This is tab 3</p>\n    </section>\n  </named-deck>\n\n  <hr />\n\n  <p>\n    This is an alternate layout for creating a menu navigation. In this case,\n    the first view in the <code>named-deck</code> is the list view which\n    contains the <code>named-deck-button</code>s to link to the other views.\n    Each view then includes a back <code>named-deck-button</code> which is used\n    to navigate back to the first view.\n  </p>\n"])));
-};
-var FocusGroupTemplate = function FocusGroupTemplate(_ref) {
-  var orientation = _ref.orientation;
-  return (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)(_templateObject3 || (_templateObject3 = _taggedTemplateLiteral(["\n  <button-group orientation=", ">\n    <button data-l10n-id=\"button-group-one\"></button>\n    <button data-l10n-id=\"button-group-two\"></button>\n    <button data-l10n-id=\"button-group-three\"></button>\n    <button data-l10n-id=\"button-group-four\"></button>\n  </button-group>\n\n  <p>\n    The <code>button-group</code> element will group focus to the buttons,\n    requiring left/right or up/down to switch focus between its child elements.\n    It accepts an <code>orientation</code> property, which determines if\n    left/right or up/down are used to change the focused button.\n  </p>\n"])), orientation);
-};
-var FocusGroup = FocusGroupTemplate.bind({});
-FocusGroup.args = {
-  orientation: "horizontal"
-};
-FocusGroup.argTypes = {
-  orientation: {
-    options: ["horizontal", "vertical"],
-    control: {
-      type: "radio"
-    }
-  }
-};
-
 /***/ })
 
 }]);
-//# sourceMappingURL=named-deck-stories.bc4b3c0b.iframe.bundle.js.map
+//# sourceMappingURL=3770.9f48b76a.iframe.bundle.js.map

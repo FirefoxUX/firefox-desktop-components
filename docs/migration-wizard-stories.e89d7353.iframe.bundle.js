@@ -1346,21 +1346,23 @@ __webpack_require__.r(__webpack_exports__);
    */
   class NamedDeckButton extends HTMLButtonElement {
     connectedCallback() {
+      this._rootNode = this.getRootNode();
       this.id = `${this.deckId}-button-${this.name}`;
       if (!this.hasAttribute("role")) {
         this.setAttribute("role", "tab");
       }
       this.setSelectedFromDeck();
       this.addEventListener("click", this);
-      this.getRootNode().addEventListener("view-changed", this, {
+      this._rootNode.addEventListener("view-changed", this, {
         capture: true
       });
     }
     disconnectedCallback() {
       this.removeEventListener("click", this);
-      this.getRootNode().removeEventListener("view-changed", this, {
+      this._rootNode.removeEventListener("view-changed", this, {
         capture: true
       });
+      this._rootNode = null;
     }
     attributeChangedCallback(name, oldVal, newVal) {
       if (name == "selected") {
@@ -1374,7 +1376,7 @@ __webpack_require__.r(__webpack_exports__);
       this.setAttribute("deck", val);
     }
     get deck() {
-      return this.getRootNode().querySelector(`#${this.deckId}`);
+      return this._rootNode.querySelector(`#${this.deckId}`);
     }
     handleEvent(e) {
       if (e.type == "view-changed" && e.target.id == this.deckId) {
@@ -1420,6 +1422,7 @@ __webpack_require__.r(__webpack_exports__);
       return ["orientation"];
     }
     connectedCallback() {
+      this._rootNode = this.getRootNode();
       this.setAttribute("role", "tablist");
       if (!this.observer) {
         this.observer = new MutationObserver(changes => {
@@ -1452,14 +1455,15 @@ __webpack_require__.r(__webpack_exports__);
       this.addEventListener("button-group:selected", this);
       this.addEventListener("keydown", this);
       this.addEventListener("mousedown", this);
-      this.getRootNode().addEventListener("keypress", this);
+      this._rootNode.addEventListener("keypress", this);
     }
     disconnectedCallback() {
       this.observer.disconnect();
       this.removeEventListener("button-group:selected", this);
       this.removeEventListener("keydown", this);
       this.removeEventListener("mousedown", this);
-      this.getRootNode().removeEventListener("keypress", this);
+      this._rootNode.removeEventListener("keypress", this);
+      this._rootNode = null;
     }
     attributeChangedCallback(name) {
       if (name == "orientation") {
@@ -1568,7 +1572,7 @@ __webpack_require__.r(__webpack_exports__);
               return NodeFilter.FILTER_REJECT;
             }
             node.focus();
-            return this.getRootNode().activeElement == node ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
+            return this._rootNode.activeElement == node ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT;
           }
         });
       }
@@ -3209,4 +3213,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.dc16c504.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.e89d7353.iframe.bundle.js.map
