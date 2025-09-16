@@ -112,17 +112,24 @@ function _createMdxContent(props) {
           children: "Bug 1955395 - [meta] Figma Code Connect"
         }), "."]
       }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.li, {
-        children: "Checking the \"Explore component behavior\" in Figma and seeing if there no code snippet in the \"Component playground\"."
+        children: "Checking the \"Explore component behavior\" in Figma and seeing if there no code snippet at the bottom of the \"Component playground\" window, underneath the \"Variable modes\" section."
       }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.strong, {
         children: "Note:"
-      }), " not all Figma components will need a code connect config.\nFor example, the \"Label\" component is something that exists as a standalone item in Figma but is set up through a containing component in code.\nOur ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/ced8457641a062908760d480275f76ccc4d496d1/toolkit/content/widgets/lit-utils.mjs#392-400",
+      }), " Not all Figma components will need a Code Connect config.\nFor example, the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://www.figma.com/design/3WoKOSGtaSjhUHKldHCXbc/Desktop-Components-3?node-id=32-678&m=dev",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "MozBaseInputElement"
-      }), " shows this pattern if you're looking for a concrete example."]
+        children: "\"Radio Button\""
+      }), " exists as a standalone Figma component, but it is only used as a subcomponent for the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://www.figma.com/design/3WoKOSGtaSjhUHKldHCXbc/Desktop-Components-3?node-id=3907-17657&m=dev",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "\"Radio Button with label,\""
+      }), " which more accurately models our ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "moz-label"
+      }), " web component."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["Once you are aware of the Figma component you want to work on, you'll need to navigate to Figma and find the base Figma component.\nIt should have an icon of a diamond made of four smaller diamonds.\nWhen you select this component, it likely will say ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.strong, {
         children: "Component set"
@@ -136,7 +143,7 @@ function _createMdxContent(props) {
         alt: "Figma user interface showing the diamond icon next to \"Component set\""
       })]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
-      children: "If you have found an instance of a component then there should be an option indicated by either a diamond with four smaller diamonds or a diamond with an arrow pointing out from the diamond.\nThis icon button is used to go to the main component, and will be labelled \"Go to main component\" once you hover on the icon button.\nUse this \"Go to main component\" button to check if there is a component set higher up in the hierarchy.\nOnce you've got the main component set, then you can copy a link to the component and move to generating the Code Connect config in your terminal."
+      children: "Ensure that you have selected the main Figma component instead of an instance of it.\nCode Connect will not setup correctly for an instance.\nThere should be an option indicated by either a diamond with four smaller diamonds or a diamond with an arrow pointing out from the diamond.\nThis icon button is used to go to the main component, and will be labelled \"Go to main component\" once you hover on the icon button.\nUse this \"Go to main component\" button to check if there is a component set higher up in the hierarchy.\nOnce you've got the main component set, then you can copy a link to the component and move to generating the Code Connect config in your terminal."
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.img, {
         src: "./img/figma-go-to-main-component-one.png",
@@ -160,8 +167,10 @@ function _createMdxContent(props) {
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["For example, this command would look something like ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "npx figma connect create 'https://www.figma.com/design/[...]?node-id=1-255&m=dev'"
-      }), " where the full URL is the GUID for your design document.\nThis command will work regardless if you copied the link in Dev Mode or not."]
+        children: "npx figma connect create 'https://www.figma.com/design/[...]?node-id=1-255'"
+      }), " where the full URL is the GUID for your design document.\nThis command will work regardless if you copied the link in Dev Mode (which has an additional query ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "&m=dev"
+      }), " at the end of the link) or not."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
       children: "If the Code Connect tool was able to find a component in that copied URL, you will receive the following output in your terminal:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
@@ -176,24 +185,43 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["While generating the file is a good start, you will need to move it, rename it, and modify it.\nYou should move this generated file to the component specific folder and rename it to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "<component-name>.figma.ts"
-      }), ".\nThe goal of this config is to create a mapping between what properties the Lit component takes and what properties are defined in Figma.\nThe ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+      }), ".\nThe generator names the file according to the Figma component, so this may not have the same name as the Lit component.\nFor example, the generator creates a file titled ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "checkbox.figma.ts"
+      }), ".\nThis file should be moved to the corresponding folder - in this case ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "/toolkit/content/widgets/moz-checkbox"
+      }), " - and renamed to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "moz-checkbox.figma.ts"
+      }), ".\nThe goal of this config is to create a mapping between what properties the Lit component takes and what properties are defined in Figma, which are reflected in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "props"
-      }), " object will be a map from the Lit component’s properties to the Figma component’s properties."]
+      }), " object.\nThe values within the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "props"
+      }), " object will be used in generating the Code Connect snippet."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        className: "language-javascript",
+        children: "{\n  props: {\n    showIcon: figma.boolean(\"Show icon\", {\n      true: \"chrome://example.svg\",\n      false: undefined,\n    }),\n    label: figma.string(\"Label\"),\n  },\n  example: props => html`\n    <moz-badge\n      label=${props.label}\n      iconsrc=${props.showIcon}\n      title=\"This appears as a tooltip on hover\"\n    ></moz-badge>\n  `,\n}\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.strong, {
+        children: "Note:"
+      }), " The generated ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "props"
+      }), " object may not capture all of the properties that can or should be mapped from Figma."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
-      id: "when-the-types-match",
-      children: "When the types match"
+      id: "when-the-property-types-match",
+      children: "When the property types match"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["The value of the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "figma[type](propertyName)"
-      }), " \"code\" will be the value as you expect from figma.\nSo if it is the “checked” boolean in Figma, that value will be set to true when the instance in Figma has it set to true."]
+      }), " \"code\" will be the expected value from a given instance of a Figma component.\nSo if it is the “checked” boolean in Figma, that value will be set to true when the instance in Figma has it set to true."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         className: "language-javascript",
         children: "checked: figma.boolean(\"Checked\")\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
-      id: "when-the-types-are-different",
-      children: "When the types are different"
+      id: "when-the-property-types-are-different",
+      children: "When the property types are different"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["You can work around a type difference by providing an object to the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "figma[type]"
@@ -213,7 +241,7 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         className: "language-javascript",
-        children: "// Figma State=Disabled will set disabled:true on the generated code snippet\ndisabled: figma.enum(\"State\", { Disabled: true })\n"
+        children: "// Figma State=Disabled will set disabled:true on the generated code snippet\ndisabled: figma.enum(\"State\", { Disabled: true })\n// ...\nhtml`\n  <moz-checkbox\n    disabled=${props.disabled}\n  ></moz-checkbox>\n`\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
       id: "creating-the-example-template",
@@ -244,7 +272,7 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["If this check passes, you can verify your changes on Figma by publishing the file by navigating to the directory that it is in and running ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "npx figma connect publish"
-      }), ".\nAfter doing this, navigate to the node that you copied the link for earlier in this process (or check the modified config file as this will have that same URL).\nUnder the \"Inspect\" sidebar, there should now be a \"Recommend code\" section with the snippet you created under the \"example\" key in the config file."]
+      }), ".\nAfter doing this, navigate to the node that you copied the link for earlier in this process (or check the modified config file as this will have that same URL).\nYou can test the code snippet by opening \"Explore component behavior\" under the \"Component information\" section."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
       children: "If this generated snippet does not appear to be correct, you can undo the change on Figma by utilizing the following command when you are in the same directory as the config file you are working on:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
@@ -255,6 +283,37 @@ function _createMdxContent(props) {
       children: ["Afterwards, commit and submit the file via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "moz-phab"
       }), " as you would any other bug."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
+      id: "how-to-find-the-code-connect-snippet",
+      children: "How to find the Code Connect snippet"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: "If you are interacting with an instance of a Figma component and you are in Dev Mode, then you will be able to find a section called \"Code Connect\" in the \"Inspect\" sidebar.\nThe code snippet for the instance will be within that section. Depending on the component, there may be additional comments at the bottom of the code snippet that explains what may be missing from the implementation of the Figma component compared to the Lit component."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.img, {
+        src: "./img/code-connect-snippet-comments.png",
+        alt: "Figma user interface showing the snippet with additional comments"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: "This section is also available if you are interacting with one of the variants of the main Figma component."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.img, {
+        src: "./img/code-connect-main-component-variant.png",
+        alt: "Figma user interface showing the snippet when interacting with main component variants"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: "If you are interacting with the main Figma component itself - the wrapper holding all the variants that may exist - then there will be a \"Component information\" section under the \"Inspect\" sidebar.\nClick on \"Explore component behavior\" to inspect the code snippet as you test changing the properties of the Figma component."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.img, {
+        src: "./img/code-connect-component-playground.png",
+        alt: "Figma user interface showing the component playground"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["For more examples, you can check out ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://www.figma.com/code-connect-docs/#publish-to-figma-to-make-handoff-a-breeze",
+        target: "_blank",
+        rel: "nofollow noopener noreferrer",
+        children: "Figma's Code Connect documentation"
+      }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
       id: "code-connect-issuespitfallsscenarios",
       children: "Code Connect issues/pitfalls/scenarios"
@@ -317,6 +376,25 @@ function _createMdxContent(props) {
         children: "props: {\n    // labelProps is intentionally omitted for simplicity\n  labelProps: figma.nestedProps(\"Label\", ...),\n  checkboxProps: figma.nestedProps(\"Checkbox\", {\n    checked: figma.boolean(\"Checked\"),\n    disabled: figma.enum(\"State\", { Disabled: true }),\n  }),\n  example: props => html`\n  <moz-checkbox\n    checked=${props.checkboxProps.checked}\n    disabled=${props.checkboxProps.disabled}\n></moz-checkbox>`\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
+      id: "dont-use-conditional-statements-in-the-example-template",
+      children: "Don't use conditional statements in the example template"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["The example template does not allow conditional statements. Any logic should be handled through the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "props"
+      }), " object."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        className: "language-javascript",
+        children: "// In this component, an icon should only render if there is a label\n// The following example is invalid\nhtml`\n<moz-component\n  label=${props.label}\n  iconsrc=${ props.label ? props.iconSrc : undefined }\n></moz-component>\n`\n// Instead, set up the figma[type] statements like this\nlabel: figma.string(\"Label\"),\niconSrc: figma.boolean(\"Show label\", {\n  true: \"chrome://example.svg\",\n  false: undefined,\n}),\n// Then create the example template as normal\nhtml`\n<moz-component\n  label=${props.label}\n  iconsrc=${props.iconSrc}\n></moz-component>\n`\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
+      id: "match-the-case-of-what-is-present-in-figma",
+      children: "Match the case of what is present in Figma"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["Ensure that the names of any components, nested components, and properties that you use in the Code Connect file matches the name used in the Figma file.\nFor example, if a Figma property is named ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "sHoW dEsCrIpTiOn"
+      }), " (not that anyone would do that), it will not map correctly if it is referred to as \"Show description\" in the config file."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
       id: "what-if-something-in-figma-doesnt-map-back-to-anything-in-the-implemented-component",
       children: "What if something in Figma doesn't map back to anything in the implemented component?"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
@@ -344,6 +422,29 @@ function _createMdxContent(props) {
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
       children: "Other times, this could be a sign that there's a deviation in the design or the implemented component.\nMaybe it's a feature that hasn't been implemented yet, and so we don't want to show any code snippets when that feature is enabled in Figma.\nIt could be something that was missed when previously creating the Code Connect config for a particular component, there could be a variety of reasons.\nIt may be worth reaching out to design to make sure the implemented component and the design component are not deviating from each other."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
+      id: "an-example-of-a-disrepancy-between-the-lit-and-figma-components",
+      children: "An example of a disrepancy between the Lit and Figma components"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["The following are properties of the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "moz-message-bar"
+      }), " component as noted in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "toolkit/content/widgets/moz-message-bar.mjs"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        className: "language-javascript",
+        children: "/**\n * @property {string} type - The type of the displayed message.\n * @property {string} heading - The heading of the message.\n * @property {string} message - The message text.\n * @property {boolean} dismissable - Whether or not the element is dismissable.\n * @property {string} messageL10nId - l10n ID for the message.\n * @property {string} messageL10nArgs - Any args needed for the message l10n ID.\n */\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["In Storybook, we are able to change the message, heading, and action button label through the Fluent tab.\nThis mostly maps to the properties in the Figma component, however, we can only update the action button label through the nested Button component.\nAdditionally, we generally do not include l10n properties in the Code Connect example snippets.\nAs the nested Button's properties are not currently exposed on the top level of the component, we are not able to reflect any changes to the Button in the Message Bar's example snippet.\nBelow, the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "moz-button"
+      }), " code has been hard-coded."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.p, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.img, {
+        src: "./img/code-connect-message-bar.png",
+        alt: "Figma user interface showing the message bar code snippet"
+      })
     })]
   });
 }
@@ -573,4 +674,4 @@ function MDXProvider({components, children, disableParentContext}) {
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-figma-code-connect-stories-md.c806eefc.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-figma-code-connect-stories-md.4fecf099.iframe.bundle.js.map

@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.196f8ec2137d18da7d3e.css";
+module.exports = __webpack_require__.p + "moz-promo.b4ad58b5c715395de188.css";
 
 /***/ }),
 
@@ -700,11 +700,12 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
         ${imageStartAligned ? this.imageTemplate() : ""}
         <div class="text-container">
           ${this.headingTemplate()}
-          <p class="message">${this.message}</p>
-          <div class="actions-and-support-link-wrapper">
-            <slot name="actions"></slot>
-            <slot name="support-link"></slot>
-          </div>
+          <p class="message">
+            ${this.message}<span class="actions-and-support-link-wrapper">
+              <slot name="actions"></slot>
+              <slot name="support-link"></slot>
+            </span>
+          </p>
         </div>
         ${!imageStartAligned ? this.imageTemplate() : ""}
       </div>`;
@@ -1019,4 +1020,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-promo-moz-promo-stories.4e0bbf69.iframe.bundle.js.map
+//# sourceMappingURL=moz-promo-moz-promo-stories.56f312ef.iframe.bundle.js.map

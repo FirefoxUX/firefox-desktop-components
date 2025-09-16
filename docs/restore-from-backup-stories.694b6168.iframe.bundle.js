@@ -355,6 +355,51 @@ module.exports = __webpack_require__.p + "moz-button.8b9b5fe14af67ac8d4ff.css";
 
 /***/ }),
 
+/***/ 30585:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ERROR_L10N_IDS: () => (/* binding */ ERROR_L10N_IDS),
+/* harmony export */   getErrorL10nId: () => (/* binding */ getErrorL10nId)
+/* harmony export */ });
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(43039);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/**
+ * Any recovery error messaging should be defined in Fluent with both
+ * a `heading` attribute and a `message` attribute.
+ */
+const ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNAUTHORIZED]: "backup-service-error-incorrect-password",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.CORRUPTED_ARCHIVE]: "backup-service-error-corrupt-file",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "backup-service-error-unsupported-version",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.RECOVERY_FAILED]: "backup-service-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_APPLICATION]: "backup-service-error-unsupported-application"
+});
+
+/**
+ * @param {number} errorCode
+ *   Error code from backup-constants.mjs:ERRORS
+ * @returns {string}
+ *   L10N ID for error messaging for the given error code; the L10N
+ *   ID should have both a `heading` and a `message` attribute
+ */
+function getErrorL10nId(errorCode) {
+  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN];
+}
+
+/***/ }),
+
 /***/ 31836:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1094,8 +1139,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19483);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13532);
-/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(43039);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(43039);
+/* harmony import */ var chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30585);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(13532);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1104,37 +1150,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+
 // eslint-disable-next-line import/no-unassigned-import
 
-
-
-/**
- * Any recovery error messaging should be defined in Fluent with both
- * a `heading` attribute and a `message` attribute.
- */
-const RECOVERY_ERROR_L10N_IDS = Object.freeze({
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNAUTHORIZED]: "restore-from-backup-error-incorrect-password",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.CORRUPTED_ARCHIVE]: "restore-from-backup-error-corrupt-file",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "restore-from-backup-error-unsupported-version",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNINITIALIZED]: "restore-from-backup-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.FILE_SYSTEM_ERROR]: "restore-from-backup-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.DECRYPTION_FAILED]: "restore-from-backup-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.RECOVERY_FAILED]: "restore-from-backup-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN]: "restore-from-backup-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.INTERNAL_ERROR]: "restore-from-backup-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNSUPPORTED_APPLICATION]: "restore-from-backup-error-unsupported-application"
-});
-
-/**
- * @param {number} errorCode
- *   Error code from backup-constants.mjs:ERRORS
- * @returns {string}
- *   L10N ID for error messaging for the given error code; the L10N
- *   ID should have both a `heading` and a `message` attribute
- */
-function getRecoveryErrorL10nId(errorCode) {
-  return RECOVERY_ERROR_L10N_IDS[errorCode] ?? RECOVERY_ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNKNOWN];
-}
 
 /**
  * The widget for allowing users to select and restore from a
@@ -1174,7 +1193,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     };
   }
   get isIncorrectPassword() {
-    return this.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_4__.ERRORS.UNAUTHORIZED;
+    return this.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED;
   }
   constructor() {
     super();
@@ -1398,7 +1417,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       <moz-message-bar
         id="restore-from-backup-error"
         type="error"
-        data-l10n-id=${getRecoveryErrorL10nId(this.recoveryErrorCode)}
+        data-l10n-id=${(0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.recoveryErrorCode)}
       >
       </moz-message-bar>
     `;
@@ -1547,4 +1566,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.da161e1d.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.694b6168.iframe.bundle.js.map

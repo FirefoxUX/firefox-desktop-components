@@ -177,6 +177,13 @@ class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     mediaSource = null,
     showPreviewControlButtons = null
   } = {}) {
+    // We can only start preview once the element is connected to the DOM and
+    // the video element is available.
+    // If you run into this error you're calling the preview method too early,
+    // or you forgot to add it to the DOM.
+    if (!this.isConnected || !this.videoEl) {
+      throw new Error("Can not start preview: Not connected yet.");
+    }
     if (deviceId != null) {
       this.deviceId = deviceId;
     }
@@ -441,4 +448,4 @@ module.exports = __webpack_require__.p + "moz-card.c0afa2c8b8f6a484c8e9.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.8572fa09.iframe.bundle.js.map
+//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.6566eabf.iframe.bundle.js.map
