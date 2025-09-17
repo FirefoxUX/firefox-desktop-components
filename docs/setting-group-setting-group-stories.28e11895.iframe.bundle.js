@@ -200,7 +200,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const CLICK_HANDLERS = ["moz-box-link"];
+const CLICK_HANDLERS = ["moz-box-link", "moz-box-item", "moz-button"];
 class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   static properties = {
     config: {
@@ -271,4 +271,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.a613e4cc.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.28e11895.iframe.bundle.js.map

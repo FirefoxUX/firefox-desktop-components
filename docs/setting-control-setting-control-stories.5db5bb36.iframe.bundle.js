@@ -322,6 +322,9 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     }
     this.hidden = !this.setting.visible;
   }
+  updated() {
+    this.controlRef?.value?.requestUpdate();
+  }
 
   /**
    * The default properties that controls and options accept.
@@ -333,6 +336,8 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       "data-l10n-args": config.l10nArgs ? JSON.stringify(config.l10nArgs) : undefined,
       ".iconSrc": config.iconSrc,
       ".supportPage": config.supportPage,
+      ".setting": this.setting,
+      ".control": this,
       "data-subcategory": config.subcategory,
       ...config.controlAttrs
     };
@@ -466,4 +471,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.1355df80.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.5db5bb36.iframe.bundle.js.map
