@@ -210,8 +210,8 @@ class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           exact: this.deviceId
         },
         frameRate: 30,
-        width: 1280,
-        height: 720
+        width: 854,
+        height: 480
       }
     };
     let stream;
@@ -448,4 +448,4 @@ module.exports = __webpack_require__.p + "moz-card.c0afa2c8b8f6a484c8e9.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.6566eabf.iframe.bundle.js.map
+//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.683c4847.iframe.bundle.js.map
