@@ -1,0 +1,66 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  --visual-picker-item-border-radius: var(--border-radius-medium);
+  --visual-picker-item-border-width: var(--border-width);
+  --visual-picker-item-border-color: var(--border-color-interactive);
+
+  cursor: default;
+}
+
+.picker-item {
+  --visual-picker-item-border-radius-inner: calc(var(--visual-picker-item-border-radius) - var(--visual-picker-item-border-width));
+
+  overflow: hidden;
+  border: var(--visual-picker-item-border-width) solid var(--visual-picker-item-border-color);
+  border-radius: var(--visual-picker-item-border-radius);
+  margin: 2px;
+
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-offset);
+  }
+
+  &[checked] {
+    --visual-picker-item-border-width: 3px;
+    border-color: var(--color-accent-primary);
+    margin: 0;
+  }
+
+  ::slotted(:first-child) {
+    --visual-picker-item-child-border-radius: var(--visual-picker-item-border-radius-inner);
+    border-radius: var(--visual-picker-item-child-border-radius);
+  }
+
+  .label {
+    margin: 0;
+    padding: var(--space-small);
+  }
+
+  img {
+    display: block;
+    width: 100%;
+  }
+}
+
+.image-item {
+  background-color: var(--background-color-box);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  &:hover {
+    background-color: var(--button-background-color-hover);
+  }
+
+  &:hover:active {
+    background-color: var(--button-background-color-active);
+  }
+}
