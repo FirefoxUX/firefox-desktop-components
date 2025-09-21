@@ -260,6 +260,7 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.config.l10nId)}
+      .headingLevel=${this.config.headingLevel}
       @change=${this.onChange}
       @click=${this.onClick}
       >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
@@ -271,4 +272,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.28e11895.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.934e0458.iframe.bundle.js.map

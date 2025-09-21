@@ -118,7 +118,7 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     let mode = Ci.nsIFilePicker.modeGetFolder;
     folderPicker.init(window.browsingContext, this.dialogTitle, mode);
     folderPicker.appendFilters(Ci.nsIFilePicker.filterAll);
-    if (this.#folder) {
+    if (this.#folder && (await IOUtils.exists(this.#folder.path))) {
       folderPicker.displayDirectory = this.#folder;
     }
     let result = await new Promise(resolve => folderPicker.open(resolve));
@@ -187,7 +187,7 @@ module.exports = __webpack_require__.p + "moz-input-text.9061abd33fd0cc55c8c9.cs
 /***/ 42572:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-folder.98c7d6f89c54fe2e9e93.css";
+module.exports = __webpack_require__.p + "moz-input-folder.33d421f1877bd4639217.css";
 
 /***/ }),
 
@@ -281,4 +281,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=9402.70b34ded.iframe.bundle.js.map
+//# sourceMappingURL=9402.bdc347fb.iframe.bundle.js.map

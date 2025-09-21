@@ -118,7 +118,7 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     let mode = Ci.nsIFilePicker.modeGetFolder;
     folderPicker.init(window.browsingContext, this.dialogTitle, mode);
     folderPicker.appendFilters(Ci.nsIFilePicker.filterAll);
-    if (this.#folder) {
+    if (this.#folder && (await IOUtils.exists(this.#folder.path))) {
       folderPicker.displayDirectory = this.#folder;
     }
     let result = await new Promise(resolve => folderPicker.open(resolve));
@@ -221,7 +221,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ 42572:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-input-folder.98c7d6f89c54fe2e9e93.css";
+module.exports = __webpack_require__.p + "moz-input-folder.33d421f1877bd4639217.css";
 
 /***/ }),
 
@@ -916,4 +916,4 @@ function MDXProvider({components, children, disableParentContext}) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-README-stories-md.6f98cd7e.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-README-stories-md.0e50013f.iframe.bundle.js.map
