@@ -1406,6 +1406,15 @@ const tokensTable = {
       }
     },
     name: "--font-size-xxlarge"
+  }, {
+    value: "var(--font-size-xxlarge)",
+    name: "--heading-font-size-xlarge"
+  }, {
+    value: "var(--font-size-xlarge)",
+    name: "--heading-font-size-large"
+  }, {
+    value: "var(--font-size-large)",
+    name: "--heading-font-size-medium"
   }],
   "font-weight": [{
     value: "var(--font-weight-bold)",
@@ -1416,6 +1425,9 @@ const tokensTable = {
   }, {
     value: 600,
     name: "--font-weight-bold"
+  }, {
+    value: "var(--font-weight-bold)",
+    name: "--heading-font-weight"
   }],
   "icon-color": [{
     value: "currentColor",
@@ -1729,19 +1741,6 @@ const tokensTable = {
       default: "light-dark(var(--color-red-70), var(--color-red-20))"
     },
     name: "--outline-color-error"
-  }],
-  "heading-font": [{
-    value: "var(--font-size-xxlarge)",
-    name: "--heading-font-size-xlarge"
-  }, {
-    value: "var(--font-size-xlarge)",
-    name: "--heading-font-size-large"
-  }, {
-    value: "var(--font-size-large)",
-    name: "--heading-font-size-medium"
-  }, {
-    value: "var(--font-weight-bold)",
-    name: "--heading-font-weight"
   }],
   "icon-size": [{
     value: "var(--icon-size-small)",
@@ -2632,4 +2631,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.c70fad13.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.272440b2.iframe.bundle.js.map

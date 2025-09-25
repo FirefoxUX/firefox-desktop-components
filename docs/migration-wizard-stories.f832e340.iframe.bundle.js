@@ -566,7 +566,7 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ 29259:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "migration-wizard.23eb0b412acc104e72e5.css";
+module.exports = __webpack_require__.p + "migration-wizard.b2c4852b5f8b54de55d8.css";
 
 /***/ }),
 
@@ -3213,4 +3213,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.e89d7353.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.f832e340.iframe.bundle.js.map

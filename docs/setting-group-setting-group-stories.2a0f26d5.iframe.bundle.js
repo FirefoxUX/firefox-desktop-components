@@ -200,7 +200,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const CLICK_HANDLERS = ["moz-box-link", "moz-box-item", "moz-button", "moz-box-button"];
+const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button"]);
 class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   static properties = {
     config: {
@@ -239,7 +239,7 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     control?.onChange(inputEl);
   }
   onClick(e) {
-    if (!CLICK_HANDLERS.includes(e.target.localName)) {
+    if (!CLICK_HANDLERS.has(e.target.localName)) {
       return;
     }
     let inputEl = e.target;
@@ -272,4 +272,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.71c582cd.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.2a0f26d5.iframe.bundle.js.map
