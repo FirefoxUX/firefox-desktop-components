@@ -283,6 +283,12 @@ const DIRECTIONS = {
   ArrowRight: 1
 };
 class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  /**
+   * Hardcoded heights of the password card component.
+   */
+  static DEFAULT_PASSWORD_CARD_HEIGHT = 210 + 16; // 16px for top and bottom margin
+  static WITH_ALERT_PASSWORD_CARD_HEIGHT = 262 + 16; // alert adds 52px
+
   static properties = {
     origin: {
       type: Object
@@ -318,23 +324,20 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       viewAlertBtn: ".view-alert-button"
     };
   }
+  static hasAlert({
+    origin,
+    username,
+    password
+  }) {
+    return origin.breached || !username.value.length || password.vulnerable;
+  }
+  static getItemHeight(item) {
+    return PasswordCard.hasAlert(item) ? PasswordCard.WITH_ALERT_PASSWORD_CARD_HEIGHT : PasswordCard.DEFAULT_PASSWORD_CARD_HEIGHT;
+  }
   #focusableElementsList;
   #focusableElementsMap;
   #countAlerts() {
     return this.origin.breached + !this.username.value.length + this.password.vulnerable;
-  }
-  #hasAlert() {
-    return this.origin.breached || !this.username.value.length || this.password.vulnerable;
-  }
-  #getNextFocusableElement() {
-    return this.nextElementSibling?.originLine;
-  }
-  #getPrevFocusableElement() {
-    const prevSibling = this.previousElementSibling;
-    if (!prevSibling) {
-      return null;
-    }
-    return prevSibling.#hasAlert() ? prevSibling.viewAlertBtn : prevSibling.editBtn;
   }
   async firstUpdated() {
     this.#focusableElementsMap = new Map();
@@ -369,6 +372,8 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         return;
       }
       this.#focusableElementsList[newIndex]?.focus();
+      e.stopPropagation();
+      e.preventDefault();
     };
     const isLoginLine = element === this.passwordLine.loginLine;
     const isRevealBtn = element === this.passwordLine.revealBtn.buttonEl;
@@ -377,11 +382,8 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         e.preventDefault();
         if (isRevealBtn) {
           this.usernameLine?.focus();
-          return;
-        }
-        if (index === 0) {
-          this.#getPrevFocusableElement()?.focus();
-        } else {
+          e.stopPropagation();
+        } else if (index != 0) {
           focusInternal(DIRECTIONS[e.code]);
         }
         break;
@@ -389,28 +391,34 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
         e.preventDefault();
         if (isLoginLine || isRevealBtn) {
           this.editBtn?.focus();
-          return;
-        }
-        if (index === numElements - 1) {
-          this.#getNextFocusableElement()?.focus();
-        } else {
+          e.stopPropagation();
+        } else if (index != numElements - 1) {
           focusInternal(DIRECTIONS[e.code]);
         }
         break;
       case "ArrowLeft":
         if (isRevealBtn) {
-          e.preventDefault();
           focusInternal(DIRECTIONS[e.code]);
         }
         break;
       case "ArrowRight":
         if (isLoginLine) {
-          e.preventDefault();
           focusInternal(DIRECTIONS[e.code]);
         } else if (isRevealBtn) {
           e.preventDefault();
         }
         break;
+    }
+  }
+  focusByKeyEvent(e) {
+    if (e.key === "ArrowUp") {
+      if (PasswordCard.hasAlert(this)) {
+        this.viewAlertBtn.focus();
+      } else {
+        this.editBtn.focus();
+      }
+    } else if (e.key === "ArrowDown") {
+      this.originLine.focus();
     }
   }
   connectedCallback() {
@@ -539,7 +547,7 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     const alertCountArg = JSON.stringify({
       count: this.#countAlerts()
     });
-    if (!this.#hasAlert()) {
+    if (!PasswordCard.hasAlert(this)) {
       return "";
     }
     const getIconSrc = () => {
@@ -680,4 +688,4 @@ AllAlertsOn.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.a925add3.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.698de9c5.iframe.bundle.js.map

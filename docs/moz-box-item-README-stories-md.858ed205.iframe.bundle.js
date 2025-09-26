@@ -294,6 +294,10 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
     layout: {
       type: String,
       reflect: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     }
   };
   static queries = {
@@ -388,6 +392,43 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
       </span>
     `;
   }
+  textTemplate() {
+    if (this.supportPage) {
+      return this.supportTextTemplate();
+    }
+    return super.textTemplate();
+  }
+  supportTextTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "text-content": true,
+      "has-icon": this.iconSrc,
+      "has-description": this.description,
+      "has-support-page": this.supportPage
+    })}
+    >
+      <span class="label-wrapper">
+        ${this.iconTemplate()}<span>
+          ${this.labelTemplate()}${!this.description ? this.supportPageTemplate() : ""}
+        </span>
+      </span>
+      <span class="description-wrapper">
+        ${this.descriptionTemplate()}${this.description ? this.supportPageTemplate() : ""}
+      </span>
+    </div>`;
+  }
+  supportPageTemplate() {
+    if (this.supportPage) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+        class="support-page"
+        is="moz-support-link"
+        support-page=${this.supportPage}
+        part="support-link"
+        aria-describedby=${this.description ? "description" : "label"}
+      ></a>`;
+    }
+    return "";
+  }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${this.stylesTemplate()}
@@ -395,7 +436,7 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
         ${this.isDraggable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span tabindex="0" class="handle"></span>` : ""}
         ${this.slotTemplate("actions-start")}
         <div class="box-content">
-          ${this.label ? super.textTemplate() : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
+          ${this.label ? this.textTemplate() : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
         </div>
         ${this.slotTemplate("actions")}
       </div>
@@ -425,7 +466,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.195c78a35fe97eff837c.css";
+module.exports = __webpack_require__.p + "moz-box-item.68e9ec3f3ebfa0897d92.css";
 
 /***/ }),
 
@@ -950,4 +991,4 @@ function MDXProvider({components, children, disableParentContext}) {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.508a9ca6.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.858ed205.iframe.bundle.js.map

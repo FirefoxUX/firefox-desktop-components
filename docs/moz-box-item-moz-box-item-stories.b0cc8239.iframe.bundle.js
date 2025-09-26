@@ -260,6 +260,10 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
     layout: {
       type: String,
       reflect: true
+    },
+    supportPage: {
+      type: String,
+      attribute: "support-page"
     }
   };
   static queries = {
@@ -354,6 +358,43 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
       </span>
     `;
   }
+  textTemplate() {
+    if (this.supportPage) {
+      return this.supportTextTemplate();
+    }
+    return super.textTemplate();
+  }
+  supportTextTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "text-content": true,
+      "has-icon": this.iconSrc,
+      "has-description": this.description,
+      "has-support-page": this.supportPage
+    })}
+    >
+      <span class="label-wrapper">
+        ${this.iconTemplate()}<span>
+          ${this.labelTemplate()}${!this.description ? this.supportPageTemplate() : ""}
+        </span>
+      </span>
+      <span class="description-wrapper">
+        ${this.descriptionTemplate()}${this.description ? this.supportPageTemplate() : ""}
+      </span>
+    </div>`;
+  }
+  supportPageTemplate() {
+    if (this.supportPage) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+        class="support-page"
+        is="moz-support-link"
+        support-page=${this.supportPage}
+        part="support-link"
+        aria-describedby=${this.description ? "description" : "label"}
+      ></a>`;
+    }
+    return "";
+  }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${this.stylesTemplate()}
@@ -361,7 +402,7 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
         ${this.isDraggable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span tabindex="0" class="handle"></span>` : ""}
         ${this.slotTemplate("actions-start")}
         <div class="box-content">
-          ${this.label ? super.textTemplate() : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
+          ${this.label ? this.textTemplate() : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`}
         </div>
         ${this.slotTemplate("actions")}
       </div>
@@ -384,6 +425,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   WithSlottedActionAtTheStart: () => (/* binding */ WithSlottedActionAtTheStart),
 /* harmony export */   WithSlottedActions: () => (/* binding */ WithSlottedActions),
 /* harmony export */   WithSlottedContent: () => (/* binding */ WithSlottedContent),
+/* harmony export */   WithSupportPage: () => (/* binding */ WithSupportPage),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
@@ -399,7 +441,13 @@ __webpack_require__.r(__webpack_exports__);
   component: "moz-box-item",
   argTypes: {
     l10nId: {
-      options: ["moz-box-item-label", "moz-box-item-label-description"],
+      options: ["moz-box-item-label", "moz-box-item-label-long", "moz-box-item-label-description", "moz-box-item-label-description-long"],
+      control: {
+        type: "select"
+      }
+    },
+    iconSrc: {
+      options: ["", "chrome://global/skin/icons/info.svg", "chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/warning.svg", "chrome://global/skin/icons/heart.svg", "chrome://global/skin/icons/edit.svg"],
       control: {
         type: "select"
       }
@@ -410,9 +458,14 @@ __webpack_require__.r(__webpack_exports__);
     fluent: `
 moz-box-item-label =
   .label = I'm a box item
+moz-box-item-label-long =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit
 moz-box-item-label-description =
   .label = I'm a box item
   .description = Some description of the item
+moz-box-item-label-description-long =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit
+  .description = Etiam leo est, condimentum ac tristique vitae, viverra nec sem.
 moz-box-delete-action =
   .aria-label = Delete I'm a box item
 moz-box-edit-action =
@@ -430,7 +483,8 @@ const Template = ({
   slottedContent,
   layout,
   slottedActions,
-  slottedActionsStart
+  slottedActionsStart,
+  supportPage
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <style>
     .container {
@@ -456,6 +510,7 @@ const Template = ({
       data-l10n-id=${l10nId}
       iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
       layout=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(layout)}
+      support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
     >
       ${slottedContent ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted">
             <img src="chrome://global/skin/illustrations/security-error.svg" />
@@ -499,7 +554,8 @@ Default.args = {
   iconSrc: "",
   slottedContent: false,
   slottedActions: false,
-  slottedActionsStart: false
+  slottedActionsStart: false,
+  supportPage: ""
 };
 const WithDescription = Template.bind({});
 WithDescription.args = {
@@ -531,15 +587,21 @@ WithSlottedActionAtTheStart.args = {
   ...Default.args,
   slottedActionsStart: true
 };
+const WithSupportPage = Template.bind({});
+WithSupportPage.args = {
+  ...Default.args,
+  supportPage: "test",
+  iconSrc: "chrome://global/skin/icons/info.svg"
+};
 
 /***/ }),
 
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.195c78a35fe97eff837c.css";
+module.exports = __webpack_require__.p + "moz-box-item.68e9ec3f3ebfa0897d92.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-moz-box-item-stories.7ad51fb8.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-moz-box-item-stories.b0cc8239.iframe.bundle.js.map
