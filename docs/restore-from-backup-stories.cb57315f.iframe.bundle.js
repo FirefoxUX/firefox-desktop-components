@@ -209,7 +209,7 @@ customElements.define("moz-message-bar", MozMessageBar);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.c26b1df7e03ea6e28613.css";
+module.exports = __webpack_require__.p + "restore-from-backup.cddaac3afa2719164949.css";
 
 /***/ }),
 
@@ -1164,24 +1164,14 @@ __webpack_require__.r(__webpack_exports__);
 class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #placeholderFileIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
-    backupFilePath: {
-      type: String
-    },
-    backupFileToRestore: {
-      type: String,
-      reflect: true
-    },
-    backupFileInfo: {
-      type: Object
-    },
     _fileIconURL: {
       type: String
     },
-    recoveryInProgress: {
+    aboutWelcomeEmbedded: {
       type: Boolean
     },
-    recoveryErrorCode: {
-      type: Number
+    backupServiceState: {
+      type: Object
     }
   };
   static get queries() {
@@ -1195,11 +1185,30 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     };
   }
   get isIncorrectPassword() {
-    return this.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED;
+    return this.backupServiceState?.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED;
   }
   constructor() {
     super();
     this._fileIconURL = "";
+    // Set the default state
+    this.backupServiceState = {
+      backupDirPath: "",
+      backupFileToRestore: null,
+      backupFileInfo: null,
+      defaultParent: {
+        fileName: "",
+        path: "",
+        iconURL: ""
+      },
+      encryptionEnabled: false,
+      scheduledBackupsEnabled: false,
+      lastBackupDate: null,
+      lastBackupFileName: "",
+      supportBaseLink: "",
+      backupInProgress: false,
+      recoveryInProgress: false,
+      recoveryErrorCode: 0
+    };
   }
 
   /**
@@ -1211,7 +1220,9 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
       bubbles: true
     }));
-    if (this.backupFileToRestore && !this.backupFileInfo) {
+
+    // If we have a backup file, but not the associated info, fetch the info
+    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
       this.getBackupFileInfo();
     }
     this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
@@ -1222,32 +1233,27 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         path,
         iconURL
       } = event.detail;
-      this.backupFileToRestore = path;
       this._fileIconURL = iconURL;
-    }
-  }
-  willUpdate(changedProperties) {
-    if (changedProperties.has("backupFileToRestore")) {
-      this.getBackupFileInfo();
+      this.getBackupFileInfo(path);
     }
   }
   async handleChooseBackupFile() {
     this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
       bubbles: true,
+      composed: true,
       detail: {
         win: window.browsingContext,
         filter: "filterHTML",
-        displayDirectoryPath: this.backupFileToRestore
+        displayDirectoryPath: this.backupServiceState?.backupFileToRestore
       }
     }));
   }
-  getBackupFileInfo() {
-    let backupFile = this.backupFileToRestore;
+  getBackupFileInfo(pathToFile = null) {
+    let backupFile = pathToFile || this.backupServiceState?.backupFileToRestore;
     if (!backupFile) {
-      this.backupFileInfo = null;
       return;
     }
-    this.dispatchEvent(new CustomEvent("getBackupFileInfo", {
+    this.dispatchEvent(new CustomEvent("BackupUI:GetBackupFileInfo", {
       bubbles: true,
       composed: true,
       detail: {
@@ -1262,12 +1268,12 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }));
   }
   handleConfirm() {
-    let backupFile = this.backupFileToRestore;
-    if (!backupFile || this.recoveryInProgress) {
+    let backupFile = this.backupServiceState?.backupFileToRestore;
+    if (!backupFile || this.backupServiceState?.recoveryInProgress) {
       return;
     }
     let backupPassword = this.passwordInput?.value;
-    this.dispatchEvent(new CustomEvent("restoreFromBackupConfirm", {
+    this.dispatchEvent(new CustomEvent("BackupUI:RestoreFromBackupFile", {
       bubbles: true,
       composed: true,
       detail: {
@@ -1276,8 +1282,21 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       }
     }));
   }
+  applyContentCustomizations() {
+    if (this.aboutWelcomeEmbedded) {
+      this.style.setProperty("--button-group-justify-content", "flex-start");
+      this.style.setProperty("--label-font-weight", "600");
+    }
+  }
   controlsTemplate() {
-    let iconURL = this.backupFileToRestore && (this._fileIconURL || this.#placeholderFileIconURL);
+    let iconURL = null;
+    if (this.backupServiceState?.backupFileToRestore) {
+      if (this.aboutWelcomeEmbedded) {
+        iconURL = this.#placeholderFileIconURL;
+      } else {
+        iconURL = this._fileIconURL || this.#placeholderFileIconURL;
+      }
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <fieldset id="backup-restore-controls">
         <fieldset id="backup-filepicker-controls">
@@ -1291,8 +1310,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
               id="backup-filepicker-input"
               type="text"
               readonly
-              .value=${this.backupFileToRestore || ""}
-              style="background-image: url(${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(iconURL)})"
+              .value=${this.backupServiceState?.backupFileToRestore ? this.backupServiceState?.backupFileToRestore : ""}
+              style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(iconURL ? {
+      backgroundImage: `url(${iconURL})`
+    } : {})}
             />
             <moz-button
               id="backup-filepicker-button"
@@ -1302,16 +1323,17 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             ></moz-button>
           </div>
 
-          ${!this.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+          ${!this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
                 id="restore-from-backup-no-backup-file-link"
                 slot="support-link"
+                is="moz-support-link"
                 support-page="todo-backup"
                 data-l10n-id="restore-from-backup-no-backup-file-link"
               ></a>` : null}
         </fieldset>
 
         <fieldset id="password-entry-controls">
-          ${this.backupFileInfo?.isEncrypted ? this.passwordEntryTemplate() : null}
+          ${this.backupServiceState?.backupFileInfo?.isEncrypted ? this.passwordEntryTemplate() : null}
         </fieldset>
       </fieldset>
     `;
@@ -1341,6 +1363,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
               <a
                 id="restore-from-backup-incorrect-password-support-link"
                 slot="support-link"
+                is="moz-support-link"
                 support-page="todo-backup"
                 data-l10n-name="incorrect-password-support-link"
               ></a>
@@ -1352,45 +1375,55 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     </fieldset>`;
   }
   contentTemplate() {
-    let buttonL10nId = !this.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
+    let buttonL10nId = !this.backupServiceState?.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <div
         id="restore-from-backup-wrapper"
         aria-labelledby="restore-from-backup-header"
         aria-describedby="restore-from-backup-description"
       >
-        <h1
-          id="restore-from-backup-header"
-          class="heading-medium"
-          data-l10n-id="restore-from-backup-header"
-        ></h1>
+        ${this.aboutWelcomeEmbedded ? null : this.headerTemplate()}
         <main id="restore-from-backup-content">
-          ${this.recoveryErrorCode ? this.errorTemplate() : null}
-          ${this.backupFileInfo ? this.descriptionTemplate() : null}
+          ${this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
+          ${!this.aboutWelcomeEmbedded && this.backupServiceState?.backupFileInfo ? this.descriptionTemplate() : null}
           ${this.controlsTemplate()}
         </main>
 
         <moz-button-group id="restore-from-backup-button-group">
-          <moz-button
-            id="restore-from-backup-cancel-button"
-            @click=${this.handleCancel}
-            data-l10n-id="restore-from-backup-cancel-button"
-          ></moz-button>
+          ${this.aboutWelcomeEmbedded ? null : this.cancelButtonTemplate()}
           <moz-button
             id="restore-from-backup-confirm-button"
             @click=${this.handleConfirm}
             type="primary"
             data-l10n-id=${buttonL10nId}
-            ?disabled=${!this.backupFileToRestore || this.recoveryInProgress}
+            ?disabled=${!this.backupServiceState?.backupFileToRestore || this.backupServiceState?.recoveryInProgress}
           ></moz-button>
         </moz-button-group>
       </div>
     `;
   }
+  headerTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <h1
+        id="restore-from-backup-header"
+        class="heading-medium"
+        data-l10n-id="restore-from-backup-header"
+      ></h1>
+    `;
+  }
+  cancelButtonTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-button
+        id="restore-from-backup-cancel-button"
+        @click=${this.handleCancel}
+        data-l10n-id="restore-from-backup-cancel-button"
+      ></moz-button>
+    `;
+  }
   descriptionTemplate() {
     let {
       date
-    } = this.backupFileInfo;
+    } = this.backupServiceState?.backupFileInfo || {};
     let dateTime = date && new Date(date).getTime();
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <moz-message-bar
@@ -1404,6 +1437,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         <a
           id="restore-from-backup-learn-more-link"
           slot="support-link"
+          is="moz-support-link"
           support-page="todo-backup"
           data-l10n-id="restore-from-backup-support-link"
         ></a>
@@ -1419,12 +1453,13 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       <moz-message-bar
         id="restore-from-backup-error"
         type="error"
-        data-l10n-id=${(0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.recoveryErrorCode)}
+        data-l10n-id=${(0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.backupServiceState?.recoveryErrorCode)}
       >
       </moz-message-bar>
     `;
   }
   render() {
+    this.applyContentCustomizations();
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -1444,6 +1479,8 @@ customElements.define("restore-from-backup", RestoreFromBackup);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   BackupFound: () => (/* binding */ BackupFound),
+/* harmony export */   EmbeddedInAboutWelcome: () => (/* binding */ EmbeddedInAboutWelcome),
+/* harmony export */   EmbeddedInAboutWelcomeWithNoBackup: () => (/* binding */ EmbeddedInAboutWelcomeWithNoBackup),
 /* harmony export */   EncryptedBackupFound: () => (/* binding */ EncryptedBackupFound),
 /* harmony export */   IncorrectPasswordError: () => (/* binding */ IncorrectPasswordError),
 /* harmony export */   NoBackupFound: () => (/* binding */ NoBackupFound),
@@ -1468,88 +1505,119 @@ __webpack_require__.r(__webpack_exports__);
 
 window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
 window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
-const SELECTABLE_ERRORS = {
-  "(none)": 0,
-  UNAUTHORIZED: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED
-};
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Backup/Restore from Backup",
   component: "restore-from-backup",
   argTypes: {
-    backupFileToRestore: {
-      control: "text"
-    },
-    recoveryInProgress: {
+    aboutWelcomeEmbedded: {
       control: "boolean"
     },
-    recoveryErrorCode: {
-      options: Object.keys(SELECTABLE_ERRORS),
-      mapping: SELECTABLE_ERRORS,
-      control: {
-        type: "select"
-      }
-    },
-    backupFileInfo: {
+    backupServiceState: {
       control: "object"
     }
   }
 });
 const Template = ({
-  backupFilePath,
-  backupFileToRestore,
-  backupFileInfo,
-  recoveryInProgress,
-  recoveryErrorCode
+  aboutWelcomeEmbedded,
+  backupServiceState
 }) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-card style="width: fit-content;">
     <restore-from-backup
-      .backupFilePath=${backupFilePath}
-      .backupFileToRestore=${backupFileToRestore}
-      .backupFileInfo=${backupFileInfo}
-      .recoveryInProgress=${recoveryInProgress}
-      .recoveryErrorCode=${recoveryErrorCode}
+      .aboutWelcomeEmbedded=${aboutWelcomeEmbedded}
+      .backupServiceState=${backupServiceState}
     ></restore-from-backup>
   </moz-card>
 `;
 const BackupFound = Template.bind({});
 BackupFound.args = {
-  backupFilePath: "/Some/User/Documents",
-  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
-  backupFileInfo: {
-    date: new Date(),
-    isEncrypted: null
-  },
-  recoveryErrorCode: 0
+  aboutWelcomeEmbedded: false,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+    backupFileInfo: {
+      date: new Date(),
+      isEncrypted: null
+    },
+    recoveryErrorCode: 0,
+    recoveryInProgress: false
+  }
 };
 const EncryptedBackupFound = Template.bind({});
 EncryptedBackupFound.args = {
-  backupFilePath: "/Some/User/Documents",
-  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
-  backupFileInfo: {
-    date: new Date(),
-    isEncrypted: true
-  },
-  recoveryErrorCode: 0
+  aboutWelcomeEmbedded: false,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+    backupFileInfo: {
+      date: new Date(),
+      isEncrypted: true
+    },
+    recoveryErrorCode: 0,
+    recoveryInProgress: false
+  }
 };
 const IncorrectPasswordError = Template.bind({});
 IncorrectPasswordError.args = {
-  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
-  backupFileInfo: {
-    date: new Date(),
-    isEncrypted: true
-  },
-  recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED
+  aboutWelcomeEmbedded: false,
+  backupServiceState: {
+    backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+    backupFileInfo: {
+      date: new Date(),
+      isEncrypted: true
+    },
+    recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED,
+    recoveryInProgress: false
+  }
 };
 const RecoveryInProgress = Template.bind({});
 RecoveryInProgress.args = {
-  backupFilePath: "/Some/User/Documents",
-  backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
-  backupFileInfo: {
-    date: new Date()
-  },
-  recoveryInProgress: true
+  aboutWelcomeEmbedded: false,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+    backupFileInfo: {
+      date: new Date()
+    },
+    recoveryErrorCode: 0,
+    recoveryInProgress: true
+  }
+};
+const EmbeddedInAboutWelcome = Template.bind({});
+EmbeddedInAboutWelcome.args = {
+  aboutWelcomeEmbedded: true,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: "/Some/User/Documents/Firefox Backup/backup.html",
+    backupFileInfo: {
+      date: new Date(),
+      isEncrypted: true
+    },
+    recoveryErrorCode: 0,
+    recoveryInProgress: false
+  }
+};
+const EmbeddedInAboutWelcomeWithNoBackup = Template.bind({});
+EmbeddedInAboutWelcomeWithNoBackup.args = {
+  aboutWelcomeEmbedded: true,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: null,
+    backupFileInfo: null,
+    recoveryErrorCode: 0,
+    recoveryInProgress: false
+  }
 };
 const NoBackupFound = Template.bind({});
+NoBackupFound.args = {
+  aboutWelcomeEmbedded: false,
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    backupFileToRestore: null,
+    backupFileInfo: null,
+    recoveryErrorCode: 0,
+    recoveryInProgress: false
+  }
+};
 
 /***/ }),
 
@@ -1568,4 +1636,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.92d82327.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.cb57315f.iframe.bundle.js.map

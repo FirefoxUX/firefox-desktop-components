@@ -609,7 +609,7 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         className: "language-css",
-        children: "/** Font size **/\n--font-size-root: 15px;\n--font-size-small: 0.867rem;  /* 13px */\n--font-size-large: 1.133rem;  /* 17px */\n--font-size-xlarge: 1.467rem; /* 22px */\n--font-size-xxlarge: 2.2rem;  /* 33px */\n"
+        children: "/** Font size **/\n--font-size-root: 15px;\n--font-size-small: 0.867rem;  /* 13px */\n--font-size-large: 1.133rem;  /* 17px */\n--font-size-xlarge: 1.467rem; /* 22px */\n--font-size-xxlarge: 1.6rem;  /* 24px */\n--font-size-xxxlarge: 2.2rem; /* 33px */\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h2, {
       id: "theming",
@@ -900,4 +900,4 @@ function MDXProvider({components, children, disableParentContext}) {
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-static-README-design-tokens-stories-md.8fb4a922.iframe.bundle.js.map
+//# sourceMappingURL=storybook-static-README-design-tokens-stories-md.f3cf0742.iframe.bundle.js.map

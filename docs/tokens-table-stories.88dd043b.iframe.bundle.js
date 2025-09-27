@@ -1407,6 +1407,17 @@ const tokensTable = {
     },
     name: "--font-size-xxlarge"
   }, {
+    value: {
+      brand: {
+        default: "2.2rem",
+        comment: "33px"
+      },
+      platform: {
+        default: "unset"
+      }
+    },
+    name: "--font-size-xxxlarge"
+  }, {
     value: "var(--font-size-xxlarge)",
     name: "--heading-font-size-xlarge"
   }, {
@@ -2446,6 +2457,15 @@ const variableLookupTable = {
       default: "unset"
     }
   },
+  "font-size-xxxlarge": {
+    brand: {
+      default: "2.2rem",
+      comment: "33px"
+    },
+    platform: {
+      default: "unset"
+    }
+  },
   "font-weight": "normal",
   "font-weight-bold": 600,
   "heading-font-size-xlarge": "var(--font-size-xxlarge)",
@@ -2631,4 +2651,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.272440b2.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.88dd043b.iframe.bundle.js.map
