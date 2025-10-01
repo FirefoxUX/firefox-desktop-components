@@ -764,18 +764,20 @@ __webpack_require__.r(__webpack_exports__);
           this.submenuPanel.toggle(e);
           break;
         case "keydown":
-          let [arrowOpenKey, arrowCloseKey] = this.setArrowKeyRTL();
-          if (e.key === arrowOpenKey) {
-            this.submenuPanel.show(e, e.target);
-            e.stopPropagation();
+          {
+            let [arrowOpenKey, arrowCloseKey] = this.setArrowKeyRTL();
+            if (e.key === arrowOpenKey) {
+              this.submenuPanel.show(e, e.target);
+              e.stopPropagation();
+            }
+            if (e.key === arrowCloseKey) {
+              this.submenuPanel.hide(e, {
+                force: true
+              }, e.target);
+              e.stopPropagation();
+            }
+            break;
           }
-          if (e.key === arrowCloseKey) {
-            this.submenuPanel.hide(e, {
-              force: true
-            }, e.target);
-            e.stopPropagation();
-          }
-          break;
       }
     }
   }
@@ -1405,4 +1407,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.8a85a2a6.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.021ab26b.iframe.bundle.js.map

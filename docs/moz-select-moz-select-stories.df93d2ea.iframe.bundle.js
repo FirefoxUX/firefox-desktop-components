@@ -275,6 +275,7 @@ __webpack_require__.r(__webpack_exports__);
  *     default slot. Do not set directly, these will be overridden by <moz-option> children.
  */
 class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
+  #optionIconSrcMap = new Map();
   static properties = {
     options: {
       type: Array,
@@ -305,11 +306,10 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
     }
   }
   get _selectedOptionIconSrc() {
-    if (!this.inputEl) {
+    if (!this.inputEl || !this.options.length) {
       return "";
     }
-    const selectedOption = this.options[this.inputEl.selectedIndex];
-    return selectedOption?.iconSrc ?? "";
+    return this.#optionIconSrcMap.get(this.value) ?? "";
   }
 
   /**
@@ -317,6 +317,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
    */
   populateOptions() {
     this.options = [];
+    this.#optionIconSrcMap.clear();
     for (const node of this.slotRef.value.assignedNodes()) {
       if (node.localName === "moz-option") {
         const optionValue = node.getAttribute("value");
@@ -327,6 +328,9 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
           label: optionLabel,
           iconSrc: optionIconSrc
         });
+        if (optionIconSrc) {
+          this.#optionIconSrcMap.set(optionValue, optionIconSrc);
+        }
       }
     }
   }
@@ -371,6 +375,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
         <select
           id="input"
           name=${this.name}
+          .value=${this.value}
           accesskey=${this.accessKey}
           @input=${this.handleStateChange}
           @change=${this.redispatchEvent}
@@ -452,4 +457,4 @@ module.exports = __webpack_require__.p + "moz-select.7140ef2a64f84c0b6561.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.b3ab8d76.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.df93d2ea.iframe.bundle.js.map

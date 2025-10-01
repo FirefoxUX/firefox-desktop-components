@@ -1285,18 +1285,20 @@ __webpack_require__.r(__webpack_exports__);
           this.submenuPanel.toggle(e);
           break;
         case "keydown":
-          let [arrowOpenKey, arrowCloseKey] = this.setArrowKeyRTL();
-          if (e.key === arrowOpenKey) {
-            this.submenuPanel.show(e, e.target);
-            e.stopPropagation();
+          {
+            let [arrowOpenKey, arrowCloseKey] = this.setArrowKeyRTL();
+            if (e.key === arrowOpenKey) {
+              this.submenuPanel.show(e, e.target);
+              e.stopPropagation();
+            }
+            if (e.key === arrowCloseKey) {
+              this.submenuPanel.hide(e, {
+                force: true
+              }, e.target);
+              e.stopPropagation();
+            }
+            break;
           }
-          if (e.key === arrowCloseKey) {
-            this.submenuPanel.hide(e, {
-              force: true
-            }, e.target);
-            e.stopPropagation();
-          }
-          break;
       }
     }
   }
@@ -3213,4 +3215,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.f832e340.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.d944a5fc.iframe.bundle.js.map
