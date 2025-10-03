@@ -64,7 +64,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       mapped: true
     },
     headingLevel: {
-      type: Number
+      type: Number,
+      reflect: true
     },
     disabled: {
       type: Boolean,
@@ -934,7 +935,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.91109c2dbf8bc5eb3c4d.css";
+module.exports = __webpack_require__.p + "moz-fieldset.75f3c9a2eea69be883c0.css";
 
 /***/ }),
 
@@ -1015,6 +1016,9 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     },
     value: {
       type: String
+    },
+    headingLevel: {
+      type: Number
     }
   };
   static queries = {
@@ -1212,6 +1216,7 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
         role=${this.type == "radio" ? "radiogroup" : "listbox"}
         ?disabled=${this.disabled}
         label=${this.label}
+        headinglevel=${this.headingLevel}
         exportparts="inputs, support-link"
         aria-orientation=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.constructor.orientation)}
       >
@@ -1539,6 +1544,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} label - Label for the group of moz-radio elements.
  * @property {string} description - Description for the group of moz-radio elements.
  * @property {string} supportPage - Support page for the group of moz-radio elements.
+ * @property {number} headingLevel - Render the label in a heading of this level.
  * @property {string} name
  *  Input name of the radio group. Propagates to moz-radio children.
  * @property {string} value
@@ -1602,4 +1608,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.3f6c1379.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.3f295efb.iframe.bundle.js.map

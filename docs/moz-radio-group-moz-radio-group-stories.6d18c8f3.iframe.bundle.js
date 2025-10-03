@@ -64,7 +64,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       mapped: true
     },
     headingLevel: {
-      type: Number
+      type: Number,
+      reflect: true
     },
     disabled: {
       type: Boolean,
@@ -157,7 +158,7 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.91109c2dbf8bc5eb3c4d.css";
+module.exports = __webpack_require__.p + "moz-fieldset.75f3c9a2eea69be883c0.css";
 
 /***/ }),
 
@@ -238,6 +239,9 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     },
     value: {
       type: String
+    },
+    headingLevel: {
+      type: Number
     }
   };
   static queries = {
@@ -435,6 +439,7 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
         role=${this.type == "radio" ? "radiogroup" : "listbox"}
         ?disabled=${this.disabled}
         label=${this.label}
+        headinglevel=${this.headingLevel}
         exportparts="inputs, support-link"
         aria-orientation=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.constructor.orientation)}
       >
@@ -574,6 +579,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   WithAccesskeys: () => (/* binding */ WithAccesskeys),
 /* harmony export */   WithDescriptions: () => (/* binding */ WithDescriptions),
 /* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
+/* harmony export */   WithHeadingLabel: () => (/* binding */ WithHeadingLabel),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
 /* harmony export */   WithNestedFields: () => (/* binding */ WithNestedFields),
 /* harmony export */   WithRadioGroupDescription: () => (/* binding */ WithRadioGroupDescription),
@@ -620,6 +626,12 @@ let wrappedLabelIds = ["moz-radio-long-0", "moz-radio-long-1", "moz-radio-long-2
       if: {
         arg: "showAccesskeys",
         truthy: true
+      }
+    },
+    headingLevel: {
+      options: ["", "1", "2", "3", "4", "5", "6"],
+      control: {
+        type: "select"
       }
     }
   },
@@ -683,7 +695,8 @@ const Template = ({
   hasSlottedSupportLinks,
   groupSlottedSupportLink,
   nestedFields,
-  ellipsized
+  ellipsized,
+  headingLevel
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-radio-group
     name=${groupName}
@@ -691,6 +704,7 @@ const Template = ({
     support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(groupSupportPage)}
     ?disabled=${disabled}
     value=${value}
+    .headingLevel=${headingLevel}
   >
     ${groupSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a href="/" slot="support-link">Slotted support link</a>` : ""}
     ${greetings.map((greeting, i) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
@@ -732,7 +746,8 @@ Default.args = {
   supportPage: "",
   groupSupportPage: "",
   hasSlottedSupportLinks: false,
-  groupSlottedSupportLink: false
+  groupSlottedSupportLink: false,
+  headingLevel: ""
 };
 const AllUnchecked = Template.bind({});
 AllUnchecked.args = {
@@ -802,6 +817,11 @@ WithEllipsizedLabel.args = {
   ellipsized: true,
   l10nId: "moz-checkbox-long-label"
 };
+const WithHeadingLabel = Template.bind({});
+WithHeadingLabel.args = {
+  ...WithRadioGroupDescription.args,
+  headingLevel: "2"
+};
 
 /***/ }),
 
@@ -833,6 +853,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} label - Label for the group of moz-radio elements.
  * @property {string} description - Description for the group of moz-radio elements.
  * @property {string} supportPage - Support page for the group of moz-radio elements.
+ * @property {number} headingLevel - Render the label in a heading of this level.
  * @property {string} name
  *  Input name of the radio group. Propagates to moz-radio children.
  * @property {string} value
@@ -896,4 +917,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.53642e7a.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.6d18c8f3.iframe.bundle.js.map

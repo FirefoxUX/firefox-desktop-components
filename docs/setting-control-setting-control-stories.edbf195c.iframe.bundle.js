@@ -174,6 +174,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /** @import MozCheckbox from "../../../../../toolkit/content/widgets/moz-checkbox/moz-checkbox.mjs"*/
+/** @import { Setting } from "chrome://global/content/preferences/Setting.mjs"; */
 
 /**
  * A Lit directive that applies all properties of an object to a DOM element.
@@ -512,4 +513,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.665c02a9.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.edbf195c.iframe.bundle.js.map

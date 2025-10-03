@@ -200,8 +200,25 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+/** @import { SettingControl } from "../setting-control/setting-control.mjs"; */
+/** @import {PreferencesSettingsConfig, Preferences} from "chrome://global/content/preferences/Preferences.mjs" */
+
 const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button"]);
 class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  constructor() {
+    super();
+
+    /**
+     * @type {Preferences['getSetting'] | undefined}
+     */
+    this.getSetting = undefined;
+
+    /**
+     * @type {PreferencesSettingsConfig | undefined}
+     */
+    this.config = undefined;
+  }
   static properties = {
     config: {
       type: Object
@@ -209,7 +226,6 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     groupId: {
       type: String
     },
-    // getSetting should be Preferences.getSetting from preferencesBindings.js
     getSetting: {
       type: Function
     }
@@ -246,6 +262,10 @@ class SettingGroup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
     let control = inputEl.control;
     control?.onClick(e);
   }
+
+  /**
+   * @param {PreferencesSettingsConfig} item
+   */
   itemTemplate(item) {
     let setting = this.getSetting(item.id);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
@@ -272,4 +292,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.2a0f26d5.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.aa7bdf78.iframe.bundle.js.map

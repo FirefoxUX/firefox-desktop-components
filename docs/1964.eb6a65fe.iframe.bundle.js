@@ -64,7 +64,8 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       mapped: true
     },
     headingLevel: {
-      type: Number
+      type: Number,
+      reflect: true
     },
     disabled: {
       type: Boolean,
@@ -157,9 +158,9 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.91109c2dbf8bc5eb3c4d.css";
+module.exports = __webpack_require__.p + "moz-fieldset.75f3c9a2eea69be883c0.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=1964.906f8fa2.iframe.bundle.js.map
+//# sourceMappingURL=1964.eb6a65fe.iframe.bundle.js.map

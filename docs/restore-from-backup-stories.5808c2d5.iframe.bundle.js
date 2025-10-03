@@ -209,7 +209,7 @@ customElements.define("moz-message-bar", MozMessageBar);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.cddaac3afa2719164949.css";
+module.exports = __webpack_require__.p + "restore-from-backup.425ee4feaf8762007b71.css";
 
 /***/ }),
 
@@ -1284,7 +1284,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       supportBaseLink: "",
       backupInProgress: false,
       recoveryInProgress: false,
-      recoveryErrorCode: 0
+      recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.NONE
     };
   }
 
@@ -1312,6 +1312,19 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       } = event.detail;
       this._fileIconURL = iconURL;
       this.getBackupFileInfo(path);
+    }
+  }
+  updated(changedProperties) {
+    if (changedProperties.has("backupServiceState")) {
+      // If we got a recovery error, recoveryInProgress should be false
+      const inProgress = this.backupServiceState.recoveryInProgress && !this.backupServiceState.recoveryErrorCode;
+      this.dispatchEvent(new CustomEvent("BackupUI:RecoveryProgress", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          recoveryInProgress: inProgress
+        }
+      }));
     }
   }
   async handleChooseBackupFile() {
@@ -1435,10 +1448,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             <span
               id="backup-password-error"
               class="field-error"
-              data-l10n-id="restore-from-backup-error-incorrect-password"
+              data-l10n-id="backup-service-error-incorrect-password"
             >
               <a
-                id="restore-from-backup-incorrect-password-support-link"
+                id="backup-incorrect-password-support-link"
                 slot="support-link"
                 is="moz-support-link"
                 support-page="todo-backup"
@@ -1713,4 +1726,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.2259965f.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.5808c2d5.iframe.bundle.js.map
