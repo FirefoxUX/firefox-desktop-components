@@ -252,17 +252,6 @@ class SpreadDirective extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_
 const spread = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.directive)(SpreadDirective);
 
 /**
- * @type Map<string, HTMLElement>
- */
-const controlInstances = new Map();
-function getControlInstance(control = "moz-checkbox") {
-  if (!controlInstances.has(control)) {
-    controlInstances.set(control, document.createElement(control));
-  }
-  return controlInstances.get(control);
-}
-
-/**
  * Mapping of parent control tag names to the literal tag name for their
  * expected children. eg. "moz-radio-group"->literal`moz-radio`.
  * @type Map<string, literal>
@@ -353,7 +342,20 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     this.hidden = !this.setting.visible;
   }
   updated() {
-    this.controlRef?.value?.requestUpdate();
+    const control = this.controlRef?.value;
+    if (!control) {
+      return;
+    }
+
+    // Set the value based on the control's API.
+    if ("checked" in control) {
+      control.checked = this.value;
+    } else if ("pressed" in control) {
+      control.pressed = this.value;
+    } else if ("value" in control) {
+      control.value = this.value;
+    }
+    control.requestUpdate();
   }
 
   /**
@@ -393,18 +395,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   getControlPropertyMapping(config) {
     const props = this.getCommonPropertyMapping(config);
     props[".parentDisabled"] = this.parentDisabled;
-    props[".control"] = this;
     props["?disabled"] = this.setting.disabled || this.setting.locked || this.isControlledByExtension();
-
-    // Set the value based on the control's API.
-    let instance = getControlInstance(config.control);
-    if ("checked" in instance) {
-      props[".checked"] = this.value;
-    } else if ("pressed" in instance) {
-      props[".pressed"] = this.value;
-    } else if ("value" in instance) {
-      props[".value"] = this.value;
-    }
     return props;
   }
   getValue() {
@@ -513,4 +504,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.edbf195c.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.b756c9ba.iframe.bundle.js.map

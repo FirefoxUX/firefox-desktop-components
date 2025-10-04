@@ -124,6 +124,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 window.MozXULElement?.insertFTLIfNeeded("browser/webrtc-preview.ftl");
+
+/**
+ * A class to handle a preview of a WebRTC stream.
+ */
 class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     // The ID of the device to preview.
@@ -448,4 +452,4 @@ module.exports = __webpack_require__.p + "moz-card.c0afa2c8b8f6a484c8e9.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.683c4847.iframe.bundle.js.map
+//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.6dfe1e97.iframe.bundle.js.map
