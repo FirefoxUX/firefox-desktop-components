@@ -230,17 +230,11 @@ __webpack_require__.r(__webpack_exports__);
  */
 class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    hasCommon: {
-      type: Boolean
-    },
     hasEmail: {
       type: Boolean
     },
     tooShort: {
       type: Boolean
-    },
-    supportBaseLink: {
-      type: String
     }
   };
   static get queries() {
@@ -250,30 +244,10 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   constructor() {
     super();
-    this.hasCommon = false;
     this.hasEmail = false;
     this.tooShort = false;
-    this.supportBaseLink = "";
-  }
-  getRuleStateConstants(hasInvalidCondition) {
-    if (hasInvalidCondition) {
-      return {
-        class: "warning",
-        icon: "chrome://global/skin/icons/warning.svg",
-        l10nId: "password-rules-a11y-warning"
-      };
-    }
-    return {
-      class: "success",
-      icon: "chrome://global/skin/icons/check-filled.svg",
-      l10nId: "password-rules-a11y-success"
-    };
   }
   render() {
-    let lengthConstants = this.getRuleStateConstants(this.tooShort);
-    let emailConstants = this.getRuleStateConstants(this.hasEmail);
-    // TODO: (bug 1905140) read list of common passwords - default to success state for now
-    let commonConstants = this.getRuleStateConstants(this.hasCommon);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -285,50 +259,16 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
           data-l10n-id="password-rules-header"
         ></h2>
         <ul>
-          <li>
-            <img
-              data-l10n-id=${lengthConstants.l10nId}
-              class="icon ${lengthConstants.class}"
-              src=${lengthConstants.icon}
-            />
+          <li class=${this.tooShort && "warning"}>
             <span
               data-l10n-id="password-rules-length-description"
               class="rule-description"
             ></span>
           </li>
-          <li>
-            <img
-              data-l10n-id=${emailConstants.l10nId}
-              class="icon ${emailConstants.class}"
-              src=${emailConstants.icon}
-            />
+          <li class=${this.hasEmail && "warning"}>
             <span
               data-l10n-id="password-rules-email-description"
               class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              data-l10n-id=${commonConstants.l10nId}
-              class="icon ${commonConstants.class}"
-              src=${commonConstants.icon}
-            />
-            <span
-              data-l10n-id="password-rules-common-description"
-              class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              class="icon"
-              src="chrome://browser/skin/preferences/category-privacy-security.svg"
-            />
-            <span data-l10n-id="password-rules-disclaimer"
-              ><a
-                data-l10n-name="password-support-link"
-                target="_blank"
-                href=${`${this.supportBaseLink}password-strength`}
-              ></a
             ></span>
           </li>
         </ul>
@@ -1626,7 +1566,7 @@ module.exports = __webpack_require__.p + "moz-card.c0afa2c8b8f6a484c8e9.css";
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.2f46b8b6ff81717b007d.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.4e287829a93e7f0ce985.css";
 
 /***/ }),
 
@@ -1658,10 +1598,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    _hasCommon: {
-      type: Boolean,
-      state: true
-    },
     _hasEmail: {
       type: Boolean,
       state: true
@@ -1690,8 +1626,10 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
       type: Boolean,
       state: true
     },
-    supportBaseLink: {
-      type: String
+    createPasswordLabelL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "create-password-label-l10n-id"
     }
   };
   static get queries() {
@@ -1704,9 +1642,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   constructor() {
     super();
-    this.supportBaseLink = "";
     this._tooShort = true;
-    this._hasCommon = false;
     this._hasEmail = false;
     this._passwordsMatch = false;
     this._passwordsValid = false;
@@ -1715,7 +1651,6 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   reset() {
     this.formEl.reset();
     this._showRules = false;
-    this._hasCommon = false;
     this._hasEmail = false;
     this._tooShort = true;
     this._passwordsMatch = false;
@@ -1801,7 +1736,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
             <div id="new-password-label-wrapper-span-input">
               <span
                 id="new-password-span"
-                data-l10n-id="enable-backup-encryption-create-password-label"
+                data-l10n-id=${this.createPasswordLabelL10nId || "enable-backup-encryption-create-password-label"}
               ></span>
               <input
                 type="password"
@@ -1819,10 +1754,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
           <password-rules-tooltip
             id="password-rules"
             class=${!this._showRules && !this._tooltipFocus ? "hidden" : ""}
-            .hasCommon=${this._hasCommon}
             .hasEmail=${this._hasEmail}
             .tooShort=${this._tooShort}
-            .supportBaseLink=${this.supportBaseLink}
             @focus=${this.handleTooltipFocus}
             @blur=${this.handleTooltipBlur}
           ></password-rules-tooltip>
@@ -1874,7 +1807,7 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 78312:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-validation-inputs.bdfc44f0779cbe50ecc7.css";
+module.exports = __webpack_require__.p + "password-validation-inputs.bb28741d7e8bce533020.css";
 
 /***/ }),
 
@@ -1886,4 +1819,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.ccef07bb.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.970875c9.iframe.bundle.js.map

@@ -566,7 +566,7 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ 29259:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "migration-wizard.b2c4852b5f8b54de55d8.css";
+module.exports = __webpack_require__.p + "migration-wizard.e88b5a080185f7091619.css";
 
 /***/ }),
 
@@ -2260,6 +2260,11 @@ class MigrationWizard extends HTMLElement {
    */
   #onBrowserProfileSelectionChanged(panelItem) {
     this.#browserProfileSelector.selectedPanelItem = panelItem;
+    if (this.#browserProfileSelectorList.selectedPanelItem) {
+      this.#browserProfileSelectorList.selectedPanelItem.classList.remove("selected");
+    }
+    this.#browserProfileSelectorList.selectedPanelItem = panelItem;
+    this.#browserProfileSelectorList.selectedPanelItem.classList.add("selected");
     this.#browserProfileSelector.querySelector("#migrator-name").textContent = panelItem.displayName;
     this.#browserProfileSelector.querySelector("#profile-name").textContent = panelItem.profile?.name || "";
     if (panelItem.brandImage) {
@@ -3215,4 +3220,4 @@ customElements.define("moz-button-group", MozButtonGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.d944a5fc.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.790c730a.iframe.bundle.js.map

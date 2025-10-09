@@ -4,7 +4,7 @@
 /***/ 3952:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "turn-on-scheduled-backups.32adbde2d1ea5c366a29.css";
+module.exports = __webpack_require__.p + "turn-on-scheduled-backups.8e8de014647d940b2c2d.css";
 
 /***/ }),
 
@@ -335,17 +335,11 @@ __webpack_require__.r(__webpack_exports__);
  */
 class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    hasCommon: {
-      type: Boolean
-    },
     hasEmail: {
       type: Boolean
     },
     tooShort: {
       type: Boolean
-    },
-    supportBaseLink: {
-      type: String
     }
   };
   static get queries() {
@@ -355,30 +349,10 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   constructor() {
     super();
-    this.hasCommon = false;
     this.hasEmail = false;
     this.tooShort = false;
-    this.supportBaseLink = "";
-  }
-  getRuleStateConstants(hasInvalidCondition) {
-    if (hasInvalidCondition) {
-      return {
-        class: "warning",
-        icon: "chrome://global/skin/icons/warning.svg",
-        l10nId: "password-rules-a11y-warning"
-      };
-    }
-    return {
-      class: "success",
-      icon: "chrome://global/skin/icons/check-filled.svg",
-      l10nId: "password-rules-a11y-success"
-    };
   }
   render() {
-    let lengthConstants = this.getRuleStateConstants(this.tooShort);
-    let emailConstants = this.getRuleStateConstants(this.hasEmail);
-    // TODO: (bug 1905140) read list of common passwords - default to success state for now
-    let commonConstants = this.getRuleStateConstants(this.hasCommon);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -390,50 +364,16 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
           data-l10n-id="password-rules-header"
         ></h2>
         <ul>
-          <li>
-            <img
-              data-l10n-id=${lengthConstants.l10nId}
-              class="icon ${lengthConstants.class}"
-              src=${lengthConstants.icon}
-            />
+          <li class=${this.tooShort && "warning"}>
             <span
               data-l10n-id="password-rules-length-description"
               class="rule-description"
             ></span>
           </li>
-          <li>
-            <img
-              data-l10n-id=${emailConstants.l10nId}
-              class="icon ${emailConstants.class}"
-              src=${emailConstants.icon}
-            />
+          <li class=${this.hasEmail && "warning"}>
             <span
               data-l10n-id="password-rules-email-description"
               class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              data-l10n-id=${commonConstants.l10nId}
-              class="icon ${commonConstants.class}"
-              src=${commonConstants.icon}
-            />
-            <span
-              data-l10n-id="password-rules-common-description"
-              class="rule-description"
-            ></span>
-          </li>
-          <li>
-            <img
-              class="icon"
-              src="chrome://browser/skin/preferences/category-privacy-security.svg"
-            />
-            <span data-l10n-id="password-rules-disclaimer"
-              ><a
-                data-l10n-name="password-support-link"
-                target="_blank"
-                href=${`${this.supportBaseLink}password-strength`}
-              ></a
             ></span>
           </li>
         </ul>
@@ -2486,6 +2426,9 @@ function getEnableErrorL10nId(errorCode) {
 class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #placeholderIconURL = "chrome://global/skin/icons/page-portrait.svg";
   static properties = {
+    backupServiceState: {
+      type: Object
+    },
     // passed in from parents
     defaultIconURL: {
       type: String,
@@ -2501,6 +2444,46 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     },
     supportBaseLink: {
       type: String
+    },
+    embeddedFxBackupOptIn: {
+      type: Boolean,
+      reflect: true,
+      attribute: "embedded-fx-backup-opt-in"
+    },
+    hideFilePathChooser: {
+      type: Boolean,
+      reflect: true,
+      attribute: "hide-file-path-chooser"
+    },
+    hideSecondaryButton: {
+      type: Boolean,
+      reflect: true,
+      attribute: "hide-secondary-button"
+    },
+    filePathLabelL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "file-path-label-l10n-id"
+    },
+    turnOnBackupHeaderL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "turn-on-backup-header-l10n-id"
+    },
+    createPasswordLabelL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "create-password-label-l10n-id"
+    },
+    turnOnBackupConfirmBtnL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "turn-on-backup-confirm-btn-l10n-id"
+    },
+    turnOnBackupCancelBtnL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "turn-on-backup-cancel-btn-l10n-id"
     },
     // internal state
     _newIconURL: {
@@ -2547,6 +2530,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
   }
   constructor() {
     super();
+    this.backupServiceState = {};
     this.defaultIconURL = "";
     this.defaultLabel = "";
     this.defaultPath = "";
@@ -2607,9 +2591,20 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this.reset();
   }
   handleConfirm() {
-    let detail = {
-      parentDirPath: this._newPath || this.defaultPath
-    };
+    let detail;
+    if (this._newPath) {
+      detail = {
+        parentDirPath: this._newPath
+      };
+    } else if (this.backupServiceState?.backupDirPath) {
+      detail = {
+        parentDirPath: this.backupServiceState?.backupDirPath
+      };
+    } else {
+      detail = {
+        parentDirPath: this.defaultPath
+      };
+    }
     if (this._showPasswordOptions && this._passwordsMatch) {
       detail.password = this._inputPassValue;
     }
@@ -2622,15 +2617,30 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this._showPasswordOptions = this.passwordOptionsCheckboxEl?.checked;
     this._passwordsMatch = false;
   }
+  updated(changedProperties) {
+    super.updated?.(changedProperties);
+    if (changedProperties.has("hideFilePathChooser")) {
+      // If hideFilePathChooser is true, show password options
+      this._showPasswordOptions = !!this.hideFilePathChooser;
+
+      // Uncheck the checkbox if it exists
+      if (this.passwordOptionsCheckboxEl) {
+        this.passwordOptionsCheckboxEl.checked = this._showPasswordOptions;
+      }
+    }
+  }
   reset() {
-    this._newPath = "";
-    this._newIconURL = "";
-    this._newLabel = "";
     this._showPasswordOptions = false;
     this.passwordOptionsCheckboxEl.checked = false;
     this._passwordsMatch = false;
     this._inputPassValue = "";
     this.enableBackupErrorCode = 0;
+    // we don't want to reset the path when embedded in the spotlight
+    if (!this.embeddedFxBackupOptIn) {
+      this._newPath = "";
+      this._newIconURL = "";
+      this._newLabel = "";
+    }
     if (this.passwordOptionsExpandedEl) {
       /** @type {import("./password-validation-inputs.mjs").default} */
       const passwordElement = this.passwordOptionsExpandedEl;
@@ -2685,7 +2695,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
           <label
             id="backup-location-label"
             for="backup-location-filepicker-input"
-            data-l10n-id="turn-on-scheduled-backups-location-label"
+            data-l10n-id=${this.filePathLabelL10nId || "turn-on-scheduled-backups-location-label"}
           ></label>
           <div id="backup-location-filepicker">
             ${!this._newPath ? this.defaultFilePathInputTemplate() : this.customFilePathInputTemplate()}
@@ -2697,7 +2707,6 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             ></moz-button>
           </div>
         </div>
-
         <fieldset id="sensitive-data-controls">
           <div id="sensitive-data-checkbox">
             <label
@@ -2733,6 +2742,8 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       <password-validation-inputs
         id="passwords"
         .supportBaseLink=${this.supportBaseLink}
+        .createPasswordLabelL10nId=${this.createPasswordLabelL10nId}
+        ?embedded-fx-backup-opt-in=${this.embeddedFxBackupOptIn}
       ></password-validation-inputs>
     `;
   }
@@ -2742,11 +2753,12 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
         id="backup-turn-on-scheduled-wrapper"
         aria-labelledby="backup-turn-on-scheduled-header"
         aria-describedby="backup-turn-on-scheduled-description"
+        part="form"
       >
         <h1
           id="backup-turn-on-scheduled-header"
           class="heading-medium"
-          data-l10n-id="turn-on-scheduled-backups-header"
+          data-l10n-id=${this.turnOnBackupHeaderL10nId || "turn-on-scheduled-backups-header"}
         ></h1>
         <main id="backup-turn-on-scheduled-content">
           <div id="backup-turn-on-scheduled-description">
@@ -2770,14 +2782,14 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
           <moz-button
             id="backup-turn-on-scheduled-cancel-button"
             @click=${this.close}
-            data-l10n-id="turn-on-scheduled-backups-cancel-button"
+            data-l10n-id=${this.turnOnBackupCancelBtnL10nId || "turn-on-scheduled-backups-cancel-button"}
           ></moz-button>
           <moz-button
             id="backup-turn-on-scheduled-confirm-button"
             form="backup-turn-on-scheduled-wrapper"
             @click=${this.handleConfirm}
             type="primary"
-            data-l10n-id="turn-on-scheduled-backups-confirm-button"
+            data-l10n-id=${this.turnOnBackupConfirmBtnL10nId || "turn-on-scheduled-backups-confirm-button"}
             ?disabled=${this._showPasswordOptions && !this._passwordsMatch}
           ></moz-button>
         </moz-button-group>
@@ -2801,7 +2813,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.2f46b8b6ff81717b007d.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.4e287829a93e7f0ce985.css";
 
 /***/ }),
 
@@ -2833,10 +2845,6 @@ __webpack_require__.r(__webpack_exports__);
  */
 class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    _hasCommon: {
-      type: Boolean,
-      state: true
-    },
     _hasEmail: {
       type: Boolean,
       state: true
@@ -2865,8 +2873,10 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
       type: Boolean,
       state: true
     },
-    supportBaseLink: {
-      type: String
+    createPasswordLabelL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "create-password-label-l10n-id"
     }
   };
   static get queries() {
@@ -2879,9 +2889,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   constructor() {
     super();
-    this.supportBaseLink = "";
     this._tooShort = true;
-    this._hasCommon = false;
     this._hasEmail = false;
     this._passwordsMatch = false;
     this._passwordsValid = false;
@@ -2890,7 +2898,6 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   reset() {
     this.formEl.reset();
     this._showRules = false;
-    this._hasCommon = false;
     this._hasEmail = false;
     this._tooShort = true;
     this._passwordsMatch = false;
@@ -2976,7 +2983,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
             <div id="new-password-label-wrapper-span-input">
               <span
                 id="new-password-span"
-                data-l10n-id="enable-backup-encryption-create-password-label"
+                data-l10n-id=${this.createPasswordLabelL10nId || "enable-backup-encryption-create-password-label"}
               ></span>
               <input
                 type="password"
@@ -2994,10 +3001,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
           <password-rules-tooltip
             id="password-rules"
             class=${!this._showRules && !this._tooltipFocus ? "hidden" : ""}
-            .hasCommon=${this._hasCommon}
             .hasEmail=${this._hasEmail}
             .tooShort=${this._tooShort}
-            .supportBaseLink=${this.supportBaseLink}
             @focus=${this.handleTooltipFocus}
             @blur=${this.handleTooltipBlur}
           ></password-rules-tooltip>
@@ -3133,7 +3138,7 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 78312:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-validation-inputs.bdfc44f0779cbe50ecc7.css";
+module.exports = __webpack_require__.p + "password-validation-inputs.bb28741d7e8bce533020.css";
 
 /***/ }),
 
@@ -3288,4 +3293,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.178f644e.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.f9f989a7.iframe.bundle.js.map
