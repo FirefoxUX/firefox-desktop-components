@@ -360,10 +360,11 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   updatePasswordValidity() {
     const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
+    const l10n = new Localization(["preview/backupSettings.ftl"], true);
     this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
     if (this._hasEmail) {
-      // TODO: we need a localized string for this error (bug 1909983)
-      this.inputNewPasswordEl.setCustomValidity("TODO: no emails");
+      const invalid_password_email_l10n_message = l10n.formatValueSync("password-validity-has-email");
+      this.inputNewPasswordEl.setCustomValidity(invalid_password_email_l10n_message);
     } else {
       this.inputNewPasswordEl.setCustomValidity("");
     }
@@ -371,8 +372,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._tooShort = newPassValidity?.valueMissing || newPassValidity?.tooShort;
     this._passwordsMatch = this.inputNewPasswordEl.value == this.inputRepeatPasswordEl.value;
     if (!this._passwordsMatch) {
-      // TODO: we need a localized string for this error  (bug 1909983)
-      this.inputRepeatPasswordEl.setCustomValidity("TODO: not matching");
+      const passwords_do_not_match_l10n_message = l10n.formatValueSync("password-validity-do-not-match");
+      this.inputRepeatPasswordEl.setCustomValidity(passwords_do_not_match_l10n_message);
     } else {
       this.inputRepeatPasswordEl.setCustomValidity("");
     }
@@ -487,4 +488,4 @@ module.exports = __webpack_require__.p + "password-validation-inputs.bb28741d7e8
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.04c14303.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.35938b7e.iframe.bundle.js.map

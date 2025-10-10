@@ -388,7 +388,7 @@ customElements.define("password-rules-tooltip", PasswordRulesTooltip);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.7dc1c8ee8922cc4948fa.css";
+module.exports = __webpack_require__.p + "restore-from-backup.c66090830cf8ee31f066.css";
 
 /***/ }),
 
@@ -1743,6 +1743,14 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
                 support-page="todo-backup"
                 data-l10n-id="restore-from-backup-no-backup-file-link"
               ></a>` : null}
+          ${this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+                id="restore-from-backup-backup-found-info"
+                data-l10n-id="backup-file-creation-date-and-device"
+                data-l10n-args=${JSON.stringify({
+      machineName: this.backupServiceState.backupFileInfo.deviceName ?? "",
+      date: this.backupServiceState.backupFileInfo.date ? new Date(this.backupServiceState.backupFileInfo.date).getTime() : 0
+    })}
+              ></p>` : null}
         </fieldset>
 
         <fieldset id="password-entry-controls">
@@ -2918,10 +2926,11 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   updatePasswordValidity() {
     const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
+    const l10n = new Localization(["preview/backupSettings.ftl"], true);
     this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
     if (this._hasEmail) {
-      // TODO: we need a localized string for this error (bug 1909983)
-      this.inputNewPasswordEl.setCustomValidity("TODO: no emails");
+      const invalid_password_email_l10n_message = l10n.formatValueSync("password-validity-has-email");
+      this.inputNewPasswordEl.setCustomValidity(invalid_password_email_l10n_message);
     } else {
       this.inputNewPasswordEl.setCustomValidity("");
     }
@@ -2929,8 +2938,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._tooShort = newPassValidity?.valueMissing || newPassValidity?.tooShort;
     this._passwordsMatch = this.inputNewPasswordEl.value == this.inputRepeatPasswordEl.value;
     if (!this._passwordsMatch) {
-      // TODO: we need a localized string for this error  (bug 1909983)
-      this.inputRepeatPasswordEl.setCustomValidity("TODO: not matching");
+      const passwords_do_not_match_l10n_message = l10n.formatValueSync("password-validity-do-not-match");
+      this.inputRepeatPasswordEl.setCustomValidity(passwords_do_not_match_l10n_message);
     } else {
       this.inputRepeatPasswordEl.setCustomValidity("");
     }
@@ -3293,4 +3302,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.f9f989a7.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.3ce94767.iframe.bundle.js.map
