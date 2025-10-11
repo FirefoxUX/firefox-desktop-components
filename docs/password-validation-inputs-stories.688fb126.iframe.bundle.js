@@ -66,6 +66,19 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
               class="rule-description"
             ></span>
           </li>
+          <li>
+            <img
+              class="icon"
+              src="chrome://browser/skin/preferences/category-privacy-security.svg"
+            />
+            <span data-l10n-id="password-rules-disclaimer"
+              ><a
+                data-l10n-name="password-support-link"
+                target="_blank"
+                href=${`${this.supportBaseLink}password-strength`}
+              ></a
+            ></span>
+          </li>
         </ul>
       </div>
     `;
@@ -94,7 +107,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
 window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Backup/Password Inputs",
@@ -360,7 +373,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   updatePasswordValidity() {
     const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
-    const l10n = new Localization(["preview/backupSettings.ftl"], true);
+    const l10n = new Localization(["browser/backupSettings.ftl"], true);
     this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
     if (this._hasEmail) {
       const invalid_password_email_l10n_message = l10n.formatValueSync("password-validity-has-email");
@@ -488,4 +501,4 @@ module.exports = __webpack_require__.p + "password-validation-inputs.bb28741d7e8
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.35938b7e.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.688fb126.iframe.bundle.js.map

@@ -376,6 +376,19 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
               class="rule-description"
             ></span>
           </li>
+          <li>
+            <img
+              class="icon"
+              src="chrome://browser/skin/preferences/category-privacy-security.svg"
+            />
+            <span data-l10n-id="password-rules-disclaimer"
+              ><a
+                data-l10n-name="password-support-link"
+                target="_blank"
+                href=${`${this.supportBaseLink}password-strength`}
+              ></a
+            ></span>
+          </li>
         </ul>
       </div>
     `;
@@ -1740,7 +1753,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
                 id="restore-from-backup-no-backup-file-link"
                 slot="support-link"
                 is="moz-support-link"
-                support-page="todo-backup"
+                support-page="firefox-backup"
                 data-l10n-id="restore-from-backup-no-backup-file-link"
               ></a>` : null}
           ${this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
@@ -1812,7 +1825,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
                 id="backup-incorrect-password-support-link"
                 slot="support-link"
                 is="moz-support-link"
-                support-page="todo-backup"
+                support-page="firefox-backup"
                 data-l10n-name="incorrect-password-support-link"
               ></a>
             </span>
@@ -1886,7 +1899,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           id="restore-from-backup-learn-more-link"
           slot="support-link"
           is="moz-support-link"
-          support-page="todo-backup"
+          support-page="firefox-backup"
           data-l10n-id="restore-from-backup-support-link"
         ></a>
       </moz-message-bar>
@@ -2926,7 +2939,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   updatePasswordValidity() {
     const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
-    const l10n = new Localization(["preview/backupSettings.ftl"], true);
+    const l10n = new Localization(["browser/backupSettings.ftl"], true);
     this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
     if (this._hasEmail) {
       const invalid_password_email_l10n_message = l10n.formatValueSync("password-validity-has-email");
@@ -3066,7 +3079,7 @@ __webpack_require__.r(__webpack_exports__);
 // eslint-disable-next-line import/no-unresolved
 
 
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
 window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Backup/Backup Settings",
@@ -3302,4 +3315,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.3ce94767.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.eec2b892.iframe.bundle.js.map

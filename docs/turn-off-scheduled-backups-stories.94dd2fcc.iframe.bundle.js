@@ -260,7 +260,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
 window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/Backup/Turn Off Scheduled Backups",
@@ -284,4 +284,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-off-scheduled-backups-stories.f8c6fe9b.iframe.bundle.js.map
+//# sourceMappingURL=turn-off-scheduled-backups-stories.94dd2fcc.iframe.bundle.js.map

@@ -1199,7 +1199,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-window.MozXULElement.insertFTLIfNeeded("locales-preview/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
 window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
 const SELECTABLE_ERRORS = {
   "(none)": 0,
@@ -1365,4 +1365,4 @@ customElements.define("disable-backup-encryption", DisableBackupEncryption);
 /***/ })
 
 }]);
-//# sourceMappingURL=disable-backup-encryption-stories.ba7549ac.iframe.bundle.js.map
+//# sourceMappingURL=disable-backup-encryption-stories.86e0440b.iframe.bundle.js.map
