@@ -80,6 +80,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     this.originValue = "";
     this.usernameValue = "";
     this.passwordValue = "";
+    this.isInvalid = false;
     this._showDeleteCard = false;
   }
   async firstUpdated() {
@@ -120,7 +121,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     }
   }
   #shouldShowWarning(field, input, warning) {
-    if (!input.checkValidity()) {
+    if (!input.checkValidity() || this.isInvalid) {
       // FIXME: for some reason checkValidity does not apply the :invalid style
       // to the field. For now, we reset the input value to "" apply :invalid
       // styling.
@@ -142,6 +143,7 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       this.#removeWarning(warning);
       field.removeAttribute("aria-describedby");
     }
+    this.isInvalid = !field.input.checkValidity();
   }
   onCancel(e) {
     e.preventDefault();
@@ -797,4 +799,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.d45e18ca.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.0593f721.iframe.bundle.js.map
