@@ -1281,7 +1281,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       scheduledBackupsEnabled: false,
       lastBackupDate: null,
       lastBackupFileName: "",
-      supportBaseLink: "",
+      supportBaseLink: "https://support.mozilla.org/",
       backupInProgress: false,
       recoveryInProgress: false,
       recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.NONE
@@ -1410,6 +1410,60 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       target.style.height = target.scrollHeight + "px";
     }
   }
+
+  /**
+   * Constructs a support URL with UTM parameters for use
+   * when embedded in about:welcome
+   *
+   * @param {string} supportPage - The support page slug
+   * @returns {string} The full support URL including UTM params
+   */
+
+  getSupportURLWithUTM(supportPage) {
+    let supportURL = new URL(supportPage, this.backupServiceState.supportBaseLink);
+    supportURL.searchParams.set("utm_medium", "firefox-desktop");
+    supportURL.searchParams.set("utm_source", "npo");
+    supportURL.searchParams.set("utm_campaign", "fx-backup-restore");
+    supportURL.searchParams.set("utm_content", "restore-error");
+    return supportURL.href;
+  }
+
+  /**
+   * Returns a support link anchor element, either with UTM params for use in
+   * about:welcome, or falling back to moz-support-link otherwise
+   *
+   * @param {object} options - Link configuration options
+   * @param {string} options.id - The element id
+   * @param {string} options.l10nId - The fluent l10n id
+   * @param {string} options.l10nName - The fluent l10n name
+   * @param {string} options.supportPage - The support page slug
+   * @returns {TemplateResult} The link template
+   */
+
+  getSupportLinkAnchor({
+    id,
+    l10nId,
+    l10nName,
+    supportPage = "firefox-backup"
+  }) {
+    if (this.aboutWelcomeEmbedded) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+        id=${id}
+        target="_blank"
+        href=${this.getSupportURLWithUTM(supportPage)}
+        data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
+        data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+      ></a>`;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+      id=${id}
+      slot="support-link"
+      is="moz-support-link"
+      support-page=${supportPage}
+      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
+      data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+    ></a>`;
+  }
   applyContentCustomizations() {
     if (this.aboutWelcomeEmbedded) {
       this.style.setProperty("--label-font-weight", "600");
@@ -1438,13 +1492,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             ></moz-button>
           </div>
 
-          ${!this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
-                id="restore-from-backup-no-backup-file-link"
-                slot="support-link"
-                is="moz-support-link"
-                support-page="firefox-backup"
-                data-l10n-id="restore-from-backup-no-backup-file-link"
-              ></a>` : null}
+          ${!this.backupServiceState?.backupFileInfo ? this.getSupportLinkAnchor({
+      id: "restore-from-backup-no-backup-file-link",
+      l10nId: "restore-from-backup-no-backup-file-link"
+    }) : null}
           ${this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
                 id="restore-from-backup-backup-found-info"
                 data-l10n-id="backup-file-creation-date-and-device"
@@ -1510,13 +1561,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
               class="field-error"
               data-l10n-id="backup-service-error-incorrect-password"
             >
-              <a
-                id="backup-incorrect-password-support-link"
-                slot="support-link"
-                is="moz-support-link"
-                support-page="firefox-backup"
-                data-l10n-name="incorrect-password-support-link"
-              ></a>
+              ${this.getSupportLinkAnchor({
+      id: "backup-incorrect-password-support-link",
+      l10nName: "incorrect-password-support-link"
+    })}
             </span>
           ` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<label
             id="backup-password-description"
@@ -1786,4 +1834,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.1f6da4bc.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.9bc89d7a.iframe.bundle.js.map
