@@ -1,11 +1,20 @@
+"use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[660],{
 
 /***/ 30660:
-/***/ (() => {
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MozBrowser: () => (/* binding */ MozBrowser)
+/* harmony export */ });
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// TODO: Bug 1994968 - Fix most TypeScript issues in this file. Currently there
+// are lots of errors that may show up in an editor due to our TypeScript
+// configuration. Skip this for now, until these are resolved.
 
 const {
   AppConstants
@@ -216,6 +225,14 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
       }
     });
   }
+
+  /**
+   * The browser's permanent key. This was added temporarily for Session Store,
+   * and will be removed in bug 1716788.
+   *
+   * @type {any}
+   */
+  permanentKey;
   resetFields() {
     if (this.observer) {
       try {
@@ -1613,4 +1630,4 @@ customElements.define("browser", MozBrowser);
 /***/ })
 
 }]);
-//# sourceMappingURL=660.03db79fd.iframe.bundle.js.map
+//# sourceMappingURL=660.b1d1ea44.iframe.bundle.js.map
