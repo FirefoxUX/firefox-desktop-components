@@ -1322,13 +1322,13 @@ class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPA
               id="backup-disable-encryption-description-span"
               data-l10n-id="disable-backup-encryption-description"
             >
-              <!--TODO: finalize support page links (bug 1900467)-->
             </span>
             <a
               id="backup-disable-encryption-learn-more-link"
               is="moz-support-link"
-              support-page="todo-backup"
+              support-page="firefox-backup"
               data-l10n-id="disable-backup-encryption-support-link"
+              utm-content="remove-password"
             ></a>
           </div>
           ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
@@ -1365,4 +1365,4 @@ customElements.define("disable-backup-encryption", DisableBackupEncryption);
 /***/ })
 
 }]);
-//# sourceMappingURL=disable-backup-encryption-stories.86e0440b.iframe.bundle.js.map
+//# sourceMappingURL=disable-backup-encryption-stories.62a67b29.iframe.bundle.js.map

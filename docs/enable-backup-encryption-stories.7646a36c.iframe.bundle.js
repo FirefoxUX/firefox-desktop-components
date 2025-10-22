@@ -1477,13 +1477,13 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
           id="backup-enable-encryption-description-span"
           data-l10n-id="enable-backup-encryption-description"
         >
-          <!--TODO: finalize support page links (bug 1900467)-->
         </span>
         <a
           id="backup-enable-encryption-learn-more-link"
           is="moz-support-link"
-          support-page="todo-backup"
+          support-page="firefox-backup"
           data-l10n-id="enable-backup-encryption-support-link"
+          utm-content="add-password"
         ></a>
       </div>
     `;
@@ -1820,4 +1820,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.81efa2a0.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.7646a36c.iframe.bundle.js.map

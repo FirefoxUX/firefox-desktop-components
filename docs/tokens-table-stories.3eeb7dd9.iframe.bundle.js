@@ -924,6 +924,19 @@ const tokensTable = {
       }
     },
     name: "--color-accent-primary-active"
+  }, {
+    value: {
+      forcedColors: "SelectedItem",
+      brand: {
+        light: "var(--color-blue-60)",
+        dark: "var(--color-cyan-30)",
+        default: "light-dark(var(--color-blue-60), var(--color-cyan-30))"
+      },
+      platform: {
+        default: "SelectedItem"
+      }
+    },
+    name: "--color-accent-primary-selected"
   }],
   "background-color": [{
     value: {
@@ -1725,6 +1738,19 @@ const tokensTable = {
       default: "light-dark(var(--color-red-70), var(--color-red-20))"
     },
     name: "--text-color-error"
+  }, {
+    value: {
+      forcedColors: "SelectedItemText",
+      brand: {
+        light: "var(--color-white)",
+        dark: "var(--color-gray-100)",
+        default: "light-dark(var(--color-white), var(--color-gray-100))"
+      },
+      platform: {
+        default: "SelectedItemText"
+      }
+    },
+    name: "--text-color-accent-primary-selected"
   }],
   outline: [{
     value: "var(--focus-outline-width) solid var(--focus-outline-color)",
@@ -2396,6 +2422,17 @@ const variableLookupTable = {
       default: "color-mix(in srgb, black 20%, var(--color-accent-primary))"
     }
   },
+  "color-accent-primary-selected": {
+    forcedColors: "SelectedItem",
+    brand: {
+      light: "var(--color-blue-60)",
+      dark: "var(--color-cyan-30)",
+      default: "light-dark(var(--color-blue-60), var(--color-cyan-30))"
+    },
+    platform: {
+      default: "SelectedItem"
+    }
+  },
   "focus-outline": "var(--focus-outline-width) solid var(--focus-outline-color)",
   "focus-outline-color": {
     default: "var(--color-accent-primary)",
@@ -2638,6 +2675,17 @@ const variableLookupTable = {
     dark: "var(--color-red-20)",
     prefersContrast: "inherit",
     default: "light-dark(var(--color-red-70), var(--color-red-20))"
+  },
+  "text-color-accent-primary-selected": {
+    forcedColors: "SelectedItemText",
+    brand: {
+      light: "var(--color-white)",
+      dark: "var(--color-gray-100)",
+      default: "light-dark(var(--color-white), var(--color-gray-100))"
+    },
+    platform: {
+      default: "SelectedItemText"
+    }
   }
 };
 
@@ -2651,4 +2699,4 @@ module.exports = __webpack_require__.p + "tokens-table.36f0d82b0329fdd828ba.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=tokens-table-stories.88dd043b.iframe.bundle.js.map
+//# sourceMappingURL=tokens-table-stories.3eeb7dd9.iframe.bundle.js.map

@@ -1,6 +1,127 @@
 "use strict";
 (self["webpackChunk"] = self["webpackChunk"] || []).push([[8050],{
 
+/***/ 19100:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SettingElement: () => (/* binding */ SettingElement),
+/* harmony export */   spread: () => (/* binding */ spread)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48334);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * A Lit directive that applies all properties of an object to a DOM element.
+ *
+ * This directive interprets keys in the provided props object as follows:
+ * - Keys starting with `?` set or remove boolean attributes using `toggleAttribute`.
+ * - Keys starting with `.` set properties directly on the element.
+ * - Keys starting with `@` are currently not supported and will throw an error.
+ * - All other keys are applied as regular attributes using `setAttribute`.
+ *
+ * It avoids reapplying values that have not changed, but does not currently
+ * remove properties that were previously set and are no longer present in the new input.
+ *
+ * This directive is useful to "spread" an object of attributes/properties declaratively onto an
+ * element in a Lit template.
+ */
+class SpreadDirective extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.Directive {
+  /**
+   * A record of previously applied properties to avoid redundant updates.
+   * @type {Record<string, unknown>}
+   */
+  #prevProps = {};
+
+  /**
+   * Render nothing by default as all changes are made in update using DOM APIs
+   * on the element directly.
+   * @returns {typeof nothing}
+   */
+  render() {
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing;
+  }
+
+  /**
+   * Apply props to the element using DOM APIs, updating only changed values.
+   * @param {AttributePart} part - The part of the template this directive is bound to.
+   * @param {[Record<string, unknown>]} propsArray - An array with a single object containing props to apply.
+   * @returns {typeof noChange} - Indicates to Lit that no re-render is needed.
+   */
+  update(part, [props]) {
+    // TODO: This doesn't clear any values that were set in previous calls if
+    // they are no longer present.
+    // It isn't entirely clear to me (mstriemer) what we should do if a prop is
+    // removed, or if the prop has changed from say ?foo to foo. By not
+    // implementing the auto-clearing hopefully the consumer will do something
+    // that fits their use case.
+
+    /** @type {HTMLElement} */
+    let el = part.element;
+    for (let [key, value] of Object.entries(props)) {
+      // Skip if the value hasn't changed since the last update.
+      if (value === this.#prevProps[key]) {
+        continue;
+      }
+
+      // Update the element based on the property key matching Lit's templates:
+      //   ?key -> el.toggleAttribute(key, value)
+      //   .key -> el.key = value
+      //   key -> el.setAttribute(key, value)
+      if (key.startsWith("?")) {
+        el.toggleAttribute(key.slice(1), Boolean(value));
+      } else if (key.startsWith(".")) {
+        el[key.slice(1)] = value;
+      } else if (key.startsWith("@")) {
+        throw new Error(`Event listeners are not yet supported with spread (${key})`);
+      } else {
+        el.setAttribute(key, String(value));
+      }
+    }
+
+    // Save current props for comparison in the next update.
+    this.#prevProps = props;
+    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.noChange;
+  }
+}
+const spread = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.directive)(SpreadDirective);
+class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  /**
+   * The default properties that the setting element accepts.
+   *
+   * @param {PreferencesSettingsConfig} config
+   * @returns {Record<string, any>}
+   */
+  getCommonPropertyMapping(config) {
+    /**
+     * @type {Record<string, any>}
+     */
+    const result = {
+      id: config.id,
+      "data-l10n-args": config.l10nArgs ? JSON.stringify(config.l10nArgs) : undefined,
+      ".iconSrc": config.iconSrc,
+      "data-subcategory": config.subcategory,
+      ...config.controlAttrs
+    };
+    if (config.supportPage) {
+      result[".supportPage"] = config.supportPage;
+    }
+    if (config.l10nId) {
+      result["data-l10n-id"] = config.l10nId;
+    }
+    return result;
+  }
+}
+
+/***/ }),
+
 /***/ 38626:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -165,7 +286,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   SettingControl: () => (/* binding */ SettingControl)
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48334);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19100);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -175,81 +296,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /** @import MozCheckbox from "../../../../../toolkit/content/widgets/moz-checkbox/moz-checkbox.mjs"*/
 /** @import { Setting } from "chrome://global/content/preferences/Setting.mjs"; */
-
-/**
- * A Lit directive that applies all properties of an object to a DOM element.
- *
- * This directive interprets keys in the provided props object as follows:
- * - Keys starting with `?` set or remove boolean attributes using `toggleAttribute`.
- * - Keys starting with `.` set properties directly on the element.
- * - Keys starting with `@` are currently not supported and will throw an error.
- * - All other keys are applied as regular attributes using `setAttribute`.
- *
- * It avoids reapplying values that have not changed, but does not currently
- * remove properties that were previously set and are no longer present in the new input.
- *
- * This directive is useful to "spread" an object of attributes/properties declaratively onto an
- * element in a Lit template.
- */
-class SpreadDirective extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.Directive {
-  /**
-   * A record of previously applied properties to avoid redundant updates.
-   * @type {Record<string, unknown>}
-   */
-  #prevProps = {};
-
-  /**
-   * Render nothing by default as all changes are made in update using DOM APIs
-   * on the element directly.
-   * @returns {typeof nothing}
-   */
-  render() {
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing;
-  }
-
-  /**
-   * Apply props to the element using DOM APIs, updating only changed values.
-   * @param {AttributePart} part - The part of the template this directive is bound to.
-   * @param {[Record<string, unknown>]} propsArray - An array with a single object containing props to apply.
-   * @returns {typeof noChange} - Indicates to Lit that no re-render is needed.
-   */
-  update(part, [props]) {
-    // TODO: This doesn't clear any values that were set in previous calls if
-    // they are no longer present.
-    // It isn't entirely clear to me (mstriemer) what we should do if a prop is
-    // removed, or if the prop has changed from say ?foo to foo. By not
-    // implementing the auto-clearing hopefully the consumer will do something
-    // that fits their use case.
-
-    /** @type {HTMLElement} */
-    let el = part.element;
-    for (let [key, value] of Object.entries(props)) {
-      // Skip if the value hasn't changed since the last update.
-      if (value === this.#prevProps[key]) {
-        continue;
-      }
-
-      // Update the element based on the property key matching Lit's templates:
-      //   ?key -> el.toggleAttribute(key, value)
-      //   .key -> el.key = value
-      //   key -> el.setAttribute(key, value)
-      if (key.startsWith("?")) {
-        el.toggleAttribute(key.slice(1), Boolean(value));
-      } else if (key.startsWith(".")) {
-        el[key.slice(1)] = value;
-      } else if (key.startsWith("@")) {
-        throw new Error(`Event listeners are not yet supported with spread (${key})`);
-      } else {
-        el.setAttribute(key, String(value));
-      }
-    }
-
-    // Save current props for comparison in the next update.
-    this.#prevProps = props;
-    return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.noChange;
-  }
-}
-const spread = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.directive)(SpreadDirective);
 
 /**
  * Mapping of parent control tag names to the literal tag name for their
@@ -267,7 +313,7 @@ const KNOWN_OPTIONS = new Map([["moz-radio-group", (0,chrome_global_content_vend
 const ITEM_SLOT_BY_PARENT = new Map([["moz-checkbox", "nested"], ["moz-input-text", "nested"], ["moz-input-search", "nested"], ["moz-input-folder", "nested"], ["moz-input-password", "nested"], ["moz-radio-group", "nested"],
 // NOTE: moz-select does not support the nested slot.
 ["moz-toggle", "nested"]]);
-class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+class SettingControl extends chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.SettingElement {
   /**
    * @type {Setting | undefined}
    */
@@ -328,7 +374,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   };
 
   /**
-   * @type {MozLitElement['willUpdate']}
+   * @type {SettingElement['willUpdate']}
    */
   willUpdate(changedProperties) {
     if (changedProperties.has("setting")) {
@@ -373,20 +419,15 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
    * Note: for the disabled property, a setting can either be locked,
    * or controlled by an extension but not both.
    *
+   * @override
    * @param {PreferencesSettingsConfig} config
-   * @returns {Record<string, any>}
+   * @returns {ReturnType<SettingElement['getCommonPropertyMapping']>}
    */
   getCommonPropertyMapping(config) {
     return {
-      id: config.id,
-      "data-l10n-id": config.l10nId,
-      "data-l10n-args": config.l10nArgs ? JSON.stringify(config.l10nArgs) : undefined,
-      ".iconSrc": config.iconSrc,
-      ".supportPage": config.supportPage,
+      ...super.getCommonPropertyMapping(config),
       ".setting": this.setting,
-      ".control": this,
-      "data-subcategory": config.subcategory,
-      ...config.controlAttrs
+      ".control": this
     };
   }
 
@@ -475,7 +516,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       controlChildren = config.options.map(opt => {
         let optionTag = opt.control ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.unsafeStatic)(opt.control) : KNOWN_OPTIONS.get(control);
         return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`<${optionTag}
-          ${spread(this.getOptionPropertyMapping(opt))}
+          ${(0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.spread)(this.getOptionPropertyMapping(opt))}
         >${opt.items ? getItemArgs(opt.items).map(itemTemplate) : ""}</${optionTag}>`;
       });
     }
@@ -504,7 +545,7 @@ class SettingControl extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.staticHtml)`
     ${messageBar}
     <${tag}
-      ${spread(controlProps)}
+      ${(0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.spread)(controlProps)}
       ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ref)(this.controlRef)}
     >${controlChildren}${nestedSettings}</${tag}>`;
   }
@@ -514,4 +555,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.f5e9b5fb.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.31f5f170.iframe.bundle.js.map

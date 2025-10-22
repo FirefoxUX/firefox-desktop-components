@@ -66,12 +66,12 @@ class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPA
               id="backup-turn-off-scheduled-description-span"
               data-l10n-id="turn-off-scheduled-backups-description"
             ></span>
-            <!--TODO: finalize support page links (bug 1900467)-->
             <a
               id="backup-turn-off-scheduled-learn-more-link"
               is="moz-support-link"
-              support-page="todo-backup"
+              support-page="firefox-backup"
               data-l10n-id="turn-off-scheduled-backups-support-link"
+              utm-content="turn-off-backup"
             ></a>
           </div>
         </main>
@@ -395,7 +395,7 @@ module.exports = __webpack_require__.p + "restore-from-backup.f09f9593f7c1f6d038
 /***/ 20703:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.c53c8a97ed25f6f0abfa.css";
+module.exports = __webpack_require__.p + "preferences.4d8019e86b033518440f.css";
 
 /***/ }),
 
@@ -1423,13 +1423,13 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
           id="backup-enable-encryption-description-span"
           data-l10n-id="enable-backup-encryption-description"
         >
-          <!--TODO: finalize support page links (bug 1900467)-->
         </span>
         <a
           id="backup-enable-encryption-learn-more-link"
           is="moz-support-link"
-          support-page="todo-backup"
+          support-page="firefox-backup"
           data-l10n-id="enable-backup-encryption-support-link"
+          utm-content="add-password"
         ></a>
       </div>
     `;
@@ -2172,11 +2172,11 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         id="scheduled-backups-description"
         data-l10n-id="settings-data-backup-scheduled-backups-description"
       >
-        <!--TODO: finalize support page links (bug 1900467)-->
         <a
           is="moz-support-link"
-          support-page="todo-backup"
+          support-page="firefox-backup"
           data-l10n-name="support-link"
+          utm-content="backup-off"
         ></a>
       </div>
     `;
@@ -2344,11 +2344,11 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
             id="backup-sensitive-data-checkbox-description-span"
             data-l10n-id="settings-data-toggle-encryption-description"
           ></span>
-          <!--TODO: finalize support page links (bug 1900467)-->
           <a
             id="settings-data-toggle-encryption-learn-more-link"
             is="moz-support-link"
-            support-page="todo-backup"
+            support-page="firefox-backup"
+            utm-content="encryption"
             data-l10n-id="settings-data-toggle-encryption-support-link"
           ></a>
         </div>
@@ -2369,7 +2369,16 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         dismissable
         data-l10n-id=${l10nId}
         @message-bar:user-dismissed=${this.handleErrorBarDismiss}
-      ></moz-message-bar>
+      >
+        <a
+          id="create-backup-error-learn-more-link"
+          slot="support-link"
+          is="moz-support-link"
+          support-page="firefox-backup"
+          data-l10n-id="settings-data-toggle-encryption-support-link"
+          utm-content="backup-error"
+        ></a>
+      </moz-message-bar>
     `;
   }
   updated() {
@@ -2818,12 +2827,12 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
               id="backup-turn-on-scheduled-description-span"
               data-l10n-id="turn-on-scheduled-backups-description"
             ></span>
-            <!--TODO: finalize support page links (bug 1900467)-->
             <a
               id="backup-turn-on-scheduled-learn-more-link"
               is="moz-support-link"
-              support-page="todo-backup"
+              support-page="firefox-backup"
               data-l10n-id="turn-on-scheduled-backups-support-link"
+              utm-content="turn-on-backup"
             ></a>
           </div>
           ${this.allOptionsTemplate()}
@@ -3289,13 +3298,13 @@ class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPA
               id="backup-disable-encryption-description-span"
               data-l10n-id="disable-backup-encryption-description"
             >
-              <!--TODO: finalize support page links (bug 1900467)-->
             </span>
             <a
               id="backup-disable-encryption-learn-more-link"
               is="moz-support-link"
-              support-page="todo-backup"
+              support-page="firefox-backup"
               data-l10n-id="disable-backup-encryption-support-link"
+              utm-content="remove-password"
             ></a>
           </div>
           ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
@@ -3346,4 +3355,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.49a624a3.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.3ee7c9ff.iframe.bundle.js.map

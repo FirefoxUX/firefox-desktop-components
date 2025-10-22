@@ -1624,12 +1624,12 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
               id="backup-turn-on-scheduled-description-span"
               data-l10n-id="turn-on-scheduled-backups-description"
             ></span>
-            <!--TODO: finalize support page links (bug 1900467)-->
             <a
               id="backup-turn-on-scheduled-learn-more-link"
               is="moz-support-link"
-              support-page="todo-backup"
+              support-page="firefox-backup"
               data-l10n-id="turn-on-scheduled-backups-support-link"
+              utm-content="turn-on-backup"
             ></a>
           </div>
           ${this.allOptionsTemplate()}
@@ -2028,4 +2028,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.8e4f059e.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.936afd97.iframe.bundle.js.map
