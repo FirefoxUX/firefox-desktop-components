@@ -275,13 +275,15 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
             <div class="text-content">
               ${this.headingTemplate()}
               <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
+                <slot name="message">
+                  <span
+                    class="message"
+                    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
+                    data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
+                  >
+                    ${this.message}
+                  </span>
+                </slot>
                 <span class="link">
                   <slot
                     name="support-link"
@@ -388,7 +390,7 @@ customElements.define("password-rules-tooltip", PasswordRulesTooltip);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.f09f9593f7c1f6d038e4.css";
+module.exports = __webpack_require__.p + "restore-from-backup.26e7a1a996d34b6a2f60.css";
 
 /***/ }),
 
@@ -429,12 +431,12 @@ const ERROR_L10N_IDS = Object.freeze({
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNAUTHORIZED]: "backup-service-error-incorrect-password",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.CORRUPTED_ARCHIVE]: "backup-service-error-corrupt-file",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "backup-service-error-unsupported-version",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong2",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.RECOVERY_FAILED]: "backup-service-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong2",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_APPLICATION]: "backup-service-error-unsupported-application"
 });
 
@@ -1763,6 +1765,38 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       this.style.setProperty("--label-font-weight", "600");
     }
   }
+  renderBackupFileInfo(backupFileInfo) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+      id="restore-from-backup-backup-found-info"
+      data-l10n-id="backup-file-creation-date-and-device"
+      data-l10n-args=${JSON.stringify({
+      machineName: backupFileInfo.deviceName ?? "",
+      date: backupFileInfo.date ? new Date(backupFileInfo.date).getTime() : 0
+    })}
+    ></p>`;
+  }
+  renderBackupFileStatus() {
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+
+    // We have errors and are embedded in about:welcome
+    if (recoveryErrorCode && this.aboutWelcomeEmbedded) {
+      return this.genericFileErrorTemplate();
+    }
+
+    // No backup file selected
+    if (!backupFileInfo) {
+      return this.getSupportLinkAnchor({
+        id: "restore-from-backup-no-backup-file-link",
+        l10nId: "restore-from-backup-no-backup-file-link"
+      });
+    }
+
+    // Backup file found and no error
+    return this.renderBackupFileInfo(backupFileInfo);
+  }
   controlsTemplate() {
     let iconURL = this.#placeholderFileIconURL;
     if (this.backupServiceState?.backupFileToRestore && !this.aboutWelcomeEmbedded) {
@@ -1786,18 +1820,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             ></moz-button>
           </div>
 
-          ${!this.backupServiceState?.backupFileInfo ? this.getSupportLinkAnchor({
-      id: "restore-from-backup-no-backup-file-link",
-      l10nId: "restore-from-backup-no-backup-file-link"
-    }) : null}
-          ${this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
-                id="restore-from-backup-backup-found-info"
-                data-l10n-id="backup-file-creation-date-and-device"
-                data-l10n-args=${JSON.stringify({
-      machineName: this.backupServiceState.backupFileInfo.deviceName ?? "",
-      date: this.backupServiceState.backupFileInfo.date ? new Date(this.backupServiceState.backupFileInfo.date).getTime() : 0
-    })}
-              ></p>` : null}
+          ${this.renderBackupFileStatus()}
         </fieldset>
 
         <fieldset id="password-entry-controls">
@@ -1811,6 +1834,23 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       backgroundImage: `url(${iconURL})`
     } : {});
     const backupFileName = this.backupServiceState?.backupFileToRestore || "";
+
+    // Determine the ID of the element that will be rendered by renderBackupFileStatus()
+    // to reference with aria-describedby
+    let describedBy = "";
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+    if (this.aboutWelcomeEmbedded) {
+      if (recoveryErrorCode) {
+        describedBy = "backup-generic-file-error";
+      } else if (!backupFileInfo) {
+        describedBy = "restore-from-backup-no-backup-file-link";
+      } else {
+        describedBy = "restore-from-backup-backup-found-info";
+      }
+    }
     if (this.aboutWelcomeEmbedded) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
         <textarea
@@ -1820,6 +1860,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           .value=${backupFileName}
           style=${styles}
           @input=${this.handleTextareaResize}
+          aria-describedby=${describedBy}
         ></textarea>
       `;
     }
@@ -1876,7 +1917,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       >
         ${this.aboutWelcomeEmbedded ? null : this.headerTemplate()}
         <main id="restore-from-backup-content">
-          ${this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
+          ${!this.aboutWelcomeEmbedded && this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
           ${!this.aboutWelcomeEmbedded && this.backupServiceState?.backupFileInfo ? this.descriptionTemplate() : null}
           ${this.controlsTemplate()}
         </main>
@@ -1950,6 +1991,28 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       </moz-message-bar>
     `;
   }
+  genericFileErrorTemplate() {
+    // We handle incorrect password errors in the password input
+    if (this.isIncorrectPassword) {
+      return null;
+    }
+
+    // Note: the l10n id used here is interim, and will be updated in Bug 1994877
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <span
+        id="backup-generic-file-error"
+        class="field-error"
+        data-l10n-id="restored-from-backup-error-subtitle"
+      >
+        <a
+          id="backup-generic-error-link"
+          slot="support-link"
+          data-l10n-name="restore-problems"
+          href=${this.getSupportURLWithUTM("firefox-backup")}
+        ></a>
+      </span>
+    `;
+  }
   render() {
     this.applyContentCustomizations();
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -1993,6 +2056,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const lazy = {};
+ChromeUtils.defineESModuleGetters(lazy, {
+  BackupService: "resource:///modules/backup/BackupService.sys.mjs"
+});
 
 // eslint-disable-next-line import/no-unassigned-import
 
@@ -2012,6 +2079,12 @@ const BACKUP_ERROR_CODE_PREF_NAME = "browser.backup.errorCode";
  */
 class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   #placeholderIconURL = "chrome://global/skin/icons/page-portrait.svg";
+  #backupService = lazy.BackupService.init();
+  inProgressTimeout = null;
+  showInProgress = false;
+
+  // Decides how long the progress message bar persists for
+  MESSAGE_BAR_BUFFER = 3000;
   static properties = {
     backupServiceState: {
       type: Object
@@ -2021,6 +2094,12 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     },
     _enableEncryptionTypeAttr: {
       type: String
+    },
+    _archiveEnabled: {
+      type: Boolean
+    },
+    _restoreEnabled: {
+      type: Boolean
     }
   };
   static get queries() {
@@ -2048,7 +2127,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       backupLocationShowButtonEl: "#backup-location-show",
       backupLocationEditButtonEl: "#backup-location-edit",
       scheduledBackupsDescriptionEl: "#scheduled-backups-description",
-      backupErrorBarEl: "#create-backup-error"
+      backupErrorBarEl: "#create-backup-error",
+      backupInProgressMessageBarEl: "#backup-in-progress-message"
     };
   }
 
@@ -2078,7 +2158,12 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     };
     this.backupErrorCode = this.#readBackupErrorPref();
     this._enableEncryptionTypeAttr = "";
+    this.updateArchiveAndRestoreState();
   }
+  updateArchiveAndRestoreState = () => {
+    this._archiveEnabled = this.#backupService.archiveEnabledStatus.enabled;
+    this._restoreEnabled = this.#backupService.restoreEnabledStatus.enabled;
+  };
 
   /**
    * Dispatches the BackupUI:InitWidget custom event upon being attached to the
@@ -2089,6 +2174,14 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
       bubbles: true
     }));
+    Services.obs.addObserver(this.updateArchiveAndRestoreState, "backup-service-status-updated");
+    this._cleanupObs = () => {
+      Services.obs.removeObserver(this.updateArchiveAndRestoreState, "backup-service-status-updated");
+      window.removeEventListener("unload", this._cleanupObs);
+    };
+    window.addEventListener("unload", this._cleanupObs, {
+      once: true
+    });
     this.addEventListener("dialogCancel", this);
     this.addEventListener("restoreFromBackupConfirm", this);
     this.addEventListener("restoreFromBackupChooseFile", this);
@@ -2360,6 +2453,15 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           ></moz-button>` : null}
     </section>`;
   }
+  inProgressMessageBarTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <moz-message-bar
+        type="info"
+        id="backup-in-progress-message"
+        data-l10n-id="settings-data-backup-in-progress-message"
+      ></moz-message-bar>
+    `;
+  }
   errorBarTemplate() {
     const l10nId = (0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.backupErrorCode);
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
@@ -2388,8 +2490,20 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     }
   }
   render() {
-    let scheduledBackupsEnabledL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-scheduled-backups-on" : "settings-data-backup-scheduled-backups-off";
-    let backupTriggerL10nID = this.backupServiceState.backupInProgress ? "settings-data-backup-in-progress-button" : "settings-data-backup-trigger-button";
+    let scheduledBackupsEnabledState = this.backupServiceState.scheduledBackupsEnabled;
+    let scheduledBackupsEnabledL10nID = scheduledBackupsEnabledState ? "settings-data-backup-scheduled-backups-on" : "settings-data-backup-scheduled-backups-off";
+    let backupToggleL10nID = scheduledBackupsEnabledState ? "settings-data-backup-toggle-off" : "settings-data-backup-toggle-on";
+    if (this.backupServiceState.backupInProgress) {
+      if (!this.showInProgress) {
+        this.showInProgress = true;
+        // Keep the in progress message bar visible for at least 3 seconds
+        clearTimeout(this.inProgressTimeout);
+        this.inProgressTimeout = setTimeout(() => {
+          this.showInProgress = false;
+          this.requestUpdate();
+        }, this.MESSAGE_BAR_BUFFER);
+      }
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<link
         rel="stylesheet"
         href="${browser_themes_shared_preferences_preferences_css__WEBPACK_IMPORTED_MODULE_1__}"
@@ -2399,41 +2513,42 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         href="${browser_components_backup_content_backup_settings_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       ${this.backupErrorCode ? this.errorBarTemplate() : null}
+      ${this.showInProgress ? this.inProgressMessageBarTemplate() : null}
       ${this.turnOnScheduledBackupsDialogTemplate()}
       ${this.turnOffScheduledBackupsDialogTemplate()}
       ${this.enableBackupEncryptionDialogTemplate()}
       ${this.disableBackupEncryptionDialogTemplate()}
+      ${this._archiveEnabled ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)` <section id="scheduled-backups">
+            <div class="backups-control">
+              <span
+                id="scheduled-backups-enabled"
+                data-l10n-id=${scheduledBackupsEnabledL10nID}
+                class="heading-medium"
+              ></span>
 
-      <section id="scheduled-backups">
-        <div class="backups-control">
-          <span
-            id="scheduled-backups-enabled"
-            data-l10n-id=${scheduledBackupsEnabledL10nID}
-            class="heading-medium"
-          ></span>
+              ${scheduledBackupsEnabledState ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+                    <moz-button
+                      id="backup-trigger-button"
+                      @click=${this.handleBackupTrigger}
+                      data-l10n-id="settings-data-backup-trigger-button"
+                      ?disabled=${this.showInProgress}
+                    ></moz-button>
+                  ` : null}
 
-          <moz-button
-            id="backup-trigger-button"
-            @click=${this.handleBackupTrigger}
-            data-l10n-id=${backupTriggerL10nID}
-            ?disabled=${this.backupServiceState.backupInProgress || !this.backupServiceState.scheduledBackupsEnabled}
-          ></moz-button>
+              <moz-button
+                id="backup-toggle-scheduled-button"
+                @click=${this.handleShowScheduledBackups}
+                data-l10n-id=${backupToggleL10nID}
+              ></moz-button>
 
-          <moz-button
-            id="backup-toggle-scheduled-button"
-            @click=${this.handleShowScheduledBackups}
-            data-l10n-id="settings-data-backup-toggle"
-          ></moz-button>
+              ${this.backupServiceState.scheduledBackupsEnabled ? null : this.scheduledBackupsDescriptionTemplate()}
+            </div>
 
-          ${this.backupServiceState.scheduledBackupsEnabled ? null : this.scheduledBackupsDescriptionTemplate()}
-        </div>
-
-        ${this.backupServiceState.lastBackupDate ? this.lastBackupInfoTemplate() : null}
-        ${this.backupServiceState.scheduledBackupsEnabled ? this.backupLocationTemplate() : null}
-        ${this.backupServiceState.scheduledBackupsEnabled ? this.sensitiveDataTemplate() : null}
-      </section>
-
-      ${this.restoreFromBackupTemplate()} `;
+            ${this.backupServiceState.lastBackupDate ? this.lastBackupInfoTemplate() : null}
+            ${this.backupServiceState.scheduledBackupsEnabled ? this.backupLocationTemplate() : null}
+            ${this.backupServiceState.scheduledBackupsEnabled ? this.sensitiveDataTemplate() : null}
+          </section>` : null}
+      ${this._restoreEnabled ? this.restoreFromBackupTemplate() : null} `;
   }
 }
 customElements.define("backup-settings", BackupSettings);
@@ -3355,4 +3470,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.d18198c4.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.08e9604d.iframe.bundle.js.map

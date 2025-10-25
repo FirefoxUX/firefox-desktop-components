@@ -170,13 +170,15 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
             <div class="text-content">
               ${this.headingTemplate()}
               <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
+                <slot name="message">
+                  <span
+                    class="message"
+                    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
+                    data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
+                  >
+                    ${this.message}
+                  </span>
+                </slot>
                 <span class="link">
                   <slot
                     name="support-link"
@@ -222,6 +224,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Dismissable: () => (/* binding */ Dismissable),
 /* harmony export */   WithActionButton: () => (/* binding */ WithActionButton),
 /* harmony export */   WithHeading: () => (/* binding */ WithHeading),
+/* harmony export */   WithMessageSlot: () => (/* binding */ WithMessageSlot),
 /* harmony export */   WithSupportLink: () => (/* binding */ WithSupportLink),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -235,7 +238,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const fluentStrings = ["moz-message-bar-message", "moz-message-bar-message-heading", "moz-message-bar-message-heading-long"];
+const fluentStrings = ["moz-message-bar-message", "moz-message-bar-message-heading", "moz-message-bar-message-heading-long", "moz-message-bar-message-with-link"];
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "UI Widgets/Message Bar",
   component: "moz-message-bar",
@@ -275,6 +278,7 @@ moz-message-bar-message-heading-long =
   .heading = A longer heading to check text wrapping in the message bar
   .message = Some message that we use to check text wrapping. Some message that we use to check text wrapping.
 moz-message-bar-button = Click me!
+moz-message-bar-message-slot = This is a message inside of a slot that contains a <a data-l10n-name="moz-message-bar-link">link</a>
     `
   }
 });
@@ -285,7 +289,8 @@ const Template = ({
   l10nId,
   dismissable,
   hasSupportLink,
-  hasActionButton
+  hasActionButton,
+  hasSlottedMessage
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-message-bar
     type=${type}
@@ -294,6 +299,12 @@ const Template = ({
     data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
     ?dismissable=${dismissable}
   >
+    ${hasSlottedMessage ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <span slot="message" data-l10n-id="moz-message-bar-message-slot"
+          ><a
+            data-l10n-name="moz-message-bar-link"
+            href="http://example.com"
+          ></a
+        ></span>` : ""}
     ${hasSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
           <a
             is="moz-support-link"
@@ -312,7 +323,8 @@ Default.args = {
   l10nId: "moz-message-bar-message",
   dismissable: false,
   hasSupportLink: false,
-  hasActionButton: false
+  hasActionButton: false,
+  hasSlottedMessage: false
 };
 const Dismissable = Template.bind({});
 Dismissable.args = {
@@ -342,6 +354,11 @@ const WithHeading = Template.bind({});
 WithHeading.args = {
   ...Default.args,
   l10nId: "moz-message-bar-message-heading"
+};
+const WithMessageSlot = Template.bind({});
+WithMessageSlot.args = {
+  ...Default.args,
+  hasSlottedMessage: true
 };
 
 /***/ }),
@@ -1161,4 +1178,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.056913c9.iframe.bundle.js.map
+//# sourceMappingURL=moz-message-bar-moz-message-bar-stories.5a594f9e.iframe.bundle.js.map

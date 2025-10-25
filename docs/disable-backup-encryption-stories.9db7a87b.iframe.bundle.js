@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1836,3532,6592],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[48,1836,3532,4786,6592],{
 
 /***/ 13532:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -170,13 +170,15 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
             <div class="text-content">
               ${this.headingTemplate()}
               <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
+                <slot name="message">
+                  <span
+                    class="message"
+                    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
+                    data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
+                  >
+                    ${this.message}
+                  </span>
+                </slot>
                 <span class="link">
                   <slot
                     name="support-link"
@@ -203,6 +205,141 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
   }
 }
 customElements.define("moz-message-bar", MozMessageBar);
+
+/***/ }),
+
+/***/ 30048:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozCard)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44170);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
+
+/* -*- indent-tabs-mode: nil; js-indent-level: 2 -*-
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Cards contain content and actions about a single subject.
+ * There are two card types:
+ * The default type where no type attribute is required and the card
+ * will have no extra functionality.
+ *
+ * The "accordion" type will initially not show any content. The card
+ * will contain an arrow to expand the card so that all of the content
+ * is visible. You can use the "expanded" attribute to force the accordion
+ * card to show its content on initial render.
+ *
+ *
+ * @property {string} heading - The heading text that will be used for the card.
+ * @property {string} iconSrc - Path to the icon that should be displayed in the card.
+ * @property {string} type - (optional) The type of card. No type specified
+ *   will be the default card. The other available type is "accordion"
+ * @property {boolean} expanded - A flag to indicate whether the card is
+ *  expanded or not. Can be used to expand the content section of the
+ *  accordion card on initial render.
+ * @slot content - The content to show inside of the card.
+ */
+class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static queries = {
+    detailsEl: "#moz-card-details",
+    headingEl: "#heading",
+    contentEl: "#content",
+    summaryEl: "summary",
+    contentSlotEl: "#content-slot"
+  };
+  static properties = {
+    heading: {
+      type: String,
+      fluent: true
+    },
+    iconSrc: {
+      type: String
+    },
+    type: {
+      type: String,
+      reflect: true
+    },
+    expanded: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    this.type = "default";
+    this.expanded = false;
+  }
+  headingTemplate() {
+    if (!this.heading) {
+      return "";
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="heading-wrapper" part="moz-card-heading-wrapper">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.type == "accordion", () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="chevron-icon"></div>`)}
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(!!this.iconSrc, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img
+              id="heading-icon"
+              src=${this.iconSrc}
+              role="presentation"
+            />`)}
+        <span id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading)} part="heading"
+          >${this.heading}</span
+        >
+      </div>
+    `;
+  }
+  cardTemplate() {
+    if (this.type === "accordion") {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <details
+          id="moz-card-details"
+          @toggle=${this.onToggle}
+          ?open=${this.expanded}
+        >
+          <summary part="summary">${this.headingTemplate()}</summary>
+          <div id="content"><slot id="content-slot"></slot></div>
+        </details>
+      `;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="moz-card-details">
+        ${this.headingTemplate()}
+        <div id="content" aria-describedby="content">
+          <slot></slot>
+        </div>
+      </div>
+    `;
+  }
+  onToggle() {
+    this.expanded = this.detailsEl.open;
+    this.dispatchEvent(new ToggleEvent("toggle", {
+      newState: this.detailsEl.open ? "open" : "closed",
+      oldState: this.detailsEl.open ? "closed" : "open"
+    }));
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <article
+        class="moz-card"
+        aria-labelledby=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.heading ? "heading" : undefined)}
+      >
+        ${this.cardTemplate()}
+      </article>
+    `;
+  }
+}
+customElements.define("moz-card", MozCard);
 
 /***/ }),
 
@@ -886,6 +1023,148 @@ function wrapChar(parentNode, element, index) {
 
 /***/ }),
 
+/***/ 42346:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584db13a46f.css";
+
+/***/ }),
+
+/***/ 43039:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ERRORS: () => (/* binding */ ERRORS),
+/* harmony export */   STEPS: () => (/* binding */ STEPS)
+/* harmony export */ });
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+const ERRORS = Object.freeze({
+  /** Error state to be used for error management */
+  NONE: 0,
+  /** User is not authorized to restore a backup archive */
+  UNAUTHORIZED: 1,
+  /** Selected backup archive can't be restored because it is corrupt */
+  CORRUPTED_ARCHIVE: 2,
+  /**
+   * Selected backup archive can't be restored because the backup manifest
+   * version is too old, from the future, or invalid
+   */
+  UNSUPPORTED_BACKUP_VERSION: 3,
+  /** Backup service was not started or is not running */
+  UNINITIALIZED: 4,
+  /** Could not read from or write to the file system */
+  FILE_SYSTEM_ERROR: 5,
+  /** Encryption of backup archive failed */
+  ENCRYPTION_FAILED: 6,
+  /** Decryption of backup archive failed */
+  DECRYPTION_FAILED: 7,
+  /** Recovery of backup failed without a more specific cause */
+  RECOVERY_FAILED: 8,
+  /** Unknown error with backup system without a more specific cause */
+  UNKNOWN: 9,
+  /**
+   * Backup system tried to enable backup encryption but it was
+   * already enabled
+   */
+  ENCRYPTION_ALREADY_ENABLED: 10,
+  /**
+   * Backup system tried to disable backup encryption but it was
+   * already disabled
+   */
+  ENCRYPTION_ALREADY_DISABLED: 11,
+  /** User supplied a new password that is not a valid password */
+  INVALID_PASSWORD: 12,
+  /**
+   * An error internal to the code that is likely caused by a bug
+   * or other programmer error.
+   */
+  INTERNAL_ERROR: 13,
+  /**
+   * A backup cannot be recovered because the backup file was created
+   * by a different application than the currently running application
+   */
+  UNSUPPORTED_APPLICATION: 14
+});
+
+/**
+ * These are steps that the BackupService or any of its subcomponents might
+ * be going through during configuration, creation, deletion of or restoration
+ * from a backup. This is used to provide extra information to our error
+ * telemetry.
+ */
+const STEPS = Object.freeze({
+  /**
+   * This is the initial step upon creating a backup before any other steps
+   * begin.
+   */
+  CREATE_BACKUP_ENTRYPOINT: 1,
+  /**
+   * Determine the final destination for the written archive.
+   */
+  CREATE_BACKUP_RESOLVE_DESTINATION: 2,
+  /**
+   * Generate the manifest object for the backup.
+   */
+  CREATE_BACKUP_CREATE_MANIFEST: 3,
+  /**
+   * Create the main `backups` working directory in the profile directory if it
+   * doesn't already exist.
+   */
+  CREATE_BACKUP_CREATE_BACKUPS_FOLDER: 4,
+  /**
+   * Create the staging directory for the backup.
+   */
+  CREATE_BACKUP_CREATE_STAGING_FOLDER: 5,
+  /**
+   * Attempt to load the encryption state if one exists.
+   */
+  CREATE_BACKUP_LOAD_ENCSTATE: 6,
+  /**
+   * Run the backup routine for each BackupResource.
+   */
+  CREATE_BACKUP_RUN_BACKUP: 7,
+  /**
+   * After populating with the data from each BackupResource, verify that
+   * the manifest adheres to the BackupManifest schema.
+   */
+  CREATE_BACKUP_VERIFY_MANIFEST: 8,
+  /**
+   * Write the backup manifest to the staging directory.
+   */
+  CREATE_BACKUP_WRITE_MANIFEST: 9,
+  /**
+   * Rename the staging directory with the time code, and clear out any
+   * expired directories.
+   */
+  CREATE_BACKUP_FINALIZE_STAGING: 10,
+  /**
+   * Compress the staging directory into a single file.
+   */
+  CREATE_BACKUP_COMPRESS_STAGING: 11,
+  /**
+   * Generate the single-file archive.
+   */
+  CREATE_BACKUP_CREATE_ARCHIVE: 12,
+  /**
+   * Finalize the single-file archive and move it into the destination
+   * directory.
+   */
+  CREATE_BACKUP_FINALIZE_ARCHIVE: 13
+});
+
+/***/ }),
+
+/***/ 44170:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-card.c0afa2c8b8f6a484c8e9.css";
+
+/***/ }),
+
 /***/ 76150:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -898,7 +1177,194 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 
 module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.css";
 
+/***/ }),
+
+/***/ 85439:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   DisableError: () => (/* binding */ DisableError),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30048);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(43039);
+/* harmony import */ var _disable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(92378);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+
+
+
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
+const SELECTABLE_ERRORS = {
+  "(none)": 0,
+  ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Backup/Disable Encryption",
+  component: "disable-backup-encryption",
+  argTypes: {
+    disableEncryptionErrorCode: {
+      options: Object.keys(SELECTABLE_ERRORS),
+      mapping: SELECTABLE_ERRORS,
+      control: {
+        type: "select"
+      }
+    }
+  }
+});
+const Template = ({
+  disableEncryptionErrorCode
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <moz-card style="width: 23.94rem;">
+    <disable-backup-encryption
+      .disableEncryptionErrorCode=${disableEncryptionErrorCode}
+    ></disable-backup-encryption>
+  </moz-card>
+`;
+const Default = Template.bind({});
+const DisableError = Template.bind({});
+DisableError.args = {
+  disableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.UNKNOWN
+};
+
+/***/ }),
+
+/***/ 92378:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisableBackupEncryption)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42346);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(11540);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(48334);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(13532);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const ERROR_L10N_ID = "backup-error-retry";
+
+/**
+ * The widget for disabling password protection if the backup is already
+ * encrypted.
+ */
+class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    // managed by BackupUIChild
+    disableEncryptionErrorCode: {
+      type: Number
+    }
+  };
+  static get queries() {
+    return {
+      cancelButtonEl: "#backup-disable-encryption-cancel-button",
+      confirmButtonEl: "#backup-disable-encryption-confirm-button",
+      errorEl: "#disable-backup-encryption-error"
+    };
+  }
+  constructor() {
+    super();
+    this.disableEncryptionErrorCode = 0;
+  }
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+    this.reset();
+  }
+  reset() {
+    this.disableEncryptionErrorCode = 0;
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
+      bubbles: true
+    }));
+  }
+  errorTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="disable-backup-encryption-error"
+        type="error"
+        .messageL10nId=${ERROR_L10N_ID}
+      ></moz-message-bar>
+    `;
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="backup-disable-encryption-wrapper"
+        aria-labelledby="backup-disable-encryption-header"
+        aria-describedby="backup-disable-encryption-description"
+      >
+        <h1
+          id="backup-disable-encryption-header"
+          class="heading-medium"
+          data-l10n-id="disable-backup-encryption-header"
+        ></h1>
+        <main id="backup-disable-encryption-content">
+          <div id="backup-disable-encryption-description">
+            <span
+              id="backup-disable-encryption-description-span"
+              data-l10n-id="disable-backup-encryption-description"
+            >
+            </span>
+            <a
+              id="backup-disable-encryption-learn-more-link"
+              is="moz-support-link"
+              support-page="firefox-backup"
+              data-l10n-id="disable-backup-encryption-support-link"
+              utm-content="remove-password"
+            ></a>
+          </div>
+          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
+        </main>
+
+        <moz-button-group id="backup-disable-encryption-button-group">
+          <moz-button
+            id="backup-disable-encryption-cancel-button"
+            @click=${this.close}
+            data-l10n-id="disable-backup-encryption-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="backup-disable-encryption-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id="disable-backup-encryption-confirm-button"
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("disable-backup-encryption", DisableBackupEncryption);
+
 /***/ })
 
 }]);
-//# sourceMappingURL=3532.d1bb1dd8.iframe.bundle.js.map
+//# sourceMappingURL=disable-backup-encryption-stories.9db7a87b.iframe.bundle.js.map

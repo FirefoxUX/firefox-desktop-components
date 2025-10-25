@@ -170,13 +170,15 @@ class MozMessageBar extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitEl
             <div class="text-content">
               ${this.headingTemplate()}
               <div>
-                <span
-                  class="message"
-                  data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
-                  data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
-                >
-                  ${this.message}
-                </span>
+                <slot name="message">
+                  <span
+                    class="message"
+                    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.messageL10nId)}
+                    data-l10n-args=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(JSON.stringify(this.messageL10nArgs))}
+                  >
+                    ${this.message}
+                  </span>
+                </slot>
                 <span class="link">
                   <slot
                     name="support-link"
@@ -209,7 +211,7 @@ customElements.define("moz-message-bar", MozMessageBar);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.f09f9593f7c1f6d038e4.css";
+module.exports = __webpack_require__.p + "restore-from-backup.26e7a1a996d34b6a2f60.css";
 
 /***/ }),
 
@@ -378,12 +380,12 @@ const ERROR_L10N_IDS = Object.freeze({
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNAUTHORIZED]: "backup-service-error-incorrect-password",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.CORRUPTED_ARCHIVE]: "backup-service-error-corrupt-file",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "backup-service-error-unsupported-version",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong2",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.RECOVERY_FAILED]: "backup-service-error-recovery-failed",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong",
-  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong2",
   [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_APPLICATION]: "backup-service-error-unsupported-application"
 });
 
@@ -1469,6 +1471,38 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       this.style.setProperty("--label-font-weight", "600");
     }
   }
+  renderBackupFileInfo(backupFileInfo) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+      id="restore-from-backup-backup-found-info"
+      data-l10n-id="backup-file-creation-date-and-device"
+      data-l10n-args=${JSON.stringify({
+      machineName: backupFileInfo.deviceName ?? "",
+      date: backupFileInfo.date ? new Date(backupFileInfo.date).getTime() : 0
+    })}
+    ></p>`;
+  }
+  renderBackupFileStatus() {
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+
+    // We have errors and are embedded in about:welcome
+    if (recoveryErrorCode && this.aboutWelcomeEmbedded) {
+      return this.genericFileErrorTemplate();
+    }
+
+    // No backup file selected
+    if (!backupFileInfo) {
+      return this.getSupportLinkAnchor({
+        id: "restore-from-backup-no-backup-file-link",
+        l10nId: "restore-from-backup-no-backup-file-link"
+      });
+    }
+
+    // Backup file found and no error
+    return this.renderBackupFileInfo(backupFileInfo);
+  }
   controlsTemplate() {
     let iconURL = this.#placeholderFileIconURL;
     if (this.backupServiceState?.backupFileToRestore && !this.aboutWelcomeEmbedded) {
@@ -1492,18 +1526,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             ></moz-button>
           </div>
 
-          ${!this.backupServiceState?.backupFileInfo ? this.getSupportLinkAnchor({
-      id: "restore-from-backup-no-backup-file-link",
-      l10nId: "restore-from-backup-no-backup-file-link"
-    }) : null}
-          ${this.backupServiceState?.backupFileInfo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
-                id="restore-from-backup-backup-found-info"
-                data-l10n-id="backup-file-creation-date-and-device"
-                data-l10n-args=${JSON.stringify({
-      machineName: this.backupServiceState.backupFileInfo.deviceName ?? "",
-      date: this.backupServiceState.backupFileInfo.date ? new Date(this.backupServiceState.backupFileInfo.date).getTime() : 0
-    })}
-              ></p>` : null}
+          ${this.renderBackupFileStatus()}
         </fieldset>
 
         <fieldset id="password-entry-controls">
@@ -1517,6 +1540,23 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       backgroundImage: `url(${iconURL})`
     } : {});
     const backupFileName = this.backupServiceState?.backupFileToRestore || "";
+
+    // Determine the ID of the element that will be rendered by renderBackupFileStatus()
+    // to reference with aria-describedby
+    let describedBy = "";
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+    if (this.aboutWelcomeEmbedded) {
+      if (recoveryErrorCode) {
+        describedBy = "backup-generic-file-error";
+      } else if (!backupFileInfo) {
+        describedBy = "restore-from-backup-no-backup-file-link";
+      } else {
+        describedBy = "restore-from-backup-backup-found-info";
+      }
+    }
     if (this.aboutWelcomeEmbedded) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
         <textarea
@@ -1526,6 +1566,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           .value=${backupFileName}
           style=${styles}
           @input=${this.handleTextareaResize}
+          aria-describedby=${describedBy}
         ></textarea>
       `;
     }
@@ -1582,7 +1623,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       >
         ${this.aboutWelcomeEmbedded ? null : this.headerTemplate()}
         <main id="restore-from-backup-content">
-          ${this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
+          ${!this.aboutWelcomeEmbedded && this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
           ${!this.aboutWelcomeEmbedded && this.backupServiceState?.backupFileInfo ? this.descriptionTemplate() : null}
           ${this.controlsTemplate()}
         </main>
@@ -1654,6 +1695,28 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         data-l10n-id=${(0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.backupServiceState?.recoveryErrorCode)}
       >
       </moz-message-bar>
+    `;
+  }
+  genericFileErrorTemplate() {
+    // We handle incorrect password errors in the password input
+    if (this.isIncorrectPassword) {
+      return null;
+    }
+
+    // Note: the l10n id used here is interim, and will be updated in Bug 1994877
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <span
+        id="backup-generic-file-error"
+        class="field-error"
+        data-l10n-id="restored-from-backup-error-subtitle"
+      >
+        <a
+          id="backup-generic-error-link"
+          slot="support-link"
+          data-l10n-name="restore-problems"
+          href=${this.getSupportURLWithUTM("firefox-backup")}
+        ></a>
+      </span>
     `;
   }
   render() {
@@ -1834,4 +1897,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.9bc89d7a.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.bca00d51.iframe.bundle.js.map
