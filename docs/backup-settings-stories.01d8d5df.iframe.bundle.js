@@ -1423,7 +1423,7 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       <div id="backup-enable-encryption-description">
         <span
           id="backup-enable-encryption-description-span"
-          data-l10n-id="enable-backup-encryption-description"
+          data-l10n-id="settings-sensitive-data-encryption-description"
         >
         </span>
         <a
@@ -2435,7 +2435,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
         >
           <span
             id="backup-sensitive-data-checkbox-description-span"
-            data-l10n-id="settings-data-toggle-encryption-description"
+            data-l10n-id="settings-sensitive-data-encryption-description"
           ></span>
           <a
             id="settings-data-toggle-encryption-learn-more-link"
@@ -2904,7 +2904,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             </label>
             <span
               class="text-deemphasized"
-              data-l10n-id="turn-on-scheduled-backups-encryption-description"
+              data-l10n-id="settings-sensitive-data-encryption-description"
             ></span>
           </div>
 
@@ -3411,7 +3411,7 @@ class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPA
           <div id="backup-disable-encryption-description">
             <span
               id="backup-disable-encryption-description-span"
-              data-l10n-id="disable-backup-encryption-description"
+              data-l10n-id="disable-backup-encryption-description2"
             >
             </span>
             <a
@@ -3470,4 +3470,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.08e9604d.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.01d8d5df.iframe.bundle.js.map
