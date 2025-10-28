@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[6864],{
+
+/***/ 46864:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\ncolors-dialog2 =\n    .title = Colors\n    .style = min-width: 41em;\n\ncolors-close-key =\n    .key = w\n\ncolors-text-and-background = Text and Background\n\ncolors-text =\n    .label = Text\n    .accesskey = T\n\ncolors-text-background =\n    .label = Background\n    .accesskey = B\n\ncolors-links-header = Link Colors\n\ncolors-links-unvisited =\n    .label = Unvisited Links\n    .accesskey = L\n\ncolors-links-visited =\n    .label = Visited Links\n    .accesskey = V\n";
+
+/***/ })
+
+}]);
