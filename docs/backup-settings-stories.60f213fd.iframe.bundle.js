@@ -1390,7 +1390,6 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       bubbles: true,
       composed: true
     }));
-    this.reset();
   }
   reset() {
     this._inputPassValue = "";
@@ -1595,15 +1594,18 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }));
 
     // If we have a backup file, but not the associated info, fetch the info
-    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
-      this.getBackupFileInfo();
-    }
+    this.maybeGetBackupFileInfo();
     this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
 
     // Resize the textarea when the window is resized
     if (this.aboutWelcomeEmbedded) {
       this._handleWindowResize = () => this.resizeTextarea();
       window.addEventListener("resize", this._handleWindowResize);
+    }
+  }
+  maybeGetBackupFileInfo() {
+    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
+      this.getBackupFileInfo();
     }
   }
   disconnectedCallback() {
@@ -1631,6 +1633,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           recoveryInProgress: inProgress
         }
       }));
+
+      // It's possible that backupFileToRestore got updated and we need to
+      // refetch the fileInfo
+      this.maybeGetBackupFileInfo();
     }
   }
   handleEvent(event) {
@@ -2281,6 +2287,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog
       id="turn-on-scheduled-backups-dialog"
       class="backup-dialog"
+      @close=${this.handleTurnOnScheduledBackupsDialogClose}
     >
       <turn-on-scheduled-backups
         defaultlabel=${fileName}
@@ -2338,10 +2345,17 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       bubbles: true
     }));
   }
+  handleTurnOnScheduledBackupsDialogClose() {
+    this.turnOnScheduledBackupsEl.reset();
+  }
+  handleEnableBackupEncryptionDialogClose() {
+    this.enableBackupEncryptionEl.reset();
+  }
   enableBackupEncryptionDialogTemplate() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog
       id="enable-backup-encryption-dialog"
       class="backup-dialog"
+      @close=${this.handleEnableBackupEncryptionDialogClose}
     >
       <enable-backup-encryption
         type=${this._enableEncryptionTypeAttr}
@@ -2727,6 +2741,9 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     // listen to events from <password-validation-inputs>
     this.addEventListener("ValidPasswordsDetected", this);
     this.addEventListener("InvalidPasswordsDetected", this);
+
+    // listens to keydown events
+    this.addEventListener("keydown", this);
   }
   handleEvent(event) {
     if (event.type == "BackupUI:SelectNewFilepickerPath") {
@@ -2747,6 +2764,10 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     } else if (event.type == "InvalidPasswordsDetected") {
       this._passwordsMatch = false;
       this._inputPassValue = "";
+    } else if (event.type == "keydown") {
+      if (event.key === "Enter" && (event.originalTarget.id == "backup-location-filepicker-input-default" || event.originalTarget.id == "backup-location-filepicker-input-custom")) {
+        event.preventDefault();
+      }
     }
   }
   async handleChooseLocation() {
@@ -2762,7 +2783,6 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       bubbles: true,
       composed: true
     }));
-    this.reset();
   }
   handleConfirm() {
     let detail;
@@ -3071,6 +3091,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   reset() {
     this.formEl.reset();
+    this.inputNewPasswordEl.revealPassword = false;
+    this.inputRepeatPasswordEl.revealPassword = false;
     this._showRules = false;
     this._hasEmail = false;
     this._tooShort = true;
@@ -3468,4 +3490,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.3eef2920.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.60f213fd.iframe.bundle.js.map

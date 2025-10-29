@@ -339,6 +339,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   reset() {
     this.formEl.reset();
+    this.inputNewPasswordEl.revealPassword = false;
+    this.inputRepeatPasswordEl.revealPassword = false;
     this._showRules = false;
     this._hasEmail = false;
     this._tooShort = true;
@@ -488,4 +490,4 @@ module.exports = __webpack_require__.p + "password-validation-inputs.bb28741d7e8
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.98e6d0fb.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.5d234dbc.iframe.bundle.js.map

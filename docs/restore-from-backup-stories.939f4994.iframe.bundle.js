@@ -1301,15 +1301,18 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }));
 
     // If we have a backup file, but not the associated info, fetch the info
-    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
-      this.getBackupFileInfo();
-    }
+    this.maybeGetBackupFileInfo();
     this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
 
     // Resize the textarea when the window is resized
     if (this.aboutWelcomeEmbedded) {
       this._handleWindowResize = () => this.resizeTextarea();
       window.addEventListener("resize", this._handleWindowResize);
+    }
+  }
+  maybeGetBackupFileInfo() {
+    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
+      this.getBackupFileInfo();
     }
   }
   disconnectedCallback() {
@@ -1337,6 +1340,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           recoveryInProgress: inProgress
         }
       }));
+
+      // It's possible that backupFileToRestore got updated and we need to
+      // refetch the fileInfo
+      this.maybeGetBackupFileInfo();
     }
   }
   handleEvent(event) {
@@ -1895,4 +1902,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.68e168c1.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.939f4994.iframe.bundle.js.map

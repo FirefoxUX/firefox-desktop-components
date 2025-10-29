@@ -1444,7 +1444,6 @@ class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPAC
       bubbles: true,
       composed: true
     }));
-    this.reset();
   }
   reset() {
     this._inputPassValue = "";
@@ -1652,6 +1651,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   reset() {
     this.formEl.reset();
+    this.inputNewPasswordEl.revealPassword = false;
+    this.inputRepeatPasswordEl.revealPassword = false;
     this._showRules = false;
     this._hasEmail = false;
     this._tooShort = true;
@@ -1822,4 +1823,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=enable-backup-encryption-stories.d4e9ddb0.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.2db9e23a.iframe.bundle.js.map

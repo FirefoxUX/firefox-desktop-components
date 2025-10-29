@@ -1413,6 +1413,9 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     // listen to events from <password-validation-inputs>
     this.addEventListener("ValidPasswordsDetected", this);
     this.addEventListener("InvalidPasswordsDetected", this);
+
+    // listens to keydown events
+    this.addEventListener("keydown", this);
   }
   handleEvent(event) {
     if (event.type == "BackupUI:SelectNewFilepickerPath") {
@@ -1433,6 +1436,10 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     } else if (event.type == "InvalidPasswordsDetected") {
       this._passwordsMatch = false;
       this._inputPassValue = "";
+    } else if (event.type == "keydown") {
+      if (event.key === "Enter" && (event.originalTarget.id == "backup-location-filepicker-input-default" || event.originalTarget.id == "backup-location-filepicker-input-custom")) {
+        event.preventDefault();
+      }
     }
   }
   async handleChooseLocation() {
@@ -1448,7 +1455,6 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       bubbles: true,
       composed: true
     }));
-    this.reset();
   }
   handleConfirm() {
     let detail;
@@ -1867,6 +1873,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   }
   reset() {
     this.formEl.reset();
+    this.inputNewPasswordEl.revealPassword = false;
+    this.inputRepeatPasswordEl.revealPassword = false;
     this._showRules = false;
     this._hasEmail = false;
     this._tooShort = true;
@@ -2030,4 +2038,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.4ba0adef.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.f91b9e33.iframe.bundle.js.map
