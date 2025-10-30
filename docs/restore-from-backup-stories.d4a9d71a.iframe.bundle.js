@@ -1574,6 +1574,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           style=${styles}
           @input=${this.handleTextareaResize}
           aria-describedby=${describedBy}
+          data-l10n-id="restore-from-backup-filepicker-input"
         ></textarea>
       `;
     }
@@ -1584,6 +1585,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         readonly
         .value=${backupFileName}
         style=${styles}
+        data-l10n-id="restore-from-backup-filepicker-input"
       />
     `;
   }
@@ -1902,4 +1904,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.38f3800a4c3d5cfc4354.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.939f4994.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.d4a9d71a.iframe.bundle.js.map
