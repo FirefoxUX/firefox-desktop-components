@@ -566,7 +566,7 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return this.concealed ? "password" : "text";
   }
   get #password() {
-    return !this.newPassword && this.concealed ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
+    return !this.newPassword && this.concealed && this.value ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   updated(changedProperties) {
     if (changedProperties.has("concealed") && !changedProperties.concealed) {
@@ -799,4 +799,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.0593f721.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.56888d55.iframe.bundle.js.map

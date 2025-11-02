@@ -3004,7 +3004,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.4e287829a93e7f0ce985.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.5dd1a3f588047ccd083e.css";
 
 /***/ }),
 
@@ -3068,6 +3068,11 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
       type: String,
       reflect: true,
       attribute: "create-password-label-l10n-id"
+    },
+    embeddedFxBackupOptIn: {
+      type: Boolean,
+      reflect: true,
+      attribute: "embedded-fx-backup-opt-in"
     }
   };
   static get queries() {
@@ -3199,6 +3204,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
             .tooShort=${this._tooShort}
             @focus=${this.handleTooltipFocus}
             @blur=${this.handleTooltipBlur}
+            ?embedded-fx-backup-opt-in=${this.embeddedFxBackupOptIn}
           ></password-rules-tooltip>
           <label id="repeat-password-label" for="repeat-password-input">
             <span
@@ -3487,4 +3493,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.eb569eab.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.438775d6.iframe.bundle.js.map
