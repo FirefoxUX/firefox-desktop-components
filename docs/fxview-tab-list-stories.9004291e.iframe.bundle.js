@@ -1452,7 +1452,9 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     return null;
   }
   formatURIForDisplay(uriString) {
-    return !window.IS_STORYBOOK ? lazy.BrowserUtils.formatURIStringForDisplay(uriString) : uriString;
+    return !window.IS_STORYBOOK ? lazy.BrowserUtils.formatURIStringForDisplay(uriString, {
+      showFilenameForLocalURIs: true
+    }) : uriString;
   }
   getImageUrl(icon, targetURI) {
     if (window.IS_STORYBOOK) {
@@ -1830,4 +1832,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.c66dbdbed106a697821f.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.b0f8a64b.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.9004291e.iframe.bundle.js.map

@@ -291,7 +291,8 @@ ExtensionControlled.args = {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SettingControl: () => (/* binding */ SettingControl)
+/* harmony export */   SettingControl: () => (/* binding */ SettingControl),
+/* harmony export */   SettingNotDefinedError: () => (/* binding */ SettingNotDefinedError)
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
 /* harmony import */ var chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(19100);
@@ -321,11 +322,16 @@ const KNOWN_OPTIONS = new Map([["moz-radio-group", (0,chrome_global_content_vend
 const ITEM_SLOT_BY_PARENT = new Map([["moz-checkbox", "nested"], ["moz-input-text", "nested"], ["moz-input-search", "nested"], ["moz-input-folder", "nested"], ["moz-input-password", "nested"], ["moz-radio-group", "nested"],
 // NOTE: moz-select does not support the nested slot.
 ["moz-toggle", "nested"]]);
+class SettingNotDefinedError extends Error {
+  /** @param {string} settingId */
+  constructor(settingId) {
+    super(`No Setting with id "${settingId}". Did you register it with Preferences.addSetting()?`);
+    this.name = "SettingNotDefinedError";
+    this.settingId = settingId;
+  }
+}
 class SettingControl extends chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.SettingElement {
-  /**
-   * @type {Setting | undefined}
-   */
-  #lastSetting;
+  static SettingNotDefinedError = SettingNotDefinedError;
   static properties = {
     setting: {
       type: Object
@@ -341,6 +347,11 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
       type: Boolean
     }
   };
+
+  /**
+   * @type {Setting | undefined}
+   */
+  #lastSetting;
   constructor() {
     super();
     this.controlRef = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.createRef)();
@@ -400,6 +411,9 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
       this.#lastSetting = this.setting;
       this.setValue();
       this.setting.on("change", this.onSettingChange);
+    }
+    if (!this.setting) {
+      throw new SettingNotDefinedError(this.config.id);
     }
     let prevHidden = this.hidden;
     this.hidden = !this.setting.visible;
@@ -599,4 +613,4 @@ customElements.define("setting-control", SettingControl);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.1dd9a51b.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.2554f536.iframe.bundle.js.map
