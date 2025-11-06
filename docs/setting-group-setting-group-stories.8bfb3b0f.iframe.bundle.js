@@ -425,6 +425,7 @@ class SettingGroup extends chrome_browser_content_preferences_widgets_setting_el
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
       .headingLevel=${this.config.headingLevel}
       @change=${this.onChange}
+      @toggle=${this.onChange}
       @click=${this.onClick}
       @visibility-change=${this.handleVisibilityChange}
       ${(0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.spread)(this.getCommonPropertyMapping(this.config))}
@@ -437,4 +438,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.2af58921.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.8bfb3b0f.iframe.bundle.js.map

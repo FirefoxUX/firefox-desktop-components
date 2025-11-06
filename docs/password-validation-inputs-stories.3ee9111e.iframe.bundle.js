@@ -255,7 +255,7 @@ module.exports = __webpack_require__.p + "moz-card.d302a3911a68d76f2067.css";
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.dc57be6dc288a7700138.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.66d2da242fb97a13045b.css";
 
 /***/ }),
 
@@ -356,8 +356,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   handleFocusNewPassword() {
     this._showRules = true;
   }
-  handleBlurNewPassword(event) {
-    this._showRules = !event.target.checkValidity();
+  handleBlurNewPassword() {
+    this._showRules = false;
   }
   handleChangeNewPassword() {
     this.updatePasswordValidity();
@@ -491,9 +491,9 @@ customElements.define("password-validation-inputs", PasswordValidationInputs);
 /***/ 78312:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-validation-inputs.f301372c7d1cac8730b5.css";
+module.exports = __webpack_require__.p + "password-validation-inputs.68f85f21114e8abf223f.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.eae72f9c.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.3ee9111e.iframe.bundle.js.map

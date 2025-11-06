@@ -4,7 +4,7 @@
 /***/ 3952:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "turn-on-scheduled-backups.a2ddb18f672e468fadb9.css";
+module.exports = __webpack_require__.p + "turn-on-scheduled-backups.6856d39c38b09d119213.css";
 
 /***/ }),
 
@@ -1783,6 +1783,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         href=${this.getSupportURLWithUTM(supportPage)}
         data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
         data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+        dir="auto"
         rel="noopener noreferrer"
       ></a>`;
     }
@@ -1793,6 +1794,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       support-page=${supportPage}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
       data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+      dir="auto"
     ></a>`;
   }
   applyContentCustomizations() {
@@ -2761,6 +2763,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this._showPasswordOptions = false;
     this._passwordsMatch = false;
     this.enableBackupErrorCode = 0;
+    this.disableSubmit = false;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -2818,20 +2821,9 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     }));
   }
   handleConfirm() {
-    let detail;
-    if (this._newPath) {
-      detail = {
-        parentDirPath: this._newPath
-      };
-    } else if (this.backupServiceState?.backupDirPath) {
-      detail = {
-        parentDirPath: this.backupServiceState?.backupDirPath
-      };
-    } else {
-      detail = {
-        parentDirPath: this.defaultPath
-      };
-    }
+    let detail = {
+      parentDirPath: this._newPath || this.defaultPath
+    };
     if (this._showPasswordOptions && this._passwordsMatch) {
       detail.password = this._inputPassValue;
     }
@@ -2862,6 +2854,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     this._passwordsMatch = false;
     this._inputPassValue = "";
     this.enableBackupErrorCode = 0;
+    this.disableSubmit = false;
     // we don't want to reset the path when embedded in the spotlight
     if (!this.embeddedFxBackupOptIn) {
       this._newPath = "";
@@ -2977,6 +2970,15 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     `;
   }
   contentTemplate() {
+    // All the situations where we want to disable submit:
+    // - passwords don't match
+    // - there's no destination folder
+    // - other unknown errors
+    if (this._showPasswordOptions && !this._passwordsMatch || this._newPath == "" && this.defaultLabel == "" || this.enableBackupErrorCode != chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.NONE) {
+      this.disableSubmit = true;
+    } else {
+      this.disableSubmit = false;
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <form
         id="backup-turn-on-scheduled-wrapper"
@@ -3019,7 +3021,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             @click=${this.handleConfirm}
             type="primary"
             data-l10n-id=${this.turnOnBackupConfirmBtnL10nId || "turn-on-scheduled-backups-confirm-button"}
-            ?disabled=${this._showPasswordOptions && !this._passwordsMatch}
+            ?disabled=${this.disableSubmit}
           ></moz-button>
         </moz-button-group>
       </form>
@@ -3042,7 +3044,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.dc57be6dc288a7700138.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.66d2da242fb97a13045b.css";
 
 /***/ }),
 
@@ -3143,8 +3145,8 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
   handleFocusNewPassword() {
     this._showRules = true;
   }
-  handleBlurNewPassword(event) {
-    this._showRules = !event.target.checkValidity();
+  handleBlurNewPassword() {
+    this._showRules = false;
   }
   handleChangeNewPassword() {
     this.updatePasswordValidity();
@@ -3376,7 +3378,7 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ 78312:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-validation-inputs.f301372c7d1cac8730b5.css";
+module.exports = __webpack_require__.p + "password-validation-inputs.68f85f21114e8abf223f.css";
 
 /***/ }),
 
@@ -3531,4 +3533,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.8d777ff1.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.8d9932bd.iframe.bundle.js.map

@@ -1490,6 +1490,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         href=${this.getSupportURLWithUTM(supportPage)}
         data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
         data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+        dir="auto"
         rel="noopener noreferrer"
       ></a>`;
     }
@@ -1500,6 +1501,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       support-page=${supportPage}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nId)}
       data-l10n-name=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(l10nName)}
+      dir="auto"
     ></a>`;
   }
   applyContentCustomizations() {
@@ -1935,4 +1937,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.ed09b992746623424667.c
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.38d46ef9.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.b00e12e5.iframe.bundle.js.map
