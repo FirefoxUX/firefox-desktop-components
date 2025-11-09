@@ -422,24 +422,17 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.passwordRulesEl.hidePopover();
   }
   positionPopover() {
-    const host = this.getRootNode().host;
-    const anchor = host.shadowRoot.querySelector("#new-password-input");
-    if (!anchor) {
-      return;
-    }
-    const anchorRect = anchor.getBoundingClientRect();
+    const anchorRect = this.getBoundingClientRect();
     const isWideViewport = window.innerWidth >= 1200;
+    const leftPos = anchorRect.left;
     if (isWideViewport) {
       // Position to the right of the input
-      const leftPos = anchorRect.right + 16;
-      const topPos = anchorRect.top - (anchorRect.bottom - anchorRect.top) / 2;
+      const topPos = anchorRect.top;
       this.passwordRulesEl.style.left = `${leftPos}px`;
       this.passwordRulesEl.style.top = `${topPos}px`;
     } else {
       // Position below the input
-      const leftPos = anchorRect.left;
-      const topPos = anchorRect.bottom; // offset for arrow and spacing
-
+      const topPos = anchorRect.bottom;
       this.passwordRulesEl.style.left = `${leftPos}px`;
       this.passwordRulesEl.style.top = `${topPos}px`;
     }
@@ -2238,6 +2231,9 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       backupInProgressMessageBarEl: "#backup-in-progress-message"
     };
   }
+  get dialogs() {
+    return [this.disableBackupEncryptionDialogEl, this.enableBackupEncryptionDialogEl, this.turnOnScheduledBackupsDialogEl, this.turnOffScheduledBackupsDialogEl, this.restoreFromBackupDialogEl];
+  }
 
   /**
    * Creates a BackupPreferences instance and sets the initial default
@@ -2304,16 +2300,8 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   handleEvent(event) {
     switch (event.type) {
       case "dialogCancel":
-        if (this.turnOnScheduledBackupsDialogEl.open) {
-          this.turnOnScheduledBackupsDialogEl.close();
-        } else if (this.turnOffScheduledBackupsDialogEl.open) {
-          this.turnOffScheduledBackupsDialogEl.close();
-        } else if (this.restoreFromBackupDialogEl.open) {
-          this.restoreFromBackupDialogEl.close();
-        } else if (this.disableBackupEncryptionDialogEl.open) {
-          this.disableBackupEncryptionDialogEl.close();
-        } else if (this.enableBackupEncryptionDialogEl.open) {
-          this.enableBackupEncryptionDialogEl.close();
+        for (let dialog of this.dialogs) {
+          dialog?.close();
         }
         break;
       case "restoreFromBackupConfirm":
@@ -3112,7 +3100,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 62782:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-rules-tooltip.6b6739d1627599159ff6.css";
+module.exports = __webpack_require__.p + "password-rules-tooltip.7bf614ee40389a534862.css";
 
 /***/ }),
 
@@ -3614,4 +3602,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.286f60db.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.8c531223.iframe.bundle.js.map
