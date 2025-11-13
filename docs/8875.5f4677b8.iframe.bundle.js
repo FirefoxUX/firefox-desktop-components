@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[8875],{
+
+/***/ 41256:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\ncustomkeys-title = Keyboard Shortcuts\ncustomkeys-search = Search:\ncustomkeys-change = Change\ncustomkeys-reset = Reset\ncustomkeys-clear = Clear\ncustomkeys-new-key = Press new key:\ncustomkeys-reset-all = Reset all shortcuts to defaults\n\n# Variables\n# $conflict (string) - The title of the conflicting shortcut.\ncustomkeys-conflict-confirm = This key is already assigned to { $conflict }. Do you want to replace it?\n\ncustomkeys-reset-all-confirm = Are you sure you wish to reset all keyboard shortcuts to their defaults?\n\ncustomkeys-history-reopen-tab = Reopen Last Closed Tab\ncustomkeys-history-reopen-window = Reopen Last Closed window\ncustomkeys-dev-tools = Web Developer Tools\ncustomkeys-dev-inspector = DOM and Style Inspector\ncustomkeys-dev-webconsole = Web Console\ncustomkeys-dev-debugger = JavaScript Debugger\ncustomkeys-dev-network = Network Monitor\ncustomkeys-dev-style = Style Editor\ncustomkeys-dev-performance = Performance\ncustomkeys-dev-storage = Storage Inspector\ncustomkeys-dev-dom = DOM\ncustomkeys-dev-accessibility = Accessibility\ncustomkeys-dev-profiler-toggle = Start/Stop the Performance Profiler\ncustomkeys-dev-profiler-capture = Capture a Performance Profile\n\ncustomkeys-category-navigation = Navigation\ncustomkeys-nav-back = Back\ncustomkeys-nav-forward = Forward\ncustomkeys-nav-home = Home\ncustomkeys-nav-reload = Reload\ncustomkeys-nav-reload-skip-cache = Reload (Override Cache)\ncustomkeys-nav-stop = Stop\n\ncustomkeys-caution-message = This feature is experimental and may not work as expected.\n";
+
+/***/ })
+
+}]);
