@@ -1209,6 +1209,50 @@ const tokensTable = {
     name: "--button-text-color-selected"
   }, {
     value: {
+      forcedColors: "LinkText",
+      brand: {
+        default: "var(--color-accent-primary)"
+      },
+      platform: {
+        default: "LinkText"
+      }
+    },
+    name: "--link-color"
+  }, {
+    value: {
+      forcedColors: "LinkText",
+      brand: {
+        default: "var(--color-accent-primary-hover)"
+      },
+      platform: {
+        default: "color-mix(in srgb, black 10%, var(--link-color))"
+      }
+    },
+    name: "--link-color-hover"
+  }, {
+    value: {
+      forcedColors: "ActiveText",
+      brand: {
+        default: "var(--color-accent-primary-active)"
+      },
+      platform: {
+        default: "color-mix(in srgb, black 20%, var(--link-color))"
+      }
+    },
+    name: "--link-color-active"
+  }, {
+    value: {
+      forcedColors: "var(--link-color)",
+      brand: {
+        default: "var(--link-color)"
+      },
+      platform: {
+        default: "var(--link-color)"
+      }
+    },
+    name: "--link-color-visited"
+  }, {
+    value: {
       prefersContrast: "CanvasText",
       brand: {
         light: "var(--color-gray-100)",
@@ -1273,6 +1317,9 @@ const tokensTable = {
     value: "2px",
     name: "--focus-outline-width"
   }, {
+    value: "1px",
+    name: "--link-focus-outline-offset"
+  }, {
     value: {
       light: "var(--color-red-70)",
       dark: "var(--color-red-20)",
@@ -1299,54 +1346,6 @@ const tokensTable = {
   }, {
     value: "var(--size-item-large)",
     name: "--icon-size-xlarge"
-  }],
-  link: [{
-    value: {
-      forcedColors: "LinkText",
-      brand: {
-        default: "var(--color-accent-primary)"
-      },
-      platform: {
-        default: "LinkText"
-      }
-    },
-    name: "--link-color"
-  }, {
-    value: {
-      forcedColors: "LinkText",
-      brand: {
-        default: "var(--color-accent-primary-hover)"
-      },
-      platform: {
-        default: "color-mix(in srgb, black 10%, var(--link-color))"
-      }
-    },
-    name: "--link-color-hover"
-  }, {
-    value: {
-      forcedColors: "ActiveText",
-      brand: {
-        default: "var(--color-accent-primary-active)"
-      },
-      platform: {
-        default: "color-mix(in srgb, black 20%, var(--link-color))"
-      }
-    },
-    name: "--link-color-active"
-  }, {
-    value: {
-      forcedColors: "var(--link-color)",
-      brand: {
-        default: "var(--link-color)"
-      },
-      platform: {
-        default: "var(--link-color)"
-      }
-    },
-    name: "--link-color-visited"
-  }, {
-    value: "1px",
-    name: "--link-focus-outline-offset"
   }],
   "box-shadow": [{
     value: "0 0 1px var(--box-shadow-color-darker-layer-1), 0 1px 2px var(--box-shadow-color-darker-layer-2)",
@@ -2703,4 +2702,4 @@ module.exports = __webpack_require__.p + "tokens-table.201670fcb82d51b5b951.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.f6584c90.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.3c627c9e.iframe.bundle.js.map

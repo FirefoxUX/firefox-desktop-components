@@ -429,19 +429,15 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   positionPopover() {
     const anchorRect = this.getBoundingClientRect();
+    const popover = this.passwordRulesEl;
     const isWideViewport = window.innerWidth >= 1200;
-    const leftPos = anchorRect.left;
-    if (isWideViewport) {
-      // Position to the right of the input
-      const topPos = anchorRect.top;
-      this.passwordRulesEl.style.left = `${leftPos}px`;
-      this.passwordRulesEl.style.top = `${topPos}px`;
-    } else {
-      // Position below the input
-      const topPos = anchorRect.bottom;
-      this.passwordRulesEl.style.left = `${leftPos}px`;
-      this.passwordRulesEl.style.top = `${topPos}px`;
-    }
+    const isRTL = document.dir === "rtl";
+
+    // Calculate top position
+    const topPos = isWideViewport ? anchorRect.top + anchorRect.height / 2 : anchorRect.bottom;
+    popover.style.top = `${topPos}px`;
+    popover.style.right = isRTL ? "auto" : "inherit";
+    popover.style.left = isRTL ? "inherit" : "auto";
   }
   _onBeforeToggle(e) {
     this.open = e.newState == "open";
@@ -497,7 +493,7 @@ module.exports = __webpack_require__.p + "restore-from-backup.26e7a1a996d34b6a2f
 /***/ 20703:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.6d79776c805c153e1f8e.css";
+module.exports = __webpack_require__.p + "preferences.64632877c201b19a2ceb.css";
 
 /***/ }),
 
@@ -3222,6 +3218,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._tooShort = true;
     this._passwordsMatch = false;
     this._passwordsValid = false;
+    this.passwordRulesEl.hide();
   }
   handleFocusNewPassword() {
     this.passwordRulesEl.show();
@@ -3612,4 +3609,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.a2824f57.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.9ff35786.iframe.bundle.js.map

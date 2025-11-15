@@ -78,19 +78,15 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   positionPopover() {
     const anchorRect = this.getBoundingClientRect();
+    const popover = this.passwordRulesEl;
     const isWideViewport = window.innerWidth >= 1200;
-    const leftPos = anchorRect.left;
-    if (isWideViewport) {
-      // Position to the right of the input
-      const topPos = anchorRect.top;
-      this.passwordRulesEl.style.left = `${leftPos}px`;
-      this.passwordRulesEl.style.top = `${topPos}px`;
-    } else {
-      // Position below the input
-      const topPos = anchorRect.bottom;
-      this.passwordRulesEl.style.left = `${leftPos}px`;
-      this.passwordRulesEl.style.top = `${topPos}px`;
-    }
+    const isRTL = document.dir === "rtl";
+
+    // Calculate top position
+    const topPos = isWideViewport ? anchorRect.top + anchorRect.height / 2 : anchorRect.bottom;
+    popover.style.top = `${topPos}px`;
+    popover.style.right = isRTL ? "auto" : "inherit";
+    popover.style.left = isRTL ? "inherit" : "auto";
   }
   _onBeforeToggle(e) {
     this.open = e.newState == "open";
@@ -427,6 +423,7 @@ class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBP
     this._tooShort = true;
     this._passwordsMatch = false;
     this._passwordsValid = false;
+    this.passwordRulesEl.hide();
   }
   handleFocusNewPassword() {
     this.passwordRulesEl.show();
@@ -569,4 +566,4 @@ module.exports = __webpack_require__.p + "password-validation-inputs.9d90898b91a
 /***/ })
 
 }]);
-//# sourceMappingURL=password-validation-inputs-stories.890e2e90.iframe.bundle.js.map
+//# sourceMappingURL=password-validation-inputs-stories.0512b636.iframe.bundle.js.map
