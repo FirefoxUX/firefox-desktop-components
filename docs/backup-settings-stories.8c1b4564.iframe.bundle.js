@@ -493,7 +493,7 @@ module.exports = __webpack_require__.p + "restore-from-backup.26e7a1a996d34b6a2f
 /***/ 20703:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.64632877c201b19a2ceb.css";
+module.exports = __webpack_require__.p + "preferences.ac1444070aac8380fe98.css";
 
 /***/ }),
 
@@ -1232,7 +1232,8 @@ module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   ERRORS: () => (/* binding */ ERRORS),
-/* harmony export */   STEPS: () => (/* binding */ STEPS)
+/* harmony export */   STEPS: () => (/* binding */ STEPS),
+/* harmony export */   errorString: () => (/* binding */ errorString)
 /* harmony export */ });
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1285,6 +1286,14 @@ const ERRORS = Object.freeze({
    */
   UNSUPPORTED_APPLICATION: 14
 });
+function errorString(errorCodeToLookup) {
+  for (let [errorName, errorCode] of Object.entries(ERRORS)) {
+    if (errorCode == errorCodeToLookup) {
+      return errorName;
+    }
+  }
+  return "UNDEFINED_ERROR";
+}
 
 /**
  * These are steps that the BackupService or any of its subcomponents might
@@ -1628,6 +1637,13 @@ __webpack_require__.r(__webpack_exports__);
  */
 class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #placeholderFileIconURL = "chrome://global/skin/icons/page-portrait.svg";
+  /**
+   * When the user clicks the button to choose a backup file to restore, we send
+   * a message to the `BackupService` process asking it to read that file.
+   * When we do this, we set this property to be a promise, which we resolve
+   * when the file reading is complete.
+   */
+  #backupFileReadPromise = null;
   static properties = {
     _fileIconURL: {
       type: String
@@ -1689,6 +1705,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     // If we have a backup file, but not the associated info, fetch the info
     this.maybeGetBackupFileInfo();
     this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
+    this.addEventListener("BackupUI:StateWasUpdated", this);
 
     // Resize the textarea when the window is resized
     if (this.aboutWelcomeEmbedded) {
@@ -1739,7 +1756,32 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         iconURL
       } = event.detail;
       this._fileIconURL = iconURL;
+      this.#backupFileReadPromise = Promise.withResolvers();
+      this.#backupFileReadPromise.promise.then(() => {
+        const payload = {
+          location: this.backupServiceState?.backupFileCoarseLocation,
+          valid: this.backupServiceState?.recoveryErrorCode == chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.NONE
+        };
+        if (payload.valid) {
+          payload.backup_timestamp = new Date(this.backupServiceState?.backupFileInfo?.date || 0).getTime();
+          payload.restore_id = this.backupServiceState?.restoreID;
+          payload.encryption = this.backupServiceState?.backupFileInfo?.isEncrypted;
+          payload.app_name = this.backupServiceState?.backupFileInfo?.appName;
+          payload.version = this.backupServiceState?.backupFileInfo?.appVersion;
+          payload.build_id = this.backupServiceState?.backupFileInfo?.buildID;
+          payload.os_name = this.backupServiceState?.backupFileInfo?.osName;
+          payload.os_version = this.backupServiceState?.backupFileInfo?.osVersion;
+          payload.telemetry_enabled = this.backupServiceState?.backupFileInfo?.healthTelemetryEnabled;
+        }
+        Glean.browserBackup.restoreFileChosen.record(payload);
+        Services.obs.notifyObservers(null, "browser-backup-glean-sent");
+      });
       this.getBackupFileInfo(path);
+    } else if (event.type == "BackupUI:StateWasUpdated") {
+      if (this.#backupFileReadPromise) {
+        this.#backupFileReadPromise.resolve();
+        this.#backupFileReadPromise = null;
+      }
     }
   }
   handleChooseBackupFile() {
@@ -3609,4 +3651,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.9ff35786.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.8c1b4564.iframe.bundle.js.map
