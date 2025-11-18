@@ -1445,6 +1445,11 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       reflect: true,
       attribute: "hide-secondary-button"
     },
+    backupIsEncrypted: {
+      type: Boolean,
+      reflect: true,
+      attribute: "backup-is-encrypted"
+    },
     filePathLabelL10nId: {
       type: String,
       reflect: true,
@@ -1553,6 +1558,17 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       this._newPath = path;
       this._newLabel = filename;
       this._newIconURL = iconURL;
+      if (this.embeddedFxBackupOptIn) {
+        // Let's set a persistent path
+        this.dispatchEvent(new CustomEvent("BackupUI:SetEmbeddedComponentPersistentData", {
+          bubbles: true,
+          detail: {
+            path,
+            label: filename,
+            iconURL
+          }
+        }));
+      }
     } else if (event.type == "ValidPasswordsDetected") {
       let {
         password
@@ -1588,6 +1604,19 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     };
     if (this._showPasswordOptions && this._passwordsMatch) {
       detail.password = this._inputPassValue;
+    }
+    if (this.embeddedFxBackupOptIn && this.backupIsEncrypted) {
+      if (!detail.password) {
+        // We're in the embedded component and we haven't set a password yet
+        // when one is expected, let's not do a confirm action yet!
+        this.dispatchEvent(new CustomEvent("SpotlightOnboardingAdvanceScreens", {
+          bubbles: true
+        }));
+        return;
+      }
+
+      // The persistent data will take precedence over the default path
+      detail.parentDirPath = this.backupServiceState?.embeddedComponentPersistentData?.path || detail.parentDirPath;
     }
     this.dispatchEvent(new CustomEvent("BackupUI:EnableScheduledBackups", {
       bubbles: true,
@@ -1628,6 +1657,11 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       const passwordElement = this.passwordOptionsExpandedEl;
       passwordElement.reset();
     }
+    if (this.embeddedFxBackupOptIn && this.backupServiceState?.embeddedComponentPersistentData) {
+      this.dispatchEvent(new CustomEvent("BackupUI:FlushEmbeddedComponentPersistentData", {
+        bubbles: true
+      }));
+    }
   }
   defaultFilePathInputTemplate() {
     let filename = this.defaultLabel;
@@ -1649,9 +1683,15 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
       />
     `;
   }
+
+  /**
+   * Note: We also consider the embeddedComponentPersistentData since we might be in the
+   *    Spotlight where we need this persistent data between screens. This state property should
+   *    not be set if we are not in the Spotlight.
+   */
   customFilePathInputTemplate() {
-    let filename = this._newLabel;
-    let iconURL = this._newIconURL || this.#placeholderIconURL;
+    let filename = this._newLabel || this.backupServiceState?.embeddedComponentPersistentData?.label;
+    let iconURL = this._newIconURL || this.backupServiceState?.embeddedComponentPersistentData?.iconURL || this.#placeholderIconURL;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <input
         id="backup-location-filepicker-input-custom"
@@ -1682,7 +1722,7 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
             data-l10n-id=${this.filePathLabelL10nId || "turn-on-scheduled-backups-location-label"}
           ></label>
           <div id="backup-location-filepicker">
-            ${!this._newPath ? this.defaultFilePathInputTemplate() : this.customFilePathInputTemplate()}
+            ${!this._newPath && !this.backupServiceState?.embeddedComponentPersistentData?.path ? this.defaultFilePathInputTemplate() : this.customFilePathInputTemplate()}
             <moz-button
               id="backup-location-filepicker-button"
               @click=${this.handleChooseLocation}
@@ -2185,4 +2225,4 @@ module.exports = __webpack_require__.p + "moz-message-bar.ed09b992746623424667.c
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.c7fb7347.iframe.bundle.js.map
+//# sourceMappingURL=turn-on-scheduled-backups-stories.83a422dd.iframe.bundle.js.map
