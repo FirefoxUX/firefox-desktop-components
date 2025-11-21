@@ -110,8 +110,6 @@ function _createMdxContent(props) {
         children: "http://localhost:5703"
       }), " while enabling certain preferences to ensure components\ndisplay as expected (specifically ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "svg.context-properties.content.enabled"
-      }), " and\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        children: "layout.css.light-dark.enabled"
       }), ")."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["It's necessary to use your local build to test in Storybook since ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
@@ -498,4 +496,4 @@ __webpack_require__.r(__webpack_exports__);
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-storybook-stories-md.2ab4b088.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-storybook-stories-md.0adda274.iframe.bundle.js.map
