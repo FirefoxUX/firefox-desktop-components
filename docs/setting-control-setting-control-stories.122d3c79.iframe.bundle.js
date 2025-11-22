@@ -584,12 +584,17 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
     parentDisabled: {
       type: Boolean
     },
-    showEnableExtensionMessage: {
-      type: Boolean
-    },
     tabIndex: {
       type: Number,
       reflect: true
+    },
+    showEnableExtensionMessage: {
+      type: Boolean,
+      state: true
+    },
+    isDisablingExtension: {
+      type: Boolean,
+      state: true
     }
   };
 
@@ -626,6 +631,11 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
      * @type {boolean}
      */
     this.showEnableExtensionMessage = false;
+
+    /**
+     * @type {boolean}
+     */
+    this.isDisablingExtension = false;
   }
   createRenderRoot() {
     return this;
@@ -767,8 +777,10 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
     this.setting.userClick(event);
   }
   async disableExtension() {
-    await this.setting.disableControllingExtension();
+    this.isDisablingExtension = true;
     this.showEnableExtensionMessage = true;
+    await this.setting.disableControllingExtension();
+    this.isDisablingExtension = false;
   }
   isControlledByExtension() {
     return this.setting.controllingExtensionInfo?.id && this.setting.controllingExtensionInfo?.name;
@@ -786,7 +798,7 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
       event.preventDefault();
       // @ts-ignore
       let mainWindow = window.browsingContext.topChromeWindow;
-      mainWindow.BrowserAddonUI.openAddonsMgr("addons://list/theme");
+      mainWindow.BrowserAddonUI.openAddonsMgr("addons://list/extension");
     }
   }
   get extensionName() {
@@ -881,6 +893,7 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
         <moz-button
           slot="actions"
           @click=${this.disableExtension}
+          ?disabled=${this.isDisablingExtension}
           data-l10n-id="disable-extension"
         ></moz-button>
       </moz-message-bar>`;
@@ -1005,4 +1018,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.9f74ee32.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.122d3c79.iframe.bundle.js.map
