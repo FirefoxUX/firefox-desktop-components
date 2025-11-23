@@ -65,6 +65,14 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     _showDeleteCard: {
       type: Boolean,
       state: true
+    },
+    _originInvalid: {
+      type: Boolean,
+      state: true
+    },
+    _passwordInvalid: {
+      type: Boolean,
+      state: true
     }
   };
   static queries = {
@@ -80,8 +88,9 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     this.originValue = "";
     this.usernameValue = "";
     this.passwordValue = "";
-    this.isInvalid = false;
     this._showDeleteCard = false;
+    this._originInvalid = false;
+    this._passwordInvalid = false;
   }
   async firstUpdated() {
     const mozButtonGroup = this.shadowRoot.querySelector("moz-button-group");
@@ -121,7 +130,8 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     }
   }
   #shouldShowWarning(field, input, warning) {
-    if (!input.checkValidity() || this.isInvalid) {
+    const fieldInvalid = warning === this.originWarning ? this._originInvalid : this._passwordInvalid;
+    if (!input.checkValidity() || fieldInvalid) {
       // FIXME: for some reason checkValidity does not apply the :invalid style
       // to the field. For now, we reset the input value to "" apply :invalid
       // styling.
@@ -130,20 +140,35 @@ class LoginForm extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       warning.setAttribute("message", input.validationMessage);
       warning.classList.add("invalid-input");
       field.setAttribute("aria-describedby", warning.id);
+      if (warning === this.originWarning) {
+        this._originInvalid = true;
+      } else if (warning === this.passwordWarning) {
+        this._passwordInvalid = true;
+      }
       return true;
     }
     field.removeAttribute("aria-describedby");
     this.#removeWarning(warning);
+    if (warning === this.originWarning) {
+      this._originInvalid = false;
+    } else if (warning === this.passwordWarning) {
+      this._passwordInvalid = false;
+    }
     return false;
   }
   onInput(e) {
     const field = e.target;
     const warning = field.name === "origin" ? this.originWarning : this.passwordWarning;
-    if (field.input.checkValidity()) {
+    const isValid = field.input.checkValidity();
+    if (isValid) {
       this.#removeWarning(warning);
       field.removeAttribute("aria-describedby");
     }
-    this.isInvalid = !field.input.checkValidity();
+    if (field.name === "origin") {
+      this._originInvalid = !isValid;
+    } else if (field.name === "password") {
+      this._passwordInvalid = !isValid;
+    }
   }
   onCancel(e) {
     e.preventDefault();
@@ -566,7 +591,10 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return this.concealed ? "password" : "text";
   }
   get #password() {
-    return !this.newPassword && this.concealed && this.value ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
+    if (!this.value) {
+      return "";
+    }
+    return !this.newPassword && this.concealed ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   updated(changedProperties) {
     if (changedProperties.has("concealed") && !changedProperties.concealed) {
@@ -799,4 +827,4 @@ customElements.define("origin-warning", OriginWarning);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-login-form-login-form-stories.2717c0fb.iframe.bundle.js.map
+//# sourceMappingURL=components-login-form-login-form-stories.2f954dce.iframe.bundle.js.map

@@ -289,7 +289,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} supportPage - Name of the SUMO support page to link to.
  * @property {string} ariaLabel - The aria-label text when there is no visible label.
  * @property {string} ariaDescription - The aria-description text when there is no visible description.
- * @property {array} options - The array of options, populated by <moz-option> children in the
+ * @property {Array} options - The array of options, populated by <moz-option> children in the
  *     default slot. Do not set directly, these will be overridden by <moz-option> children.
  */
 class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement {
@@ -494,4 +494,4 @@ module.exports = __webpack_require__.p + "moz-select.7140ef2a64f84c0b6561.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-select-moz-select-stories.0967279c.iframe.bundle.js.map
+//# sourceMappingURL=moz-select-moz-select-stories.2da9efd8.iframe.bundle.js.map

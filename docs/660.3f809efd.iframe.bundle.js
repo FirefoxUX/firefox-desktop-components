@@ -1451,22 +1451,22 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
   /**
    * Gets a screenshot of this browser as an ImageBitmap.
    *
-   * @param {Number} x
+   * @param {number} x
    *   The x coordinate of the region from the underlying document to capture
    *   as a screenshot. This is ignored if fullViewport is true.
-   * @param {Number} y
+   * @param {number} y
    *   The y coordinate of the region from the underlying document to capture
    *   as a screenshot. This is ignored if fullViewport is true.
-   * @param {Number} w
+   * @param {number} w
    *   The width of the region from the underlying document to capture as a
    *   screenshot. This is ignored if fullViewport is true.
-   * @param {Number} h
+   * @param {number} h
    *   The height of the region from the underlying document to capture as a
    *   screenshot. This is ignored if fullViewport is true.
-   * @param {Number} scale
+   * @param {number} scale
    *   The scale factor for the captured screenshot. See the documentation for
    *   WindowGlobalParent.drawSnapshot for more detail.
-   * @param {String} backgroundColor
+   * @param {string} backgroundColor
    *   The default background color for the captured screenshot. See the
    *   documentation for WindowGlobalParent.drawSnapshot for more detail.
    * @param {boolean|undefined} fullViewport
@@ -1630,4 +1630,4 @@ customElements.define("browser", MozBrowser);
 /***/ })
 
 }]);
-//# sourceMappingURL=660.b1d1ea44.iframe.bundle.js.map
+//# sourceMappingURL=660.3f809efd.iframe.bundle.js.map

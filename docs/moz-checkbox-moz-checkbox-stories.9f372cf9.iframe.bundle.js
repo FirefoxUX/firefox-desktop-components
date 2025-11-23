@@ -492,7 +492,8 @@ const Template = ({
   supportPage,
   hasSlottedSupportLink,
   nestedFields,
-  ellipsized
+  ellipsized,
+  value
 }) => {
   let checkboxTemplate = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <moz-checkbox
@@ -504,6 +505,7 @@ const Template = ({
       ?disabled=${disabled}
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
+      value=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(value)}
       class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
     "text-truncated-ellipsis": ellipsized
   })}
@@ -699,4 +701,4 @@ customElements.define("moz-checkbox", MozCheckbox);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.300650fb.iframe.bundle.js.map
+//# sourceMappingURL=moz-checkbox-moz-checkbox-stories.9f372cf9.iframe.bundle.js.map

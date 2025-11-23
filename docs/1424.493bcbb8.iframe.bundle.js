@@ -304,7 +304,7 @@ class MozReorderableList extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.Moz
    * Creates a CustomEvent and dispatches it on the element.
    *
    * @param {string} eventName The name of the event
-   * @param {Object} [detail] The detail object to pass to the event
+   * @param {object} [detail] The detail object to pass to the event
    */
   emitEvent(eventName, detail) {
     const customEvent = new CustomEvent(eventName, {
@@ -435,4 +435,4 @@ customElements.define("moz-reorderable-list", MozReorderableList);
 /***/ })
 
 }]);
-//# sourceMappingURL=1424.7e4f5b45.iframe.bundle.js.map
+//# sourceMappingURL=1424.493bcbb8.iframe.bundle.js.map

@@ -204,7 +204,7 @@ __webpack_require__.r(__webpack_exports__);
 /** @import { AttributePart } from "chrome://global/content/vendor/lit.all.mjs" */
 
 /**
- * @typedef {Object} SettingElementConfig
+ * @typedef {object} SettingElementConfig
  * @property {string} [id] - The ID for the Setting, this should match the layout id
  * @property {string} [l10nId] - The Fluent l10n ID for the setting
  * @property {Record<string, string>} [l10nArgs] - An object containing l10n IDs and their values that will be translated with Fluent
@@ -510,21 +510,21 @@ __webpack_require__.r(__webpack_exports__);
 /** @import { Setting } from "chrome://global/content/preferences/Setting.mjs" */
 
 /**
- * @typedef {Object} SettingNestedConfig
+ * @typedef {object} SettingNestedConfig
  * @property {SettingControlConfig[]} [items] Additional nested SettingControls to render.
  * @property {SettingOptionConfig[]} [options]
  * Additional nested plain elements to render (may have SettingControls nested within them, though).
  */
 
 /**
- * @typedef {Object} SettingOptionConfigExtensions
+ * @typedef {object} SettingOptionConfigExtensions
  * @property {string} [control]
  * The element tag to render, default assumed based on parent control.
  * @property {any} [value] A value to set on the option.
  */
 
 /**
- * @typedef {Object} SettingControlConfigExtensions
+ * @typedef {object} SettingControlConfigExtensions
  * @property {string} id
  * The ID for the Setting, also set in the DOM unless overridden with controlAttrs.id
  * @property {string} [control] The element to render, default to "moz-checkbox".
@@ -1018,4 +1018,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.122d3c79.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.7863c703.iframe.bundle.js.map

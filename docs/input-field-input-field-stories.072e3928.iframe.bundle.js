@@ -356,7 +356,10 @@ class LoginPasswordField extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     return this.concealed ? "password" : "text";
   }
   get #password() {
-    return !this.newPassword && this.concealed && this.value ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
+    if (!this.value) {
+      return "";
+    }
+    return !this.newPassword && this.concealed ? LoginPasswordField.CONCEALED_PASSWORD_TEXT : this.value;
   }
   updated(changedProperties) {
     if (changedProperties.has("concealed") && !changedProperties.concealed) {
@@ -464,4 +467,4 @@ module.exports = __webpack_require__.p + "common.7048def0475a42d207f6.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=input-field-input-field-stories.1b2a72ac.iframe.bundle.js.map
+//# sourceMappingURL=input-field-input-field-stories.072e3928.iframe.bundle.js.map
