@@ -28,7 +28,7 @@ jobs:
           rm -rf docs
       - name: Move built Storybook
         run: >
-          mv gecko/browser/components/storybook/storybook-static docs
+          mv firefox/browser/components/storybook/storybook-static docs
       - name: Commit changes
         run: |
           git config user.name github-actions
