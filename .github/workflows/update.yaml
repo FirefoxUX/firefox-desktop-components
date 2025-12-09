@@ -34,5 +34,5 @@ jobs:
           git config user.name github-actions
           git config user.email github-actions@github.com
           git add docs
-          git commit -m "$(git -C ./gecko show -s --format=%cs)"
+          git commit -m "$(git -C ./firefox show -s --format=%cs)"
           git push
