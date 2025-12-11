@@ -418,7 +418,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(11540);
-/* harmony import */ var chrome_browser_content_aiwindow_ui_components_input_cta_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54886);
+/* harmony import */ var chrome_browser_content_aiwindow_components_input_cta_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54886);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -837,7 +837,7 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
         type=${this.action ? "split" : "default"}
         class="input-cta"
         menuId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.action ? this._menuId : undefined)}
-        .iconSrc=${this.action ? undefined : "chrome://browser/content/aiwindow/ui/assets/input-cta-arrow-icon.svg"}
+        .iconSrc=${this.action ? undefined : "chrome://browser/content/aiwindow/assets/input-cta-arrow-icon.svg"}
         ?disabled=${!this.action}
       >
         <slot>
@@ -862,4 +862,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.575a72c0.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.363c0dd7.iframe.bundle.js.map
