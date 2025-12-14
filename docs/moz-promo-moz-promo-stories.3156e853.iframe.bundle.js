@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.b4edf5b8de43b2119cb3.css";
+module.exports = __webpack_require__.p + "moz-promo.e3cec3f2b02ce595f91b.css";
 
 /***/ }),
 
@@ -1034,7 +1034,8 @@ __webpack_require__.r(__webpack_exports__);
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static queries = {
     actionsSlot: "slot[name=actions]",
-    supportLinkSlot: "slot[name=support-link]"
+    supportLinkSlot: "slot[name=support-link]",
+    actionsSupportWrapper: ".actions-and-support-link-wrapper"
   };
   static properties = {
     type: {
@@ -1068,6 +1069,11 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       this.style.setProperty("--promo-image-url", `url("${this.imageSrc}")`);
     }
   }
+  handleSlotChange() {
+    let hasActions = this.actionsSlot.assignedNodes().length;
+    let hasSupport = this.supportLinkSlot.assignedNodes().length;
+    this.actionsSupportWrapper.classList.toggle("active", hasActions || hasSupport);
+  }
   headingTemplate() {
     if (this.heading) {
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<h2 class="heading heading-medium">${this.heading}</h2>`;
@@ -1092,8 +1098,11 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
           ${this.headingTemplate()}
           <p class="message">
             ${this.message}<span class="actions-and-support-link-wrapper">
-              <slot name="actions"></slot>
-              <slot name="support-link"></slot>
+              <slot name="actions" @slotchange=${this.handleSlotChange}></slot>
+              <slot
+                name="support-link"
+                @slotchange=${this.handleSlotChange}
+              ></slot>
             </span>
           </p>
         </div>
@@ -1106,4 +1115,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-promo-moz-promo-stories.9bd4ba8e.iframe.bundle.js.map
+//# sourceMappingURL=moz-promo-moz-promo-stories.3156e853.iframe.bundle.js.map

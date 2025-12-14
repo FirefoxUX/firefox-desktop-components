@@ -768,8 +768,8 @@ function _createMdxContent(props) {
       id: "high-contrast-mode",
       children: "High contrast mode"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-      children: ["We rely on two queries for assigning HCM counterpart variables, @media (prefers-contrast) and @media (forced-colors). They are found at the bottom of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/mozilla-central/rev/6eb2ebcafb1b4a8576eb513e6cd2c61e3f3ae6dc/toolkit/themes/shared/design-system/tokens-shared.css#109",
+      children: ["We rely on two queries for assigning HCM counterpart variables, @media (prefers-contrast) and @media (forced-colors). They are found within @layer tokens-prefers-contrast and @layer tokens-forced-colors at the bottom of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
+        href: "https://searchfox.org/firefox-main/source/toolkit/themes/shared/design-system/dist/tokens-shared.css#314-432",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "tokens-shared.css"
@@ -900,4 +900,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-design-tokens-stories-md.2302578c.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-design-tokens-stories-md.f9f0c53f.iframe.bundle.js.map
