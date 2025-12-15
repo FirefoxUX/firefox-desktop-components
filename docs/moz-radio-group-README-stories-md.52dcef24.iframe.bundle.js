@@ -574,7 +574,7 @@ componentMeta.parameters.docs = {
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.740f2a90defea6f4bf75.css";
+module.exports = __webpack_require__.p + "moz-fieldset.046de0ea43470fc2766a.css";
 
 /***/ }),
 
@@ -725,10 +725,10 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   descriptionTemplate() {
     if (this.description) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description">
-          ${this.description}
-        </span>
-        ${this.supportPageTemplate()}`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="description">
+        <span id="description">${this.description}</span>
+        ${this.supportPageTemplate()}
+      </div>`;
     }
     return "";
   }
@@ -984,9 +984,14 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     this.focusedIndex = undefined;
   }
 
-  // NB: We may need to revise this to avoid bugs when we add more focusable
-  // elements to select control base/items.
+  /**
+   * @param {KeyboardEvent & { target: HTMLElement }} event
+   */
   handleKeydown(event) {
+    if (event.target.parentElement != this) {
+      // Ignore events from nested controls.
+      return;
+    }
     let directions = this.getNavigationDirections();
     switch (event.key) {
       case "Down":
@@ -1302,4 +1307,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.138eadd3.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.52dcef24.iframe.bundle.js.map

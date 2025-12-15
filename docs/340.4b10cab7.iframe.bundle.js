@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[340,1291,1592,7362],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[340,1291,1592],{
 
 /***/ 20340:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -163,222 +163,10 @@ customElements.define("moz-visual-picker-item", MozVisualPickerItem);
 
 /***/ }),
 
-/***/ 54429:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AllUnselected: () => (/* binding */ AllUnselected),
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   Listbox: () => (/* binding */ Listbox),
-/* harmony export */   WithImage: () => (/* binding */ WithImage),
-/* harmony export */   WithImageAndLabel: () => (/* binding */ WithImageAndLabel),
-/* harmony export */   WithItemLabels: () => (/* binding */ WithItemLabels),
-/* harmony export */   WithPickerDescription: () => (/* binding */ WithPickerDescription),
-/* harmony export */   WithPickerSupportLink: () => (/* binding */ WithPickerSupportLink),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_visual_picker_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20340);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Visual Picker",
-  component: "moz-visual-picker",
-  argTypes: {
-    value: {
-      options: ["1", "2", "3"],
-      control: {
-        type: "select"
-      }
-    },
-    slottedItem: {
-      options: ["card", "avatar"],
-      control: {
-        type: "select"
-      },
-      if: {
-        arg: "showItemLabels",
-        truthy: false
-      }
-    },
-    pickerL10nId: {
-      options: ["moz-visual-picker", "moz-visual-picker-description"],
-      control: {
-        type: "select"
-      }
-    },
-    type: {
-      options: ["radio", "listbox"],
-      control: {
-        type: "select"
-      }
-    }
-  },
-  parameters: {
-    actions: {
-      handles: ["click", "input", "change"]
-    },
-    status: "in-development",
-    fluent: `
-moz-visual-picker =
-  .label = Pick something
-moz-visual-picker-description =
-  .label = Pick something
-  .description = Pick one of these cool things please
-favicon-aria-label =
-  .aria-label = Favicon avatar
-experiments-aria-label =
-  .aria-label = Experiments avatar
-heart-aria-label =
-  .aria-label = Heart avatar
-`
-  }
-});
-const AVATAR_ICONS = ["chrome://global/skin/icons/defaultFavicon.svg", "chrome://global/skin/icons/experiments.svg", "chrome://global/skin/icons/heart.svg"];
-const AVATAR_L10N_IDS = ["favicon-aria-label", "experiments-aria-label", "heart-aria-label"];
-function getSlottedContent(type, index) {
-  if (type == "card") {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted demo-card">
-      <img
-        src="chrome://browser/content/profiles/assets/system-theme-background.svg"
-      />
-      <span>I'm card number ${index + 1}</span>
-    </div>`;
-  }
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted avatar">
-    <img src=${AVATAR_ICONS[index]} role="presentation" />
-  </div>`;
-}
-const Template = ({
-  value,
-  slottedItem,
-  pickerL10nId,
-  supportPage,
-  type,
-  showItemLabels,
-  imageSrc
-}) => {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-    <style>
-      .slotted {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .demo-card {
-        flex-direction: column;
-        width: 120px;
-
-        span {
-          padding: var(--space-xsmall);
-          text-align: center;
-        }
-
-        img {
-          border-top-left-radius: inherit;
-          border-top-right-radius: inherit;
-        }
-      }
-
-      .avatar-item {
-        --visual-picker-item-border-radius: var(--border-radius-circle);
-      }
-
-      .avatar {
-        height: 50px;
-        width: 50px;
-
-        img {
-          height: var(--icon-size);
-          width: var(--icon-size);
-          -moz-context-properties: fill;
-          fill: var(--icon-color);
-        }
-      }
-
-      moz-visual-picker-item {
-        max-width: 150px;
-      }
-    </style>
-    <moz-visual-picker
-      type=${type}
-      data-l10n-id=${pickerL10nId}
-      value=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(value)}
-      support-page=${supportPage}
-    >
-      ${[...Array.from({
-    length: 3
-  })].map((_, i) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-visual-picker-item
-            value=${i + 1}
-            class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
-    "avatar-item": slottedItem == "avatar"
-  })}
-            data-l10n-id=${slottedItem == "avatar" ? AVATAR_L10N_IDS[i] : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
-            label=${showItemLabels ? `Item number ${i + 1}` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
-            imagesrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageSrc)}
-          >
-            ${getSlottedContent(slottedItem, i)}
-          </moz-visual-picker-item>`)}
-    </moz-visual-picker>
-  `;
-};
-const Default = Template.bind({});
-Default.args = {
-  pickerL10nId: "moz-visual-picker",
-  slottedItem: "card",
-  value: "1",
-  supportPage: "",
-  type: "radio",
-  showItemLabels: false
-};
-const WithPickerDescription = Template.bind({});
-WithPickerDescription.args = {
-  ...Default.args,
-  pickerL10nId: "moz-visual-picker-description"
-};
-const WithPickerSupportLink = Template.bind({});
-WithPickerSupportLink.args = {
-  ...WithPickerDescription.args,
-  supportPage: "foo"
-};
-const AllUnselected = Template.bind({});
-AllUnselected.args = {
-  ...Default.args,
-  value: ""
-};
-const Listbox = Template.bind({});
-Listbox.args = {
-  ...Default.args,
-  type: "listbox"
-};
-const WithItemLabels = Template.bind({});
-WithItemLabels.args = {
-  ...Default.args,
-  showItemLabels: true
-};
-const WithImage = Template.bind({});
-WithImage.args = {
-  ...Default.args,
-  imageSrc: "https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/newtab-wallpapers-v2/e1108381-5c19-4cb4-a630-69f9e45503fb.avif"
-};
-const WithImageAndLabel = Template.bind({});
-WithImageAndLabel.args = {
-  ...WithImage.args,
-  showItemLabels: true
-};
-
-/***/ }),
-
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.740f2a90defea6f4bf75.css";
+module.exports = __webpack_require__.p + "moz-fieldset.046de0ea43470fc2766a.css";
 
 /***/ }),
 
@@ -520,10 +308,10 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   descriptionTemplate() {
     if (this.description) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description">
-          ${this.description}
-        </span>
-        ${this.supportPageTemplate()}`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="description">
+        <span id="description">${this.description}</span>
+        ${this.supportPageTemplate()}
+      </div>`;
     }
     return "";
   }
@@ -761,9 +549,14 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     this.focusedIndex = undefined;
   }
 
-  // NB: We may need to revise this to avoid bugs when we add more focusable
-  // elements to select control base/items.
+  /**
+   * @param {KeyboardEvent & { target: HTMLElement }} event
+   */
   handleKeydown(event) {
+    if (event.target.parentElement != this) {
+      // Ignore events from nested controls.
+      return;
+    }
     let directions = this.getNavigationDirections();
     switch (event.key) {
       case "Down":
@@ -985,4 +778,4 @@ const SelectControlItemMixin = superClass => class extends superClass {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.34105b0a.iframe.bundle.js.map
+//# sourceMappingURL=340.4b10cab7.iframe.bundle.js.map

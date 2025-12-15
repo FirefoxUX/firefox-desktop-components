@@ -4,7 +4,7 @@
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.740f2a90defea6f4bf75.css";
+module.exports = __webpack_require__.p + "moz-fieldset.046de0ea43470fc2766a.css";
 
 /***/ }),
 
@@ -139,10 +139,10 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   descriptionTemplate() {
     if (this.description) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description">
-          ${this.description}
-        </span>
-        ${this.supportPageTemplate()}`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="description">
+        <span id="description">${this.description}</span>
+        ${this.supportPageTemplate()}
+      </div>`;
     }
     return "";
   }
@@ -193,4 +193,4 @@ customElements.define("moz-fieldset", MozFieldset);
 /***/ })
 
 }]);
-//# sourceMappingURL=1592.61303103.iframe.bundle.js.map
+//# sourceMappingURL=1592.be0b9365.iframe.bundle.js.map

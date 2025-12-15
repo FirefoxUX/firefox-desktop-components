@@ -1,10 +1,10 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1291,1592],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1291,1592,1788],{
 
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-fieldset.740f2a90defea6f4bf75.css";
+module.exports = __webpack_require__.p + "moz-fieldset.046de0ea43470fc2766a.css";
 
 /***/ }),
 
@@ -139,10 +139,10 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   descriptionTemplate() {
     if (this.description) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span id="description" class="description">
-          ${this.description}
-        </span>
-        ${this.supportPageTemplate()}`;
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="description">
+        <span id="description">${this.description}</span>
+        ${this.supportPageTemplate()}
+      </div>`;
     }
     return "";
   }
@@ -380,9 +380,14 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     this.focusedIndex = undefined;
   }
 
-  // NB: We may need to revise this to avoid bugs when we add more focusable
-  // elements to select control base/items.
+  /**
+   * @param {KeyboardEvent & { target: HTMLElement }} event
+   */
   handleKeydown(event) {
+    if (event.target.parentElement != this) {
+      // Ignore events from nested controls.
+      return;
+    }
     let directions = this.getNavigationDirections();
     switch (event.key) {
       case "Down":
@@ -601,7 +606,101 @@ const SelectControlItemMixin = superClass => class extends superClass {
   }
 };
 
+/***/ }),
+
+/***/ 91788:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MozRadio: () => (/* binding */ MozRadio),
+/* harmony export */   MozRadioGroup: () => (/* binding */ MozRadioGroup)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(91291);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+
+/**
+ * Element used to group and associate moz-radio buttons so that they function
+ * as a single form-control element.
+ *
+ * @tagname moz-radio-group
+ * @property {boolean} disabled - Whether or not the fieldset is disabled.
+ * @property {string} label - Label for the group of moz-radio elements.
+ * @property {string} description - Description for the group of moz-radio elements.
+ * @property {string} supportPage - Support page for the group of moz-radio elements.
+ * @property {number} headingLevel - Render the label in a heading of this level.
+ * @property {string} name
+ *  Input name of the radio group. Propagates to moz-radio children.
+ * @property {string} value
+ *  Selected value for the group. Changing the value updates the checked
+ *  state of moz-radio children and vice versa.
+ * @slot default - The radio group's content, intended for moz-radio elements.
+ * @slot support-link - The radio group's support link intended for moz-radio elements.
+ */
+class MozRadioGroup extends _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__.SelectControlBaseElement {
+  static childElementName = "moz-radio";
+  static orientation = "vertical";
+  static properties = {
+    parentDisabled: {
+      type: Boolean,
+      state: true
+    }
+  };
+}
+customElements.define("moz-radio-group", MozRadioGroup);
+
+/**
+ * Input element that allows a user to select one option from a group of options.
+ *
+ * @tagname moz-radio
+ * @property {boolean} checked - Whether or not the input is selected.
+ * @property {string} description - Description for the input.
+ * @property {boolean} disabled - Whether or not the input is disabled.
+ * @property {string} iconSrc - Path to an icon displayed next to the input.
+ * @property {number} itemTabIndex - Tabindex of the input element.
+ * @property {string} label - Label for the radio input.
+ * @property {string} name
+ *  Name of the input control, set by the associated moz-radio-group element.
+ * @property {string} supportPage - Name of the SUMO support page to link to.
+ * @property {string} value - Value of the radio input.
+ * @property {string} ariaLabel - The aria-label text when there is no visible label.
+ * @property {string} ariaDescription - The aria-description text when there is no visible description.
+ */
+class MozRadio extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_1__.SelectControlItemMixin)(_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInputElement) {
+  static activatedProperty = "checked";
+  get isDisabled() {
+    return super.isDisabled || this.parentDisabled || this.controller.parentDisabled;
+  }
+  inputTemplate() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<input
+      type="radio"
+      id="input"
+      .value=${this.value}
+      name=${this.name}
+      .checked=${this.checked}
+      aria-checked=${this.checked}
+      tabindex=${this.itemTabIndex}
+      ?disabled=${this.isDisabled}
+      accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.accessKey)}
+      aria-label=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.ariaLabel ?? undefined)}
+      aria-describedby="description"
+      aria-description=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(this.hasDescription ? undefined : this.ariaDescription)}
+      @click=${this.handleClick}
+      @change=${this.handleChange}
+    />`;
+  }
+}
+customElements.define("moz-radio", MozRadio);
+
 /***/ })
 
 }]);
-//# sourceMappingURL=1291.71897e4a.iframe.bundle.js.map
+//# sourceMappingURL=1788.b030a728.iframe.bundle.js.map
