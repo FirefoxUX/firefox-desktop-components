@@ -412,12 +412,27 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       next.buttonEl.focus();
     }
   }
+  onPrimaryNavChange() {
+    this.updateNavButtonsState();
+  }
   onSecondaryNavChange(event) {
     let secondaryNavElements = event.target.assignedElements();
     this.hasSecondaryNav = !!secondaryNavElements.length;
-    secondaryNavElements?.forEach(el => {
-      el.classList.add("secondary-nav-item");
-    });
+  }
+  updated() {
+    this.updateNavButtonsState();
+  }
+  updateNavButtonsState() {
+    let isViewSelected = false;
+    let assignedPageNavButtons = this.pageNavButtons;
+    for (let button of assignedPageNavButtons) {
+      button.selected = button.view == this.currentView;
+      isViewSelected = isViewSelected || button.selected;
+    }
+    if (!isViewSelected && assignedPageNavButtons.length) {
+      // Current page nav has no matching view, reset to the first view.
+      assignedPageNavButtons[0].activate();
+    }
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
@@ -447,6 +462,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
           <slot
             @change-view=${this.onChangeView}
             @keydown=${this.handleFocus}
+            @slotchange=${this.onPrimaryNavChange}
           ></slot>
         </div>
         ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.hasSecondaryNav, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<hr />`)}
@@ -458,18 +474,6 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
         </div>
       </nav>
     `;
-  }
-  updated() {
-    let isViewSelected = false;
-    let assignedPageNavButtons = this.pageNavButtons;
-    for (let button of assignedPageNavButtons) {
-      button.selected = button.view == this.currentView;
-      isViewSelected = isViewSelected || button.selected;
-    }
-    if (!isViewSelected && assignedPageNavButtons.length) {
-      // Current page nav has no matching view, reset to the first view.
-      assignedPageNavButtons[0].activate();
-    }
   }
 }
 customElements.define("moz-page-nav", MozPageNav);
@@ -934,4 +938,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.2fa0aab6.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.b22c7137.iframe.bundle.js.map

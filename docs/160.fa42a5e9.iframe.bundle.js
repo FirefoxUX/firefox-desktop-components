@@ -207,7 +207,11 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         }
         item.classList.toggle("first", i == 0 && !headerNode);
         item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
+        item.removeAttribute("tabindex");
       });
+      if (!this.#tabbable) {
+        this.#tabbable = true;
+      }
     }
     if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
       this.updateItems();
@@ -219,4 +223,4 @@ customElements.define("moz-box-group", MozBoxGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=160.5d732c5f.iframe.bundle.js.map
+//# sourceMappingURL=160.fa42a5e9.iframe.bundle.js.map

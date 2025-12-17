@@ -835,7 +835,11 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         }
         item.classList.toggle("first", i == 0 && !headerNode);
         item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
+        item.removeAttribute("tabindex");
       });
+      if (!this.#tabbable) {
+        this.#tabbable = true;
+      }
     }
     if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
       this.updateItems();
@@ -1119,7 +1123,7 @@ moz-box-item =
 moz-box-button-1 =
   .label = I'm a box button in a group
 moz-box-button-2 =
-  .label = I'm another box button in a group
+  .label = Delete this box button from a group
 moz-box-link =
   .label = I'm a box link in a group
 moz-box-delete-action =
@@ -1228,8 +1232,15 @@ function basicElements() {
         slot="actions-start"
       ></moz-button>
     </moz-box-item>
-    <moz-box-button data-l10n-id="moz-box-button-2"></moz-box-button>`;
+    <moz-box-button
+      iconsrc="chrome://global/skin/icons/delete.svg"
+      @click=${deleteItem}
+      data-l10n-id="moz-box-button-2"
+    ></moz-box-button> `;
 }
+const deleteItem = event => {
+  event.target.remove();
+};
 const appendItem = event => {
   let group = event.target.getRootNode().querySelector("moz-box-group");
   let boxItem = document.createElement("moz-box-item");
@@ -1435,4 +1446,4 @@ Wrapped.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.247f9246.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.830ea773.iframe.bundle.js.map
