@@ -4,7 +4,7 @@
 /***/ 12670:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "placeholder-message.83d18224512c3b78ca01.css";
+module.exports = __webpack_require__.p + "placeholder-message.51f076c40a3f89b142aa.css";
 
 /***/ }),
 
@@ -143,10 +143,10 @@ __webpack_require__.r(__webpack_exports__);
     status: "in-development",
     fluent: `
 placeholder-message-label =
-  .label = You are not signed in
+  .label = You’re not signed in
 placeholder-message-label-description =
-  .label = You are not signed in
-  .description = With a Mozilla account, you can sync your bookmarks, history, tabs, passwords, add-ons, and settings across all your devices.
+  .label = You’re not signed in
+  .description = Sign in to keep your data private, encrypted, and instantly accessible everywhere you use Firefox.
     `
   }
 });
@@ -178,4 +178,4 @@ WithSupportPage.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=placeholder-message-placeholder-message-stories.86750c68.iframe.bundle.js.map
+//# sourceMappingURL=placeholder-message-placeholder-message-stories.d512b80f.iframe.bundle.js.map
