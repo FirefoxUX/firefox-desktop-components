@@ -1450,6 +1450,10 @@ setting-group[groupid="home"] {
   margin: var(--space-large) 0;
 }
 
+.translations-download-language-error {
+  background-color: var(--background-color-critical);
+}
+
 .hidden-category {
   display: none;
 }
@@ -1547,7 +1551,16 @@ setting-group[groupid="home"] {
   --promo-image-position: top;
 }
 
+#etpResetButtonGroup {
+  display: flex;
+  gap: var(--space-small);
+}
+
 #addresses-list-header,
 #payments-list-header {
+  --box-label-font-weight: var(--heading-font-weight);
+}
+
+.box-header-bold {
   --box-label-font-weight: var(--heading-font-weight);
 }

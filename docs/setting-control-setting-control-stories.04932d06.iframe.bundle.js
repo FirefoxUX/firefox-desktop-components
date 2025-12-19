@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[160,3450,3654,5944],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,5944,8050],{
 
 /***/ 5540:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -210,7 +210,7 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
     } else if ("value" in control) {
       control.value = this.value;
     }
-    control.requestUpdate();
+    control.requestUpdate?.();
   }
 
   /**
@@ -629,224 +629,10 @@ customElements.define("moz-input-folder", MozInputFolder);
 
 /***/ }),
 
-/***/ 23066:
+/***/ 38626:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.bdb2145d284eeb75557e.css";
-
-/***/ }),
-
-/***/ 30160:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   GROUP_TYPES: () => (/* binding */ GROUP_TYPES),
-/* harmony export */   "default": () => (/* binding */ MozBoxGroup)
-/* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23066);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-const GROUP_TYPES = {
-  list: "list",
-  reorderable: "reorderable-list"
-};
-
-/**
- * An element used to group combinations of moz-box-item, moz-box-link, and
- * moz-box-button elements and provide the expected styles.
- *
- * @tagname moz-box-group
- * @property {string} type
- *   The type of the group, either "list", "reorderable-list", or undefined.
- *   Note that "reorderable-list" only works with moz-box-item elements for now.
- * @slot default - Slot for rendering various moz-box-* elements.
- * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
- *   the group is type="list".
- */
-class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #tabbable = true;
-  static properties = {
-    type: {
-      type: String
-    },
-    listItems: {
-      type: Array,
-      state: true
-    }
-  };
-  static queries = {
-    reorderableList: "moz-reorderable-list",
-    headerSlot: "slot[name='header']",
-    footerSlot: "slot[name='footer']"
-  };
-  constructor() {
-    super();
-    this.listItems = [];
-    this.listMutationObserver = new MutationObserver(this.updateItems.bind(this));
-  }
-  firstUpdated(changedProperties) {
-    super.firstUpdated(changedProperties);
-    this.listMutationObserver.observe(this, {
-      attributeFilter: ["hidden"],
-      subtree: true,
-      childList: true
-    });
-    this.updateItems();
-  }
-  contentTemplate() {
-    if (this.type == GROUP_TYPES.reorderable) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
-        class="scroll-container"
-        itemselector="moz-box-item"
-        dragselector=".handle"
-        @reorder=${this.handleReorder}
-      >
-        ${this.slotTemplate()}
-      </moz-reorderable-list>`;
-    }
-    return this.slotTemplate();
-  }
-  slotTemplate() {
-    if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-      let listTag = this.type == GROUP_TYPES.reorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
-          tabindex="-1"
-          class="list scroll-container"
-          aria-orientation="vertical"
-          @keydown=${this.handleKeydown}
-          @focusin=${this.handleFocus}
-          @focusout=${this.handleBlur}
-        >
-          ${this.listItems.map((_, i) => {
-        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
-              <slot name=${i}></slot>
-            </li> `;
-      })}
-        </${listTag}>
-        <slot hidden></slot>`;
-    }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container">
-      <slot></slot>
-    </div>`;
-  }
-  handleReorder(event) {
-    let {
-      draggedElement,
-      targetElement,
-      position
-    } = event.detail;
-    let parent = targetElement.parentNode;
-    let moveBefore = position === -1;
-    if (moveBefore) {
-      parent.insertBefore(draggedElement, targetElement);
-    } else {
-      parent.insertBefore(draggedElement, targetElement.nextElementSibling);
-    }
-    draggedElement.focus();
-    this.updateItems();
-  }
-  handleKeydown(event) {
-    if (this.type == GROUP_TYPES.reorderable && event.originalTarget == event.target.handleEl) {
-      let detail = this.reorderableList.evaluateKeyDownEvent(event);
-      if (detail) {
-        event.stopPropagation();
-        this.handleReorder({
-          detail
-        });
-        return;
-      }
-    }
-    let positionElement = event.target.closest("[position]");
-    if (!positionElement) {
-      // If the user has clicked on the MozBoxGroup it may get keydown events
-      // even if there is no focused element within it. Then the event target
-      // will be the <ul> and we won't find an element with [position].
-      return;
-    }
-    let positionAttr = positionElement.getAttribute("position");
-    let currentPosition = parseInt(positionAttr);
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-        {
-          event.preventDefault();
-          let nextItem = this.listItems[currentPosition + 1];
-          nextItem?.focus(event);
-          break;
-        }
-      case "Up":
-      case "ArrowUp":
-        {
-          event.preventDefault();
-          let prevItem = this.listItems[currentPosition - 1];
-          prevItem?.focus(event);
-          break;
-        }
-    }
-  }
-  handleFocus() {
-    if (this.#tabbable) {
-      this.#tabbable = false;
-      this.listItems.forEach(item => {
-        item.setAttribute("tabindex", "-1");
-      });
-    }
-  }
-  handleBlur() {
-    if (!this.#tabbable) {
-      this.#tabbable = true;
-      this.listItems.forEach(item => {
-        item.removeAttribute("tabindex");
-      });
-    }
-  }
-  updateItems() {
-    this.listItems = [...this.children].filter(child => child.slot !== "header" && child.slot !== "footer" && !child.hidden);
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <slot name="header"></slot>
-      ${this.contentTemplate()}
-      <slot name="footer"></slot>
-    `;
-  }
-  updated(changedProperties) {
-    let headerNode = this.headerSlot.assignedNodes()[0];
-    let footerNode = this.footerSlot.assignedNodes().at(-1);
-    headerNode?.classList.add("first");
-    footerNode?.classList.add("last");
-    if (changedProperties.has("listItems") && this.listItems.length) {
-      this.listItems.forEach((item, i) => {
-        if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-          item.slot = i;
-          item.setAttribute("position", i);
-        }
-        item.classList.toggle("first", i == 0 && !headerNode);
-        item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
-        item.removeAttribute("tabindex");
-      });
-      if (!this.#tabbable) {
-        this.#tabbable = true;
-      }
-    }
-    if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
-      this.updateItems();
-    }
-  }
-}
-customElements.define("moz-box-group", MozBoxGroup);
+module.exports = __webpack_require__.p + "setting-control.9f9ae250fdf66d32bc85.css";
 
 /***/ }),
 
@@ -1080,287 +866,74 @@ class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
 
 /***/ }),
 
-/***/ 96233:
+/***/ 88941:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   List: () => (/* binding */ List),
-/* harmony export */   ListWithHeaderAndFooter: () => (/* binding */ ListWithHeaderAndFooter),
-/* harmony export */   Reorderable: () => (/* binding */ Reorderable),
-/* harmony export */   Scrollable: () => (/* binding */ Scrollable),
-/* harmony export */   Wrapped: () => (/* binding */ Wrapped),
+/* harmony export */   Checkbox: () => (/* binding */ Checkbox),
+/* harmony export */   ExtensionControlled: () => (/* binding */ ExtensionControlled),
+/* harmony export */   Radio: () => (/* binding */ Radio),
+/* harmony export */   Select: () => (/* binding */ Select),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30160);
+/* harmony import */ var browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38626);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5540);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
-// eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Box Group",
-  component: "moz-box-group",
-  argTypes: {
-    type: {
-      options: Object.keys(_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES),
-      mapping: _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES,
-      control: "select"
-    }
-  },
+  title: "Domain-specific UI Widgets/Settings/Setting Control",
+  component: "setting-control",
   parameters: {
     status: "in-development",
+    handles: ["click", "input", "change"],
     fluent: `
-moz-box-item =
-  .label = I'm a box item
-  .description = I'm part of a group
-moz-box-button-1 =
-  .label = I'm a box button in a group
-moz-box-button-2 =
-  .label = Delete this box button from a group
-moz-box-link =
-  .label = I'm a box link in a group
-moz-box-delete-action =
-  .title = Delete I'm a box item
-moz-box-edit-action =
-  .title = Edit I'm a box item
-moz-box-toggle-action =
-  .aria-label = Toggle I'm a box item
-moz-box-more-action =
-  .title = More options, I'm a box item
-moz-box-item-reorderable-1 =
-  .label = I'm box item number 1
-moz-box-item-reorderable-2 =
-  .label = I'm box item number 2
-moz-box-item-reorderable-3 =
-  .label = I'm box item number 3
-moz-box-item-reorderable-4 =
-  .label = I'm box item number 4
-moz-box-item-reorderable-5 =
-  .label = I'm box item number 5
-moz-box-item-header =
-  .label = I'm a header box item
-moz-box-button-footer =
-  .label = I'm a footer box button
-    `
+checkbox-example-input =
+  .label = Checkbox example of setting-control
+  .description = Could have a description like moz-checkbox.
+select-example-input =
+  .label = Select example of setting-control
+  .description = Could have a description like moz-select.
+select-option-0 =
+  .label = Option 0
+select-option-1 =
+  .label = Option 1
+select-option-2 =
+  .label = Option 2
+radio-example-input =
+  .label = Radio example of setting-control
+  .description = Could have a description like moz-radio-group.
+radio-option-0 =
+  .label = Option 0
+radio-option-1 =
+  .label = Option 1
+  .description = It's a full moz-radio
+radio-option-2 =
+  .label = Option 2
+extension-controlled-input =
+  .label = Setting controlled by extension
+extension-controlled-message = <strong>My Extension</strong> requires Controlled Setting.
+disable-extension =
+  .label = Disable extension
+  .tooltiptext = Disable extension
+extension-controlled-enable-2 = Storybook Only: Refresh the page to enable the extension. To re-enable this extension visit <a data-l10n-name="addons-link">Extensions and themes</a>.`
   }
 });
-function basicTemplate({
-  type,
-  hasHeader,
-  hasFooter,
-  wrapped
-}) {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-group type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type)}>
-      ${hasHeader ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item
-            slot="header"
-            data-l10n-id="moz-box-item-header"
-          ></moz-box-item>` : ""}
-      ${getInnerElements(type, wrapped)}
-      ${hasFooter ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-button
-            slot="footer"
-            data-l10n-id="moz-box-button-footer"
-          ></moz-box-button>` : ""}
-    </moz-box-group>
-    ${type == "list" ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-button class="delete" @click=${appendItem}>
-          Add an item
-        </moz-button>` : ""}`;
-}
-function getInnerElements(type) {
-  if (type == _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES.reorderable) {
-    return reorderableElements();
-  }
-  return basicElements();
-}
-function reorderableElements() {
-  return Array.from({
-    length: 5
-  }).map((_, i) => {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item
-      data-l10n-id=${`moz-box-item-reorderable-${i + 1}`}
-    >
-      <moz-button
-        iconsrc="chrome://global/skin/icons/edit-outline.svg"
-        data-l10n-id="moz-box-edit-action"
-        slot="actions-start"
-      ></moz-button>
-      <moz-toggle
-        slot="actions"
-        pressed
-        data-l10n-id="moz-box-toggle-action"
-      ></moz-toggle>
-    </moz-box-item>`;
-  });
-}
-function basicElements() {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item data-l10n-id="moz-box-item">
-      <moz-button
-        iconsrc="chrome://global/skin/icons/edit-outline.svg"
-        data-l10n-id="moz-box-edit-action"
-        type="ghost"
-        slot="actions"
-      ></moz-button>
-      <moz-toggle
-        slot="actions"
-        pressed
-        data-l10n-id="moz-box-toggle-action"
-      ></moz-toggle>
-      <moz-button
-        iconsrc="chrome://global/skin/icons/more.svg"
-        data-l10n-id="moz-box-more-action"
-        slot="actions-start"
-      ></moz-button>
-    </moz-box-item>
-    <moz-box-link data-l10n-id="moz-box-link"></moz-box-link>
-    <moz-box-button data-l10n-id="moz-box-button-1"></moz-box-button>
-    <moz-box-item data-l10n-id="moz-box-item">
-      <moz-button
-        iconsrc="chrome://global/skin/icons/edit-outline.svg"
-        data-l10n-id="moz-box-edit-action"
-        type="ghost"
-        slot="actions-start"
-      ></moz-button>
-      <moz-button
-        iconsrc="chrome://global/skin/icons/more.svg"
-        data-l10n-id="moz-box-more-action"
-        slot="actions-start"
-      ></moz-button>
-    </moz-box-item>
-    <moz-box-button
-      iconsrc="chrome://global/skin/icons/delete.svg"
-      @click=${deleteItem}
-      data-l10n-id="moz-box-button-2"
-    ></moz-box-button> `;
-}
-const deleteItem = event => {
-  event.target.remove();
-};
-const appendItem = event => {
-  let group = event.target.getRootNode().querySelector("moz-box-group");
-  let boxItem = document.createElement("moz-box-item");
-  boxItem.label = "New box item";
-  boxItem.description = "New items are added to the list";
-  let actionButton = document.createElement("moz-button");
-  actionButton.addEventListener("click", () => boxItem.remove());
-  actionButton.iconSrc = "chrome://global/skin/icons/delete.svg";
-  actionButton.slot = "actions";
-  actionButton.setAttribute("data-l10n-id", "moz-box-delete-action");
-  boxItem.append(actionButton);
-  group.prepend(boxItem);
-};
-
-// Example with all child elements wrapped in setting-control/setting-group,
-// which is the most common use case in Firefox preferences.
-function wrappedTemplate({
-  type,
-  hasHeader,
-  hasFooter
-}) {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
-    .config=${getConfig({
-    type,
-    hasHeader,
-    hasFooter
-  })}
-    .setting=${DEFAULT_SETTING}
-    .getSetting=${getSetting}
-  ></setting-control>`;
-}
-const getConfig = ({
-  type,
-  hasHeader,
-  hasFooter
-}) => ({
-  id: "exampleWrapped",
-  control: "moz-box-group",
-  controlAttrs: {
-    type
-  },
-  items: [...(hasHeader ? [{
-    id: "header",
-    control: "moz-box-item",
-    l10nId: "moz-box-item-header",
-    controlAttrs: {
-      slot: "header "
-    }
-  }] : []), {
-    id: "item1",
-    control: "moz-box-item",
-    l10nId: "moz-box-item",
-    options: [{
-      id: "slotted-button",
-      control: "moz-button",
-      l10nId: "moz-box-edit-action",
-      iconSrc: "chrome://global/skin/icons/edit-outline.svg",
-      controlAttrs: {
-        type: "ghost",
-        slot: "actions"
-      }
-    }, {
-      id: "slotted-toggle",
-      control: "moz-toggle",
-      l10nId: "moz-box-toggle-action",
-      controlAttrs: {
-        slot: "actions"
-      }
-    }, {
-      id: "slotted-icon-button",
-      control: "moz-button",
-      l10nId: "moz-box-more-action",
-      iconSrc: "chrome://global/skin/icons/more.svg",
-      controlAttrs: {
-        slot: "actions"
-      }
-    }]
-  }, {
-    id: "link1",
-    control: "moz-box-link",
-    l10nId: "moz-box-link"
-  }, {
-    id: "button1",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-1"
-  }, {
-    id: "item2",
-    control: "moz-box-item",
-    l10nId: "moz-box-item",
-    options: [{
-      id: "slotted-button-start",
-      control: "moz-button",
-      l10nId: "moz-box-edit-action",
-      iconSrc: "chrome://global/skin/icons/edit-outline.svg",
-      controlAttrs: {
-        type: "ghost",
-        slot: "actions-start"
-      }
-    }, {
-      id: "slotted-icon-button-start",
-      control: "moz-button",
-      l10nId: "moz-box-more-action",
-      iconSrc: "chrome://global/skin/icons/more.svg",
-      controlAttrs: {
-        slot: "actions-start"
-      }
-    }]
-  }, {
-    id: "button2",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-2"
-  }, ...(hasFooter ? [{
-    id: "footer",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-footer",
-    controlAttrs: {
-      slot: "footer "
-    }
-  }] : [])]
-});
+const Template = ({
+  config,
+  setting
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+  <link
+    rel="stylesheet"
+    href="${browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__}"
+  /><setting-control .config=${config} .setting=${setting}></setting-control>
+`;
 const DEFAULT_SETTING = {
   value: 1,
   on() {},
@@ -1370,80 +943,87 @@ const DEFAULT_SETTING = {
   controllingExtensionInfo: {},
   visible: true
 };
-function getSetting() {
-  return {
-    value: true,
-    on() {},
-    off() {},
-    userChange() {},
-    visible: () => true,
-    getControlConfig: c => c,
-    controllingExtensionInfo: {}
-  };
-}
-const Template = ({
-  type,
-  hasHeader,
-  hasFooter,
-  scrollable,
-  wrapped
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    moz-box-group {
-      --box-group-max-height: ${scrollable ? "250px" : "unset"};
+const Checkbox = Template.bind({});
+Checkbox.args = {
+  config: {
+    id: "checkbox-example",
+    l10nId: "checkbox-example-input"
+  },
+  setting: DEFAULT_SETTING
+};
+const Select = Template.bind({});
+Select.args = {
+  config: {
+    id: "select-example",
+    l10nId: "select-example-input",
+    control: "moz-select",
+    supportPage: "example-support",
+    options: [{
+      value: 0,
+      l10nId: "select-option-0"
+    }, {
+      value: 1,
+      l10nId: "select-option-1"
+    }, {
+      value: 2,
+      l10nId: "select-option-2"
+    }]
+  },
+  setting: DEFAULT_SETTING
+};
+const Radio = Template.bind({});
+Radio.args = {
+  config: {
+    id: "radio-example",
+    l10nId: "radio-example-input",
+    control: "moz-radio-group",
+    supportPage: "example-support",
+    options: [{
+      value: 0,
+      l10nId: "radio-option-0"
+    }, {
+      value: 1,
+      l10nId: "radio-option-1",
+      supportPage: "support-page"
+    }, {
+      value: 2,
+      l10nId: "radio-option-2"
+    }]
+  },
+  setting: DEFAULT_SETTING
+};
+const ExtensionControlled = Template.bind({});
+ExtensionControlled.args = {
+  config: {
+    id: "extension-controlled-example",
+    l10nId: "extension-controlled-input",
+    pref: "privacy.userContext.enabled",
+    controllingExtensionInfo: {
+      storeId: "privacy.containers",
+      /* Example of a Fluent string used for the message bar:
+       * extension-controlled-message = <strong>{ $name }</strong> requires Container Tabs.
+       * */
+      l10nId: "extension-controlled-message",
+      supportPage: "preferences"
     }
-
-    .delete {
-      margin-top: var(--space-medium);
+  },
+  setting: {
+    ...DEFAULT_SETTING,
+    disableControllingExtension() {
+      delete this.controllingExtensionInfo.id;
+      delete this.controllingExtensionInfo.name;
+      document.querySelector("with-common-styles").shadowRoot.querySelector("setting-control").requestUpdate();
+    },
+    controllingExtensionInfo: {
+      id: "extension-controlled-example",
+      l10nId: "extension-controlled-message",
+      name: "My Extension",
+      supportPage: "preferences"
     }
-  </style>
-  ${wrapped ? wrappedTemplate({
-  type,
-  hasHeader,
-  hasFooter
-}) : basicTemplate({
-  type,
-  hasHeader,
-  hasFooter,
-  wrapped
-})}
-`;
-const Default = Template.bind({});
-Default.args = {
-  type: "default",
-  hasHeader: false,
-  hasFooter: false,
-  scrollable: false,
-  wrapped: false
-};
-const List = Template.bind({});
-List.args = {
-  ...Default.args,
-  type: "list"
-};
-const Reorderable = Template.bind({});
-Reorderable.args = {
-  ...Default.args,
-  type: "reorderable"
-};
-const ListWithHeaderAndFooter = Template.bind({});
-ListWithHeaderAndFooter.args = {
-  ...List.args,
-  hasHeader: true,
-  hasFooter: true
-};
-const Scrollable = Template.bind({});
-Scrollable.args = {
-  ...ListWithHeaderAndFooter.args,
-  scrollable: true
-};
-const Wrapped = Template.bind({});
-Wrapped.args = {
-  ...ListWithHeaderAndFooter.args,
-  wrapped: true
+  }
 };
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.830ea773.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.04932d06.iframe.bundle.js.map
