@@ -346,7 +346,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 /** @typedef {SettingElementConfig & SettingGroupConfigExtensions} SettingGroupConfig */
 
-const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group"]);
+const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group", "moz-message-bar"]);
 
 /**
  * Enumish of attribute names used for changing setting-group and groupbox
@@ -479,4 +479,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.9108e91d.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.3e3cfc5b.iframe.bundle.js.map
