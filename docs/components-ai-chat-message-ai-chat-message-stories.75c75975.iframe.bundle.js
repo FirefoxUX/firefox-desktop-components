@@ -91,8 +91,11 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
    */
 
   static properties = {
+    role: {
+      type: String
+    },
     message: {
-      type: Object
+      type: String
     }
   };
   constructor() {
@@ -109,9 +112,9 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       />
 
       <article>
-        <div class=${"message-" + this.message.role}>
+        <div class=${"message-" + this.role}>
           <!-- TODO: Add markdown parsing here -->
-          ${this.message.content}
+          ${this.message}
         </div>
       </article>
     `;
@@ -122,4 +125,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.44be3055.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.75c75975.iframe.bundle.js.map
