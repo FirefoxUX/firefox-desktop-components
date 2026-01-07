@@ -385,6 +385,63 @@ const tokensTable = {
     value: "#ffffff",
     name: "--color-white"
   }, {
+    value: "oklch(1 0 0 / 10%)",
+    name: "--color-white-alpha-10"
+  }, {
+    value: "oklch(1 0 0 / 20%)",
+    name: "--color-white-alpha-20"
+  }, {
+    value: "oklch(1 0 0 / 30%)",
+    name: "--color-white-alpha-30"
+  }, {
+    value: "oklch(1 0 0 / 40%)",
+    name: "--color-white-alpha-40"
+  }, {
+    value: "oklch(1 0 0 / 50%)",
+    name: "--color-white-alpha-50"
+  }, {
+    value: "oklch(1 0 0 / 60%)",
+    name: "--color-white-alpha-60"
+  }, {
+    value: "oklch(1 0 0 / 70%)",
+    name: "--color-white-alpha-70"
+  }, {
+    value: "oklch(1 0 0 / 80%)",
+    name: "--color-white-alpha-80"
+  }, {
+    value: "oklch(1 0 0 / 90%)",
+    name: "--color-white-alpha-90"
+  }, {
+    value: "#000000",
+    name: "--color-black"
+  }, {
+    value: "oklch(0 0 0 / 10%)",
+    name: "--color-black-alpha-10"
+  }, {
+    value: "oklch(0 0 0 / 20%)",
+    name: "--color-black-alpha-20"
+  }, {
+    value: "oklch(0 0 0 / 30%)",
+    name: "--color-black-alpha-30"
+  }, {
+    value: "oklch(0 0 0 / 40%)",
+    name: "--color-black-alpha-40"
+  }, {
+    value: "oklch(0 0 0 / 50%)",
+    name: "--color-black-alpha-50"
+  }, {
+    value: "oklch(0 0 0 / 60%)",
+    name: "--color-black-alpha-60"
+  }, {
+    value: "oklch(0 0 0 / 70%)",
+    name: "--color-black-alpha-70"
+  }, {
+    value: "oklch(0 0 0 / 80%)",
+    name: "--color-black-alpha-80"
+  }, {
+    value: "oklch(0 0 0 / 90%)",
+    name: "--color-black-alpha-90"
+  }, {
     value: {
       forcedColors: "ButtonText",
       brand: {
@@ -503,6 +560,9 @@ const tokensTable = {
       default: "light-dark(var(--color-yellow-0), var(--color-yellow-90))"
     },
     name: "--background-color-warning"
+  }, {
+    value: "var(--color-black-alpha-50)",
+    name: "--background-color-overlay"
   }, {
     value: {
       forcedColors: "ButtonFace",
@@ -1471,6 +1531,7 @@ const variableLookupTable = {
     prefersContrast: "var(--background-color-canvas)",
     default: "light-dark(var(--color-yellow-0), var(--color-yellow-90))"
   },
+  "background-color-overlay": "var(--color-black-alpha-50)",
   "border-color": {
     brand: {
       light: "var(--color-gray-50)",
@@ -1900,6 +1961,25 @@ const variableLookupTable = {
   "color-pink-100": "oklch(27% 0.1 360)",
   "color-pink-110": "oklch(20% 0.05 360)",
   "color-white": "#ffffff",
+  "color-white-alpha-10": "oklch(1 0 0 / 10%)",
+  "color-white-alpha-20": "oklch(1 0 0 / 20%)",
+  "color-white-alpha-30": "oklch(1 0 0 / 30%)",
+  "color-white-alpha-40": "oklch(1 0 0 / 40%)",
+  "color-white-alpha-50": "oklch(1 0 0 / 50%)",
+  "color-white-alpha-60": "oklch(1 0 0 / 60%)",
+  "color-white-alpha-70": "oklch(1 0 0 / 70%)",
+  "color-white-alpha-80": "oklch(1 0 0 / 80%)",
+  "color-white-alpha-90": "oklch(1 0 0 / 90%)",
+  "color-black": "#000000",
+  "color-black-alpha-10": "oklch(0 0 0 / 10%)",
+  "color-black-alpha-20": "oklch(0 0 0 / 20%)",
+  "color-black-alpha-30": "oklch(0 0 0 / 30%)",
+  "color-black-alpha-40": "oklch(0 0 0 / 40%)",
+  "color-black-alpha-50": "oklch(0 0 0 / 50%)",
+  "color-black-alpha-60": "oklch(0 0 0 / 60%)",
+  "color-black-alpha-70": "oklch(0 0 0 / 70%)",
+  "color-black-alpha-80": "oklch(0 0 0 / 80%)",
+  "color-black-alpha-90": "oklch(0 0 0 / 90%)",
   "color-accent-primary": {
     forcedColors: "ButtonText",
     brand: {
@@ -2712,4 +2792,4 @@ module.exports = __webpack_require__.p + "tokens-table.b29f2ca1e627f0c0977d.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.e97970d0.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.4c9b3702.iframe.bundle.js.map
