@@ -123,6 +123,11 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const {
+  XPCOMUtils
+} = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
+const lazy = {};
+XPCOMUtils.defineLazyPreferenceGetter(lazy, "testGumDelayMs", "privacy.webrtc.preview.testGumDelayMs", 0);
 window.MozXULElement?.insertFTLIfNeeded("browser/webrtc-preview.ftl");
 
 /**
@@ -152,6 +157,8 @@ class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
 
   // The stream object for the preview. Only set when the preview is active.
   #stream = null;
+  // AbortController to cancel pending gUM requests when stopping preview.
+  #abortController = null;
   constructor() {
     super();
 
@@ -203,6 +210,10 @@ class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
 
     // Stop any existing preview.
     this.stopPreview();
+    this.#abortController = new AbortController();
+    let {
+      signal
+    } = this.#abortController;
     this._loading = true;
     this._previewActive = true;
 
@@ -219,36 +230,54 @@ class WebRTCPreview extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       }
     };
     let stream;
-    let currentDeviceId = this.deviceId;
     try {
       stream = await navigator.mediaDevices.getUserMedia(constraints);
+      if (lazy.testGumDelayMs > 0) {
+        await new Promise(resolve => setTimeout(resolve, lazy.testGumDelayMs));
+      }
     } catch (error) {
+      if (signal.aborted) {
+        this.#dispatchTestEvent("aborted");
+        return;
+      }
       this._loading = false;
       if (error.name == "OverconstrainedError" && error.constraint == "deviceId") {
         // Source has disappeared since enumeration, which can happen.
         // No preview.
         this.stopPreview();
+        this.#dispatchTestEvent("error");
         return;
       }
       console.error(`error in preview: ${error.message} ${error.constraint}`);
+      this.#dispatchTestEvent("error");
+      return;
     }
-    if (this.deviceId != currentDeviceId) {
-      this._loading = false;
-      // If the deviceId changed while we were waiting for gUM, e.g. because the user selected a different device, restart the preview.
+    if (signal.aborted) {
       stream.getTracks().forEach(t => t.stop());
-      this.startPreview();
+      this.#dispatchTestEvent("aborted");
       return;
     }
     this.videoEl.srcObject = stream;
     this.#stream = stream;
+    this.#dispatchTestEvent("success");
+  }
+  #dispatchTestEvent(result) {
+    if (lazy.testGumDelayMs > 0) {
+      this.dispatchEvent(new CustomEvent("test-preview-complete", {
+        detail: {
+          result
+        }
+      }));
+    }
   }
 
   /**
    * Stop the preview.
    */
   stopPreview() {
-    // We might interrupt an in-progress load. Make sure we don't show a loading
-    // state.
+    // Abort any pending gUM request.
+    this.#abortController?.abort();
+    this.#abortController = null;
     this._loading = false;
 
     // Stop any existing playback.
@@ -451,4 +480,4 @@ customElements.define("moz-card", MozCard);
 /***/ })
 
 }]);
-//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.f852cc0e.iframe.bundle.js.map
+//# sourceMappingURL=webrtc-preview-webrtc-preview-stories.1ca94528.iframe.bundle.js.map

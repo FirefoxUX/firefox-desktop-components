@@ -77,7 +77,7 @@ const KNOWN_OPTIONS = new Map([["moz-radio-group", (0,chrome_global_content_vend
  *
  * @type Map<string, string>
  */
-const ITEM_SLOT_BY_PARENT = new Map([["moz-checkbox", "nested"], ["moz-input-text", "nested"], ["moz-input-search", "nested"], ["moz-input-folder", "nested"], ["moz-input-password", "nested"], ["moz-radio", "nested"], ["moz-radio-group", "nested"],
+const ITEM_SLOT_BY_PARENT = new Map([["moz-checkbox", "nested"], ["moz-input-email", "nested"], ["moz-input-folder", "nested"], ["moz-input-number", "nested"], ["moz-input-password", "nested"], ["moz-input-search", "nested"], ["moz-input-tel", "nested"], ["moz-input-text", "nested"], ["moz-input-url", "nested"], ["moz-radio", "nested"], ["moz-radio-group", "nested"],
 // NOTE: moz-select does not support the nested slot.
 ["moz-toggle", "nested"]]);
 class SettingNotDefinedError extends Error {
@@ -1446,4 +1446,4 @@ Wrapped.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.c59e547f.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.1317c851.iframe.bundle.js.map
