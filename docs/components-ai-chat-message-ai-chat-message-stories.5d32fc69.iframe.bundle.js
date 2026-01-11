@@ -351,10 +351,7 @@ const Template = ({
   role,
   content
 }) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <ai-chat-message .message=${{
-  role,
-  content
-}}></ai-chat-message>
+  <ai-chat-message .role=${role} .message=${content}></ai-chat-message>
 `;
 const UserMessage = Template.bind({});
 UserMessage.args = {
@@ -913,7 +910,7 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       />
 
       <article>
-        <div class=${"message-" + this.role}>
+        <div class=${`message-${this.role}`}>
           <!-- TODO: Add markdown parsing here -->
           ${this.message}
         </div>
@@ -931,4 +928,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.a8cf4237.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.5d32fc69.iframe.bundle.js.map
