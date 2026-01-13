@@ -125,6 +125,11 @@ __webpack_require__.r(__webpack_exports__);
 class ContentSearchHandoffUIController {
   #ui = null;
   #shadowRoot = null;
+
+  /**
+   * Whether or not we are in private browsing mode.
+   */
+  #inPrivateBrowsing = false;
   constructor(ui) {
     this._isPrivateEngine = false;
     this._engineIcon = null;
@@ -153,19 +158,19 @@ class ContentSearchHandoffUIController {
     return ContentSearchHandoffUIController.privateBrowsingRegex.test(document.location.href);
   }
   _onMsgEngine({
-    isPrivateEngine,
+    inPrivateBrowsing,
     engine
   }) {
-    this._isPrivateEngine = isPrivateEngine;
+    this.#inPrivateBrowsing = inPrivateBrowsing;
     this._updateEngine(engine);
   }
   _onMsgCurrentEngine(engine) {
-    if (!this._isPrivateEngine) {
+    if (!this.#inPrivateBrowsing) {
       this._updateEngine(engine);
     }
   }
   _onMsgCurrentPrivateEngine(engine) {
-    if (this._isPrivateEngine) {
+    if (this.#inPrivateBrowsing) {
       this._updateEngine(engine);
     }
   }
@@ -338,4 +343,4 @@ module.exports = __webpack_require__.p + "contentSearchHandoffUI.da2c4564b7c2342
 /***/ })
 
 }]);
-//# sourceMappingURL=content-content-search-handoff-ui-stories.f5256aa5.iframe.bundle.js.map
+//# sourceMappingURL=content-content-search-handoff-ui-stories.edcb356e.iframe.bundle.js.map
