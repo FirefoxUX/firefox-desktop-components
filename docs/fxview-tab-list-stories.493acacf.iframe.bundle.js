@@ -894,6 +894,21 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       }));
     }
   }
+  auxActionHandler(event) {
+    if (event.type == "auxclick") {
+      event.preventDefault();
+      if (!window.IS_STORYBOOK) {
+        this.dispatchEvent(new CustomEvent("fxview-tab-list-aux-action", {
+          bubbles: true,
+          composed: true,
+          detail: {
+            originalEvent: event,
+            item: this
+          }
+        }));
+      }
+    }
+  }
 
   /**
    * Find all matches of query within the given string, and compute the result
@@ -1846,4 +1861,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.bc19965d726ada185806.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.e8a7c60b.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.493acacf.iframe.bundle.js.map

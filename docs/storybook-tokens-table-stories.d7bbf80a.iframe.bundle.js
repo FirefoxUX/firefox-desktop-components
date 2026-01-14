@@ -1119,6 +1119,12 @@ const tokensTable = {
   }, {
     value: "48px",
     name: "--size-item-xlarge"
+  }, {
+    value: "280px",
+    name: "--size-sidebar"
+  }, {
+    value: "118px",
+    name: "--size-sidebar-narrow"
   }],
   opacity: [{
     value: {
@@ -1482,6 +1488,42 @@ const tokensTable = {
       default: "light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4))"
     },
     name: "--box-shadow-color-lighter-layer-2"
+  }],
+  "table-background": [{
+    value: {
+      light: "#f8f8fa",
+      dark: "rgb(35, 34, 43)",
+      forcedColors: "Canvas",
+      default: "light-dark(#f8f8fa, rgb(35, 34, 43))"
+    },
+    name: "--table-background-color"
+  }],
+  "table-border": [{
+    value: {
+      default: "color-mix(in srgb, currentColor 41%, transparent)",
+      forcedColors: "CanvasText"
+    },
+    name: "--table-border-color"
+  }],
+  "table-header": [{
+    value: {
+      default: "var(--color-accent-primary)",
+      forcedColors: "AccentColor"
+    },
+    name: "--table-header-background-color"
+  }, {
+    value: {
+      forcedColors: "AccentColorText",
+      brand: {
+        light: "var(--color-white)",
+        dark: "var(--color-gray-100)",
+        default: "light-dark(var(--color-white), var(--color-gray-100))"
+      },
+      platform: {
+        default: "AccentColorText"
+      }
+    },
+    name: "--table-header-text-color"
   }]
 };
 const variableLookupTable = {
@@ -2218,6 +2260,8 @@ const variableLookupTable = {
   "size-item-medium": "24px",
   "size-item-large": "32px",
   "size-item-xlarge": "48px",
+  "size-sidebar": "280px",
+  "size-sidebar-narrow": "118px",
   "space-xxsmall": "calc(0.5 * var(--space-xsmall))",
   "space-xsmall": "0.267rem",
   "space-small": "calc(2 * var(--space-xsmall))",
@@ -2252,6 +2296,31 @@ const variableLookupTable = {
     light: "rgba(0, 0, 0, 0.1)",
     dark: "rgba(0, 0, 0, 0.4)",
     default: "light-dark(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.4))"
+  },
+  "table-background-color": {
+    light: "#f8f8fa",
+    dark: "rgb(35, 34, 43)",
+    forcedColors: "Canvas",
+    default: "light-dark(#f8f8fa, rgb(35, 34, 43))"
+  },
+  "table-border-color": {
+    default: "color-mix(in srgb, currentColor 41%, transparent)",
+    forcedColors: "CanvasText"
+  },
+  "table-header-background-color": {
+    default: "var(--color-accent-primary)",
+    forcedColors: "AccentColor"
+  },
+  "table-header-text-color": {
+    forcedColors: "AccentColorText",
+    brand: {
+      light: "var(--color-white)",
+      dark: "var(--color-gray-100)",
+      default: "light-dark(var(--color-white), var(--color-gray-100))"
+    },
+    platform: {
+      default: "AccentColorText"
+    }
   },
   "table-row-background-color": {
     default: "var(--background-color-canvas)"
@@ -2822,4 +2891,4 @@ module.exports = __webpack_require__.p + "tokens-table.b29f2ca1e627f0c0977d.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.ebdc9b49.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.d7bbf80a.iframe.bundle.js.map

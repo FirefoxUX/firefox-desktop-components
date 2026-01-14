@@ -909,7 +909,8 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
     return document.dir === "rtl";
   }
   get isDraggable() {
-    return this.parentElement?.type == chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__.GROUP_TYPES.reorderable && this.slot != "header" && this.slot != "footer";
+    const reorderableParent = this.closest("moz-box-group");
+    return reorderableParent?.type == chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__.GROUP_TYPES.reorderable && this.slot != "header" && this.slot != "footer";
   }
   focus(event) {
     if (event?.key == "Up" || event?.key == "ArrowUp") {
@@ -1004,4 +1005,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.962d357f.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.84e643b7.iframe.bundle.js.map
