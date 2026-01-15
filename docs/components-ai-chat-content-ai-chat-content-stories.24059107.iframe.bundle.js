@@ -28,7 +28,7 @@ __webpack_require__.r(__webpack_exports__);
  * Custom element that renders the “Memories applied” pill and popover for
  * a single assistant message. The popover shows a list of applied
  * memories and allows the user to:
- *   - Remove an individual applied insight.
+ *   - Remove an individual applied memory.
  *   - Retry the message without any applied memories.
  *
  * @property {string|null} messageId
@@ -47,7 +47,7 @@ __webpack_require__.r(__webpack_exports__);
  *   - "toggle-applied-memories"
  *       detail: { messageId, open }
  *   - "remove-applied-memory"
- *       detail: { messageId, index, insight }
+ *       detail: { messageId, index, memory }
  *   - "retry-without-memories"
  *       detail: { messageId }
  */
@@ -121,14 +121,14 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
       }
     }));
   }
-  _onRemoveInsight(event, index) {
+  _onRemoveMemory(event, index) {
     event.stopPropagation();
     if (!Array.isArray(this.appliedMemories)) {
       return;
     }
-    const insight = this.appliedMemories[index];
+    const memory = this.appliedMemories[index];
 
-    // Remove insight visually, but update will be done by parent
+    // Remove memory visually, but update will be done by parent
     this.appliedMemories = this.appliedMemories.filter((_, i) => {
       return i !== index;
     });
@@ -138,7 +138,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
       detail: {
         messageId: this.messageId,
         index,
-        insight
+        memory
       }
     }));
   }
@@ -154,9 +154,9 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
   }
 
   // TODO: Update formatting function once shape of memories passed is confirmed
-  _formatInsightLabel(insight) {
-    if (typeof insight === "string") {
-      return insight;
+  _formatMemoryLabel(memory) {
+    if (typeof memory === "string") {
+      return memory;
     }
     return "";
   }
@@ -174,11 +174,14 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         @click=${event => this._onPopoverClick(event)}
       >
         <ul class="memories-list">
-          ${visibleMemories.map((insight, index) => {
-      const label = this._formatInsightLabel(insight);
+          ${visibleMemories.map((memory, index) => {
+      const label = this._formatMemoryLabel(memory);
       if (!label) {
         return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
       }
+
+      // @todo Bug 2010069
+      // Localize aria-label
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
               <li class="memories-list-item">
                 <span class="memories-list-label">${label}</span>
@@ -187,8 +190,8 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
                   type="ghost"
                   size="small"
                   iconsrc="chrome://global/skin/icons/close.svg"
-                  aria-label="Remove this insight"
-                  @click=${event => this._onRemoveInsight(event, index)}
+                  aria-label="Remove this memory"
+                  @click=${event => this._onRemoveMemory(event, index)}
                 ></moz-button>
               </li>
             `;
@@ -491,18 +494,17 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
    */
 
   handleAIResponseEvent(event) {
-    // TODO (bug 2009434): update reference to insights
     const {
       ordinal,
       id: messageId,
       content,
-      insightsApplied
+      memoriesApplied
     } = event.detail;
     this.conversationState[ordinal] = {
       role: "assistant",
       messageId,
       body: content.body,
-      appliedMemories: insightsApplied ?? []
+      appliedMemories: memoriesApplied ?? []
     };
     this.requestUpdate();
   }
@@ -633,4 +635,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.1dc5f67a.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.24059107.iframe.bundle.js.map

@@ -831,10 +831,8 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     this.addEventListener("BackupUI:StateWasUpdated", this);
 
     // Resize the textarea when the window is resized
-    if (this.aboutWelcomeEmbedded) {
-      this._handleWindowResize = () => this.resizeTextarea();
-      window.addEventListener("resize", this._handleWindowResize);
-    }
+    this._handleWindowResize = () => this.resizeTextarea();
+    window.addEventListener("resize", this._handleWindowResize);
   }
   maybeGetBackupFileInfo() {
     if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
@@ -853,9 +851,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
 
     // Resize the textarea. This only runs once on initial render,
     // and once each time one of our reactive properties is changed.
-    if (this.aboutWelcomeEmbedded) {
-      this.resizeTextarea();
-    }
+    this.resizeTextarea();
     if (changedProperties.has("backupServiceState")) {
       // If we got a recovery error, recoveryInProgress should be false
       const inProgress = this.backupServiceState.recoveryInProgress && !this.backupServiceState.recoveryErrorCode;
@@ -1110,38 +1106,24 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       backupFileInfo,
       recoveryErrorCode
     } = this.backupServiceState || {};
-    if (this.aboutWelcomeEmbedded) {
-      if (recoveryErrorCode && !this.isIncorrectPassword) {
-        describedBy = "backup-generic-file-error";
-      } else if (!backupFileInfo) {
-        describedBy = "restore-from-backup-no-backup-file-link";
-      } else {
-        describedBy = "restore-from-backup-backup-found-info";
-      }
-    }
-    if (this.aboutWelcomeEmbedded) {
-      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-        <textarea
-          id="backup-filepicker-input"
-          rows="1"
-          readonly
-          .value=${backupFileName}
-          style=${styles}
-          @input=${this.handleTextareaResize}
-          aria-describedby=${describedBy}
-          data-l10n-id="restore-from-backup-filepicker-input"
-        ></textarea>
-      `;
+    if (this.aboutWelcomeEmbedded && recoveryErrorCode && !this.isIncorrectPassword) {
+      describedBy = "backup-generic-file-error";
+    } else if (!backupFileInfo) {
+      describedBy = "restore-from-backup-no-backup-file-link";
+    } else {
+      describedBy = "restore-from-backup-backup-found-info";
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <input
+      <textarea
         id="backup-filepicker-input"
-        type="text"
+        rows="1"
         readonly
         .value=${backupFileName}
         style=${styles}
+        @input=${this.handleTextareaResize}
+        aria-describedby=${describedBy}
         data-l10n-id="restore-from-backup-filepicker-input"
-      />
+      ></textarea>
     `;
   }
   passwordEntryTemplate() {
@@ -2031,4 +2013,4 @@ NoBackupFound.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=restore-from-backup-stories.2dc46eae.iframe.bundle.js.map
+//# sourceMappingURL=restore-from-backup-stories.223833d4.iframe.bundle.js.map
