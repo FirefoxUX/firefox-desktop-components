@@ -1,0 +1,55 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+/* stylelint-disable */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-content-wrapper {
+  align-items: flex-start;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-small);
+  margin-inline: auto;
+  max-width: calc(var(--space-xxsmall) * 273);
+  min-height: 0;
+  overflow-y: auto;
+  padding: var(--space-large);
+  scroll-behavior: smooth;
+  width: 100%;
+}
+
+/* Spacer that pushes chat content to the bottom when there's minimal content.
+   Collapses when content fills the available space, allowing proper scrolling. */
+.chat-content-wrapper::before {
+  content: "";
+  flex: 1;
+  min-height: 0;
+}
+
+/* Temporary chat bubble styling */
+.chat-bubble {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  padding: var(--space-large);
+}
+
+.chat-bubble-user {
+  align-self: flex-end;
+  background: light-dark(white, var(--color-violet-110));
+  border-radius: var(--space-medium);
+  box-shadow: light-dark(0 1px 4px color-mix(in srgb, var(--color-violet-60) 10%, transparent), 0 1px 4px color-mix(in srgb, black 20%, transparent));
+  max-width: 100%;
+  width: fit-content;
+}
+
+.chat-bubble-assistant {
+  gap: var(--space-small);
+  width: 100%;
+}

@@ -488,6 +488,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       body: content.body
     });
     this.requestUpdate();
+    this.#scrollToBottom();
   }
 
   /**
@@ -513,6 +514,14 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       searchTokens: tokens?.search || []
     };
     this.requestUpdate();
+  }
+  #scrollToBottom() {
+    this.updateComplete.then(() => {
+      const wrapper = this.shadowRoot?.querySelector(".chat-content-wrapper");
+      if (wrapper) {
+        wrapper.scrollTop = wrapper.scrollHeight;
+      }
+    });
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -557,7 +566,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.9d0eff049cdb6
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.14e0c9a12bf92f40e507.css";
+module.exports = __webpack_require__.p + "ai-chat-content.49e77d54f1db720c3643.css";
 
 /***/ }),
 
@@ -642,4 +651,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.7a101ca8.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.d0dee717.iframe.bundle.js.map

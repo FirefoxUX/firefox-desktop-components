@@ -511,7 +511,7 @@ const tokensTable = {
         default: "light-dark(var(--color-gray-20), var(--color-gray-80))"
       },
       platform: {
-        default: "color-mix(in srgb, currentColor 20%, transparent)"
+        default: "color-mix(in srgb, currentColor 6%, transparent)"
       }
     },
     name: "--background-color-box-info"
@@ -1552,7 +1552,7 @@ const variableLookupTable = {
       default: "light-dark(var(--color-gray-20), var(--color-gray-80))"
     },
     platform: {
-      default: "color-mix(in srgb, currentColor 20%, transparent)"
+      default: "color-mix(in srgb, currentColor 6%, transparent)"
     }
   },
   "background-color-canvas": {
@@ -2891,4 +2891,4 @@ module.exports = __webpack_require__.p + "tokens-table.b29f2ca1e627f0c0977d.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.d7bbf80a.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.cb5d0234.iframe.bundle.js.map

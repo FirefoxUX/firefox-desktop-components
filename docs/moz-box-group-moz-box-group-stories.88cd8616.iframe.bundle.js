@@ -354,7 +354,7 @@ class SettingControl extends chrome_browser_content_preferences_widgets_setting_
       setting: this.getSetting(i.id)
     }));
     let control = config.control || "moz-checkbox";
-    return itemArgs.map(item => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.repeat)(itemArgs, item => item.config.key || item.config.id, item => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
           .config=${item.config}
           .setting=${item.setting}
           .getSetting=${this.getSetting}
@@ -1458,4 +1458,4 @@ Wrapped.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.710da1c3.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.88cd8616.iframe.bundle.js.map

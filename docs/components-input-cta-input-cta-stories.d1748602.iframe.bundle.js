@@ -23,9 +23,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
- * Input CTA button with action menu extending `moz-button`.
+ * An input call to action (CTA) button which shows the current action choice
+ * for the Smartbar. It is updated depending on the recognised intent or the
+ * action selected by the user.
  *
- * @property {string|null} action - Current action or null for initial state.
+ * The component is based on `moz-button` and extended with an action menu.
+ *
+ * @typedef {"" | "chat" | "search" | "navigate"} SmartbarAction
+ * @property {SmartbarAction} action - Current action or empty string for initial state.
  */
 class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static shadowRootOptions = {
@@ -41,7 +46,7 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
   static ACTIONS = ["chat", "search", "navigate"];
   constructor() {
     super();
-    this.action = null;
+    this.action = "";
     this._menuId = `actions-menu-${crypto.randomUUID()}`;
   }
   get actionLabelId() {
@@ -52,7 +57,7 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
       return;
     }
     this.action = key;
-    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:action-change", {
+    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action-change", {
       detail: {
         action: key
       },
@@ -60,10 +65,19 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
       composed: true
     }));
   }
+  #onAction() {
+    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action", {
+      detail: {
+        action: this.action
+      },
+      bubbles: true,
+      composed: true
+    }));
+  }
   willUpdate(changedProps) {
-    if (changedProps.has("action") && this.action !== null && !InputCta.ACTIONS.includes(this.action)) {
+    if (changedProps.has("action") && this.action && !InputCta.ACTIONS.includes(this.action)) {
       console.warn(`Invalid action: ${this.action}`);
-      this.action = null;
+      this.action = "";
     }
   }
   render() {
@@ -81,14 +95,13 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
       <moz-button
         type=${this.action ? "split" : "default"}
         class="input-cta"
-        menuId=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.action ? this._menuId : undefined)}
+        .menuId=${this.action ? this._menuId : undefined}
         .iconSrc=${this.action ? undefined : "chrome://browser/content/aiwindow/assets/input-cta-arrow-icon.svg"}
+        @click=${this.#onAction}
         ?disabled=${!this.action}
       >
         <slot>
-          <span
-            data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.actionLabelId || undefined)}
-          ></span>
+          ${this.action && (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span data-l10n-id=${this.actionLabelId}></span>`}
         </slot>
       </moz-button>
       ${panelListTemplate}
@@ -123,14 +136,14 @@ __webpack_require__.r(__webpack_exports__);
   component: "input-cta",
   parameters: {
     fluent: `
-aiwindow-input-cta-label-chat = Chat
+aiwindow-input-cta-label-chat = Ask
 aiwindow-input-cta-label-search = Search
-aiwindow-input-cta-label-navigate = Navigate
+aiwindow-input-cta-label-navigate = Go
     `
   },
   argTypes: {
     action: {
-      options: [null, "chat", "search", "navigate"],
+      options: ["", "chat", "search", "navigate"],
       control: {
         type: "select"
       }
@@ -161,7 +174,7 @@ Navigate.args = {
 /***/ 25814:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "input-cta.593c6f9e6027a97efdc0.css";
+module.exports = __webpack_require__.p + "input-cta.47ef4420a1ee09c4213c.css";
 
 /***/ }),
 
@@ -862,4 +875,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.618f0419.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.d1748602.iframe.bundle.js.map
