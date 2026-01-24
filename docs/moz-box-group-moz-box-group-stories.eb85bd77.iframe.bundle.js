@@ -1393,12 +1393,8 @@ function getSetting() {
     controllingExtensionInfo: {}
   };
 }
-const Template = ({
-  type,
-  hasHeader,
-  hasFooter,
-  scrollable,
-  wrapped
+const standardTemplateHtml = ({
+  scrollable
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <style>
     moz-box-group {
@@ -1409,6 +1405,17 @@ const Template = ({
       margin-top: var(--space-medium);
     }
   </style>
+`;
+const Template = ({
+  type,
+  hasHeader,
+  hasFooter,
+  scrollable,
+  wrapped
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  ${standardTemplateHtml({
+  scrollable
+})}
   ${wrapped ? wrappedTemplate({
   type,
   hasHeader,
@@ -1418,6 +1425,21 @@ const Template = ({
   hasHeader,
   hasFooter,
   wrapped
+})}
+`;
+const ReorderableTemplate = ({
+  type,
+  hasHeader,
+  hasFooter,
+  scrollable
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  ${standardTemplateHtml({
+  scrollable
+})}
+  ${basicTemplate({
+  type,
+  hasHeader,
+  hasFooter
 })}
 `;
 const Default = Template.bind({});
@@ -1433,10 +1455,12 @@ List.args = {
   ...Default.args,
   type: "list"
 };
-const Reorderable = Template.bind({});
+const Reorderable = ReorderableTemplate.bind({});
 Reorderable.args = {
-  ...Default.args,
-  type: "reorderable"
+  type: "reorderable",
+  hasHeader: false,
+  hasFooter: false,
+  scrollable: false
 };
 const ListWithHeaderAndFooter = Template.bind({});
 ListWithHeaderAndFooter.args = {
@@ -1458,4 +1482,4 @@ Wrapped.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.88cd8616.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.eb85bd77.iframe.bundle.js.map

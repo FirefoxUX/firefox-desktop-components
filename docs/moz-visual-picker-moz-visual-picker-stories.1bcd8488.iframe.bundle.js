@@ -58,6 +58,7 @@ customElements.define("moz-visual-picker", MozVisualPicker);
  *  Name of the item, set by the associated moz-visual-picker parent element.
  * @property {string} value - Value of the item.
  * @property {string} label - Visible label for the picker item.
+ * @property {string} description - Additional text shown beneath the label.
  * @property {string} ariaLabel - Value for the aria-label attribute.
  * @property {string} imageSrc - Path to an image to display in the picker item.
  * @slot default - The item's content, used for what gets displayed.
@@ -65,6 +66,10 @@ customElements.define("moz-visual-picker", MozVisualPicker);
 class MozVisualPickerItem extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SelectControlItemMixin)(_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement) {
   static properties = {
     label: {
+      type: String,
+      fluent: true
+    },
+    description: {
       type: String,
       fluent: true
     },
@@ -78,7 +83,9 @@ class MozVisualPickerItem extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_M
     }
   };
   static queries = {
-    itemEl: ".picker-item"
+    itemEl: ".picker-item",
+    labelEl: ".label",
+    descriptionEl: ".description"
   };
   click() {
     this.itemEl.click();
@@ -123,12 +130,15 @@ class MozVisualPickerItem extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_M
     }
   }
   contentTemplate() {
-    if (!this.imageSrc && !this.label) {
+    if (!this.imageSrc && !this.label && !this.description) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`;
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${this.imageSrc ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img src=${this.imageSrc} role="presentation" part="image" />` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-      ${this.label ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="label">${this.label}</p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      <div class="text-content">
+        ${this.label ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="label">${this.label}</p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${this.description ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="description">${this.description}</p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      </div>
     `;
   }
   render() {
@@ -173,6 +183,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Listbox: () => (/* binding */ Listbox),
 /* harmony export */   WithImage: () => (/* binding */ WithImage),
 /* harmony export */   WithImageAndLabel: () => (/* binding */ WithImageAndLabel),
+/* harmony export */   WithItemDescriptions: () => (/* binding */ WithItemDescriptions),
 /* harmony export */   WithItemLabels: () => (/* binding */ WithItemLabels),
 /* harmony export */   WithPickerDescription: () => (/* binding */ WithPickerDescription),
 /* harmony export */   WithPickerSupportLink: () => (/* binding */ WithPickerSupportLink),
@@ -261,7 +272,8 @@ const Template = ({
   supportPage,
   type,
   showItemLabels,
-  imageSrc
+  imageSrc,
+  showItemDescriptions
 }) => {
   return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <style>
@@ -321,6 +333,7 @@ const Template = ({
   })}
             data-l10n-id=${slottedItem == "avatar" ? AVATAR_L10N_IDS[i] : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
             label=${showItemLabels ? `Item number ${i + 1}` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
+            description=${showItemDescriptions ? `Description for item number ${i + 1}` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
             imagesrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageSrc)}
           >
             ${getSlottedContent(slottedItem, i)}
@@ -335,7 +348,8 @@ Default.args = {
   value: "1",
   supportPage: "",
   type: "radio",
-  showItemLabels: false
+  showItemLabels: false,
+  showItemDescriptions: false
 };
 const WithPickerDescription = Template.bind({});
 WithPickerDescription.args = {
@@ -362,6 +376,11 @@ WithItemLabels.args = {
   ...Default.args,
   showItemLabels: true
 };
+const WithItemDescriptions = Template.bind({});
+WithItemDescriptions.args = {
+  ...WithItemLabels.args,
+  showItemDescriptions: true
+};
 const WithImage = Template.bind({});
 WithImage.args = {
   ...Default.args,
@@ -385,7 +404,7 @@ module.exports = __webpack_require__.p + "moz-fieldset.3c16b9d13d26a6382815.css"
 /***/ 58680:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-visual-picker-item.07f25114f0472a95af2d.css";
+module.exports = __webpack_require__.p + "moz-visual-picker-item.aa1250eaa0800ec9a6ab.css";
 
 /***/ }),
 
@@ -1000,4 +1019,4 @@ const SelectControlItemMixin = superClass => class extends superClass {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.35f2360a.iframe.bundle.js.map
+//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.1bcd8488.iframe.bundle.js.map

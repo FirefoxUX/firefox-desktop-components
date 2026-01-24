@@ -392,7 +392,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.68e9ec3f3ebfa0897d92.css";
+module.exports = __webpack_require__.p + "moz-box-item.51aaf8da984444f67049.css";
 
 /***/ }),
 
@@ -839,7 +839,7 @@ const NAVIGATION_DIRECTIONS = {
  * @property {string} label - Label for the button.
  * @property {string} description - Descriptive text for the button.
  * @property {string} iconSrc - The src for an optional icon shown next to the label.
- * @property {string} layout - Layout style for the box content, either "default" or "large-icon".
+ * @property {"default"|"medium-icon"|"large-icon"} layout - Layout style for the box content.
  * @slot default - Slot for the box item's content, which overrides label and description.
  * @slot actions - Slot for the actions positioned at the end of the component container.
  * @slot actions-start - Slot for the actions positioned at the start of the component container.
@@ -1005,4 +1005,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.84e643b7.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.30e2335e.iframe.bundle.js.map

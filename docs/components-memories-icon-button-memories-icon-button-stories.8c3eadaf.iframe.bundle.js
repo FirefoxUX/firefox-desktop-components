@@ -75,7 +75,7 @@ __webpack_require__.r(__webpack_exports__);
  * Icon-style toggle button for enabling or disabling AI Memories.
  *
  * - `pressed`: boolean property/attribute reflected to `aria-pressed`
- * - Emits `change` with `{ pressed }` on user toggle
+ * - Emits `aiwindow-memories-toggle:on-change` with `{ pressed }` on user toggle
  *
  * Logic is handled by the parent component.
  */
@@ -84,11 +84,15 @@ class MemoriesIconButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     pressed: {
       type: Boolean,
       reflect: true
+    },
+    disabled: {
+      type: Boolean,
+      reflect: true
     }
   };
   #onClick() {
     this.pressed = !this.pressed;
-    this.dispatchEvent(new CustomEvent("change", {
+    this.dispatchEvent(new CustomEvent("aiwindow-memories-toggle:on-change", {
       bubbles: true,
       composed: true,
       detail: {
@@ -108,6 +112,7 @@ class MemoriesIconButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
         href="${browser_components_aiwindow_ui_components_memories_icon_button_memories_icon_button_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <moz-button
+        ?disabled=${this.disabled}
         data-l10n-id=${tooltipTextId}
         data-l10n-attrs="tooltiptext,aria-label"
         type="ghost"
@@ -133,4 +138,4 @@ module.exports = __webpack_require__.p + "memories-icon-button.8393530a962460973
 /***/ })
 
 }]);
-//# sourceMappingURL=components-memories-icon-button-memories-icon-button-stories.cd0f3946.iframe.bundle.js.map
+//# sourceMappingURL=components-memories-icon-button-memories-icon-button-stories.8c3eadaf.iframe.bundle.js.map
