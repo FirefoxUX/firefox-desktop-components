@@ -524,6 +524,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   Disabled: () => (/* binding */ Disabled),
+/* harmony export */   InlineEndDisabled: () => (/* binding */ InlineEndDisabled),
+/* harmony export */   InlineEndLayout: () => (/* binding */ InlineEndLayout),
+/* harmony export */   InlineEndWithDescription: () => (/* binding */ InlineEndWithDescription),
+/* harmony export */   InlineEndWithNestedFields: () => (/* binding */ InlineEndWithNestedFields),
+/* harmony export */   InlineEndWithSupportLink: () => (/* binding */ InlineEndWithSupportLink),
 /* harmony export */   ToggleOnly: () => (/* binding */ ToggleOnly),
 /* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
@@ -588,7 +593,8 @@ const Template = ({
   iconSrc,
   hasSlottedSupportLink,
   nestedFields,
-  ellipsized
+  ellipsized,
+  inputLayout
 }) => {
   let toggleTemplate = (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
     <moz-toggle
@@ -601,6 +607,7 @@ const Template = ({
       accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accessKey)}
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
       iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+      inputlayout=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(inputLayout)}
       class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
     "text-truncated-ellipsis": ellipsized
   })}
@@ -628,7 +635,8 @@ Default.args = {
   supportPage: "",
   iconSrc: "",
   hasSlottedSupportLink: false,
-  nestedFields: false
+  nestedFields: false,
+  inputLayout: null
 };
 const Disabled = Template.bind({});
 Disabled.args = {
@@ -677,6 +685,36 @@ WithEllipsizedLabel.args = {
   ellipsized: true,
   l10nId: "moz-toggle-long-label"
 };
+const InlineEndLayout = Template.bind({});
+InlineEndLayout.args = {
+  ...Default.args,
+  inputLayout: "inline-end"
+};
+const InlineEndWithDescription = Template.bind({});
+InlineEndWithDescription.args = {
+  ...Default.args,
+  inputLayout: "inline-end",
+  l10nId: "moz-toggle-description"
+};
+const InlineEndWithSupportLink = Template.bind({});
+InlineEndWithSupportLink.args = {
+  ...Default.args,
+  inputLayout: "inline-end",
+  l10nId: "moz-toggle-description",
+  supportPage: "addons"
+};
+const InlineEndDisabled = Template.bind({});
+InlineEndDisabled.args = {
+  ...Default.args,
+  inputLayout: "inline-end",
+  disabled: true
+};
+const InlineEndWithNestedFields = Template.bind({});
+InlineEndWithNestedFields.args = {
+  ...Default.args,
+  inputLayout: "inline-end",
+  nestedFields: true
+};
 
 /***/ }),
 
@@ -688,4 +726,4 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-moz-toggle-stories.b7dd9e09.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-moz-toggle-stories.5b55e162.iframe.bundle.js.map

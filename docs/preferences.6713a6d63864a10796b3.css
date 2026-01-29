@@ -489,10 +489,6 @@ a[is="moz-support-link"]:not(.sidebar-footer-link, [hidden]) {
 
 /* Search Pane */
 
-#engineList {
-  margin: 2px 0 5px;
-}
-
 #engineList > treechildren::-moz-tree-image(engineShown, checked),
 #blocklistsTree > treechildren::-moz-tree-image(selectionCol, checked) {
   list-style-image: url("chrome://global/skin/icons/check.svg");
@@ -1457,7 +1453,15 @@ setting-group[groupid="aiFeatures"] {
   }
 }
 
-#aiControlsDefault {
+#aiBlockedMessage {
+  margin: calc(-1 * var(--space-large));
+  margin-top: var(--space-medium);
+  --message-bar-border-radius: 0 0 var(--box-border-radius) var(--box-border-radius);
+  border-bottom-color: transparent;
+  border-inline-color: transparent;
+}
+
+#aiControlDefaultToggle {
   --toggle-width: 40px;
   --toggle-height: 20px;
 }

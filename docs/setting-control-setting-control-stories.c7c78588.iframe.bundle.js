@@ -665,7 +665,7 @@ customElements.define("moz-input-folder", MozInputFolder);
 /***/ 38626:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "setting-control.636d0d509cf2ffc330f6.css";
+module.exports = __webpack_require__.p + "setting-control.4f84dc15c74cc0fc8ad6.css";
 
 /***/ }),
 
@@ -1053,4 +1053,4 @@ ExtensionControlled.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.b52b899d.iframe.bundle.js.map
+//# sourceMappingURL=setting-control-setting-control-stories.c7c78588.iframe.bundle.js.map

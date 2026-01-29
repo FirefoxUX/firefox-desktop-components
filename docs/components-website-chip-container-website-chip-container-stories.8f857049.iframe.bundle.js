@@ -95,7 +95,6 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   render() {
     const isEmpty = this.#isEmpty;
     const isRemovable = this.#isRemovable;
-    const isLink = this.type === "context-chip" && this.href;
     let iconTemplate;
     if (isEmpty) {
       iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="chip-at">@</span>`;
@@ -120,7 +119,7 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     const chipContent = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${iconTemplate} ${removeButton} ${labelTemplate}
     `;
-    const chipElement = isLink ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+    const chipElement = this.href ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
           class="chip"
           ?data-removable=${isRemovable}
           href=${this.href}
@@ -257,4 +256,4 @@ const Default = Template.bind({});
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.30c2be7a.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.8f857049.iframe.bundle.js.map
