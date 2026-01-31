@@ -119,6 +119,10 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       hostname: {
         type: String,
         reflect: true
+      },
+      breachName: {
+        type: String,
+        reflect: true
       }
     };
   }
@@ -126,10 +130,22 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     super();
     this.date = 0;
     this.hostname = "";
+    this.breachName = "";
   }
   get displayHostname() {
     let url = URL.parse(this.hostname);
     return url?.hostname ?? this.hostname;
+  }
+  handleBreachLinkClick() {
+    document.dispatchEvent(new CustomEvent("AboutLoginsRecordTelemetryEvent", {
+      bubbles: true,
+      detail: {
+        name: "breachAlertLinkClicked",
+        extra: {
+          breach_name: this.breachName || this.displayHostname
+        }
+      }
+    }));
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -158,6 +174,7 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             href=${this.hostname}
             rel="noreferrer"
             target="_blank"
+            @click=${this.handleBreachLinkClick}
           ></a>
         </div>
       </login-alert>
@@ -265,4 +282,4 @@ LoginBreachAlert.argTypes = {
 /***/ })
 
 }]);
-//# sourceMappingURL=login-alert-stories.1829ab7e.iframe.bundle.js.map
+//# sourceMappingURL=login-alert-stories.9dc7bb20.iframe.bundle.js.map

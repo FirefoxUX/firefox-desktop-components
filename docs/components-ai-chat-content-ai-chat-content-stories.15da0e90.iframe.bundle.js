@@ -469,6 +469,23 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
   messageEvent(event) {
     const message = event.detail;
+    this.#checkConversationState(message);
+    switch (message.role) {
+      case "assistant":
+        this.handleAIResponseEvent(event);
+        break;
+      case "user":
+        this.handleUserPromptEvent(event);
+        break;
+    }
+  }
+
+  /**
+   * Check if conversationState needs to be cleared
+   *
+   * @param {ChatMessage} message
+   */
+  #checkConversationState(message) {
     const lastMessage = this.conversationState.at(-1);
     const firstMessage = this.conversationState.at(0);
     const isReloadingSameConvo = firstMessage && firstMessage.convId === message.convId && firstMessage.ordinal === message.ordinal;
@@ -476,11 +493,6 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     if (convIdChanged || isReloadingSameConvo) {
       this.conversationState = [];
     }
-    if (message.role === "assistant") {
-      this.handleAIResponseEvent(event);
-      return;
-    }
-    this.handleUserPromptEvent(event);
   }
 
   /**
@@ -666,4 +678,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.019ac087.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.15da0e90.iframe.bundle.js.map

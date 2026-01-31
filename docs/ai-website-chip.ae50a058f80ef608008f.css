@@ -25,10 +25,14 @@
   cursor: pointer;
   user-select: none;
   text-decoration: none;
+  color: inherit;
 }
 
-a.chip {
-  color: inherit;
+button.chip {
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
 }
 
 /* Shared styles */

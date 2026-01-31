@@ -126,14 +126,14 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           target="_blank"
         >
           ${chipContent}
-        </a>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div
+        </a>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<button
           class="chip"
           ?data-empty=${isEmpty}
           ?data-removable=${isRemovable}
           @click=${this.#handleClick}
         >
           ${chipContent}
-        </div>`;
+        </button>`;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -190,7 +190,7 @@ customElements.define("website-chip-container", WebsiteChipContainer);
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-chip.7eb242fc30922dfbaec1.css";
+module.exports = __webpack_require__.p + "ai-website-chip.ae50a058f80ef608008f.css";
 
 /***/ }),
 
@@ -256,4 +256,4 @@ const Default = Template.bind({});
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.e53fbf60.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.985858a9.iframe.bundle.js.map
