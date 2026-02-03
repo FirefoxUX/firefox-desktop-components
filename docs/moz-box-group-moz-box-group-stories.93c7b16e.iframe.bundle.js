@@ -779,7 +779,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         </${listTag}>
         <slot hidden></slot>`;
     }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container">
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container" tabindex="-1">
       <slot></slot>
     </div>`;
   }
@@ -1561,4 +1561,4 @@ Wrapped.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.5541de39.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.93c7b16e.iframe.bundle.js.map

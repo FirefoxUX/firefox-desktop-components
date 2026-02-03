@@ -125,7 +125,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
         </${listTag}>
         <slot hidden></slot>`;
     }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container">
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container" tabindex="-1">
       <slot></slot>
     </div>`;
   }
@@ -916,4 +916,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-README-stories-md.b5a60bcf.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-README-stories-md.3b4a459b.iframe.bundle.js.map

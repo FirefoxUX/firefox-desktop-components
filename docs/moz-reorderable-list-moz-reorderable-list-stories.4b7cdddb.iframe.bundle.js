@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3884],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3884,7238],{
 
 /***/ 33884:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -429,12 +429,245 @@ customElements.define("moz-reorderable-list", MozReorderableList);
 
 /***/ }),
 
+/***/ 66965:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   DragSelector: () => (/* binding */ DragSelector),
+/* harmony export */   ShadowDOM: () => (/* binding */ ShadowDOM),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _moz_reorderable_list_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(33884);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const DEFAULT = "Default";
+const SHADOW_DOM = "Shadow DOM";
+const DRAG_SELECTOR = "Drag selector";
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Reorderable List",
+  component: "moz-reorderable-list",
+  argTypes: {
+    demoType: {
+      options: [DEFAULT, SHADOW_DOM, DRAG_SELECTOR],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    status: "in-development",
+    actions: {
+      handles: ["reorder"]
+    }
+  }
+});
+class ShadowDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+  static shadowRootOptions = {
+    ..._vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+  static properties = {
+    item: {
+      type: String
+    }
+  };
+  render() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<style>
+        #shadowed {
+          border: var(--border-width) solid var(--border-color);
+          border-radius: var(--border-radius-small);
+          background-color: var(--background-color-box);
+          display: flex;
+          align-items: center;
+          padding: var(--space-small);
+        }
+      </style>
+      <button id="shadowed">${this.item}</button>`;
+  }
+}
+customElements.define("shadow-demo", ShadowDemo);
+class ReorderableDemo extends _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.LitElement {
+  static properties = {
+    items: {
+      type: Array,
+      state: true
+    },
+    type: {
+      type: String
+    }
+  };
+
+  // Choosing not to use Shadow DOM here for demo purposes.
+  createRenderRoot() {
+    return this;
+  }
+  constructor() {
+    super();
+    this.items = ["Item 1", "Item 2", "Item 3", "Item 4"];
+  }
+  async reorderItems(draggedElement, targetElement, before = false) {
+    const draggedIndex = this.items.indexOf(draggedElement.textContent.trim());
+    const targetIndex = this.items.indexOf(targetElement.textContent.trim());
+    let nextItems = [...this.items];
+    const [draggedItem] = nextItems.splice(draggedIndex, 1);
+    let adjustedTargetIndex = targetIndex;
+    if (draggedIndex < targetIndex) {
+      adjustedTargetIndex--;
+    }
+    if (!before) {
+      adjustedTargetIndex = adjustedTargetIndex + 1;
+    }
+    nextItems.splice(adjustedTargetIndex, 0, draggedItem);
+    this.items = nextItems;
+    await this.updateComplete;
+    let movedItem = this.querySelectorAll("li")[adjustedTargetIndex];
+    let focusableEl = this.getFocusableEl(movedItem);
+    focusableEl?.focus();
+  }
+  getFocusableEl(item) {
+    if (this.type == DRAG_SELECTOR) {
+      return item.querySelector(this.selectors.dragSelector);
+    }
+
+    // Look for shadow DOM first, fallback to firstElementChild
+    return item.shadowRoot?.querySelector(this.selectors.itemSelector) ?? item.firstElementChild;
+  }
+  handleReorder(e) {
+    const {
+      draggedElement,
+      targetElement,
+      position
+    } = e.detail;
+    this.reorderItems(draggedElement, targetElement, position === -1);
+  }
+  handleKeydown(e) {
+    e.stopPropagation();
+    const result = this.children[1].evaluateKeyDownEvent(e);
+    if (!result) {
+      return;
+    }
+    this.handleReorder({
+      detail: result
+    });
+  }
+  addItem() {
+    this.items = [...this.items, `Item ${this.items.length + 1}`];
+  }
+  get selectors() {
+    switch (this.type) {
+      case DEFAULT:
+        return {
+          itemSelector: "li"
+        };
+      case SHADOW_DOM:
+        return {
+          itemSelector: "#shadowed"
+        };
+      case DRAG_SELECTOR:
+        return {
+          itemSelector: "li",
+          dragSelector: ".handle"
+        };
+      default:
+        return {};
+    }
+  }
+  contentTemplate(item) {
+    if (this.type == DEFAULT) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<button>${item}</button>`;
+    } else if (this.type == DRAG_SELECTOR) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="draggable">
+        <div class="handle" tabindex="0"></div>
+        <span>${item}</span>
+      </div>`;
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<shadow-demo item=${item}></shadow-demo>`;
+  }
+  render() {
+    let {
+      itemSelector,
+      dragSelector
+    } = this.selectors;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+      <style>
+        ul {
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          gap: var(--space-small);
+        }
+        li {
+          list-style: none;
+        }
+        .handle {
+          width: var(--button-size-icon);
+          height: var(--button-size-icon);
+          cursor: pointer;
+          background-image: url("chrome://global/skin/icons/more.svg");
+          background-position: center;
+          background-repeat: no-repeat;
+          border-radius: var(--button-border-radius);
+          -moz-context-properties: fill;
+          fill: currentColor;
+        }
+        .draggable {
+          border: var(--border-width) solid var(--border-color);
+          border-radius: var(--border-radius-small);
+          background-color: var(--background-color-box);
+          display: flex;
+          align-items: center;
+          gap: var(--space-small);
+        }
+      </style>
+      <moz-reorderable-list
+        itemselector=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(itemSelector)}
+        dragselector=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(dragSelector)}
+        @reorder=${this.handleReorder}
+        @keydown=${this.handleKeydown}
+      >
+        <ul>
+          ${this.items.map(item => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <li>${this.contentTemplate(item)}</li> `)}
+        </ul>
+      </moz-reorderable-list>
+      <button @click=${this.addItem}>Add another item</button>
+    `;
+  }
+}
+customElements.define("reorderable-demo", ReorderableDemo);
+const Template = ({
+  demoType
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <reorderable-demo type=${demoType}></reorderable-demo>
+`;
+const Default = Template.bind({});
+Default.args = {
+  demoType: DEFAULT
+};
+const ShadowDOM = Template.bind({});
+ShadowDOM.args = {
+  demoType: SHADOW_DOM
+};
+const DragSelector = Template.bind({});
+DragSelector.args = {
+  demoType: DRAG_SELECTOR
+};
+
+/***/ }),
+
 /***/ 85802:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-reorderable-list.c11f5c11f2c91546d56c.css";
+module.exports = __webpack_require__.p + "moz-reorderable-list.0ab36eb6823d124da26a.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=3884.22754d79.iframe.bundle.js.map
+//# sourceMappingURL=moz-reorderable-list-moz-reorderable-list-stories.4b7cdddb.iframe.bundle.js.map
