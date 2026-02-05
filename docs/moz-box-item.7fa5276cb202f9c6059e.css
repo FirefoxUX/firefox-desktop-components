@@ -74,6 +74,7 @@ slot[name="actions-start"] {
   border-radius: var(--button-border-radius);
   -moz-context-properties: fill;
   fill: currentColor;
+  flex-shrink: 0;
 }
 
 .actions:has(> slot:not(:has-slotted)) {

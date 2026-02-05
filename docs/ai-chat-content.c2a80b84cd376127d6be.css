@@ -57,7 +57,7 @@
   align-self: flex-end;
   background: light-dark(white, var(--color-violet-110));
   border-radius: var(--space-medium);
-  box-shadow: light-dark(0 1px 4px color-mix(in srgb, var(--color-violet-60) 10%, transparent), 0 1px 4px color-mix(in srgb, black 20%, transparent));
+  box-shadow: var(--smartwindow-shadow);
   max-width: 100%;
   width: fit-content;
 }
@@ -65,4 +65,36 @@
 .chat-bubble-assistant {
   gap: var(--space-small);
   width: 100%;
+}
+
+.searching-indicator {
+  align-items: center;
+  flex-direction: row;
+  gap: var(--space-small);
+}
+
+.searching-text {
+  color: var(--text-color-deemphasized);
+  font-style: italic;
+}
+
+.searching-indicator::before {
+  animation: pulse 1.5s ease-in-out infinite;
+  background: var(--color-accent-primary);
+  border-radius: 50%;
+  content: "";
+  height: 8px;
+  width: 8px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.8);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }

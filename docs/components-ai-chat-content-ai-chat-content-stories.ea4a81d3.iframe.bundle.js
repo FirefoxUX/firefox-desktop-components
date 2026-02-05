@@ -446,11 +446,19 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     },
     tokens: {
       type: Object
+    },
+    isSearching: {
+      type: Boolean
+    },
+    searchQuery: {
+      type: String
     }
   };
   constructor() {
     super();
     this.conversationState = [];
+    this.isSearching = false;
+    this.searchQuery = null;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -469,12 +477,16 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
   messageEvent(event) {
     const message = event.detail;
-    this.#checkConversationState(message);
     switch (message.role) {
+      case "loading":
+        this.handleLoadingEvent(event);
+        break;
       case "assistant":
+        this.#checkConversationState(message);
         this.handleAIResponseEvent(event);
         break;
       case "user":
+        this.#checkConversationState(message);
         this.handleUserPromptEvent(event);
         break;
     }
@@ -495,6 +507,16 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     if (convIdChanged || isReloadingSameConvo) {
       this.conversationState = [];
     }
+  }
+  handleLoadingEvent(event) {
+    const {
+      isSearching,
+      searchQuery
+    } = event.detail;
+    this.isSearching = !!isSearching;
+    this.searchQuery = searchQuery || null;
+    this.requestUpdate();
+    this.#scrollToBottom();
   }
 
   /**
@@ -526,21 +548,29 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
    */
 
   handleAIResponseEvent(event) {
+    this.isSearching = false;
+    this.searchQuery = null;
     const {
       convId,
       ordinal,
       id: messageId,
       content,
       memoriesApplied,
-      tokens
+      tokens,
+      webSearchQueries
     } = event.detail;
+    if (typeof content.body !== "string" || !content.body) {
+      return;
+    }
     this.conversationState[ordinal] = {
       role: "assistant",
       convId,
       messageId,
       body: content.body,
       appliedMemories: memoriesApplied ?? [],
-      searchTokens: tokens?.search || []
+      // The "webSearchQueries" are coming from a conversation that is being initialized
+      // and "tokens" are streaming in from a live conversation.
+      searchTokens: webSearchQueries ?? tokens?.search ?? []
     };
     this.requestUpdate();
   }
@@ -560,6 +590,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       />
       <div class="chat-content-wrapper">
         ${this.conversationState.map(msg => {
+      if (!msg) {
+        return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
+      }
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
             <div class=${`chat-bubble chat-bubble-${msg.role}`}>
               <ai-chat-message
@@ -577,6 +610,15 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
             </div>
           `;
     })}
+        ${this.isSearching ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+              <div
+                class="chat-bubble chat-bubble-assistant searching-indicator"
+              >
+                <span class="searching-text">
+                  ${this.searchQuery ? `Searching for: "${this.searchQuery}"` : "Searching the web..."}
+                </span>
+              </div>
+            ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
       </div>
     `;
   }
@@ -595,7 +637,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.9d0eff049cdb6
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.067610f0ca15afd5834d.css";
+module.exports = __webpack_require__.p + "ai-chat-content.c2a80b84cd376127d6be.css";
 
 /***/ }),
 
@@ -680,4 +722,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.a0cb27fd.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ea4a81d3.iframe.bundle.js.map

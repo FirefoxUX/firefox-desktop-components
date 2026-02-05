@@ -411,7 +411,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.51aaf8da984444f67049.css";
+module.exports = __webpack_require__.p + "moz-box-item.7fa5276cb202f9c6059e.css";
 
 /***/ }),
 
@@ -1024,4 +1024,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.b266ab2c.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.866fccb4.iframe.bundle.js.map
