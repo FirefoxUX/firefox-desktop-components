@@ -47,7 +47,7 @@ __webpack_require__.r(__webpack_exports__);
  *   - "toggle-applied-memories"
  *       detail: { messageId, open }
  *   - "remove-applied-memory"
- *       detail: { messageId, index, memory }
+ *       detail: { memoryId }
  *   - "retry-without-memories"
  *       detail: { messageId }
  */
@@ -121,24 +121,14 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
       }
     }));
   }
-  _onRemoveMemory(event, index) {
+  _onRemoveMemory(event, memory) {
     event.stopPropagation();
-    if (!Array.isArray(this.appliedMemories)) {
-      return;
-    }
-    const memory = this.appliedMemories[index];
-
-    // Remove memory visually, but update will be done by parent
-    this.appliedMemories = this.appliedMemories.filter((_, i) => {
-      return i !== index;
-    });
     this.dispatchEvent(new CustomEvent("remove-applied-memory", {
       bubbles: true,
       composed: true,
       detail: {
-        messageId: this.messageId,
-        index,
-        memory
+        memory,
+        messageId: this.messageId
       }
     }));
   }
@@ -151,14 +141,6 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         messageId: this.messageId
       }
     }));
-  }
-
-  // TODO: Update formatting function once shape of memories passed is confirmed
-  _formatMemoryLabel(memory) {
-    if (typeof memory === "string") {
-      return memory;
-    }
-    return "";
   }
   renderPopover() {
     if (!this._hasMemories) {
@@ -174,24 +156,19 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         @click=${event => this._onPopoverClick(event)}
       >
         <ul class="memories-list">
-          ${visibleMemories.map((memory, index) => {
-      const label = this._formatMemoryLabel(memory);
-      if (!label) {
-        return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
-      }
-
+          ${visibleMemories.map(memory => {
       // @todo Bug 2010069
       // Localize aria-label
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
               <li class="memories-list-item">
-                <span class="memories-list-label">${label}</span>
+                <span class="memories-list-label">${memory}</span>
                 <moz-button
                   class="memories-remove-button"
                   type="ghost"
                   size="small"
                   iconsrc="chrome://global/skin/icons/close.svg"
                   aria-label="Remove this memory"
-                  @click=${event => this._onRemoveMemory(event, index)}
+                  @click=${event => this._onRemoveMemory(event, memory)}
                 ></moz-button>
               </li>
             `;
@@ -207,6 +184,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
             class="retry-row-button"
             data-l10n-id="aiwindow-retry-without-memories"
             data-l10n-attrs="label"
+            @click=${event => this._onRetryWithoutMemories(event)}
           ></moz-button>
         </div>
       </div>
@@ -226,7 +204,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         type="ghost"
         size="small"
         iconposition="start"
-        iconsrc="chrome://global/skin/icons/highlights.svg"
+        iconsrc="chrome://browser/content/aiwindow/assets/memories-on.svg"
         aria-haspopup="dialog"
         aria-expanded=${this.open && this._hasMemories}
         data-l10n-id="aiwindow-memories-used"
@@ -466,6 +444,17 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.dispatchEvent(new CustomEvent("AIChatContent:Ready", {
       bubbles: true
     }));
+    this.#initFooterActionListeners();
+  }
+  #dispatchFooterAction(action, detail) {
+    this.dispatchEvent(new CustomEvent("AIChatContent:DispatchFooterAction", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        action,
+        ...(detail ?? {})
+      }
+    }));
   }
 
   /**
@@ -474,6 +463,44 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
 
   #initEventListeners() {
     this.addEventListener("aiChatContentActor:message", this.messageEvent.bind(this));
+    this.addEventListener("aiChatContentActor:truncate", this.truncateEvent.bind(this));
+    this.addEventListener("aiChatContentActor:remove-applied-memory", this.removeAppliedMemoryEvent.bind(this));
+  }
+
+  /**
+   * Initialize event listeners for footer actions (retry, copy, etc.)
+   * emitted by child components.
+   */
+
+  #initFooterActionListeners() {
+    this.addEventListener("copy-message", event => {
+      const {
+        messageId
+      } = event.detail ?? {};
+      const text = this.#getAssistantMessageBody(messageId);
+      this.#dispatchFooterAction("copy", {
+        messageId,
+        text
+      });
+    });
+    this.addEventListener("retry-message", event => {
+      this.#dispatchFooterAction("retry", event.detail);
+    });
+    this.addEventListener("retry-without-memories", event => {
+      this.#dispatchFooterAction("retry-without-memories", event.detail);
+    });
+    this.addEventListener("remove-applied-memory", event => {
+      this.#dispatchFooterAction("remove-applied-memory", event.detail);
+    });
+  }
+  #getAssistantMessageBody(messageId) {
+    if (!messageId) {
+      return "";
+    }
+    const msg = this.conversationState.find(m => {
+      return m?.role === "assistant" && m?.messageId === messageId;
+    });
+    return msg?.body ?? "";
   }
   messageEvent(event) {
     const message = event.detail;
@@ -581,6 +608,33 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         wrapper.scrollTop = wrapper.scrollHeight;
       }
     });
+  }
+  truncateEvent(event) {
+    const {
+      messageId
+    } = event.detail ?? {};
+    if (!messageId) {
+      return;
+    }
+    const idx = this.conversationState.findIndex(m => {
+      return m?.role === "assistant" && m?.messageId === messageId;
+    });
+    if (idx === -1) {
+      return;
+    }
+    this.conversationState = this.conversationState.slice(0, idx);
+    this.requestUpdate();
+  }
+  removeAppliedMemoryEvent(event) {
+    const {
+      messageId,
+      memoryId
+    } = event.detail ?? {};
+    const msg = this.conversationState.find(m => {
+      return m?.role === "assistant" && m?.messageId === messageId;
+    });
+    msg.appliedMemories = msg.appliedMemories.filter(memory => memory?.id !== memoryId);
+    this.requestUpdate();
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -722,4 +776,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ea4a81d3.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.bfeaf62e.iframe.bundle.js.map
