@@ -220,6 +220,13 @@ customElements.define("applied-memories-button", AppliedMemoriesButton);
 
 /***/ }),
 
+/***/ 36490:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "chat-assistant-loader.bd537c3f25617137d65d.css";
+
+/***/ }),
+
 /***/ 52944:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -393,6 +400,65 @@ customElements.define("assistant-message-footer", AssistantMessageFooter);
 
 /***/ }),
 
+/***/ 71526:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ChatAssistantLoader: () => (/* binding */ ChatAssistantLoader)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_loader_chat_assistant_loader_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(36490);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Loader/spinner visible while the assistant is thinking
+ *
+ * isSearch - true when this component is being used for loading a search handoff action
+ */
+class ChatAssistantLoader extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static properties = {
+    isSearch: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    this.isSearch = false;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_loader_chat_assistant_loader_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <!-- TO DO: add fluent string when UX writing team finished copy - https://bugzilla.mozilla.org/show_bug.cgi?id=2014907 -->
+      <div
+        class="chat-assistant-loader"
+        aria-label=" ${this.isSearch ? `` : `Loading assistant response`}"
+      >
+        <span class="chat-assistant-loader__spinner"></span>
+        ${this.isSearch ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+              <p class="chat-assistant-loader__text">Analyzing web search</p>
+            ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+      </div>
+    `;
+  }
+}
+customElements.define("chat-assistant-loader", ChatAssistantLoader);
+
+/***/ }),
+
 /***/ 75706:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -404,12 +470,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
 /* harmony import */ var chrome_browser_content_aiwindow_components_assistant_message_footer_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56653);
+/* harmony import */ var chrome_browser_content_aiwindow_components_chat_assistant_loader_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(71526);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+
+// eslint-disable-next-line import/no-unassigned-import
 
 // eslint-disable-next-line import/no-unassigned-import
 
@@ -428,15 +497,15 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     isSearching: {
       type: Boolean
     },
-    searchQuery: {
-      type: String
+    assistantIsLoading: {
+      type: Boolean
     }
   };
   constructor() {
     super();
     this.conversationState = [];
     this.isSearching = false;
-    this.searchQuery = null;
+    this.assistantIsLoading = false;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -537,11 +606,10 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
   handleLoadingEvent(event) {
     const {
-      isSearching,
-      searchQuery
+      isSearching
     } = event.detail;
     this.isSearching = !!isSearching;
-    this.searchQuery = searchQuery || null;
+    this.assistantIsLoading = true;
     this.requestUpdate();
     this.#scrollToBottom();
   }
@@ -558,6 +626,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       content,
       ordinal
     } = event.detail;
+    this.assistantIsLoading = true;
     this.conversationState[ordinal] = {
       role: "user",
       body: content.body,
@@ -576,7 +645,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
 
   handleAIResponseEvent(event) {
     this.isSearching = false;
-    this.searchQuery = null;
+    this.assistantIsLoading = false;
     const {
       convId,
       ordinal,
@@ -664,15 +733,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
             </div>
           `;
     })}
-        ${this.isSearching ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-              <div
-                class="chat-bubble chat-bubble-assistant searching-indicator"
-              >
-                <span class="searching-text">
-                  ${this.searchQuery ? `Searching for: "${this.searchQuery}"` : "Searching the web..."}
-                </span>
-              </div>
-            ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${this.assistantIsLoading ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<chat-assistant-loader
+              .isSearch=${this.isSearching}
+            ></chat-assistant-loader>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
       </div>
     `;
   }
@@ -691,7 +754,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.9d0eff049cdb6
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.c2a80b84cd376127d6be.css";
+module.exports = __webpack_require__.p + "ai-chat-content.985f7380e2c218f65e91.css";
 
 /***/ }),
 
@@ -776,4 +839,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.bfeaf62e.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ef572816.iframe.bundle.js.map

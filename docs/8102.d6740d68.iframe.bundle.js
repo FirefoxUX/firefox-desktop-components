@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[160,8102,8708],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[160,8102],{
 
 /***/ 23066:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -40,8 +40,12 @@ const GROUP_TYPES = {
  *   The type of the group, either "list", "reorderable-list", or undefined.
  *   Note that "reorderable-list" only works with moz-box-item elements for now.
  * @slot default - Slot for rendering various moz-box-* elements.
+ * @slot static - Slot for rendering non-reorderable moz-box-item elements.
  * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
  *   the group is type="list".
+ * @slot <static-index>
+ *   Slots used to render moz-box-item elements that are not intended to be reorderable
+ *   when the group is type="reorderable-list".
  * @fires reorder
  *  Fired when items are reordered via drag-and-drop or keyboard shortcuts.
  *  The detail object contains draggedElement, targetElement, position, draggedIndex, and targetIndex.
@@ -56,6 +60,10 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     listItems: {
       type: Array,
       state: true
+    },
+    staticItems: {
+      type: Array,
+      state: true
     }
   };
   static queries = {
@@ -65,7 +73,10 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   };
   constructor() {
     super();
+    /** @type {Element[]} */
     this.listItems = [];
+    /** @type {Element[]} */
+    this.staticItems = [];
     this.listMutationObserver = new MutationObserver(this.updateItems.bind(this));
   }
   firstUpdated(changedProperties) {
@@ -81,7 +92,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     if (this.type == GROUP_TYPES.reorderable) {
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
         class="scroll-container"
-        itemselector="moz-box-item"
+        itemselector="moz-box-item:not([static])"
         dragselector=".handle"
         @reorder=${this.handleReorder}
       >
@@ -91,8 +102,9 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     return this.slotTemplate();
   }
   slotTemplate() {
-    if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-      let listTag = this.type == GROUP_TYPES.reorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
+    let isReorderable = this.type == GROUP_TYPES.reorderable;
+    if (this.type == GROUP_TYPES.list || isReorderable) {
+      let listTag = isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
           tabindex="-1"
           class="list scroll-container"
@@ -106,8 +118,14 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
               <slot name=${i}></slot>
             </li> `;
       })}
+          ${this.staticItems?.map((_, i) => {
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
+              <slot name=${`static-${i}`}></slot>
+            </li> `;
+      })}
         </${listTag}>
-        <slot hidden></slot>`;
+        <slot hidden></slot>
+        ${isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="static" hidden></slot>` : ""}`;
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container" tabindex="-1">
       <slot></slot>
@@ -164,12 +182,13 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
     let positionAttr = positionElement.getAttribute("position");
     let currentPosition = parseInt(positionAttr);
+    let allItems = [...this.listItems, ...this.staticItems];
     switch (event.key) {
       case "Down":
       case "ArrowDown":
         {
           event.preventDefault();
-          let nextItem = this.listItems[currentPosition + 1];
+          let nextItem = allItems[currentPosition + 1];
           nextItem?.focus(event);
           break;
         }
@@ -177,7 +196,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       case "ArrowUp":
         {
           event.preventDefault();
-          let prevItem = this.listItems[currentPosition - 1];
+          let prevItem = allItems[currentPosition - 1];
           prevItem?.focus(event);
           break;
         }
@@ -186,7 +205,8 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   handleFocus() {
     if (this.#tabbable) {
       this.#tabbable = false;
-      this.listItems.forEach(item => {
+      let allItems = [...this.listItems, ...this.staticItems];
+      allItems.forEach(item => {
         item.setAttribute("tabindex", "-1");
       });
     }
@@ -194,13 +214,29 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   handleBlur() {
     if (!this.#tabbable) {
       this.#tabbable = true;
-      this.listItems.forEach(item => {
+      let allItems = [...this.listItems, ...this.staticItems];
+      allItems.forEach(item => {
         item.removeAttribute("tabindex");
       });
     }
   }
   updateItems() {
-    this.listItems = [...this.children].filter(child => child.slot !== "header" && child.slot !== "footer" && !child.hidden);
+    /** @type {Element[]} */
+    let listItems = [];
+    /** @type {Element[]} */
+    let staticItems = [];
+    [...this.children].forEach(child => {
+      if (child.slot === "header" || child.slot === "footer" || child.hidden) {
+        return;
+      }
+      if (child.slot.includes("static")) {
+        staticItems.push(child);
+      } else {
+        listItems.push(child);
+      }
+    });
+    this.listItems = listItems;
+    this.staticItems = staticItems;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -225,12 +261,23 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
           item.setAttribute("position", i);
         }
         item.classList.toggle("first", i == 0 && !headerNode);
-        item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
+        item.classList.toggle("last", i == this.listItems.length - 1 && !this.staticItems.length && !footerNode);
         item.removeAttribute("tabindex");
       });
       if (!this.#tabbable) {
         this.#tabbable = true;
       }
+    }
+    if (changedProperties.has("staticItems") && this.staticItems.length) {
+      this.staticItems.forEach((item, i) => {
+        item.slot = `static-${i}`;
+        item.setAttribute("position", this.listItems.length + i);
+        let staticEl = item.querySelector("moz-box-item") ?? item;
+        staticEl.setAttribute("static", "");
+        item.classList.toggle("first", i == 0 && !this.listItems.length && !headerNode);
+        item.classList.toggle("last", i == this.staticItems.length - 1 && !footerNode);
+        item.removeAttribute("tabindex");
+      });
     }
     if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
       this.updateItems();
@@ -244,197 +291,7 @@ customElements.define("moz-box-group", MozBoxGroup);
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.7fa5276cb202f9c6059e.css";
-
-/***/ }),
-
-/***/ 87963:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   LargeIconLayout: () => (/* binding */ LargeIconLayout),
-/* harmony export */   MediumIconLayout: () => (/* binding */ MediumIconLayout),
-/* harmony export */   WithDescription: () => (/* binding */ WithDescription),
-/* harmony export */   WithIcon: () => (/* binding */ WithIcon),
-/* harmony export */   WithSlottedActionAtTheStart: () => (/* binding */ WithSlottedActionAtTheStart),
-/* harmony export */   WithSlottedActions: () => (/* binding */ WithSlottedActions),
-/* harmony export */   WithSlottedContent: () => (/* binding */ WithSlottedContent),
-/* harmony export */   WithSupportPage: () => (/* binding */ WithSupportPage),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_box_item_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(98102);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Box Item",
-  component: "moz-box-item",
-  argTypes: {
-    l10nId: {
-      options: ["moz-box-item-label", "moz-box-item-label-long", "moz-box-item-label-description", "moz-box-item-label-description-long"],
-      control: {
-        type: "select"
-      }
-    },
-    iconSrc: {
-      options: ["", "chrome://global/skin/icons/info.svg", "chrome://global/skin/icons/highlights.svg", "chrome://global/skin/icons/warning.svg", "chrome://global/skin/icons/heart.svg", "chrome://global/skin/icons/edit.svg"],
-      control: {
-        type: "select"
-      }
-    }
-  },
-  parameters: {
-    status: "in-development",
-    fluent: `
-moz-box-item-label =
-  .label = I'm a box item
-moz-box-item-label-long =
-  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit
-moz-box-item-label-description =
-  .label = I'm a box item
-  .description = Some description of the item
-moz-box-item-label-description-long =
-  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit
-  .description = Etiam leo est, condimentum ac tristique vitae, viverra nec sem.
-moz-box-delete-action =
-  .aria-label = Delete I'm a box item
-moz-box-edit-action =
-  .aria-label = Edit I'm a box item
-moz-box-toggle-action =
-  .aria-label = Toggle I'm a box item
-moz-box-more-action =
-  .aria-label = More options for I'm a box item
-    `
-  }
-});
-const Template = ({
-  l10nId,
-  iconSrc,
-  slottedContent,
-  layout,
-  slottedActions,
-  slottedActionsStart,
-  supportPage
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    .container {
-      width: 400px;
-    }
-
-    .slotted {
-      width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      text-align: center;
-    }
-
-    img {
-      width: 150px;
-      margin-block-end: var(--space-large);
-    }
-  </style>
-  <div class="container">
-    <moz-box-item
-      data-l10n-id=${l10nId}
-      iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-      layout=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(layout)}
-      support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
-    >
-      ${slottedContent ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted">
-            <img src="chrome://global/skin/illustrations/security-error.svg" />
-            <span>This is an example message</span>
-            <span class="text-deemphasized">
-              Message description would go down here
-            </span>
-          </div>` : ""}
-      ${slottedActionsStart ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-            <moz-button
-              iconsrc="chrome://global/skin/icons/delete.svg"
-              data-l10n-id="moz-box-delete-action"
-              slot="actions-start"
-            ></moz-button>
-          ` : ""}
-      ${slottedActions ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-            <moz-button
-              iconsrc="chrome://global/skin/icons/edit-outline.svg"
-              data-l10n-id="moz-box-edit-action"
-              type="ghost"
-              slot="actions"
-            ></moz-button>
-            <moz-toggle
-              slot="actions"
-              pressed
-              data-l10n-id="moz-box-toggle-action"
-            ></moz-toggle>
-            <moz-button
-              iconsrc="chrome://global/skin/icons/more.svg"
-              data-l10n-id="moz-box-more-action"
-              slot="actions"
-            ></moz-button>
-          ` : ""}
-    </moz-box-item>
-  </div>
-`;
-const Default = Template.bind({});
-Default.args = {
-  l10nId: "moz-box-item-label",
-  disabled: false,
-  iconSrc: "",
-  slottedContent: false,
-  slottedActions: false,
-  slottedActionsStart: false,
-  supportPage: ""
-};
-const WithDescription = Template.bind({});
-WithDescription.args = {
-  ...Default.args,
-  l10nId: "moz-box-item-label-description"
-};
-const WithIcon = Template.bind({});
-WithIcon.args = {
-  ...WithDescription.args,
-  iconSrc: "chrome://global/skin/icons/highlights.svg"
-};
-const WithSlottedContent = Template.bind({});
-WithSlottedContent.args = {
-  slottedContent: true
-};
-const LargeIconLayout = Template.bind({});
-LargeIconLayout.args = {
-  ...WithIcon.args,
-  iconSrc: "chrome://global/skin/icons/info.svg",
-  layout: "large-icon"
-};
-const MediumIconLayout = Template.bind({});
-MediumIconLayout.args = {
-  ...WithIcon.args,
-  iconSrc: "chrome://global/skin/icons/info.svg",
-  layout: "medium-icon"
-};
-const WithSlottedActions = Template.bind({});
-WithSlottedActions.args = {
-  ...Default.args,
-  slottedActions: true
-};
-const WithSlottedActionAtTheStart = Template.bind({});
-WithSlottedActionAtTheStart.args = {
-  ...Default.args,
-  slottedActionsStart: true
-};
-const WithSupportPage = Template.bind({});
-WithSupportPage.args = {
-  ...Default.args,
-  supportPage: "test",
-  iconSrc: "chrome://global/skin/icons/info.svg"
-};
+module.exports = __webpack_require__.p + "moz-box-item.13e1d259827a863cb51e.css";
 
 /***/ }),
 
@@ -549,7 +406,7 @@ class MozBoxItem extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBoxBase 
   }
   get isDraggable() {
     const reorderableParent = this.closest("moz-box-group");
-    return reorderableParent?.type == chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__.GROUP_TYPES.reorderable && this.slot != "header" && this.slot != "footer";
+    return reorderableParent?.type == chrome_global_content_elements_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__.GROUP_TYPES.reorderable && this.slot != "header" && this.slot != "footer" && !this.slot.includes("static");
   }
   focus(event) {
     if (event?.key == "Up" || event?.key == "ArrowUp") {
@@ -644,4 +501,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-moz-box-item-stories.944c3bd5.iframe.bundle.js.map
+//# sourceMappingURL=8102.d6740d68.iframe.bundle.js.map

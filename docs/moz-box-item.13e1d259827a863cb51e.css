@@ -18,6 +18,11 @@
   }
 }
 
+:host([static]) {
+  /* Indent static items the width of the handle button + gap */
+  padding-inline-start: calc(var(--button-size-icon) + var(--space-small));
+}
+
 .text-content.has-support-page {
   display: flex;
 

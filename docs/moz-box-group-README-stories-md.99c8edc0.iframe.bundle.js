@@ -56,8 +56,12 @@ const GROUP_TYPES = {
  *   The type of the group, either "list", "reorderable-list", or undefined.
  *   Note that "reorderable-list" only works with moz-box-item elements for now.
  * @slot default - Slot for rendering various moz-box-* elements.
+ * @slot static - Slot for rendering non-reorderable moz-box-item elements.
  * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
  *   the group is type="list".
+ * @slot <static-index>
+ *   Slots used to render moz-box-item elements that are not intended to be reorderable
+ *   when the group is type="reorderable-list".
  * @fires reorder
  *  Fired when items are reordered via drag-and-drop or keyboard shortcuts.
  *  The detail object contains draggedElement, targetElement, position, draggedIndex, and targetIndex.
@@ -72,6 +76,10 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     listItems: {
       type: Array,
       state: true
+    },
+    staticItems: {
+      type: Array,
+      state: true
     }
   };
   static queries = {
@@ -81,7 +89,10 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   };
   constructor() {
     super();
+    /** @type {Element[]} */
     this.listItems = [];
+    /** @type {Element[]} */
+    this.staticItems = [];
     this.listMutationObserver = new MutationObserver(this.updateItems.bind(this));
   }
   firstUpdated(changedProperties) {
@@ -97,7 +108,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     if (this.type == GROUP_TYPES.reorderable) {
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
         class="scroll-container"
-        itemselector="moz-box-item"
+        itemselector="moz-box-item:not([static])"
         dragselector=".handle"
         @reorder=${this.handleReorder}
       >
@@ -107,8 +118,9 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     return this.slotTemplate();
   }
   slotTemplate() {
-    if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-      let listTag = this.type == GROUP_TYPES.reorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
+    let isReorderable = this.type == GROUP_TYPES.reorderable;
+    if (this.type == GROUP_TYPES.list || isReorderable) {
+      let listTag = isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
           tabindex="-1"
           class="list scroll-container"
@@ -122,8 +134,14 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
               <slot name=${i}></slot>
             </li> `;
       })}
+          ${this.staticItems?.map((_, i) => {
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
+              <slot name=${`static-${i}`}></slot>
+            </li> `;
+      })}
         </${listTag}>
-        <slot hidden></slot>`;
+        <slot hidden></slot>
+        ${isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="static" hidden></slot>` : ""}`;
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container" tabindex="-1">
       <slot></slot>
@@ -180,12 +198,13 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     }
     let positionAttr = positionElement.getAttribute("position");
     let currentPosition = parseInt(positionAttr);
+    let allItems = [...this.listItems, ...this.staticItems];
     switch (event.key) {
       case "Down":
       case "ArrowDown":
         {
           event.preventDefault();
-          let nextItem = this.listItems[currentPosition + 1];
+          let nextItem = allItems[currentPosition + 1];
           nextItem?.focus(event);
           break;
         }
@@ -193,7 +212,7 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       case "ArrowUp":
         {
           event.preventDefault();
-          let prevItem = this.listItems[currentPosition - 1];
+          let prevItem = allItems[currentPosition - 1];
           prevItem?.focus(event);
           break;
         }
@@ -202,7 +221,8 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   handleFocus() {
     if (this.#tabbable) {
       this.#tabbable = false;
-      this.listItems.forEach(item => {
+      let allItems = [...this.listItems, ...this.staticItems];
+      allItems.forEach(item => {
         item.setAttribute("tabindex", "-1");
       });
     }
@@ -210,13 +230,29 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   handleBlur() {
     if (!this.#tabbable) {
       this.#tabbable = true;
-      this.listItems.forEach(item => {
+      let allItems = [...this.listItems, ...this.staticItems];
+      allItems.forEach(item => {
         item.removeAttribute("tabindex");
       });
     }
   }
   updateItems() {
-    this.listItems = [...this.children].filter(child => child.slot !== "header" && child.slot !== "footer" && !child.hidden);
+    /** @type {Element[]} */
+    let listItems = [];
+    /** @type {Element[]} */
+    let staticItems = [];
+    [...this.children].forEach(child => {
+      if (child.slot === "header" || child.slot === "footer" || child.hidden) {
+        return;
+      }
+      if (child.slot.includes("static")) {
+        staticItems.push(child);
+      } else {
+        listItems.push(child);
+      }
+    });
+    this.listItems = listItems;
+    this.staticItems = staticItems;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -241,12 +277,23 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
           item.setAttribute("position", i);
         }
         item.classList.toggle("first", i == 0 && !headerNode);
-        item.classList.toggle("last", i == this.listItems.length - 1 && !footerNode);
+        item.classList.toggle("last", i == this.listItems.length - 1 && !this.staticItems.length && !footerNode);
         item.removeAttribute("tabindex");
       });
       if (!this.#tabbable) {
         this.#tabbable = true;
       }
+    }
+    if (changedProperties.has("staticItems") && this.staticItems.length) {
+      this.staticItems.forEach((item, i) => {
+        item.slot = `static-${i}`;
+        item.setAttribute("position", this.listItems.length + i);
+        let staticEl = item.querySelector("moz-box-item") ?? item;
+        staticEl.setAttribute("static", "");
+        item.classList.toggle("first", i == 0 && !this.listItems.length && !headerNode);
+        item.classList.toggle("last", i == this.staticItems.length - 1 && !footerNode);
+        item.removeAttribute("tabindex");
+      });
     }
     if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
       this.updateItems();
@@ -849,6 +896,57 @@ function _createMdxContent(props) {
           })
         })
       })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "static-items",
+      children: "Static Items"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " component supports static (non-reorderable) items in reorderable lists. To mark an item as static, place it in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "static"
+      }), " named slot. Static items are positioned after regular items and cannot be reordered."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Static items are only supported in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type=\"reorderable-list\""
+      }), ". They are included in keyboard navigation, and can contain interactive elements."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-box-group type=\"reorderable-list\">\n  <moz-box-item label=\"Reorderable item 1\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"Reorderable item 2\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item slot=\"static\" label=\"Static item (cannot be reordered)\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n</moz-box-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group type=\"reorderable-list\"><moz-box-item label=\"Reorderable item 1\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"Reorderable item 2\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item slot=\"static\" label=\"Static item (cannot be reordered)\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></moz-box-group></div></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            width: "500px"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            type: "reorderable-list",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "Reorderable item 1",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "Reorderable item 2",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              slot: "static",
+              label: "Static item (cannot be reordered)",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            })]
+          })
+        })
+      })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
@@ -916,4 +1014,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-README-stories-md.3b4a459b.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-README-stories-md.99c8edc0.iframe.bundle.js.map
