@@ -220,6 +220,146 @@ customElements.define("applied-memories-button", AppliedMemoriesButton);
 
 /***/ }),
 
+/***/ 22356:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "chat-assistant-error.a2ed751e21ec3efb103a.css";
+
+/***/ }),
+
+/***/ 27984:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ChatAssistantError: () => (/* binding */ ChatAssistantError)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_error_chat_assistant_error_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(22356);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Shows an error message based on an error status
+ */
+class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static properties = {
+    errorStatus: {
+      type: Number
+    },
+    actionButton: {
+      type: Object
+    },
+    errorText: {
+      type: Object
+    }
+  };
+  constructor() {
+    super();
+    this.actionButton = null;
+    this.errorText = {
+      header: "smartwindow-assistant-error-generic-header"
+    };
+  }
+  connectedCallback() {
+    super.connectedCallback();
+  }
+  willUpdate(changed) {
+    if (changed.has("errorStatus")) {
+      this.getErrorInformation();
+    }
+  }
+
+  // TO DO: implement action buttons functionality
+
+  /* https://mozilla-hub.atlassian.net/browse/GENAI-2863
+  also needs its own error message/functionality */
+
+  /* https://mozilla-hub.atlassian.net/browse/GENAI-3168
+  retryAssistantMessage() {
+    console.log("retrying..");
+  }
+  */
+
+  /* https://mozilla-hub.atlassian.net/browse/GENAI-3170
+  switchToClassic() {
+    console.log("switch to classic..");
+  }
+  */
+
+  /* https://mozilla-hub.atlassian.net/browse/GENAI-3171
+  clearChat() {
+    console.log("open a new chat..");
+  }
+  */
+
+  getErrorInformation() {
+    if (this.errorStatus === 413) {
+      this.errorText = {
+        header: "smartwindow-assistant-error-long-message-header"
+      };
+      // this.actionButton = {
+      //   label: "smartwindow-clear-btn",
+      //   action: this.clearChat,
+      // };
+      return;
+    }
+    if (this.errorStatus === 429) {
+      this.errorText = {
+        header: "smartwindow-assistant-error-budget-header",
+        body: "smartwindow-assistant-error-budget-body"
+      };
+      // this.actionButton = {
+      //   label: "smartwindow-switch-btn",
+      //   action: this.switchToClassic,
+      // };
+      return;
+    }
+    if (this.errorStatus >= 499 && this.errorStatus <= 512) {
+      this.errorText = {
+        header: "smartwindow-assistant-error-connection-header"
+      };
+      // this.actionButton = {
+      //   label: "smartwindow-retry-btn",
+      //   action: this.retryAssistantMessage,
+      // };
+    }
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_error_chat_assistant_error_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="chat-assistant-error">
+        <h3
+          class="chat-assistant-error__header"
+          data-l10n-id=${this.errorText?.header}
+        ></h3>
+        ${this.errorText?.body ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<p
+              class="chat-assistant-error__body"
+              data-l10n-id=${this.errorText?.body}
+            ></p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+        ${this.actionButton ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-button
+              class="chat-assistant-error__button"
+              data-l10n-id=${this.actionButton?.label}
+              size="small"
+              @click=${this.actionButton?.action}
+            ></moz-button>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+      </div>
+    `;
+  }
+}
+customElements.define("chat-assistant-error", ChatAssistantError);
+
+/***/ }),
+
 /***/ 36490:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -470,7 +610,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
 /* harmony import */ var chrome_browser_content_aiwindow_components_assistant_message_footer_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(56653);
-/* harmony import */ var chrome_browser_content_aiwindow_components_chat_assistant_loader_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(71526);
+/* harmony import */ var chrome_browser_content_aiwindow_components_chat_assistant_error_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(27984);
+/* harmony import */ var chrome_browser_content_aiwindow_components_chat_assistant_loader_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(71526);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -482,30 +623,44 @@ __webpack_require__.r(__webpack_exports__);
 
 // eslint-disable-next-line import/no-unassigned-import
 
+// eslint-disable-next-line import/no-unassigned-import
+
 
 /**
  * A custom element for managing AI Chat Content
  */
 class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
+    assistantIsLoading: {
+      type: Boolean
+    },
     conversationState: {
       type: Array
     },
-    tokens: {
-      type: Object
+    errorStatus: {
+      type: String
     },
     isSearching: {
       type: Boolean
     },
-    assistantIsLoading: {
+    searchQuery: {
+      type: String
+    },
+    showErrorMessage: {
       type: Boolean
+    },
+    tokens: {
+      type: Object
     }
   };
   constructor() {
     super();
-    this.conversationState = [];
-    this.isSearching = false;
     this.assistantIsLoading = false;
+    this.conversationState = [];
+    this.errorStatus = null;
+    this.isSearching = false;
+    this.searchQuery = null;
+    this.showErrorMessage = false;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -573,6 +728,12 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
   messageEvent(event) {
     const message = event.detail;
+    if (message?.content?.isError) {
+      this.handleErrorEvent(message?.content?.status);
+      return;
+    }
+    this.showErrorMessage = false;
+    this.#checkConversationState(message);
     switch (message.role) {
       case "loading":
         this.handleLoadingEvent(event);
@@ -585,6 +746,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         this.#checkConversationState(message);
         this.handleUserPromptEvent(event);
         break;
+      // Used to clear the conversation state via side effects ( new conv id )
+      case "clear-conversation":
+        this.#checkConversationState(message);
     }
   }
 
@@ -612,6 +776,11 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.assistantIsLoading = true;
     this.requestUpdate();
     this.#scrollToBottom();
+  }
+  handleErrorEvent(errorStatus) {
+    this.errorStatus = errorStatus;
+    this.showErrorMessage = true;
+    this.requestUpdate();
   }
 
   /**
@@ -736,6 +905,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         ${this.assistantIsLoading ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<chat-assistant-loader
               .isSearch=${this.isSearching}
             ></chat-assistant-loader>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${this.showErrorMessage ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<chat-assistant-error
+              .errorStatus=${this.errorStatus}
+            ></chat-assistant-error>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
       </div>
     `;
   }
@@ -754,7 +926,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.9d0eff049cdb6
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.985f7380e2c218f65e91.css";
+module.exports = __webpack_require__.p + "ai-chat-content.7c198383ed4d4d2415bb.css";
 
 /***/ }),
 
@@ -839,4 +1011,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ef572816.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.218a09ee.iframe.bundle.js.map
