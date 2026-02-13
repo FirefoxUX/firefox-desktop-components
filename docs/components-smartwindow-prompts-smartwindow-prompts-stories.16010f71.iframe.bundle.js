@@ -1,14 +1,14 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3011,6284,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[751,6284,9240],{
 
-/***/ 16402:
+/***/ 14930:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   InputCta: () => (/* binding */ InputCta)
+/* harmony export */   SmartWindowPrompts: () => (/* binding */ SmartWindowPrompts)
 /* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_input_cta_input_cta_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(25814);
+/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_prompts_smartwindow_prompts_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(24718);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
 /* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
@@ -23,158 +23,69 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
- * An input call to action (CTA) button which shows the current action choice
- * for the Smartbar. It is updated depending on the recognised intent or the
- * action selected by the user.
+ * A component for displaying conversation starter prompts.
+ * Renders a list of prompt buttons that can be clicked to start a conversation.
  *
- * The component is based on `moz-button` and extended with an action menu.
- *
- * @typedef {"" | "chat" | "search" | "navigate"} SmartbarAction
- * @property {SmartbarAction} action - Current action or empty string for initial state.
+ * @property {Array<{text: string, type: string}>} prompts - Array of prompt objects to display
  */
-class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
+class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    action: {
+    prompts: {
+      type: Array
+    },
+    mode: {
       type: String,
       reflect: true
     }
   };
-  static ACTIONS = ["chat", "search", "navigate"];
   constructor() {
     super();
-    this.action = "";
-    this._menuId = `actions-menu-${crypto.randomUUID()}`;
+    this.prompts = [];
+    this.mode = "fullpage";
   }
-  get actionLabelId() {
-    return this.action ? `aiwindow-input-cta-label-${this.action}` : "";
-  }
-  #setAction(key) {
-    if (key === this.action || !InputCta.ACTIONS.includes(key)) {
-      return;
-    }
-    this.action = key;
-    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action-change", {
+  #promptSelected(swPrompt) {
+    const event = new CustomEvent("SmartWindowPrompt:prompt-selected", {
       detail: {
-        action: key
+        text: swPrompt.text,
+        type: swPrompt.type
       },
       bubbles: true,
       composed: true
-    }));
-  }
-  #onAction() {
-    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action", {
-      detail: {
-        action: this.action
-      },
-      bubbles: true,
-      composed: true
-    }));
-  }
-  willUpdate(changedProps) {
-    if (changedProps.has("action") && this.action && !InputCta.ACTIONS.includes(this.action)) {
-      console.warn(`Invalid action: ${this.action}`);
-      this.action = "";
-    }
+    });
+    this.dispatchEvent(event);
   }
   render() {
-    const panelListTemplate = this.action ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-list id=${this._menuId}>
-          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(InputCta.ACTIONS, key => key, key => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-                @click=${() => this.#setAction(key)}
-                data-l10n-id=${`aiwindow-input-cta-label-${key}`}
-              ></panel-item>`)}
-        </panel-list>` : null;
+    if (!this.prompts.length) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)``;
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_input_cta_input_cta_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${browser_components_aiwindow_ui_components_smartwindow_prompts_smartwindow_prompts_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      <moz-button
-        type=${this.action ? "split" : "default"}
-        class="input-cta"
-        .menuId=${this.action ? this._menuId : undefined}
-        .iconSrc=${this.action ? undefined : "chrome://browser/content/aiwindow/assets/input-cta-arrow-icon.svg"}
-        @click=${this.#onAction}
-        ?disabled=${!this.action}
-      >
-        <slot>
-          ${this.action && (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span data-l10n-id=${this.actionLabelId}></span>`}
-        </slot>
-      </moz-button>
-      ${panelListTemplate}
+      <!-- TODO : TODO a11y translations? -->
+      <div class="sw-prompts-container" role="group">
+        ${this.prompts.map(swPrompt => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <moz-button
+              class="sw-prompt-button"
+              @click=${() => this.#promptSelected(swPrompt)}
+              aria-label=${swPrompt.text}
+            >
+              ${swPrompt.text}
+            </moz-button>
+          `)}
+      </div>
     `;
   }
 }
-customElements.define("input-cta", InputCta);
+customElements.define("smartwindow-prompts", SmartWindowPrompts);
 
 /***/ }),
 
-/***/ 17767:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Chat: () => (/* binding */ Chat),
-/* harmony export */   Disabled: () => (/* binding */ Disabled),
-/* harmony export */   Navigate: () => (/* binding */ Navigate),
-/* harmony export */   Search: () => (/* binding */ Search),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_input_cta_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(16402);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Input CTA",
-  component: "input-cta",
-  parameters: {
-    fluent: `
-aiwindow-input-cta-label-chat = Ask
-aiwindow-input-cta-label-search = Search
-aiwindow-input-cta-label-navigate = Go
-    `
-  },
-  argTypes: {
-    action: {
-      options: ["", "chat", "search", "navigate"],
-      control: {
-        type: "select"
-      }
-    }
-  }
-});
-const Template = ({
-  action
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <input-cta .action=${action}></input-cta>
-`;
-const Disabled = Template.bind({});
-const Chat = Template.bind({});
-Chat.args = {
-  action: "chat"
-};
-const Search = Template.bind({});
-Search.args = {
-  action: "search"
-};
-const Navigate = Template.bind({});
-Navigate.args = {
-  action: "navigate"
-};
-
-/***/ }),
-
-/***/ 25814:
+/***/ 24718:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "input-cta.2fd6e663f27290f90e84.css";
+module.exports = __webpack_require__.p + "smartwindow-prompts.eeab90d8ba14e76d23fd.css";
 
 /***/ }),
 
@@ -872,7 +783,73 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
 }
 customElements.define("moz-button", MozButton);
 
+/***/ }),
+
+/***/ 87751:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   FullpageMode: () => (/* binding */ FullpageMode),
+/* harmony export */   SidebarMode: () => (/* binding */ SidebarMode),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_prompts_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(14930);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/AI Window/Smartwindow Prompts",
+  component: "smartwindow-prompts",
+  argTypes: {
+    mode: {
+      options: ["sidebar", "fullpage"],
+      control: {
+        type: "select"
+      }
+    }
+  }
+});
+const samplePrompts = [{
+  text: "Write a first draft",
+  type: "chat"
+}, {
+  text: "Brainstorm ideas",
+  type: "chat"
+}, {
+  text: "Compare tabs",
+  type: "chat"
+}];
+const Template = ({
+  mode,
+  swPrompts
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div style="width: 100%; min-height: 400px; padding: 20px;">
+    <smartwindow-prompts
+      .mode=${mode}
+      .swPrompts=${swPrompts}
+      @prompt-selected=${e => {
+  alert(`Selected: ${e.detail.text} (type: ${e.detail.type})`);
+}}
+    ></smartwindow-prompts>
+  </div>
+`;
+const SidebarMode = Template.bind({});
+SidebarMode.args = {
+  mode: "sidebar",
+  swPrompts: samplePrompts
+};
+const FullpageMode = Template.bind({});
+FullpageMode.args = {
+  mode: "fullpage",
+  swPrompts: samplePrompts
+};
+
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.887b2d2d.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-prompts-smartwindow-prompts-stories.16010f71.iframe.bundle.js.map

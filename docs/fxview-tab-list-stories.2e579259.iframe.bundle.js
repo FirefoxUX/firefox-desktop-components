@@ -895,10 +895,10 @@ class FxviewTabRowBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     }
   }
   auxActionHandler(event) {
-    if (event.type == "auxclick") {
+    if (event.type == "auxclick" && event.button == 1) {
       event.preventDefault();
       if (!window.IS_STORYBOOK) {
-        this.dispatchEvent(new CustomEvent("fxview-tab-list-aux-action", {
+        this.dispatchEvent(new CustomEvent("fxview-tab-list-middleclick-action", {
           bubbles: true,
           composed: true,
           detail: {
@@ -1861,4 +1861,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.bc19965d726ada185806.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.493acacf.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.2e579259.iframe.bundle.js.map

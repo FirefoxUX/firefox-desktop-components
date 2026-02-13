@@ -318,6 +318,14 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
     }
     this.construct();
   }
+  connectedMoveCallback() {
+    // No-op: Allows callers to move <browser> element in the DOM tree
+    // without destruct() + construct(). This here is merely an optimization.
+    //
+    // For the content to be available (and not unexpectedly destroyed),
+    // XULFrameElement::BindToTree and XULFrameElement::UnbindToTree skips
+    // frame loader construction/reconstruction on move (bug 2007742).
+  }
   disconnectedCallback() {
     this.destroy();
   }
@@ -1629,4 +1637,4 @@ customElements.define("browser", MozBrowser);
 /***/ })
 
 }]);
-//# sourceMappingURL=3184.eb6865e1.iframe.bundle.js.map
+//# sourceMappingURL=3184.9dd7faeb.iframe.bundle.js.map

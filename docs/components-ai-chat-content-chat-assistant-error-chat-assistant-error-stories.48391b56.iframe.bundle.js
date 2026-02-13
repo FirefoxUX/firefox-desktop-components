@@ -123,6 +123,12 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const ERROR_TYPES = {
+  PAYLOAD_TOO_LARGE: 413,
+  RATE_LIMIT: 429,
+  SERVER_ERROR_MIN: 500,
+  SERVER_ERROR_MAX: 599
+};
 
 /**
  * Shows an error message based on an error status
@@ -146,9 +152,6 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       header: "smartwindow-assistant-error-generic-header"
     };
   }
-  connectedCallback() {
-    super.connectedCallback();
-  }
   willUpdate(changed) {
     if (changed.has("errorStatus")) {
       this.getErrorInformation();
@@ -160,11 +163,13 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   /* https://mozilla-hub.atlassian.net/browse/GENAI-2863
   also needs its own error message/functionality */
 
-  /* https://mozilla-hub.atlassian.net/browse/GENAI-3168
   retryAssistantMessage() {
-    console.log("retrying..");
+    const event = new CustomEvent("aiChatError:retry-message", {
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
   }
-  */
 
   /* https://mozilla-hub.atlassian.net/browse/GENAI-3170
   switchToClassic() {
@@ -179,7 +184,7 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   */
 
   getErrorInformation() {
-    if (this.errorStatus === 413) {
+    if (this.errorStatus === ERROR_TYPES.PAYLOAD_TOO_LARGE) {
       this.errorText = {
         header: "smartwindow-assistant-error-long-message-header"
       };
@@ -189,7 +194,7 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       // };
       return;
     }
-    if (this.errorStatus === 429) {
+    if (this.errorStatus === ERROR_TYPES.RATE_LIMIT) {
       this.errorText = {
         header: "smartwindow-assistant-error-budget-header",
         body: "smartwindow-assistant-error-budget-body"
@@ -200,14 +205,11 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       // };
       return;
     }
-    if (this.errorStatus >= 499 && this.errorStatus <= 512) {
-      this.errorText = {
-        header: "smartwindow-assistant-error-connection-header"
+    if (this.errorStatus >= ERROR_TYPES.SERVER_ERROR_MIN && this.errorStatus <= ERROR_TYPES.SERVER_ERROR_MAX) {
+      this.actionButton = {
+        label: "smartwindow-retry-btn",
+        action: this.retryAssistantMessage.bind(this)
       };
-      // this.actionButton = {
-      //   label: "smartwindow-retry-btn",
-      //   action: this.retryAssistantMessage,
-      // };
     }
   }
   render() {
@@ -240,4 +242,4 @@ customElements.define("chat-assistant-error", ChatAssistantError);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-chat-assistant-error-chat-assistant-error-stories.afa05426.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-chat-assistant-error-chat-assistant-error-stories.48391b56.iframe.bundle.js.map
