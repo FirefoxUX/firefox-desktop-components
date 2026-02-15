@@ -466,7 +466,6 @@ a[is="moz-support-link"]:not(.sidebar-footer-link, [hidden]) {
   #blocklistsTree > treechildren::-moz-tree-image(hover) {
     fill: var(--text-color-list-item-hover);
     /* fill allows icon and text colors, but we have no such rules for stroke */
-    /* stylelint-disable-next-line stylelint-plugin-mozilla/no-non-semantic-token-usage */
     stroke: var(--background-color-list-item-hover);
   }
 }
@@ -914,7 +913,6 @@ dialog > .sync-engines-list + hbox {
     content: "";
     width: 1px;
     height: 100%;
-    /* stylelint-disable-next-line stylelint-plugin-mozilla/no-non-semantic-token-usage */
     background-color: var(--border-color);
     top: 0;
     inset-inline-end: 0;

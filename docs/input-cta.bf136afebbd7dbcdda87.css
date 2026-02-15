@@ -54,7 +54,7 @@ moz-button[type="split"].input-cta::part(chevron-button)::before {
   position: absolute;
   /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
   margin-inline-start: calc(-1 * var(--button-border-width));
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-non-semantic-token-usage, stylelint-plugin-mozilla/use-size-tokens, stylelint-plugin-mozilla/use-design-tokens */
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
   width: var(--button-border-width);
 }
 
@@ -80,7 +80,9 @@ moz-button[type="split"].input-cta::part(chevron-button)::before {
 
 panel-item::part(button) {
   -moz-context-properties: fill, stroke;
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
   fill: var(--panel-icon-fill-color);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
   stroke: var(--panel-icon-stroke-color);
 }
 
