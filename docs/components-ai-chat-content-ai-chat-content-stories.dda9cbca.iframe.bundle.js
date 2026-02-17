@@ -778,8 +778,11 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
    * @param {ChatMessage} message
    */
   #checkConversationState(message) {
-    const lastMessage = this.conversationState.at(-1);
-    const firstMessage = this.conversationState.at(0);
+    // Use find/findLast instead of at(0)/at(-1) because
+    // conversationState is a sparse array indexed by ordinal and
+    // at() can land on a hole (undefined) after truncation.
+    const lastMessage = this.conversationState.findLast(m => m);
+    const firstMessage = this.conversationState.find(m => m);
     const isReloadingSameConvo = firstMessage && firstMessage.convId === message.convId && firstMessage.ordinal === message.ordinal;
     const convIdChanged = message.convId !== lastMessage?.convId;
 
@@ -1075,4 +1078,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.076bf84b.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.dda9cbca.iframe.bundle.js.map
