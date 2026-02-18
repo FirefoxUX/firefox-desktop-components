@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,5944],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,3732,5944],{
 
 /***/ 9538:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -101,6 +101,9 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     return typeof Services !== "undefined";
   }
   async getFolderFromPath(path) {
+    if (Cu.isInAutomation && Services.appinfo.OS === "WINNT" && path.includes("/")) {
+      console.error(`moz-input-folder: path contains forward slashes: "${path}"`, new Error().stack);
+    }
     let folder = null;
     try {
       folder = await IOUtils.getDirectory(path);
@@ -181,6 +184,162 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
   }
 }
 customElements.define("moz-input-folder", MozInputFolder);
+
+/***/ }),
+
+/***/ 29179:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   Disabled: () => (/* binding */ Disabled),
+/* harmony export */   WithEllipsizedLabel: () => (/* binding */ WithEllipsizedLabel),
+/* harmony export */   WithIcon: () => (/* binding */ WithIcon),
+/* harmony export */   WithPlaceholder: () => (/* binding */ WithPlaceholder),
+/* harmony export */   WithSlottedDescription: () => (/* binding */ WithSlottedDescription),
+/* harmony export */   WithSlottedSupportLink: () => (/* binding */ WithSlottedSupportLink),
+/* harmony export */   WithSupportLink: () => (/* binding */ WithSupportLink),
+/* harmony export */   WithValue: () => (/* binding */ WithValue),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__),
+/* harmony export */   withDescription: () => (/* binding */ withDescription)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _moz_input_folder_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(13654);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Input Folder",
+  component: "moz-input-folder",
+  argTypes: {
+    l10nId: {
+      options: ["moz-input-folder-label", "moz-input-folder-placeholder", "moz-input-folder-description", "moz-input-folder-long-label"],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    status: "in-development",
+    handles: ["change", "click"],
+    fluent: `
+moz-input-folder-label =
+  .label = Save files to
+moz-input-folder-placeholder =
+  .label = Save files to
+  .placeholder = Select folder
+moz-input-folder-description =
+  .label = Save files to
+  .description = Description text
+  .placeholder = Select folder
+moz-input-folder-long-label =
+  .label = Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum libero enim, luctus eu ante a, maximus imperdiet mi. Suspendisse sodales, nisi et commodo malesuada, lectus.
+    `
+  }
+});
+const Template = ({
+  name,
+  value,
+  iconSrc,
+  disabled,
+  l10nId,
+  description,
+  supportPage,
+  hasSlottedDescription,
+  hasSlottedSupportLink,
+  ellipsized
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div style="width: 400px;">
+    <moz-input-folder
+      name=${name}
+      value=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(value || null)}
+      iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc || null)}
+      ?disabled=${disabled}
+      data-l10n-id=${l10nId}
+      support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage || null)}
+      @click=${{
+  handleEvent: e => {
+    if (e.composedPath().some(el => el.localName == "moz-button")) {
+      e.stopPropagation();
+      alert("This would open the file picker");
+    }
+  },
+  capture: true
+}}
+      class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+  "text-truncated-ellipsis": ellipsized
+})}
+    >
+      ${hasSlottedDescription ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div slot="description">${description}</div>` : ""}
+      ${hasSlottedSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<a slot="support-link" href="www.example.com">Click me!</a>` : ""}
+    </moz-input-folder>
+  </div>
+`;
+const Default = Template.bind({});
+Default.args = {
+  name: "example-moz-input-folder",
+  value: "",
+  iconSrc: "",
+  disabled: false,
+  l10nId: "moz-input-folder-label",
+  supportPage: "",
+  hasSlottedDescription: false,
+  hasSlottedSupportLink: false
+};
+const WithValue = Template.bind({});
+WithValue.args = {
+  ...Default.args,
+  value: "/User/Downloads"
+};
+const WithPlaceholder = Template.bind({});
+WithPlaceholder.args = {
+  ...Default.args,
+  l10nId: "moz-input-folder-placeholder"
+};
+const WithIcon = Template.bind({});
+WithIcon.args = {
+  ...Default.args,
+  iconSrc: "chrome://global/skin/icons/highlights.svg"
+};
+const withDescription = Template.bind({});
+withDescription.args = {
+  ...Default.args,
+  l10nId: "moz-input-folder-description"
+};
+const WithSlottedDescription = Template.bind({});
+WithSlottedDescription.args = {
+  ...Default.args,
+  description: "This is a custom slotted description.",
+  hasSlottedDescription: true
+};
+const Disabled = Template.bind({});
+Disabled.args = {
+  ...Default.args,
+  l10nId: "moz-input-folder-description",
+  disabled: true
+};
+const WithSupportLink = Template.bind({});
+WithSupportLink.args = {
+  ...Default.args,
+  supportPage: "support-page",
+  l10nId: "moz-input-folder-description"
+};
+const WithSlottedSupportLink = Template.bind({});
+WithSlottedSupportLink.args = {
+  ...Default.args,
+  hasSlottedSupportLink: true,
+  l10nId: "moz-input-folder-description"
+};
+const WithEllipsizedLabel = Template.bind({});
+WithEllipsizedLabel.args = {
+  ...Default.args,
+  ellipsized: true,
+  l10nId: "moz-input-folder-long-label"
+};
 
 /***/ }),
 
@@ -284,4 +443,4 @@ customElements.define("moz-input-text", MozInputText);
 /***/ })
 
 }]);
-//# sourceMappingURL=3654.fa7a8f36.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-moz-input-folder-stories.c55daa0e.iframe.bundle.js.map

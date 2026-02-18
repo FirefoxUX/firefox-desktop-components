@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[160,3450,3654,5944],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,5944,7550],{
 
 /***/ 5540:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -588,6 +588,9 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     return typeof Services !== "undefined";
   }
   async getFolderFromPath(path) {
+    if (Cu.isInAutomation && Services.appinfo.OS === "WINNT" && path.includes("/")) {
+      console.error(`moz-input-folder: path contains forward slashes: "${path}"`, new Error().stack);
+    }
     let folder = null;
     try {
       folder = await IOUtils.getDirectory(path);
@@ -671,297 +674,194 @@ customElements.define("moz-input-folder", MozInputFolder);
 
 /***/ }),
 
-/***/ 23066:
+/***/ 42572:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.bdb2145d284eeb75557e.css";
+module.exports = __webpack_require__.p + "moz-input-folder.043761f7caa2043cd685.css";
 
 /***/ }),
 
-/***/ 30160:
+/***/ 42717:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   GROUP_TYPES: () => (/* binding */ GROUP_TYPES),
-/* harmony export */   "default": () => (/* binding */ MozBoxGroup)
+/* harmony export */   BoxGroup: () => (/* binding */ BoxGroup),
+/* harmony export */   BrowserLayout: () => (/* binding */ BrowserLayout),
+/* harmony export */   Group: () => (/* binding */ Group),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(23066);
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(97959);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
-const GROUP_TYPES = {
-  list: "list",
-  reorderable: "reorderable-list"
-};
-
-/**
- * An element used to group combinations of moz-box-item, moz-box-link, and
- * moz-box-button elements and provide the expected styles.
- *
- * @tagname moz-box-group
- * @property {string} type
- *   The type of the group, either "list", "reorderable-list", or undefined.
- *   Note that "reorderable-list" only works with moz-box-item elements for now.
- * @slot default - Slot for rendering various moz-box-* elements.
- * @slot static - Slot for rendering non-reorderable moz-box-item elements.
- * @slot <index> - Slots used to assign moz-box-* elements to <li> elements when
- *   the group is type="list".
- * @slot <static-index>
- *   Slots used to render moz-box-item elements that are not intended to be reorderable
- *   when the group is type="reorderable-list".
- * @fires reorder
- *  Fired when items are reordered via drag-and-drop or keyboard shortcuts.
- *  The detail object contains draggedElement, targetElement, position, draggedIndex, and targetIndex.
- */
-
-class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  #tabbable = true;
-  static properties = {
-    type: {
-      type: String
-    },
-    listItems: {
-      type: Array,
-      state: true
-    },
-    staticItems: {
-      type: Array,
-      state: true
-    }
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Settings/Setting Group",
+  component: "setting-group",
+  parameters: {
+    status: "in-development",
+    handles: ["click", "input", "change"],
+    fluent: `
+group-example-label =
+  .label = Complicated grouping
+  .description = This group is showing that there can be a complicated config, not necessarily that this level of nesting should be used.
+checkbox-example-input =
+  .label = Checkbox example of setting-control
+  .description = Could have a description like moz-checkbox.
+checkbox-example-input2 =
+  .label = Another checkbox
+browser-layout-label =
+  .label = Browser layout
+browser-layout-radio-horizontal =
+  .label = Horizontal tabs
+  .description = Displayed at the top of the browser
+browser-layout-radio-vertical =
+  .label = Vertical tabs
+  .description = Displayed on the side, in the sidebar
+browser-layout-sidebar =
+  .label = Show sidebar
+  .description = Quickly access bookmarks, tabs from your phone, AI chatbots, and more without leaving your main view
+cookies-and-site-data =
+  .label = Cookies and Site Data
+  .description = Manage and delete cookies, history, cache, and site settings.
+clear-browsing-data =
+    .label = Clear browsing data
+storage-usage =
+  .label = Your stored cookies, site data, and cache are currently using { $value } { $unit } of disk space.
+manage-browsing-data =
+  .label = Manage browsing data
+manage-exceptions =
+  .label = Manage exceptions
+  .description = You can specify which websites are always or never allowed to use cookies and site data.
+radio-example-input =
+  .label = This is a radio group
+  .description = With a lovely description.
+radio-one =
+  .label = One
+  .description = This is the first option.
+radio-two =
+  .label = Two
+radio-three =
+  .label = Three
+`
+  }
+});
+function getSetting() {
+  return {
+    value: true,
+    on() {},
+    off() {},
+    userChange() {},
+    visible: () => true,
+    getControlConfig: c => c,
+    controllingExtensionInfo: {}
   };
-  static queries = {
-    reorderableList: "moz-reorderable-list",
-    headerSlot: "slot[name='header']",
-    footerSlot: "slot[name='footer']"
-  };
-  constructor() {
-    super();
-    /** @type {Element[]} */
-    this.listItems = [];
-    /** @type {Element[]} */
-    this.staticItems = [];
-    this.listMutationObserver = new MutationObserver(this.updateItems.bind(this));
-  }
-  firstUpdated(changedProperties) {
-    super.firstUpdated(changedProperties);
-    this.listMutationObserver.observe(this, {
-      attributeFilter: ["hidden"],
-      subtree: true,
-      childList: true
-    });
-    this.updateItems();
-  }
-  contentTemplate() {
-    if (this.type == GROUP_TYPES.reorderable) {
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-reorderable-list
-        class="scroll-container"
-        itemselector="moz-box-item:not([static])"
-        dragselector=".handle"
-        @reorder=${this.handleReorder}
-      >
-        ${this.slotTemplate()}
-      </moz-reorderable-list>`;
-    }
-    return this.slotTemplate();
-  }
-  slotTemplate() {
-    let isReorderable = this.type == GROUP_TYPES.reorderable;
-    if (this.type == GROUP_TYPES.list || isReorderable) {
-      let listTag = isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ol` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.literal)`ul`;
-      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.staticHtml)`<${listTag}
-          tabindex="-1"
-          class="list scroll-container"
-          aria-orientation="vertical"
-          @keydown=${this.handleKeydown}
-          @focusin=${this.handleFocus}
-          @focusout=${this.handleBlur}
-        >
-          ${this.listItems.map((_, i) => {
-        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
-              <slot name=${i}></slot>
-            </li> `;
-      })}
-          ${this.staticItems?.map((_, i) => {
-        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<li>
-              <slot name=${`static-${i}`}></slot>
-            </li> `;
-      })}
-        </${listTag}>
-        <slot hidden></slot>
-        ${isReorderable ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot name="static" hidden></slot>` : ""}`;
-    }
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="scroll-container" tabindex="-1">
-      <slot></slot>
-    </div>`;
-  }
-
-  /**
-   * Handles reordering of items in the list.
-   *
-   * @param {object} event - Event object or wrapper containing detail from moz-reorderable-list.
-   * @param {object} event.detail - Detail object from moz-reorderable-list.evaluateKeyDownEvent or drag-and-drop event.
-   * @param {Element} event.detail.draggedElement - The element being reordered.
-   * @param {Element} event.detail.targetElement - The target element to reorder relative to.
-   * @param {number} event.detail.position - Position relative to target (-1 for before, 0 for after).
-   * @param {number} event.detail.draggedIndex - The index of the element being reordered.
-   * @param {number} event.detail.targetIndex - The new index of the draggedElement.
-   */
-  handleReorder(event) {
-    let {
-      targetIndex
-    } = event.detail;
-    this.dispatchEvent(new CustomEvent("reorder", {
-      bubbles: true,
-      detail: event.detail
-    }));
-
-    /**
-     * Without requesting an animation frame, we will lose focus within
-     * the box group when using Ctrl + Shift + ArrowDown. The focus will
-     * move to the browser chrome which is unexpected.
-     *
-     */
-    requestAnimationFrame(() => {
-      this.listItems[targetIndex]?.focus();
-    });
-  }
-  handleKeydown(event) {
-    if (this.type == GROUP_TYPES.reorderable && event.originalTarget == event.target.handleEl) {
-      let detail = this.reorderableList.evaluateKeyDownEvent(event);
-      if (detail) {
-        event.stopPropagation();
-        this.handleReorder({
-          detail
-        });
-        return;
-      }
-    }
-    let positionElement = event.target.closest("[position]");
-    if (!positionElement) {
-      // If the user has clicked on the MozBoxGroup it may get keydown events
-      // even if there is no focused element within it. Then the event target
-      // will be the <ul> and we won't find an element with [position].
-      return;
-    }
-    let positionAttr = positionElement.getAttribute("position");
-    let currentPosition = parseInt(positionAttr);
-    let allItems = [...this.listItems, ...this.staticItems];
-    switch (event.key) {
-      case "Down":
-      case "ArrowDown":
-        {
-          event.preventDefault();
-          let nextItem = allItems[currentPosition + 1];
-          nextItem?.focus(event);
-          break;
-        }
-      case "Up":
-      case "ArrowUp":
-        {
-          event.preventDefault();
-          let prevItem = allItems[currentPosition - 1];
-          prevItem?.focus(event);
-          break;
-        }
-    }
-  }
-  handleFocus() {
-    if (this.#tabbable) {
-      this.#tabbable = false;
-      let allItems = [...this.listItems, ...this.staticItems];
-      allItems.forEach(item => {
-        item.setAttribute("tabindex", "-1");
-      });
-    }
-  }
-  handleBlur() {
-    if (!this.#tabbable) {
-      this.#tabbable = true;
-      let allItems = [...this.listItems, ...this.staticItems];
-      allItems.forEach(item => {
-        item.removeAttribute("tabindex");
-      });
-    }
-  }
-  updateItems() {
-    /** @type {Element[]} */
-    let listItems = [];
-    /** @type {Element[]} */
-    let staticItems = [];
-    [...this.children].forEach(child => {
-      if (child.slot === "header" || child.slot === "footer" || child.hidden) {
-        return;
-      }
-      if (child.slot.includes("static")) {
-        staticItems.push(child);
-      } else {
-        listItems.push(child);
-      }
-    });
-    this.listItems = listItems;
-    this.staticItems = staticItems;
-  }
-  render() {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_box_group_moz_box_group_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <slot name="header"></slot>
-      ${this.contentTemplate()}
-      <slot name="footer"></slot>
-    `;
-  }
-  updated(changedProperties) {
-    let headerNode = this.headerSlot.assignedNodes()[0];
-    let footerNode = this.footerSlot.assignedNodes().at(-1);
-    headerNode?.classList.add("first");
-    footerNode?.classList.add("last");
-    if (changedProperties.has("listItems") && this.listItems.length) {
-      this.listItems.forEach((item, i) => {
-        if (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable) {
-          item.slot = i;
-        }
-        item.setAttribute("position", i);
-        item.classList.toggle("first", i == 0 && !headerNode);
-        item.classList.toggle("last", i == this.listItems.length - 1 && !this.staticItems.length && !footerNode);
-        item.removeAttribute("tabindex");
-      });
-      if (!this.#tabbable) {
-        this.#tabbable = true;
-      }
-    }
-    if (changedProperties.has("staticItems") && this.staticItems.length) {
-      this.staticItems.forEach((item, i) => {
-        item.slot = `static-${i}`;
-        item.setAttribute("position", this.listItems.length + i);
-        let staticEl = item.querySelector("moz-box-item") ?? item;
-        staticEl.setAttribute("static", "");
-        item.classList.toggle("first", i == 0 && !this.listItems.length && !headerNode);
-        item.classList.toggle("last", i == this.staticItems.length - 1 && !footerNode);
-        item.removeAttribute("tabindex");
-      });
-    }
-    if (changedProperties.has("type") && (this.type == GROUP_TYPES.list || this.type == GROUP_TYPES.reorderable)) {
-      this.updateItems();
-    }
-  }
 }
-customElements.define("moz-box-group", MozBoxGroup);
-
-/***/ }),
-
-/***/ 42572:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-input-folder.043761f7caa2043cd685.css";
+const Template = ({
+  config
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <setting-group .config=${config} .getSetting=${getSetting}></setting-group>
+`;
+const BOX_GROUP_CONFIG = {
+  id: "data-usage-group",
+  control: "moz-box-group",
+  items: [{
+    id: "data-usage",
+    l10nId: "storage-usage",
+    control: "moz-box-item",
+    controlAttrs: {
+      "data-l10n-args": JSON.stringify({
+        value: 1.8,
+        unit: "GB"
+      })
+    }
+  }, {
+    id: "manage-browsing-data",
+    l10nId: "manage-browsing-data",
+    control: "moz-box-button"
+  }, {
+    id: "manage-exceptions",
+    l10nId: "manage-exceptions",
+    control: "moz-box-button"
+  }]
+};
+const Group = Template.bind({});
+Group.args = {
+  config: {
+    id: "group-example",
+    l10nId: "group-example-label",
+    items: [{
+      id: "checkbox-example",
+      l10nId: "checkbox-example-input"
+    }, {
+      id: "checkbox-example2",
+      l10nId: "checkbox-example-input2",
+      supportPage: "example-support",
+      iconSrc: "chrome://global/skin/icons/highlights.svg",
+      items: [{
+        id: "checkbox-example",
+        l10nId: "checkbox-example-input"
+      }, {
+        id: "radio-example",
+        l10nId: "radio-example-input",
+        control: "moz-radio-group",
+        options: [{
+          l10nId: "radio-one",
+          value: "one"
+        }, {
+          l10nId: "radio-two",
+          value: "two",
+          items: [BOX_GROUP_CONFIG]
+        }, {
+          l10nId: "radio-three",
+          value: "three"
+        }]
+      }]
+    }]
+  }
+};
+const BrowserLayout = Template.bind({});
+BrowserLayout.args = {
+  config: {
+    id: "browser-layout-example",
+    l10nId: "browser-layout-label",
+    items: [{
+      id: "tabs-layout",
+      control: "moz-radio-group",
+      options: [{
+        id: "horizontal-tabs",
+        l10nId: "browser-layout-radio-horizontal",
+        value: true
+      }, {
+        id: "vertical-tabs",
+        l10nId: "browser-layout-radio-vertical",
+        value: false
+      }]
+    }, {
+      id: "show-sidebar",
+      l10nId: "browser-layout-sidebar"
+    }]
+  }
+};
+const BoxGroup = Template.bind({});
+BoxGroup.args = {
+  config: {
+    id: "cookies-data",
+    l10nId: "cookies-and-site-data",
+    supportPage: "sure",
+    items: [{
+      l10nId: "clear-browsing-data",
+      control: "moz-box-button",
+      controlAttrs: {
+        iconsrc: "chrome://browser/skin/flame.svg"
+      }
+    }, BOX_GROUP_CONFIG]
+  }
+};
 
 /***/ }),
 
@@ -1188,22 +1088,15 @@ class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
 
 /***/ }),
 
-/***/ 96233:
+/***/ 97959:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   List: () => (/* binding */ List),
-/* harmony export */   ListWithHeaderAndFooter: () => (/* binding */ ListWithHeaderAndFooter),
-/* harmony export */   Reorderable: () => (/* binding */ Reorderable),
-/* harmony export */   ReorderableWithStatic: () => (/* binding */ ReorderableWithStatic),
-/* harmony export */   Scrollable: () => (/* binding */ Scrollable),
-/* harmony export */   Wrapped: () => (/* binding */ Wrapped),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   SettingGroup: () => (/* binding */ SettingGroup)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(30160);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(76664);
 /* harmony import */ var chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5540);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1211,414 +1104,240 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-// eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Box Group",
-  component: "moz-box-group",
-  argTypes: {
-    type: {
-      options: Object.keys(_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES),
-      mapping: _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES,
-      control: "select"
-    }
-  },
-  parameters: {
-    status: "in-development",
-    fluent: `
-moz-box-item =
-  .label = I'm a box item
-  .description = I'm part of a group
-moz-box-button-1 =
-  .label = I'm a box button in a group
-moz-box-button-2 =
-  .label = Delete this box button from a group
-moz-box-link =
-  .label = I'm a box link in a group
-moz-box-delete-action =
-  .title = Delete I'm a box item
-moz-box-edit-action =
-  .title = Edit I'm a box item
-moz-box-toggle-action =
-  .aria-label = Toggle I'm a box item
-moz-box-more-action =
-  .title = More options, I'm a box item
-moz-box-item-reorderable-1 =
-  .label = I'm box item number 1
-moz-box-item-reorderable-2 =
-  .label = I'm box item number 2
-moz-box-item-reorderable-3 =
-  .label = I'm box item number 3
-moz-box-item-reorderable-4 =
-  .label = I'm box item number 4
-moz-box-item-reorderable-5 =
-  .label = I'm box item number 5
-moz-box-item-header =
-  .label = I'm a header box item
-moz-box-button-footer =
-  .label = I'm a footer box button
-    `
-  }
-});
-function basicTemplate({
-  type,
-  hasHeader,
-  hasFooter,
-  hasStatic
-}) {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-group
-      type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type)}
-      @reorder=${handleReorderEvent}
-    >
-      ${hasHeader ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item
-            slot="header"
-            data-l10n-id="moz-box-item-header"
-          ></moz-box-item>` : ""}
-      ${getInnerElements(type, hasStatic)}
-      ${hasFooter ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-button
-            slot="footer"
-            data-l10n-id="moz-box-button-footer"
-          ></moz-box-button>` : ""}
-    </moz-box-group>
-    ${type == "list" ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-button class="delete" @click=${appendItem}>
-          Add an item
-        </moz-button>` : ""}`;
-}
-function getInnerElements(type, hasStatic) {
-  if (type == _moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_1__.GROUP_TYPES.reorderable) {
-    return reorderableElements(hasStatic);
-  }
-  return basicElements();
-}
-function reorderableElements(hasStatic) {
-  const createItems = (length, slot, startIndex = 0) => Array.from({
-    length
-  }).map((_, i) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item
-          data-l10n-id=${`moz-box-item-reorderable-${startIndex + i + 1}`}
-          slot=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(slot)}
-        >
-          <moz-button
-            iconsrc="chrome://global/skin/icons/edit-outline.svg"
-            data-l10n-id="moz-box-edit-action"
-            slot="actions-start"
-          ></moz-button>
-          <moz-toggle
-            slot="actions"
-            pressed
-            data-l10n-id="moz-box-toggle-action"
-          ></moz-toggle>
-        </moz-box-item>`);
-  if (hasStatic) {
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`${createItems(3)}${createItems(2, "static", 3)}`;
-  }
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`${createItems(5)}`;
-}
-function basicElements() {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-box-item data-l10n-id="moz-box-item">
-      <moz-button
-        iconsrc="chrome://global/skin/icons/edit-outline.svg"
-        data-l10n-id="moz-box-edit-action"
-        type="ghost"
-        slot="actions"
-      ></moz-button>
-      <moz-toggle
-        slot="actions"
-        pressed
-        data-l10n-id="moz-box-toggle-action"
-      ></moz-toggle>
-      <moz-button
-        iconsrc="chrome://global/skin/icons/more.svg"
-        data-l10n-id="moz-box-more-action"
-        slot="actions-start"
-      ></moz-button>
-    </moz-box-item>
-    <moz-box-link data-l10n-id="moz-box-link"></moz-box-link>
-    <moz-box-button data-l10n-id="moz-box-button-1"></moz-box-button>
-    <moz-box-item data-l10n-id="moz-box-item">
-      <moz-button
-        iconsrc="chrome://global/skin/icons/edit-outline.svg"
-        data-l10n-id="moz-box-edit-action"
-        type="ghost"
-        slot="actions-start"
-      ></moz-button>
-      <moz-button
-        iconsrc="chrome://global/skin/icons/more.svg"
-        data-l10n-id="moz-box-more-action"
-        slot="actions-start"
-      ></moz-button>
-    </moz-box-item>
-    <moz-box-button
-      iconsrc="chrome://global/skin/icons/delete.svg"
-      @click=${deleteItem}
-      data-l10n-id="moz-box-button-2"
-    ></moz-box-button> `;
-}
-const deleteItem = event => {
-  event.target.remove();
-};
-const appendItem = event => {
-  let group = event.target.getRootNode().querySelector("moz-box-group");
-  let boxItem = document.createElement("moz-box-item");
-  boxItem.label = "New box item";
-  boxItem.description = "New items are added to the list";
-  let actionButton = document.createElement("moz-button");
-  actionButton.addEventListener("click", () => boxItem.remove());
-  actionButton.iconSrc = "chrome://global/skin/icons/delete.svg";
-  actionButton.slot = "actions";
-  actionButton.setAttribute("data-l10n-id", "moz-box-delete-action");
-  boxItem.append(actionButton);
-  group.prepend(boxItem);
-};
 
 /**
- * Handles the reorder event from moz-box-group. Since we're not using
- * Lit for updates in this case, we need to manually reorder the elements.
- *
- * @param {CustomEvent} event - The reorder event.
- * @param {object} event.detail - Detail object containing reorder information.
- * @param {Element} event.detail.draggedElement - The element being reordered.
- * @param {Element} event.detail.targetElement - The target element to reorder relative to.
- * @param {number} event.detail.position - Position relative to target (-1 for before, 0 for after).
+ * @import { SettingElementConfig } from "chrome://browser/content/preferences/widgets/setting-element.mjs"
+ * @import { SettingControlConfig, SettingControlEvent } from "../setting-control/setting-control.mjs"
+ * @import { Preferences } from "chrome://global/content/preferences/Preferences.mjs"
+ * @import { TemplateResult } from "chrome://global/content/vendor/lit.all.mjs";
  */
-const handleReorderEvent = event => {
-  let group = event.target.getRootNode().querySelector("moz-box-group");
-  let {
-    draggedElement,
-    targetElement,
-    position
-  } = event.detail;
-  let moveBefore = position === -1;
-  if (moveBefore) {
-    group.insertBefore(draggedElement, targetElement);
-  } else {
-    group.insertBefore(draggedElement, targetElement.nextElementSibling);
-  }
-  draggedElement.focus();
-  group.updateItems();
-};
 
-// Example with all child elements wrapped in setting-control/setting-group,
-// which is the most common use case in Firefox preferences.
-function wrappedTemplate({
-  type,
-  hasHeader,
-  hasFooter
-}) {
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
-    .config=${getConfig({
-    type,
-    hasHeader,
-    hasFooter
-  })}
-    .setting=${DEFAULT_SETTING}
-    .getSetting=${getSetting}
-  ></setting-control>`;
-}
-const getConfig = ({
-  type,
-  hasHeader,
-  hasFooter
-}) => ({
-  id: "exampleWrapped",
-  control: "moz-box-group",
-  controlAttrs: {
-    type
-  },
-  items: [...(hasHeader ? [{
-    id: "header",
-    control: "moz-box-item",
-    l10nId: "moz-box-item-header",
-    controlAttrs: {
-      slot: "header "
-    }
-  }] : []), {
-    id: "item1",
-    control: "moz-box-item",
-    l10nId: "moz-box-item",
-    options: [{
-      id: "slotted-button",
-      control: "moz-button",
-      l10nId: "moz-box-edit-action",
-      iconSrc: "chrome://global/skin/icons/edit-outline.svg",
-      controlAttrs: {
-        type: "ghost",
-        slot: "actions"
-      }
-    }, {
-      id: "slotted-toggle",
-      control: "moz-toggle",
-      l10nId: "moz-box-toggle-action",
-      controlAttrs: {
-        slot: "actions"
-      }
-    }, {
-      id: "slotted-icon-button",
-      control: "moz-button",
-      l10nId: "moz-box-more-action",
-      iconSrc: "chrome://global/skin/icons/more.svg",
-      controlAttrs: {
-        slot: "actions"
-      }
-    }]
-  }, {
-    id: "link1",
-    control: "moz-box-link",
-    l10nId: "moz-box-link"
-  }, {
-    id: "button1",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-1"
-  }, {
-    id: "item2",
-    control: "moz-box-item",
-    l10nId: "moz-box-item",
-    options: [{
-      id: "slotted-button-start",
-      control: "moz-button",
-      l10nId: "moz-box-edit-action",
-      iconSrc: "chrome://global/skin/icons/edit-outline.svg",
-      controlAttrs: {
-        type: "ghost",
-        slot: "actions-start"
-      }
-    }, {
-      id: "slotted-icon-button-start",
-      control: "moz-button",
-      l10nId: "moz-box-more-action",
-      iconSrc: "chrome://global/skin/icons/more.svg",
-      controlAttrs: {
-        slot: "actions-start"
-      }
-    }]
-  }, {
-    id: "button2",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-2"
-  }, ...(hasFooter ? [{
-    id: "footer",
-    control: "moz-box-button",
-    l10nId: "moz-box-button-footer",
-    controlAttrs: {
-      slot: "footer "
-    }
-  }] : [])]
+/**
+ * @typedef {object} SettingGroupConfigExtensions
+ * @property {SettingControlConfig[]} items Array of SettingControlConfigs to render.
+ * @property {number} [headingLevel] A heading level to create the legend as (1-6).
+ * @property {boolean} [inProgress]
+ * Hide this section unless the browser.settings-redesign.enabled or
+ * browser.settings-redesign.<groupid>.enabled prefs are true.
+ * @property {"default"|"always"|"never"} [card]
+ * Whether to use a card. Default: use a card after SRD or in a sub-pane.
+ */
+/** @typedef {SettingElementConfig & SettingGroupConfigExtensions} SettingGroupConfig */
+
+const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group", "moz-message-bar"]);
+const DISMISS_HANDLERS = new Set(["moz-message-bar"]);
+const REORDER_HANDLERS = new Set(["moz-box-group"]);
+
+/**
+ * Enumish of attribute names used for changing setting-group and groupbox
+ * visibilities based on the visibility of child setting-controls.
+ */
+const HiddenAttr = Object.freeze({
+  /** Attribute used to hide elements without using the hidden attribute. */
+  Self: "data-hidden-by-setting-group",
+  /** Attribute used to signal that this element should not be searchable. */
+  Search: "data-hidden-from-search"
 });
-const DEFAULT_SETTING = {
-  value: 1,
-  on() {},
-  off() {},
-  userChange() {},
-  getControlConfig: c => c,
-  controllingExtensionInfo: {},
-  visible: true
-};
-function getSetting() {
-  return {
-    value: true,
-    on() {},
-    off() {},
-    userChange() {},
-    visible: () => true,
-    getControlConfig: c => c,
-    controllingExtensionInfo: {}
+class SettingGroup extends chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.SettingElement {
+  static properties = {
+    config: {
+      type: Object
+    },
+    groupId: {
+      type: String
+    },
+    getSetting: {
+      type: Function
+    },
+    srdEnabled: {
+      type: Boolean
+    },
+    inSubPane: {
+      type: Boolean
+    }
   };
-}
-const standardTemplateHtml = ({
-  scrollable
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    moz-box-group {
-      --box-group-max-height: ${scrollable ? "250px" : "unset"};
-    }
+  static queries = {
+    allControlEls: {
+      all: "setting-control"
+    },
+    fieldsetEl: "moz-fieldset"
+  };
 
-    .delete {
-      margin-top: var(--space-medium);
+  /**
+   * Immediate child control elements. See {@link SettingGroup.allControlEls} to
+   * get all ancestors.
+   */
+  get childControlEls() {
+    // @ts-expect-error bug 1997478
+    return [...this.fieldsetEl.children].filter(child => child instanceof chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SettingControl);
+  }
+  constructor() {
+    super();
+
+    /**
+     * @type {Preferences['getSetting'] | undefined}
+     */
+    this.getSetting = undefined;
+
+    /**
+     * @type {SettingGroupConfig | undefined}
+     */
+    this.config = undefined;
+
+    /**
+     * Set by initSettingGroup based on browser.settings-redesign.enabled.
+     */
+    this.srdEnabled = false;
+    /**
+     * Set by setting-pane if this is a sub pane so we can render cards even if SRD is off.
+     */
+    this.inSubPane = false;
+  }
+  createRenderRoot() {
+    return this;
+  }
+  willUpdate() {
+    if (!this.srdEnabled) {
+      this.classList.toggle("subcategory", this.config?.headingLevel == 1);
     }
-  </style>
-`;
-const Template = ({
-  type,
-  hasHeader,
-  hasFooter,
-  scrollable,
-  wrapped,
-  hasStatic
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  ${standardTemplateHtml({
-  scrollable
-})}
-  ${wrapped ? wrappedTemplate({
-  type,
-  hasHeader,
-  hasFooter
-}) : basicTemplate({
-  type,
-  hasHeader,
-  hasFooter,
-  hasStatic
-})}
-`;
-const ReorderableTemplate = ({
-  type,
-  hasHeader,
-  hasFooter,
-  scrollable,
-  hasStatic
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  ${standardTemplateHtml({
-  scrollable
-})}
-  ${basicTemplate({
-  type,
-  hasHeader,
-  hasFooter,
-  hasStatic
-})}
-`;
-const Default = Template.bind({});
-Default.args = {
-  type: "default",
-  hasHeader: false,
-  hasFooter: false,
-  scrollable: false,
-  wrapped: false,
-  hasStatic: false
-};
-const List = Template.bind({});
-List.args = {
-  ...Default.args,
-  type: "list"
-};
-const Reorderable = ReorderableTemplate.bind({});
-Reorderable.args = {
-  type: "reorderable",
-  hasHeader: false,
-  hasFooter: false,
-  scrollable: false
-};
-const ReorderableWithStatic = ReorderableTemplate.bind({});
-ReorderableWithStatic.args = {
-  ...Reorderable.args,
-  hasStatic: true
-};
-const ListWithHeaderAndFooter = Template.bind({});
-ListWithHeaderAndFooter.args = {
-  ...List.args,
-  hasHeader: true,
-  hasFooter: true
-};
-const Scrollable = Template.bind({});
-Scrollable.args = {
-  ...ListWithHeaderAndFooter.args,
-  scrollable: true
-};
-const Wrapped = Template.bind({});
-Wrapped.args = {
-  ...ListWithHeaderAndFooter.args,
-  wrapped: true
-};
+  }
+  async handleVisibilityChange() {
+    await this.updateComplete;
+    let hasVisibleControls = this.childControlEls.some(el => !el.hidden);
+    let groupbox = /** @type {XULElement} */this.closest("groupbox");
+    if (hasVisibleControls) {
+      if (this.hasAttribute(HiddenAttr.Self)) {
+        this.removeAttribute(HiddenAttr.Self);
+        this.removeAttribute(HiddenAttr.Search);
+      }
+      if (groupbox && groupbox.hasAttribute(HiddenAttr.Self)) {
+        groupbox.removeAttribute(HiddenAttr.Search);
+        groupbox.removeAttribute(HiddenAttr.Self);
+      }
+    } else {
+      this.setAttribute(HiddenAttr.Self, "");
+      this.setAttribute(HiddenAttr.Search, "true");
+      if (groupbox && !groupbox.hasAttribute(HiddenAttr.Search)) {
+        groupbox.setAttribute(HiddenAttr.Search, "true");
+        groupbox.setAttribute(HiddenAttr.Self, "");
+      }
+    }
+  }
+  async getUpdateComplete() {
+    let result = await super.getUpdateComplete();
+    // @ts-expect-error bug 1997478
+    await Promise.all([...this.allControlEls].map(el => el.updateComplete));
+    return result;
+  }
+
+  /**
+   * Notify child controls when their input has fired an event. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<InputEvent>} e
+   */
+  onChange(e) {
+    let inputEl = e.target;
+    inputEl.control?.onChange(inputEl);
+  }
+
+  /**
+   * Notify child controls when their input has been clicked. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<MouseEvent>} e
+   */
+  onClick(e) {
+    let inputEl = e.target;
+    if (!CLICK_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onClick(e);
+  }
+
+  /**
+   * Notify child controls when message bar has been dismissed. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<CustomEvent>} e
+   */
+  onMessageBarDismiss(e) {
+    let inputEl = e.target;
+    if (!DISMISS_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onMessageBarDismiss(e);
+  }
+
+  /**
+   * Notify child controls when items have been reordered. The reorder event is
+   * a CustomEvent that bubbles from reorderable moz-box-group elements when
+   * items are reordered via drag-and-drop or keyboard shortcuts.
+   *
+   * The detail object of the reorder event contains the following properties:
+   *
+   * - `draggedElement`: The element that was reordered.
+   * - `targetElement`: The element that the dragged element was reordered relative to.
+   * - `position`: The position of the drop relative to the target element. -1
+   *   means before, 0 means after.
+   * - `draggedIndex`: The original index of the element being reordered.
+   * - `targetIndex`: The new index of the draggedElement after reordering.
+   *
+   * @param {SettingControlEvent<CustomEvent>} e
+   */
+  onReorder(e) {
+    let inputEl = e.target;
+    if (!REORDER_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onReorder(e);
+  }
+
+  /**
+   * @param {SettingControlConfig} item
+   */
+  itemTemplate(item) {
+    let setting = this.getSetting(item.id);
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
+      .setting=${setting}
+      .config=${item}
+      .getSetting=${this.getSetting}
+    ></setting-control>`;
+  }
+
+  /**
+   * @param {TemplateResult} content The content to render in a container.
+   */
+  containerTemplate(content) {
+    if ((this.srdEnabled || this.inSubPane || this.config.card == "always") && this.config.card != "never") {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-card>${content}</moz-card>`;
+    }
+    return content;
+  }
+  render() {
+    if (!this.config) {
+      return "";
+    }
+    return this.containerTemplate((0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
+        .headingLevel=${this.srdEnabled ? 2 : this.config.headingLevel}
+        @change=${this.onChange}
+        @toggle=${this.onChange}
+        @click=${this.onClick}
+        @message-bar:user-dismissed=${this.onMessageBarDismiss}
+        @reorder=${this.onReorder}
+        @visibility-change=${this.handleVisibilityChange}
+        ${(0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.spread)(this.getCommonPropertyMapping(this.config))}
+        >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
+      >`);
+  }
+}
+customElements.define("setting-group", SettingGroup);
 
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.a8e7e555.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.af9f8321.iframe.bundle.js.map

@@ -101,6 +101,9 @@ class MozInputFolder extends chrome_global_content_elements_moz_input_text_mjs__
     return typeof Services !== "undefined";
   }
   async getFolderFromPath(path) {
+    if (Cu.isInAutomation && Services.appinfo.OS === "WINNT" && path.includes("/")) {
+      console.error(`moz-input-folder: path contains forward slashes: "${path}"`, new Error().stack);
+    }
     let folder = null;
     try {
       folder = await IOUtils.getDirectory(path);
@@ -919,4 +922,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-input-folder-README-stories-md.3672323d.iframe.bundle.js.map
+//# sourceMappingURL=moz-input-folder-README-stories-md.8d180ad0.iframe.bundle.js.map
