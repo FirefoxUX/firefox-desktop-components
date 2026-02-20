@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3833],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3833,7447],{
 
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -11,7 +11,7 @@ module.exports = __webpack_require__.p + "panel-item.99199edbdbb0168dfb20.css";
 /***/ 27534:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.f14f81e80c9e8160e0d1.css";
+module.exports = __webpack_require__.p + "panel-list.3fbb51a4387dd548cee2.css";
 
 /***/ }),
 
@@ -596,6 +596,7 @@ __webpack_require__.r(__webpack_exports__);
       this.button.setAttribute("part", "button");
       // Use a XUL label element if possible to show the accesskey.
       this.label = document.createXULElement ? document.createXULElement("label") : document.createElement("span");
+      this.label.setAttribute("part", "label");
       this.button.appendChild(this.label);
       let supportLinkSlot = document.createElement("slot");
       supportLinkSlot.name = "support-link";
@@ -793,7 +794,357 @@ __webpack_require__.r(__webpack_exports__);
   customElements.define("panel-item", PanelItem);
 }
 
+/***/ }),
+
+/***/ 45042:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "smartwindow-panel-list.6d46f39d614770aec681.css";
+
+/***/ }),
+
+/***/ 55362:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   SmartwindowPanelList: () => (/* binding */ SmartwindowPanelList)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45042);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_panel_list_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(43833);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * A generic panel list component for displaying grouped items in a popup.
+ *
+ * This component is agnostic to the data it displays - consumers control
+ * all logic including filtering, truncation, and special item handling.
+ *
+ * @typedef {{id: string, label: string, icon?: string, l10nId?: string}} ListItem
+ * @typedef {{items: ListItem[], headerL10nId?: string}} ItemGroup
+ * @property {ItemGroup[]} groups - Grouped list items to display
+ * @property {string} placeholderL10nId - Fluent ID for empty state message
+ * @property {object} anchor - Positioning anchor {left, top, width, height}
+ */
+class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static shadowRootOptions = {
+    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+  static properties = {
+    groups: {
+      type: Array
+    },
+    anchor: {
+      type: Object
+    },
+    placeholderL10nId: {
+      type: String
+    },
+    alwaysOpen: {
+      type: Boolean
+    }
+  };
+  #panelList = null;
+  #anchorElement = null;
+  constructor() {
+    super();
+    this.groups = [];
+    this.anchor = null;
+    this.placeholderL10nId = "";
+    this.alwaysOpen = false;
+  }
+  firstUpdated() {
+    this.#panelList = this.shadowRoot.querySelector("panel-list");
+    if (this.alwaysOpen) {
+      this.show();
+    }
+  }
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has("anchor")) {
+      // If anchor is an element use it directly,
+      // otherwise we can use the positioned span.
+      this.#anchorElement = this.anchor instanceof Element ? this.anchor : this.renderRoot.querySelector(".smartwindow-panel-list-anchor");
+    }
+  }
+  async show() {
+    await this.updateComplete;
+    this.#panelList.show(null, this.#anchorElement);
+  }
+  async hide() {
+    await this.updateComplete;
+    this.#panelList.hide();
+  }
+  async toggle() {
+    await this.updateComplete;
+    this.#panelList.toggle(null, this.#anchorElement);
+  }
+  handlePanelClick(e) {
+    const panelItem = e.target.closest("panel-item");
+    if (panelItem && !panelItem.classList.contains("panel-section-header")) {
+      const event = new CustomEvent("item-selected", {
+        detail: {
+          id: panelItem.itemId,
+          label: panelItem.itemLabel || panelItem.textContent.trim(),
+          icon: panelItem.itemIcon
+        },
+        bubbles: true,
+        composed: true,
+        cancelable: true
+      });
+      this.dispatchEvent(event);
+    }
+  }
+  handleKeyDown(e) {
+    this.dispatchEvent(new CustomEvent("panel-keydown", {
+      detail: {
+        originalEvent: e
+      },
+      bubbles: true,
+      composed: true
+    }));
+  }
+
+  // -------------------------
+  // Render helpers
+  // -------------------------
+
+  #isEmpty() {
+    return !this.groups.length || this.groups.every(g => !g.items?.length);
+  }
+  #renderAnchor() {
+    if (!this.anchor) {
+      return null;
+    }
+    const rect = this.getBoundingClientRect();
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
+      class="smartwindow-panel-list-anchor"
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)({
+      "--anchor-left": `${this.anchor.left - rect.left}px`,
+      "--anchor-top": `${this.anchor.top - rect.top}px`,
+      "--anchor-width": `${this.anchor.width}px`,
+      "--anchor-height": `${this.anchor.height}px`
+    })}
+    ></span>`;
+  }
+  #renderEmptyState() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="presentation"
+      class="panel-section-header"
+      data-l10n-id=${this.placeholderL10nId}
+    ></panel-item>`;
+  }
+  #renderGroupHeader(headerL10nId) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="presentation"
+      class="panel-section-header"
+      data-l10n-id=${headerL10nId}
+    ></panel-item>`;
+  }
+  #computeItemStyles(item) {
+    const styles = {};
+    if (item.icon) {
+      styles["--panel-item-icon-url"] = `url(${item.icon})`;
+    }
+    return styles;
+  }
+  #renderItem(item) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      .itemId=${item.id}
+      .itemLabel=${item.label}
+      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.icon ? "true" : undefined)}
+      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(this.#computeItemStyles(item))}
+    >
+      ${item.l10nId ? "" : item.label}
+    </panel-item>`;
+  }
+  #renderGroup(group) {
+    if (!group.items?.length) {
+      return null;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      ${group.headerL10nId ? this.#renderGroupHeader(group.headerL10nId) : null}
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
+    `;
+  }
+  #renderGroups() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(this.groups, (_group, index) => index, group => this.#renderGroup(group));
+  }
+  render() {
+    const isEmpty = this.#isEmpty();
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.#renderAnchor()}
+      <panel-list
+        @click=${this.handlePanelClick}
+        @keydown=${this.handleKeyDown}
+      >
+        ${isEmpty ? this.#renderEmptyState() : this.#renderGroups()}
+      </panel-list>
+    `;
+  }
+}
+customElements.define("smartwindow-panel-list", SmartwindowPanelList);
+
+/***/ }),
+
+/***/ 98231:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Empty: () => (/* binding */ Empty),
+/* harmony export */   MultipleGroups: () => (/* binding */ MultipleGroups),
+/* harmony export */   SingleGroup: () => (/* binding */ SingleGroup),
+/* harmony export */   SingleTab: () => (/* binding */ SingleTab),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55362);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/AI Window/Smartwindow Panel List",
+  component: "smartwindow-panel-list",
+  argTypes: {
+    groups: {
+      control: "object"
+    },
+    placeholderL10nId: {
+      control: "text"
+    }
+  },
+  decorators: [],
+  parameters: {
+    fluent: `
+smartbar-mentions-list-no-results-label = No results found
+smartbar-mentions-single-tab-label = Recent Sites
+smartbar-mentions-list-open-tabs-label = Tabs
+smartbar-mentions-list-previously-visited-pages-label = Previously visited
+    `
+  }
+});
+const Template = ({
+  groups,
+  placeholderL10nId
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div style="width: 300px; height: 400px; position: relative;">
+    <smartwindow-panel-list
+      .groups=${groups}
+      .placeholderL10nId=${placeholderL10nId}
+      .anchor=${{
+  left: 20,
+  top: 20,
+  width: 100,
+  height: 30
+}}
+      .alwaysOpen=${true}
+    ></smartwindow-panel-list>
+  </div>
+`;
+const Empty = Template.bind({});
+Empty.args = {
+  groups: [],
+  placeholderL10nId: "smartbar-mentions-list-no-results-label"
+};
+const SingleTab = Template.bind({});
+SingleTab.args = {
+  groups: [{
+    headerL10nId: "smartbar-mentions-single-tab-label",
+    items: [{
+      id: "current-tab",
+      label: "Smart window chat",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "closed1",
+      label: "MDN Web Docs",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "closed2",
+      label: "Wikipedia",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "closed3",
+      label: "GitHub",
+      icon: "chrome://branding/content/icon16.png"
+    }]
+  }],
+  placeholderL10nId: ""
+};
+const SingleGroup = Template.bind({});
+SingleGroup.args = {
+  groups: [{
+    headerL10nId: "smartbar-mentions-list-open-tabs-label",
+    items: [{
+      id: "tab1",
+      label: "Mozilla Firefox",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "tab2",
+      label: "GitHub",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "tab3",
+      label: "Stack Overflow",
+      icon: "chrome://branding/content/icon16.png"
+    }]
+  }],
+  placeholderL10nId: ""
+};
+const MultipleGroups = Template.bind({});
+MultipleGroups.args = {
+  groups: [{
+    headerL10nId: "smartbar-mentions-list-open-tabs-label",
+    items: [{
+      id: "tab1",
+      label: "Mozilla Firefox",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "tab2",
+      label: "GitHub",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "tab3",
+      label: "Stack Overflow",
+      icon: "chrome://branding/content/icon16.png"
+    }]
+  }, {
+    headerL10nId: "smartbar-mentions-list-previously-visited-pages-label",
+    items: [{
+      id: "closed1",
+      label: "MDN Web Docs",
+      icon: "chrome://branding/content/icon16.png"
+    }, {
+      id: "closed2",
+      label: "Wikipedia",
+      icon: "chrome://branding/content/icon16.png"
+    }]
+  }],
+  placeholderL10nId: ""
+};
+
 /***/ })
 
 }]);
-//# sourceMappingURL=3833.88fec356.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.458d1e7f.iframe.bundle.js.map

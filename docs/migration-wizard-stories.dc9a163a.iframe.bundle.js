@@ -559,7 +559,7 @@ module.exports = __webpack_require__.p + "moz-button-group.4b3da672913bb0fc2d88.
 /***/ 27534:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.f14f81e80c9e8160e0d1.css";
+module.exports = __webpack_require__.p + "panel-list.3fbb51a4387dd548cee2.css";
 
 /***/ }),
 
@@ -1151,6 +1151,7 @@ __webpack_require__.r(__webpack_exports__);
       this.button.setAttribute("part", "button");
       // Use a XUL label element if possible to show the accesskey.
       this.label = document.createXULElement ? document.createXULElement("label") : document.createElement("span");
+      this.label.setAttribute("part", "label");
       this.button.appendChild(this.label);
       let supportLinkSlot = document.createElement("slot");
       supportLinkSlot.name = "support-link";
@@ -3263,4 +3264,4 @@ if (globalThis.customElements) {
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.cacd0fa0.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.dc9a163a.iframe.bundle.js.map

@@ -12096,7 +12096,7 @@ module.exports = __webpack_require__.p + "multiline-editor.4e00d3ed41a2028a62f5.
 /***/ 27534:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.f14f81e80c9e8160e0d1.css";
+module.exports = __webpack_require__.p + "panel-list.3fbb51a4387dd548cee2.css";
 
 /***/ }),
 
@@ -12748,6 +12748,7 @@ __webpack_require__.r(__webpack_exports__);
       this.button.setAttribute("part", "button");
       // Use a XUL label element if possible to show the accesskey.
       this.label = document.createXULElement ? document.createXULElement("label") : document.createElement("span");
+      this.label.setAttribute("part", "label");
       this.button.appendChild(this.label);
       let supportLinkSlot = document.createElement("slot");
       supportLinkSlot.name = "support-link";
@@ -13343,4 +13344,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.5449ddda.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.af571c32.iframe.bundle.js.map
