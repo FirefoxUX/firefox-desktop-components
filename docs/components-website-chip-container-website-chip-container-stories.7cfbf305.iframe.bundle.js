@@ -157,6 +157,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5136);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6266);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -165,11 +166,43 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/** @typedef {import("chrome://browser/content/urlbar/SmartbarInput.mjs").ContextWebsite} ContextWebsite */
+
 /**
  * Container for rendering a horizontally scrollable row of website chips
  */
 class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static properties = {
+    websites: {
+      type: Array
+    },
+    chipType: {
+      type: String
+    }
+  };
+  constructor() {
+    super();
+    /** @type {ContextWebsite[]} */
+    this.websites = [];
+    this.chipType = "context-chip";
+  }
+  #onRemoveWebsite(website, event) {
+    event.stopPropagation();
+    this.dispatchEvent(new CustomEvent("ai-website-chip:remove", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        label: website.label
+      }
+    }));
+  }
   render() {
+    if (!this.websites.length) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
@@ -177,7 +210,15 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
       />
       <div class="chip-container">
         <div class="scroller" role="list">
-          <slot></slot>
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.websites, website => website.url, website => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+              <ai-website-chip
+                .type=${this.chipType}
+                .label=${website.label}
+                .href=${website.url}
+                .iconSrc=${website.iconSrc ?? ""}
+                @remove=${e => this.#onRemoveWebsite(website, e)}
+              ></ai-website-chip>
+            `)}
         </div>
       </div>
     `;
@@ -204,23 +245,20 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
 /* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39092);
-/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(6266);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/ Website Chip Container",
+  title: "Domain-specific UI Widgets/AI Window/Website Chip Container",
   component: "website-chip-container",
   // Constrained container to simulate a chat bubble.
   decorators: [story => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
       <div
         style="
           width: 326px;
-          display: flex;
           padding: 16px;
           box-sizing: border-box;
           border: 1px dashed #ccc;
@@ -230,30 +268,27 @@ __webpack_require__.r(__webpack_exports__);
       </div>
     `]
 });
-const Template = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container>
-    <ai-website-chip
-      type="context-chip"
-      label="example.com"
-      iconSrc="chrome://branding/content/about-logo.svg"
-      href="https://example.com"
-    ></ai-website-chip>
-    <ai-website-chip
-      type="context-chip"
-      label="firefox.com"
-      iconSrc="chrome://branding/content/icon16.png"
-    ></ai-website-chip>
-    <ai-website-chip
-      type="context-chip"
-      label="example.com"
-      iconSrc="chrome://branding/content/about-logo.svg"
-      href="https://example.com"
-    ></ai-website-chip>
-  </website-chip-container>
+const websites = [{
+  id: "https://example.com",
+  label: "example.com",
+  iconSrc: "chrome://branding/content/about-logo.svg"
+}, {
+  id: "https://firefox.com",
+  label: "firefox.com",
+  iconSrc: "chrome://branding/content/icon16.png"
+}, {
+  id: "https://example.com",
+  label: "example.com",
+  iconSrc: "chrome://branding/content/about-logo.svg"
+}];
+const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <website-chip-container
+    .chipType=${"context-chip"}
+    .websites=${websites}
+  ></website-chip-container>
 `;
-const Default = Template.bind({});
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.985858a9.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.7cfbf305.iframe.bundle.js.map
