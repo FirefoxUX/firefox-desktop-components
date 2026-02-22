@@ -879,7 +879,6 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       searchTokens
     };
     this.requestUpdate();
-    this.#scrollToBottom();
   }
   #scrollToBottom() {
     this.updateComplete.then(() => {
@@ -993,7 +992,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.99ef17ae8f504
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.7c198383ed4d4d2415bb.css";
+module.exports = __webpack_require__.p + "ai-chat-content.e1ddb6b86d0cae8c3ed2.css";
 
 /***/ }),
 
@@ -1078,4 +1077,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.dda9cbca.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.26bcec49.iframe.bundle.js.map

@@ -29,10 +29,10 @@
   flex-direction: column;
   gap: var(--space-small);
   margin-inline: auto;
-  max-width: calc(var(--size-item-xsmall) * 45.5);
   min-height: 0;
   overflow-y: auto;
-  padding: var(--space-large) var(--space-small);
+  padding-block: var(--space-large);
+  padding-inline: max(var(--space-medium), calc((100% - var(--smartwindow-content-max-width)) / 2));
   scroll-behavior: smooth;
   width: 100%;
 }
@@ -50,7 +50,7 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  padding: var(--space-large);
+  padding-block: var(--space-large);
 }
 
 .chat-bubble-user {
@@ -59,6 +59,7 @@
   border-radius: var(--space-medium);
   box-shadow: var(--smartwindow-shadow);
   max-width: 100%;
+  padding-inline: var(--space-large);
   width: fit-content;
 }
 

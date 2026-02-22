@@ -195,6 +195,7 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
       bubbles: true,
       composed: true,
       detail: {
+        url: website.url,
         label: website.label
       }
     }));
@@ -216,7 +217,7 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
                 .label=${website.label}
                 .href=${website.url}
                 .iconSrc=${website.iconSrc ?? ""}
-                @remove=${e => this.#onRemoveWebsite(website, e)}
+                @ai-website-chip:remove=${e => this.#onRemoveWebsite(website, e)}
               ></ai-website-chip>
             `)}
         </div>
@@ -291,4 +292,4 @@ const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPOR
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.7cfbf305.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.4b32453a.iframe.bundle.js.map

@@ -4,7 +4,7 @@
 
 .sw-prompts-container {
   display: flex;
-  padding: var(--space-xlarge);
+  padding-block: var(--space-xlarge);
   gap: var(--space-medium);
 }
 
@@ -18,13 +18,14 @@
 :host([mode="sidebar"]) .sw-prompts-container {
   flex-direction: column;
   align-items: flex-end;
+  margin-inline: var(--space-medium);
 }
 
 :host([mode="followup"]) .sw-prompts-container {
   flex-direction: column;
   align-items: flex-start;
-  padding: var(--space-large);
   padding-block-start: 0;
+  padding-block-end: var(--space-large);
 }
 
 :host([mode="followup"]) moz-button.sw-prompt-button::part(button) {
