@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.e3cec3f2b02ce595f91b.css";
+module.exports = __webpack_require__.p + "moz-promo.497e7e70ad6cff090a86.css";
 
 /***/ }),
 
@@ -122,4 +122,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=9572.12eee040.iframe.bundle.js.map
+//# sourceMappingURL=9572.458fdc83.iframe.bundle.js.map
