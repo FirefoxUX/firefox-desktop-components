@@ -1122,6 +1122,9 @@ __webpack_require__.r(__webpack_exports__);
  * browser.settings-redesign.<groupid>.enabled prefs are true.
  * @property {"default"|"always"|"never"} [card]
  * Whether to use a card. Default: use a card after SRD or in a sub-pane.
+ * @property {boolean} [hiddenFromSearch]
+ * Whether this group should be hidden from search.
+ * @property {boolean} [hidden] Whether this group should be visible.
  */
 /** @typedef {SettingElementConfig & SettingGroupConfigExtensions} SettingGroupConfig */
 
@@ -1169,6 +1172,9 @@ class SettingGroup extends chrome_browser_content_preferences_widgets_setting_el
    * get all ancestors.
    */
   get childControlEls() {
+    if (!this.config) {
+      return [];
+    }
     // @ts-expect-error bug 1997478
     return [...this.fieldsetEl.children].filter(child => child instanceof chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SettingControl);
   }
@@ -1201,10 +1207,17 @@ class SettingGroup extends chrome_browser_content_preferences_widgets_setting_el
     if (!this.srdEnabled) {
       this.classList.toggle("subcategory", this.config?.headingLevel == 1);
     }
+    this.toggleAttribute(HiddenAttr.Search, !!this.config?.hiddenFromSearch);
+    this.toggleAttribute(HiddenAttr.Self, !!this.config?.hidden);
   }
   async handleVisibilityChange() {
     await this.updateComplete;
-    let hasVisibleControls = this.childControlEls.some(el => !el.hidden);
+
+    // Don't change visibility if explicitly hidden by config
+    if (this.config?.hidden) {
+      return;
+    }
+    let hasVisibleControls = !!this.childControlEls?.length && this.childControlEls?.some(el => !el.hidden);
     let groupbox = /** @type {XULElement} */this.closest("groupbox");
     if (hasVisibleControls) {
       if (this.hasAttribute(HiddenAttr.Self)) {
@@ -1340,4 +1353,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.af9f8321.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.3b125c3a.iframe.bundle.js.map
