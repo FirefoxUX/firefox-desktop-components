@@ -6,6 +6,7 @@
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Hidden: () => (/* binding */ Hidden),
 /* harmony export */   Pressed: () => (/* binding */ Pressed),
 /* harmony export */   Unpressed: () => (/* binding */ Unpressed),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -26,6 +27,11 @@ __webpack_require__.r(__webpack_exports__);
       control: {
         type: "boolean"
       }
+    },
+    show: {
+      control: {
+        type: "boolean"
+      }
     }
   },
   parameters: {
@@ -38,17 +44,28 @@ aiwindow-memories-off =
   }
 });
 const Template = ({
-  pressed
+  pressed,
+  show
 }) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <memories-icon-button ?pressed=${pressed}></memories-icon-button>
+  <memories-icon-button
+    ?pressed=${pressed}
+    ?show=${show}
+  ></memories-icon-button>
 `;
 const Pressed = Template.bind({});
 Pressed.args = {
-  pressed: true
+  pressed: true,
+  show: true
 };
 const Unpressed = Template.bind({});
 Unpressed.args = {
-  pressed: false
+  pressed: false,
+  show: true
+};
+const Hidden = Template.bind({});
+Hidden.args = {
+  pressed: false,
+  show: false
 };
 
 /***/ }),
@@ -88,6 +105,10 @@ class MemoriesIconButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     disabled: {
       type: Boolean,
       reflect: true
+    },
+    show: {
+      type: Boolean,
+      reflect: true
     }
   };
   #onClick() {
@@ -101,6 +122,9 @@ class MemoriesIconButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     }));
   }
   render() {
+    if (!this.show) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
+    }
     const ariaPressed = String(this.pressed);
     // TODO: using placeholder icons here. Update iconSrc with final path name
     // when memories on/off icons are ready.
@@ -138,4 +162,4 @@ module.exports = __webpack_require__.p + "memories-icon-button.4b25d9bf64e56f0cb
 /***/ })
 
 }]);
-//# sourceMappingURL=components-memories-icon-button-memories-icon-button-stories.d69a7304.iframe.bundle.js.map
+//# sourceMappingURL=components-memories-icon-button-memories-icon-button-stories.9f942366.iframe.bundle.js.map
