@@ -12133,15 +12133,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozBadge.ftl");
 
 /**
+ @typedef {"default" | "beta" | "new"} MozBadgeType Types of badges for moz-badge.*
+
+ /**
  * A simple badge element that can be used to indicate status or convey simple messages
  *
  * @tagname moz-badge
- * @property {string} label - Text to display on the badge
+ * @property {string} label - Text to display on the badge, by default inferred from type
  * @property {string} iconSrc - The src for an optional icon shown next to the label
  * @property {string} title - The title of the badge, appears as a tooltip on hover
- * @property {string} type - The type of badge (e.g., "new")
+ * @property {MozBadgeType} type - The type of badge (e.g., "new")
  */
 class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -12165,6 +12169,19 @@ class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
   constructor() {
     super();
     this.label = "";
+    /**
+     * @type {MozBadgeType}
+     */
+    this.type = "default";
+  }
+  get labelL10nId() {
+    if (this.type == "beta") {
+      return "moz-badge-beta";
+    }
+    if (this.type == "new") {
+      return "moz-badge-new";
+    }
+    return undefined;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -12174,7 +12191,11 @@ class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       />
       <div class="moz-badge" title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title)}>
         ${this.iconSrc ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img class="moz-badge-icon" src=${this.iconSrc} role="presentation"></img>` : ""}
-        <span class="moz-badge-label">${this.label}</span>
+        <span
+          class="moz-badge-label"
+          data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.label ? null : this.labelL10nId)}
+          >${this.label}</span
+        >
       </div>
     `;
   }
@@ -13360,4 +13381,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.cc80af75.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.85d4aa74.iframe.bundle.js.map

@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[790,1291,1592,1788,3720,6284,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[790,1291,1592,1788,2928,3720,6284,9240],{
 
 /***/ 3720:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -390,6 +390,94 @@ module.exports = __webpack_require__.p + "moz-button.4041f3cd13da90668080.css";
 
 /***/ }),
 
+/***/ 32928:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozBadge)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_badge_moz_badge_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61138);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozBadge.ftl");
+
+/**
+ @typedef {"default" | "beta" | "new"} MozBadgeType Types of badges for moz-badge.*
+
+ /**
+ * A simple badge element that can be used to indicate status or convey simple messages
+ *
+ * @tagname moz-badge
+ * @property {string} label - Text to display on the badge, by default inferred from type
+ * @property {string} iconSrc - The src for an optional icon shown next to the label
+ * @property {string} title - The title of the badge, appears as a tooltip on hover
+ * @property {MozBadgeType} type - The type of badge (e.g., "new")
+ */
+class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    iconSrc: {
+      type: String
+    },
+    title: {
+      type: String,
+      fluent: true,
+      mapped: true
+    },
+    type: {
+      type: String,
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.label = "";
+    /**
+     * @type {MozBadgeType}
+     */
+    this.type = "default";
+  }
+  get labelL10nId() {
+    if (this.type == "beta") {
+      return "moz-badge-beta";
+    }
+    if (this.type == "new") {
+      return "moz-badge-new";
+    }
+    return undefined;
+  }
+  render() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_badge_moz_badge_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="moz-badge" title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title)}>
+        ${this.iconSrc ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img class="moz-badge-icon" src=${this.iconSrc} role="presentation"></img>` : ""}
+        <span
+          class="moz-badge-label"
+          data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.label ? null : this.labelL10nId)}
+          >${this.label}</span
+        >
+      </div>
+    `;
+  }
+}
+customElements.define("moz-badge", MozBadge);
+
+/***/ }),
+
 /***/ 32970:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -404,6 +492,13 @@ module.exports = __webpack_require__.p + "moz-fieldset.ab5bfebbd0821e0f0331.css"
 
 /***/ }),
 
+/***/ 61138:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-badge.c5e1883cb099eac68f08.css";
+
+/***/ }),
+
 /***/ 69553:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -411,6 +506,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   Disabled: () => (/* binding */ Disabled),
+/* harmony export */   WithBadge: () => (/* binding */ WithBadge),
 /* harmony export */   WithDescription: () => (/* binding */ WithDescription),
 /* harmony export */   WithDescriptionAndSlottedSupportLink: () => (/* binding */ WithDescriptionAndSlottedSupportLink),
 /* harmony export */   WithDescriptionAndSupportLink: () => (/* binding */ WithDescriptionAndSupportLink),
@@ -422,13 +518,16 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
 /* harmony import */ var _moz_fieldset_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(71592);
-/* harmony import */ var _moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(3720);
-/* harmony import */ var _moz_button_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
-/* harmony import */ var _moz_radio_group_moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(91788);
+/* harmony import */ var _moz_badge_moz_badge_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(32928);
+/* harmony import */ var _moz_toggle_moz_toggle_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(3720);
+/* harmony import */ var _moz_button_moz_button_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(79240);
+/* harmony import */ var _moz_radio_group_moz_radio_group_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(91788);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+
+// eslint-disable-next-line import/no-unassigned-import
 
 // eslint-disable-next-line import/no-unassigned-import
 
@@ -459,6 +558,12 @@ __webpack_require__.r(__webpack_exports__);
       control: {
         type: "select"
       }
+    },
+    badge: {
+      options: ["", "beta", "new"],
+      control: {
+        type: "select"
+      }
     }
   },
   parameters: {
@@ -469,6 +574,8 @@ moz-fieldset-label =
 moz-fieldset-description =
   .label = Some Settings
   .description = Perhaps you want to have a longer description of what these settings do. Width is set explicitly for emphasis.
+moz-badge-beta = Beta
+moz-badge-new = New
   `
   }
 });
@@ -480,7 +587,8 @@ const Template = ({
   hasSlottedSupportLinks,
   headingLevel,
   disabled,
-  iconSrc
+  iconSrc,
+  badge
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <moz-fieldset
     data-l10n-id=${l10nId}
@@ -491,6 +599,7 @@ const Template = ({
     support-page=${supportPage}
     style="width: 400px;"
     iconsrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
+    badge=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(badge || undefined)}
   >
     <moz-toggle
       pressed
@@ -524,7 +633,8 @@ Default.args = {
   l10nId: "moz-fieldset-label",
   hasSlottedSupportLinks: false,
   disabled: false,
-  iconSrc: ""
+  iconSrc: "",
+  badge: ""
 };
 const WithDescription = Template.bind({});
 WithDescription.args = {
@@ -565,6 +675,11 @@ const WithIcon = Template.bind({});
 WithIcon.args = {
   ...WithSupportLink.args,
   iconSrc: "chrome://global/skin/icons/info.svg"
+};
+const WithBadge = Template.bind({});
+WithBadge.args = {
+  ...Default.args,
+  badge: "new"
 };
 
 /***/ }),
@@ -611,6 +726,7 @@ const HEADING_LEVEL_TEMPLATES = {
  * @property {number} headingLevel - Render the legend in a heading of this level.
  * @property {boolean} disabled - Whether the fieldset and its children are disabled.
  * @property {string} iconSrc - The src for an optional icon.
+ * @property {"beta" | "new" | undefined} badge - Include a badge of this type with matching text.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -644,6 +760,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     },
     iconSrc: {
       type: String
+    },
+    badge: {
+      type: String
     }
   };
   constructor() {
@@ -666,6 +785,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
 
     /**@type {string | undefined} */
     this.supportPage = undefined;
+
+    /**@type {"beta" | "new" | undefined} */
+    this.badge = undefined;
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -719,7 +841,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   legendTemplate() {
     let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.iconTemplate()}${label}</legend>`;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">
+      ${this.iconTemplate()}${label}${this.badgeTemplate()}
+    </legend>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -736,6 +860,12 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       "text-box-trim-start": this.headingLevel >= 1 && this.headingLevel <= 3
     })}
     />`;
+  }
+  badgeTemplate() {
+    if (!this.badge) {
+      return "";
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-badge type=${this.badge}></moz-badge>`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -1672,4 +1802,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.95f05710.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.90375580.iframe.bundle.js.map

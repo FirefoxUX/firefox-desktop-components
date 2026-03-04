@@ -18,15 +18,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozBadge.ftl");
 
 /**
+ @typedef {"default" | "beta" | "new"} MozBadgeType Types of badges for moz-badge.*
+
+ /**
  * A simple badge element that can be used to indicate status or convey simple messages
  *
  * @tagname moz-badge
- * @property {string} label - Text to display on the badge
+ * @property {string} label - Text to display on the badge, by default inferred from type
  * @property {string} iconSrc - The src for an optional icon shown next to the label
  * @property {string} title - The title of the badge, appears as a tooltip on hover
- * @property {string} type - The type of badge (e.g., "new")
+ * @property {MozBadgeType} type - The type of badge (e.g., "new")
  */
 class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -50,6 +54,19 @@ class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
   constructor() {
     super();
     this.label = "";
+    /**
+     * @type {MozBadgeType}
+     */
+    this.type = "default";
+  }
+  get labelL10nId() {
+    if (this.type == "beta") {
+      return "moz-badge-beta";
+    }
+    if (this.type == "new") {
+      return "moz-badge-new";
+    }
+    return undefined;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -59,7 +76,11 @@ class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
       />
       <div class="moz-badge" title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title)}>
         ${this.iconSrc ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img class="moz-badge-icon" src=${this.iconSrc} role="presentation"></img>` : ""}
-        <span class="moz-badge-label">${this.label}</span>
+        <span
+          class="moz-badge-label"
+          data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.label ? null : this.labelL10nId)}
+          >${this.label}</span
+        >
       </div>
     `;
   }
@@ -73,6 +94,7 @@ customElements.define("moz-badge", MozBadge);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Beta: () => (/* binding */ Beta),
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   New: () => (/* binding */ New),
 /* harmony export */   WithIcon: () => (/* binding */ WithIcon),
@@ -92,15 +114,17 @@ __webpack_require__.r(__webpack_exports__);
   argTypes: {
     type: {
       control: "select",
-      options: ["default", "new"]
+      options: ["default", "beta", "new"]
     }
   },
   parameters: {
     status: "in-development",
     fluent: `
 moz-badge =
-    .label = Beta
+    .label = Badge
     .title = Beta experiment
+moz-badge-beta = Beta
+moz-badge-new = New
 `
   }
 });
@@ -115,7 +139,7 @@ const Template = ({
     label=${label}
     iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
     title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(title)}
-    data-l10n-id=${l10nId}
+    data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
     type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type)}
   ></moz-badge>
 `;
@@ -130,11 +154,13 @@ WithIcon.args = {
   iconSrc: "chrome://global/skin/icons/info.svg",
   l10nId: "moz-badge"
 };
+const Beta = Template.bind({});
+Beta.args = {
+  type: "beta"
+};
 const New = Template.bind({});
 New.args = {
-  label: "New",
-  type: "new",
-  l10nId: "moz-badge"
+  type: "new"
 };
 
 /***/ }),
@@ -147,4 +173,4 @@ module.exports = __webpack_require__.p + "moz-badge.c5e1883cb099eac68f08.css";
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-badge-moz-badge-stories.6c78d181.iframe.bundle.js.map
+//# sourceMappingURL=moz-badge-moz-badge-stories.e73e11c2.iframe.bundle.js.map

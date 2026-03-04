@@ -1,10 +1,410 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1291,1592],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[340,1291,1592,7362],{
+
+/***/ 20340:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MozVisualPicker: () => (/* binding */ MozVisualPicker),
+/* harmony export */   MozVisualPickerItem: () => (/* binding */ MozVisualPickerItem)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_visual_picker_moz_visual_picker_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(58680);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(91291);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+
+
+/**
+ * An element that groups related items and allows a user to navigate between
+ * them to select an item. The appearance of the items of the group is
+ * determined by the consumer.
+ *
+ * @tagname moz-visual-picker
+ * @property {string} label - Label for the group of elements.
+ * @property {string} description - Description for the group of elements.
+ * @property {string} name
+ *  Name used to associate items in the group. Propagates to
+ *  moz-visual-picker's children.
+ * @property {string} value
+ *  Selected value for the group. Changing the value updates the checked
+ *  state of moz-visual-picker-item children and vice versa.
+ * @slot default - The picker's content, intended for moz-visual-picker-items.
+ */
+class MozVisualPicker extends _lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SelectControlBaseElement {
+  static childElementName = "moz-visual-picker-item";
+  static orientation = "horizontal";
+}
+customElements.define("moz-visual-picker", MozVisualPicker);
+
+/**
+ * Element that allows a user to select one option from a group of options.
+ * Visual appearance is determined by the slotted content.
+ *
+ * @tagname moz-visual-picker-item
+ * @property {boolean} checked - Whether or not the item is selected.
+ * @property {boolean} disabled - Whether or not the item is disabled.
+ * @property {number} itemTabIndex
+ *  Tabindex of the input element. Only one item is focusable at a time.
+ * @property {string} name
+ *  Name of the item, set by the associated moz-visual-picker parent element.
+ * @property {string} value - Value of the item.
+ * @property {string} label - Visible label for the picker item.
+ * @property {string} description - Additional text shown beneath the label.
+ * @property {string} ariaLabel - Value for the aria-label attribute.
+ * @property {string} imageSrc - Path to an image to display in the picker item.
+ * @slot default - The item's content, used for what gets displayed.
+ */
+class MozVisualPickerItem extends (0,_lit_select_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SelectControlItemMixin)(_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement) {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    description: {
+      type: String,
+      fluent: true
+    },
+    ariaLabel: {
+      type: String,
+      fluent: true,
+      mapped: true
+    },
+    imageSrc: {
+      type: String
+    }
+  };
+  static queries = {
+    itemEl: ".picker-item",
+    labelEl: ".label",
+    descriptionEl: ".description"
+  };
+  click() {
+    this.itemEl.click();
+  }
+  focus() {
+    this.itemEl.focus();
+  }
+  blur() {
+    this.itemEl.blur();
+  }
+  handleKeydown(event) {
+    if (event.code == "Space" || event.code == "Enter") {
+      this.handleClick(event);
+    }
+  }
+  handleClick(event) {
+    // re-target click events from the slot to the item and handle clicks from
+    // space bar keydown.
+    event.stopPropagation();
+    this.dispatchEvent(new Event("click", {
+      bubbles: true,
+      composed: true
+    }));
+    super.handleClick();
+
+    // Manually dispatch events since we're not using an input.
+    this.dispatchEvent(new Event("input", {
+      bubbles: true,
+      composed: true
+    }));
+    this.dispatchEvent(new Event("change", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleSlotchange(event) {
+    // If the user hasn't provide a visual or accessible label fallback to
+    // labelling the picker item based on slotted content.
+    if (!this.label && !this.ariaLabel) {
+      let elements = event.target.assignedElements();
+      this.itemEl.ariaLabelledByElements = elements;
+    }
+  }
+  contentTemplate() {
+    if (!this.imageSrc && !this.label && !this.description) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot></slot>`;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      ${this.imageSrc ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img src=${this.imageSrc} role="presentation" part="image" />` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      <div class="text-content">
+        ${this.label ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="label">${this.label}</p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${this.description ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="description">${this.description}</p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_visual_picker_moz_visual_picker_item_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div
+        class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "picker-item": true,
+      "image-item": this.imageSrc && this.label
+    })}
+        role=${this.role}
+        value=${this.value}
+        aria-label=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.ariaLabel)}
+        aria-checked=${this.role == "radio" ? this.checked : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        aria-selected=${this.role == "option" ? this.checked : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        tabindex=${this.itemTabIndex}
+        ?checked=${this.checked}
+        ?disabled=${this.isDisabled}
+        @click=${this.handleClick}
+        @keydown=${this.handleKeydown}
+        @slotchange=${this.handleSlotchange}
+      >
+        ${this.contentTemplate()}
+      </div>
+    `;
+  }
+}
+customElements.define("moz-visual-picker-item", MozVisualPickerItem);
+
+/***/ }),
+
+/***/ 54429:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AllUnselected: () => (/* binding */ AllUnselected),
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   Listbox: () => (/* binding */ Listbox),
+/* harmony export */   WithImage: () => (/* binding */ WithImage),
+/* harmony export */   WithImageAndLabel: () => (/* binding */ WithImageAndLabel),
+/* harmony export */   WithItemDescriptions: () => (/* binding */ WithItemDescriptions),
+/* harmony export */   WithItemLabels: () => (/* binding */ WithItemLabels),
+/* harmony export */   WithPickerDescription: () => (/* binding */ WithPickerDescription),
+/* harmony export */   WithPickerSupportLink: () => (/* binding */ WithPickerSupportLink),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _moz_visual_picker_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20340);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Visual Picker",
+  component: "moz-visual-picker",
+  argTypes: {
+    value: {
+      options: ["1", "2", "3"],
+      control: {
+        type: "select"
+      }
+    },
+    slottedItem: {
+      options: ["card", "avatar"],
+      control: {
+        type: "select"
+      },
+      if: {
+        arg: "showItemLabels",
+        truthy: false
+      }
+    },
+    pickerL10nId: {
+      options: ["moz-visual-picker", "moz-visual-picker-description"],
+      control: {
+        type: "select"
+      }
+    },
+    type: {
+      options: ["radio", "listbox"],
+      control: {
+        type: "select"
+      }
+    }
+  },
+  parameters: {
+    actions: {
+      handles: ["click", "input", "change"]
+    },
+    status: "in-development",
+    fluent: `
+moz-visual-picker =
+  .label = Pick something
+moz-visual-picker-description =
+  .label = Pick something
+  .description = Pick one of these cool things please
+favicon-aria-label =
+  .aria-label = Favicon avatar
+experiments-aria-label =
+  .aria-label = Experiments avatar
+heart-aria-label =
+  .aria-label = Heart avatar
+`
+  }
+});
+const AVATAR_ICONS = ["chrome://global/skin/icons/defaultFavicon.svg", "chrome://global/skin/icons/experiments.svg", "chrome://global/skin/icons/heart.svg"];
+const AVATAR_L10N_IDS = ["favicon-aria-label", "experiments-aria-label", "heart-aria-label"];
+function getSlottedContent(type, index) {
+  if (type == "card") {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted demo-card">
+      <img
+        src="chrome://browser/content/profiles/assets/system-theme-background.svg"
+      />
+      <span>I'm card number ${index + 1}</span>
+    </div>`;
+  }
+  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted avatar">
+    <img src=${AVATAR_ICONS[index]} role="presentation" />
+  </div>`;
+}
+const Template = ({
+  value,
+  slottedItem,
+  pickerL10nId,
+  supportPage,
+  type,
+  showItemLabels,
+  imageSrc,
+  showItemDescriptions
+}) => {
+  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+    <style>
+      .slotted {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .demo-card {
+        flex-direction: column;
+        width: 120px;
+
+        span {
+          padding: var(--space-xsmall);
+          text-align: center;
+        }
+
+        img {
+          border-top-left-radius: inherit;
+          border-top-right-radius: inherit;
+        }
+      }
+
+      .avatar-item {
+        --visual-picker-item-border-radius: var(--border-radius-circle);
+      }
+
+      .avatar {
+        height: 50px;
+        width: 50px;
+
+        img {
+          height: var(--icon-size);
+          width: var(--icon-size);
+          -moz-context-properties: fill;
+          fill: var(--icon-color);
+        }
+      }
+
+      moz-visual-picker-item {
+        max-width: 150px;
+      }
+    </style>
+    <moz-visual-picker
+      type=${type}
+      data-l10n-id=${pickerL10nId}
+      value=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(value)}
+      support-page=${supportPage}
+    >
+      ${[...Array.from({
+    length: 3
+  })].map((_, i) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-visual-picker-item
+            value=${i + 1}
+            class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
+    "avatar-item": slottedItem == "avatar"
+  })}
+            data-l10n-id=${slottedItem == "avatar" ? AVATAR_L10N_IDS[i] : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
+            label=${showItemLabels ? `Item number ${i + 1}` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
+            description=${showItemDescriptions ? `Description for item number ${i + 1}` : _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.nothing}
+            imagesrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageSrc)}
+          >
+            ${getSlottedContent(slottedItem, i)}
+          </moz-visual-picker-item>`)}
+    </moz-visual-picker>
+  `;
+};
+const Default = Template.bind({});
+Default.args = {
+  pickerL10nId: "moz-visual-picker",
+  slottedItem: "card",
+  value: "1",
+  supportPage: "",
+  type: "radio",
+  showItemLabels: false,
+  showItemDescriptions: false
+};
+const WithPickerDescription = Template.bind({});
+WithPickerDescription.args = {
+  ...Default.args,
+  pickerL10nId: "moz-visual-picker-description"
+};
+const WithPickerSupportLink = Template.bind({});
+WithPickerSupportLink.args = {
+  ...WithPickerDescription.args,
+  supportPage: "foo"
+};
+const AllUnselected = Template.bind({});
+AllUnselected.args = {
+  ...Default.args,
+  value: ""
+};
+const Listbox = Template.bind({});
+Listbox.args = {
+  ...Default.args,
+  type: "listbox"
+};
+const WithItemLabels = Template.bind({});
+WithItemLabels.args = {
+  ...Default.args,
+  showItemLabels: true
+};
+const WithItemDescriptions = Template.bind({});
+WithItemDescriptions.args = {
+  ...WithItemLabels.args,
+  showItemDescriptions: true
+};
+const WithImage = Template.bind({});
+WithImage.args = {
+  ...Default.args,
+  imageSrc: "https://firefox-settings-attachments.cdn.mozilla.net/main-workspace/newtab-wallpapers-v2/e1108381-5c19-4cb4-a630-69f9e45503fb.avif"
+};
+const WithImageAndLabel = Template.bind({});
+WithImageAndLabel.args = {
+  ...WithImage.args,
+  showItemLabels: true
+};
+
+/***/ }),
 
 /***/ 56118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-fieldset.ab5bfebbd0821e0f0331.css";
+
+/***/ }),
+
+/***/ 58680:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-visual-picker-item.aa1250eaa0800ec9a6ab.css";
 
 /***/ }),
 
@@ -50,6 +450,7 @@ const HEADING_LEVEL_TEMPLATES = {
  * @property {number} headingLevel - Render the legend in a heading of this level.
  * @property {boolean} disabled - Whether the fieldset and its children are disabled.
  * @property {string} iconSrc - The src for an optional icon.
+ * @property {"beta" | "new" | undefined} badge - Include a badge of this type with matching text.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -83,6 +484,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     },
     iconSrc: {
       type: String
+    },
+    badge: {
+      type: String
     }
   };
   constructor() {
@@ -105,6 +509,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
 
     /**@type {string | undefined} */
     this.supportPage = undefined;
+
+    /**@type {"beta" | "new" | undefined} */
+    this.badge = undefined;
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -158,7 +565,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   legendTemplate() {
     let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.iconTemplate()}${label}</legend>`;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">
+      ${this.iconTemplate()}${label}${this.badgeTemplate()}
+    </legend>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -175,6 +584,12 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       "text-box-trim-start": this.headingLevel >= 1 && this.headingLevel <= 3
     })}
     />`;
+  }
+  badgeTemplate() {
+    if (!this.badge) {
+      return "";
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-badge type=${this.badge}></moz-badge>`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -619,4 +1034,4 @@ const SelectControlItemMixin = superClass => class extends superClass {
 /***/ })
 
 }]);
-//# sourceMappingURL=1291.986e876e.iframe.bundle.js.map
+//# sourceMappingURL=moz-visual-picker-moz-visual-picker-stories.21d8b939.iframe.bundle.js.map

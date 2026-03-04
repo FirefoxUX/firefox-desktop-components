@@ -308,6 +308,7 @@ const HEADING_LEVEL_TEMPLATES = {
  * @property {number} headingLevel - Render the legend in a heading of this level.
  * @property {boolean} disabled - Whether the fieldset and its children are disabled.
  * @property {string} iconSrc - The src for an optional icon.
+ * @property {"beta" | "new" | undefined} badge - Include a badge of this type with matching text.
  */
 class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -341,6 +342,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     },
     iconSrc: {
       type: String
+    },
+    badge: {
+      type: String
     }
   };
   constructor() {
@@ -363,6 +367,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
 
     /**@type {string | undefined} */
     this.supportPage = undefined;
+
+    /**@type {"beta" | "new" | undefined} */
+    this.badge = undefined;
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -416,7 +423,9 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
   }
   legendTemplate() {
     let label = HEADING_LEVEL_TEMPLATES[this.headingLevel]?.(this.label) || this.label;
-    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">${this.iconTemplate()}${label}</legend>`;
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<legend part="label">
+      ${this.iconTemplate()}${label}${this.badgeTemplate()}
+    </legend>`;
   }
   iconTemplate() {
     if (!this.iconSrc) {
@@ -433,6 +442,12 @@ class MozFieldset extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       "text-box-trim-start": this.headingLevel >= 1 && this.headingLevel <= 3
     })}
     />`;
+  }
+  badgeTemplate() {
+    if (!this.badge) {
+      return "";
+    }
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-badge type=${this.badge}></moz-badge>`;
   }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -971,4 +986,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.7a93db52.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-moz-radio-group-stories.55f11deb.iframe.bundle.js.map
