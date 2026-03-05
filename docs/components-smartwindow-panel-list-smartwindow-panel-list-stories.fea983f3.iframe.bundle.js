@@ -853,6 +853,9 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     },
     alwaysOpen: {
       type: Boolean
+    },
+    sidebarMode: {
+      type: Boolean
     }
   };
   #panelList = null;
@@ -863,12 +866,54 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.anchor = null;
     this.placeholderL10nId = "";
     this.alwaysOpen = false;
+    this.sidebarMode = false;
   }
   firstUpdated() {
     this.#panelList = this.shadowRoot.querySelector("panel-list");
+    this.#panelList.addEventListener("shown", () => {
+      if (this.sidebarMode) {
+        this.#clampToViewport();
+      }
+    });
     if (this.alwaysOpen) {
       this.show();
     }
+  }
+  #clampToViewport() {
+    const panelEl = this.#panelList;
+    const viewportWidth = window.innerWidth;
+    const viewportHeight = window.innerHeight;
+    const panelRect = panelEl.getBoundingClientRect();
+    const effectiveWidth = Math.min(panelRect.width, viewportWidth);
+    const effectiveHeight = Math.min(panelRect.height, viewportHeight);
+    let x = parseFloat(panelEl.style.left) || 0;
+    let y = parseFloat(panelEl.style.top) || 0;
+    x = Math.max(0, Math.min(x, viewportWidth - effectiveWidth));
+    y = Math.max(0, Math.min(y, viewportHeight - effectiveHeight));
+    panelEl.style.maxWidth = `${viewportWidth}px`;
+    panelEl.style.left = `${x}px`;
+    panelEl.style.top = `${y}px`;
+  }
+  #reposition() {
+    requestAnimationFrame(() => {
+      const anchorElement = this.#anchorElement;
+      if (!anchorElement || !this.#panelList?.open) {
+        return;
+      }
+      const panelEl = this.#panelList;
+      const anchorRect = anchorElement.getBoundingClientRect();
+      const panelHeight = panelEl.scrollHeight;
+      const valign = panelEl.getAttribute("valign");
+      const VIEWPORT_PANEL_MIN_MARGIN = 10;
+      let topOffset;
+      if (valign === "top") {
+        topOffset = Math.max(anchorRect.top - panelHeight, VIEWPORT_PANEL_MIN_MARGIN);
+      } else {
+        topOffset = anchorRect.bottom;
+      }
+      panelEl.style.top = `${topOffset + window.scrollY}px`;
+      this.#clampToViewport();
+    });
   }
   updated(changedProperties) {
     super.updated(changedProperties);
@@ -876,6 +921,9 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       // If anchor is an element use it directly,
       // otherwise we can use the positioned span.
       this.#anchorElement = this.anchor instanceof Element ? this.anchor : this.renderRoot.querySelector(".smartwindow-panel-list-anchor");
+    }
+    if (this.sidebarMode && this.#panelList?.open && (changedProperties.has("anchor") || changedProperties.has("groups"))) {
+      this.#reposition();
     }
   }
   async show() {
@@ -1147,4 +1195,4 @@ MultipleGroups.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.458d1e7f.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.fea983f3.iframe.bundle.js.map

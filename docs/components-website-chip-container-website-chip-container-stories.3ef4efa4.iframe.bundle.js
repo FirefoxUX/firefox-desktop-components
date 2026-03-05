@@ -30,18 +30,20 @@ __webpack_require__.r(__webpack_exports__);
  * A website chip component for tagging and displaying websites.
  *
  * Two types:
- * - in-line: Not removable, supports empty state with "@" symbol + "Tag a tab or site" placeholder
+ * - in-line: Supports empty state with "@" symbol + "Tag a tab or site" placeholder
  *   - default: favicon + text
  *   - hover: favicon + text (identical to default)
  *   - empty: "@" symbol + "Tag a tab or site" text
- * - context-chip: Removable, no empty state support
+ * - context-chip: No empty state support
  *   - default: favicon + text
- *   - hover: remove button + text
+ *   - hover (removable): remove button + text
+ *   - hover (non-removable): favicon + text (identical to default)
  *
  * @property {string} type - Type of chip: "in-line" or "context-chip"
  * @property {string} label - The text content of the chip
  * @property {string} iconSrc - Favicon or icon URL
  * @property {string} href - URL for the link (used with context-chip type)
+ * @property {boolean} removable - Whether the chip shows a remove button on hover (default false)
  */
 class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -57,6 +59,9 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     },
     href: {
       type: String
+    },
+    removable: {
+      type: Boolean
     }
   };
   constructor() {
@@ -65,12 +70,13 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.label = "";
     this.iconSrc = "";
     this.href = "";
+    this.removable = false;
   }
   get #isEmpty() {
     return this.type === "in-line" && !this.label;
   }
   get #isRemovable() {
-    return this.type === "context-chip";
+    return this.removable;
   }
   #handleClick() {
     this.dispatchEvent(new CustomEvent("ai-website-chip:click", {
@@ -98,8 +104,15 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     let iconTemplate;
     if (isEmpty) {
       iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="chip-at">@</span>`;
-    } else if (this.iconSrc) {
-      iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img class="chip-icon" src=${this.iconSrc} alt="" />`;
+    } else {
+      iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img
+        class="chip-icon"
+        src=${this.iconSrc || "chrome://global/skin/icons/defaultFavicon.svg"}
+        @error=${e => {
+        e.target.src = "chrome://global/skin/icons/defaultFavicon.svg";
+      }}
+        alt=""
+      />`;
     }
     const removeButton = isRemovable ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<button
           class="chip-remove"
@@ -181,6 +194,9 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
     },
     chipType: {
       type: String
+    },
+    removable: {
+      type: Boolean
     }
   };
   constructor() {
@@ -188,6 +204,7 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
     /** @type {ContextWebsite[]} */
     this.websites = [];
     this.chipType = "context-chip";
+    this.removable = false;
   }
   #onRemoveWebsite(website, event) {
     event.stopPropagation();
@@ -217,6 +234,7 @@ class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_
                 .label=${website.label}
                 .href=${website.url}
                 .iconSrc=${website.iconSrc ?? ""}
+                .removable=${this.removable}
                 @ai-website-chip:remove=${e => this.#onRemoveWebsite(website, e)}
               ></ai-website-chip>
             `)}
@@ -232,7 +250,7 @@ customElements.define("website-chip-container", WebsiteChipContainer);
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-chip.ae50a058f80ef608008f.css";
+module.exports = __webpack_require__.p + "ai-website-chip.379290212c8e052259f3.css";
 
 /***/ }),
 
@@ -286,10 +304,11 @@ const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPOR
   <website-chip-container
     .chipType=${"context-chip"}
     .websites=${websites}
+    .removable=${true}
   ></website-chip-container>
 `;
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.9a86f486.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.3ef4efa4.iframe.bundle.js.map
