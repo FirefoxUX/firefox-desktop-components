@@ -12091,7 +12091,7 @@ customElements.define("moz-multiline-editor", MultilineEditor);
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-item.99199edbdbb0168dfb20.css";
+module.exports = __webpack_require__.p + "panel-item.7cd8a504fecd732c4671.css";
 
 /***/ }),
 
@@ -12112,7 +12112,7 @@ module.exports = __webpack_require__.p + "multiline-editor.e76dbea4ed47cc71990a.
 /***/ 27534:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-list.3fbb51a4387dd548cee2.css";
+module.exports = __webpack_require__.p + "panel-list.44c5b9d29fbb0cd33d8e.css";
 
 /***/ }),
 
@@ -13405,4 +13405,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.502a53ac.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.615ebafb.iframe.bundle.js.map

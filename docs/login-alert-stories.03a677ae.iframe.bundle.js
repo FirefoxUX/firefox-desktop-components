@@ -63,12 +63,16 @@ class VulnerablePasswordAlert extends chrome_global_content_lit_utils_mjs__WEBPA
       hostname: {
         type: String,
         reflect: true
+      },
+      changePasswordURL: {
+        type: String
       }
     };
   }
   constructor() {
     super();
     this.hostname = "";
+    this.changePasswordURL = "";
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -92,7 +96,7 @@ class VulnerablePasswordAlert extends chrome_global_content_lit_utils_mjs__WEBPA
             data-l10n-args=${JSON.stringify({
       hostname: this.hostname
     })}
-            href=${this.hostname}
+            href=${this.changePasswordURL || this.hostname}
             rel="noreferrer"
             target="_blank"
           ></a>
@@ -123,6 +127,9 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       breachName: {
         type: String,
         reflect: true
+      },
+      changePasswordURL: {
+        type: String
       }
     };
   }
@@ -131,6 +138,7 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.date = 0;
     this.hostname = "";
     this.breachName = "";
+    this.changePasswordURL = "";
   }
   get displayHostname() {
     let url = URL.parse(this.hostname);
@@ -171,7 +179,7 @@ class LoginBreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             data-l10n-args=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.guard)([this.hostname], () => JSON.stringify({
       hostname: this.displayHostname
     }))}
-            href=${this.hostname}
+            href=${this.changePasswordURL || this.hostname}
             rel="noreferrer"
             target="_blank"
             @click=${this.handleBreachLinkClick}
@@ -282,4 +290,4 @@ LoginBreachAlert.argTypes = {
 /***/ })
 
 }]);
-//# sourceMappingURL=login-alert-stories.9dc7bb20.iframe.bundle.js.map
+//# sourceMappingURL=login-alert-stories.03a677ae.iframe.bundle.js.map
