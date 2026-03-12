@@ -81,7 +81,7 @@ Default.args = {
 /***/ 49314:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-five-star.5641eb65915083e81090.css";
+module.exports = __webpack_require__.p + "moz-five-star.32876452ef7c52f06331.css";
 
 /***/ }),
 
@@ -268,4 +268,4 @@ customElements.define("moz-five-star", MozFiveStar);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-five-star-moz-five-star-stories.3e72df29.iframe.bundle.js.map
+//# sourceMappingURL=moz-five-star-moz-five-star-stories.cff82edb.iframe.bundle.js.map

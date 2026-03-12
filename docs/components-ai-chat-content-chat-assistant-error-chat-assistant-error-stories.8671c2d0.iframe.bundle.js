@@ -136,7 +136,8 @@ __webpack_require__.r(__webpack_exports__);
 const ERROR_CODES = {
   BUDGET_EXCEEDED: 1,
   RATE_LIMIT_EXCEEDED: 2,
-  CHAT_MAX_LENGTH: 3
+  CHAT_MAX_LENGTH: 3,
+  ACCOUNT_ERROR: 4
 };
 
 /**
@@ -169,6 +170,13 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   openNewChat() {
     const event = new CustomEvent("aiChatError:new-chat", {
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
+  }
+  openAccountSignIn() {
+    const event = new CustomEvent("aiChatError:sign-in", {
       bubbles: true,
       composed: true
     });
@@ -217,6 +225,15 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
         };
         this.actionButton = null;
         break;
+      case ERROR_CODES.ACCOUNT_ERROR:
+        this.errorText = {
+          header: "smartwindow-assistant-error-account-header"
+        };
+        this.actionButton = {
+          label: "smartwindow-signin-btn",
+          action: this.openAccountSignIn.bind(this)
+        };
+        break;
       default:
         this.setGenericError();
         break;
@@ -252,4 +269,4 @@ customElements.define("chat-assistant-error", ChatAssistantError);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-chat-assistant-error-chat-assistant-error-stories.d766b074.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-chat-assistant-error-chat-assistant-error-stories.8671c2d0.iframe.bundle.js.map

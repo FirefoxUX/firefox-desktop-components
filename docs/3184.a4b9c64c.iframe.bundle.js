@@ -436,7 +436,7 @@ class MozBrowser extends MozElements.MozElementMixin(XULFrameElement) {
     return this.docShellIsActive;
   }
   get isRemoteBrowser() {
-    return this.getAttribute("remote") == "true";
+    return this.hasAttribute("remote");
   }
   get remoteType() {
     return this.browsingContext?.currentRemoteType;
@@ -1637,4 +1637,4 @@ customElements.define("browser", MozBrowser);
 /***/ })
 
 }]);
-//# sourceMappingURL=3184.9dd7faeb.iframe.bundle.js.map
+//# sourceMappingURL=3184.a4b9c64c.iframe.bundle.js.map

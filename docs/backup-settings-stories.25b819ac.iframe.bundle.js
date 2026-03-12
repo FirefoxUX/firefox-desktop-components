@@ -428,7 +428,7 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     return {
       scheduledBackupsButtonEl: "#backup-toggle-scheduled-button",
       archiveSectionEl: "#scheduled-backups",
-      restoreSectionEl: "#restore-from-backup",
+      restoreSectionEl: "#backup-toggle-restore-button",
       triggerBackupButtonEl: "#backup-trigger-button",
       changePasswordButtonEl: "#backup-change-password-button",
       disableBackupEncryptionEl: "disable-backup-encryption",
@@ -596,19 +596,12 @@ class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     </dialog>`;
   }
   restoreFromBackupTemplate() {
-    let restoreItemL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-restore-scheduled-on" : "settings-data-backup-restore-scheduled-off";
-    let restoreButtonL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-scheduled-backups-on-restore-choose" : "settings-data-backup-scheduled-backups-off-restore-choose";
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-box-item
-        id="restore-from-backup"
-        data-l10n-id=${restoreItemL10nID}
-      >
-        <moz-button
-          id="backup-toggle-restore-button"
-          @click=${this.handleShowRestoreDialog}
-          data-l10n-id=${restoreButtonL10nID}
-          slot="actions"
-        ></moz-button>
-      </moz-box-item>
+    let restoreL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-restore-scheduled-on" : "settings-data-backup-restore-scheduled-off";
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-box-button
+        id="backup-toggle-restore-button"
+        @click=${this.handleShowRestoreDialog}
+        data-l10n-id=${restoreL10nID}
+      ></moz-box-button>
       ${this.restoreFromBackupDialogTemplate()}`;
   }
   handleShowRestoreDialog() {
@@ -1313,7 +1306,7 @@ customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
 /***/ 19483:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "restore-from-backup.3f57fbd0f713e6a28850.css";
+module.exports = __webpack_require__.p + "restore-from-backup.a333b982acf4bb31abf6.css";
 
 /***/ }),
 
@@ -2315,6 +2308,13 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     return this.#initializedResolvers.promise;
   }
   #initializedResolvers = Promise.withResolvers();
+
+  /**
+   * It's possible if the user selected an invalid backup file that there is a
+   * filename but no info. To prevent that case from repeatedly asking for the
+   * 'missing' info, this tracks the previous filename we asked for.
+   */
+  #lastBackupInfoFilename = null;
   static properties = {
     _fileIconURL: {
       type: String
@@ -2341,6 +2341,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   get isIncorrectPassword() {
     return this.backupServiceState?.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED;
+  }
+  get isFileError() {
+    const code = this.backupServiceState?.recoveryErrorCode;
+    return code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.CORRUPTED_ARCHIVE || code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNSUPPORTED_BACKUP_VERSION || code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNSUPPORTED_APPLICATION;
   }
   constructor() {
     super();
@@ -2428,6 +2432,9 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         iconURL
       } = event.detail;
       this._fileIconURL = iconURL;
+
+      // Check the backup info again even if it was the same file.
+      this.#lastBackupInfoFilename = null;
       this.#backupFileReadPromise = Promise.withResolvers();
       this.#backupFileReadPromise.promise.then(() => {
         const payload = {
@@ -2473,9 +2480,10 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   getBackupFileInfo(pathToFile = null) {
     let backupFile = pathToFile || this.backupServiceState?.backupFileToRestore;
-    if (!backupFile) {
+    if (!backupFile || this.#lastBackupInfoFilename === backupFile) {
       return;
     }
+    this.#lastBackupInfoFilename = backupFile;
     this.dispatchEvent(new CustomEvent("BackupUI:GetBackupFileInfo", {
       bubbles: true,
       composed: true,
@@ -2589,7 +2597,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   renderBackupFileInfo(backupFileInfo) {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
       id="restore-from-backup-backup-found-info"
-      data-l10n-id="backup-file-creation-metadata"
+      data-l10n-id="backup-file-creation-metadata2"
       data-l10n-args=${JSON.stringify({
       profileName: backupFileInfo.profileName ?? "",
       machineName: backupFileInfo.deviceName ?? "",
@@ -2602,9 +2610,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       backupFileInfo,
       recoveryErrorCode
     } = this.backupServiceState || {};
-
-    // We have errors and are embedded in about:welcome
-    if (recoveryErrorCode && !this.isIncorrectPassword && this.aboutWelcomeEmbedded) {
+    if (recoveryErrorCode && !this.isIncorrectPassword && (this.isFileError || this.aboutWelcomeEmbedded)) {
       return this.genericFileErrorTemplate();
     }
     if (!backupFileInfo) {
@@ -2621,13 +2627,15 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <fieldset id="backup-restore-controls">
-        <a
-          id="restore-from-backup-support-link"
-          slot="support-link"
-          is="moz-support-link"
-          support-page="firefox-backup"
-          data-l10n-id="restore-from-backup-support-link1"
-        ></a>
+        <div>
+          <a
+            id="restore-from-backup-support-link"
+            slot="support-link"
+            is="moz-support-link"
+            support-page="firefox-backup"
+            data-l10n-id="restore-from-backup-support-link1"
+          ></a>
+        </div>
         <fieldset id="backup-filepicker-controls">
           <label
             id="backup-filepicker-label"
@@ -2681,15 +2689,13 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       backgroundImage: `url(${iconURL})`
     } : {});
     const backupFileName = this.backupServiceState?.backupFileToRestore || "";
-
-    // Determine the ID of the element that will be rendered by renderBackupFileStatus()
-    // to reference with aria-describedby
-    let describedBy = "";
     const {
       backupFileInfo,
       recoveryErrorCode
     } = this.backupServiceState || {};
-    if (this.aboutWelcomeEmbedded && recoveryErrorCode && !this.isIncorrectPassword) {
+    const hasInlineFileError = recoveryErrorCode && !this.isIncorrectPassword && (this.isFileError || this.aboutWelcomeEmbedded);
+    let describedBy = "";
+    if (hasInlineFileError) {
       describedBy = "backup-generic-file-error";
     } else if (!backupFileInfo) {
       describedBy = "restore-from-backup-no-backup-file-link";
@@ -2704,6 +2710,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         .value=${backupFileName}
         style=${styles}
         @input=${this.handleTextareaResize}
+        aria-invalid=${String(!!hasInlineFileError)}
         aria-describedby=${describedBy}
         data-l10n-id="restore-from-backup-filepicker-input"
       ></textarea>
@@ -2763,7 +2770,7 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
             @click=${this.handleConfirm}
             type="primary"
             data-l10n-id=${buttonL10nId}
-            ?disabled=${!this.backupServiceState?.backupFileToRestore || this.backupServiceState?.recoveryInProgress || this.backupServiceState?.selectableProfilesAllowed && !this._restoreType}
+            ?disabled=${!this.backupServiceState?.backupFileToRestore || !this.backupServiceState?.backupFileInfo || this.backupServiceState?.recoveryInProgress || this.backupServiceState?.selectableProfilesAllowed && !this._restoreType}
           ></moz-button>
         </moz-button-group>
       </div>
@@ -2789,7 +2796,8 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   errorTemplate() {
     // We handle incorrect password errors in the password input
-    if (this.isIncorrectPassword) {
+    // and file errors inline below the file picker
+    if (this.isIncorrectPassword || this.isFileError) {
       return null;
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
@@ -2802,7 +2810,6 @@ class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     `;
   }
   genericFileErrorTemplate() {
-    // We handle incorrect password errors in the password input
     if (this.isIncorrectPassword) {
       return null;
     }
@@ -3663,4 +3670,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.2da95463.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.25b819ac.iframe.bundle.js.map

@@ -414,7 +414,8 @@ __webpack_require__.r(__webpack_exports__);
 const ERROR_CODES = {
   BUDGET_EXCEEDED: 1,
   RATE_LIMIT_EXCEEDED: 2,
-  CHAT_MAX_LENGTH: 3
+  CHAT_MAX_LENGTH: 3,
+  ACCOUNT_ERROR: 4
 };
 
 /**
@@ -447,6 +448,13 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
   }
   openNewChat() {
     const event = new CustomEvent("aiChatError:new-chat", {
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
+  }
+  openAccountSignIn() {
+    const event = new CustomEvent("aiChatError:sign-in", {
       bubbles: true,
       composed: true
     });
@@ -494,6 +502,15 @@ class ChatAssistantError extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
           body: "smartwindow-assistant-error-budget-body"
         };
         this.actionButton = null;
+        break;
+      case ERROR_CODES.ACCOUNT_ERROR:
+        this.errorText = {
+          header: "smartwindow-assistant-error-account-header"
+        };
+        this.actionButton = {
+          label: "smartwindow-signin-btn",
+          action: this.openAccountSignIn.bind(this)
+        };
         break;
       default:
         this.setGenericError();
@@ -954,6 +971,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.addEventListener("aiChatError:retry-message", this.retryUserMessageAfterError.bind(this));
     this.addEventListener("SmartWindowPrompt:prompt-selected", this.#onFollowUpSelected.bind(this));
     this.addEventListener("aiChatError:new-chat", this.openNewChatAfterError.bind(this));
+    this.addEventListener("aiChatError:sign-in", this.openAccountSignInAfterError.bind(this));
   }
 
   /**
@@ -1075,13 +1093,17 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     const {
       convId,
       content,
-      ordinal
+      ordinal,
+      isPreviousMessage
     } = event.detail;
-    this.assistantIsLoading = true;
+    if (!isPreviousMessage) {
+      this.assistantIsLoading = true;
+    }
     this.conversationState[ordinal] = {
       role: "user",
       body: content.body,
       contextMentions: content.contextMentions,
+      pageUrl: content.contextPageUrl ?? null,
       convId,
       ordinal
     };
@@ -1184,14 +1206,44 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     });
     this.dispatchEvent(event);
   }
-  #renderMessage(msg) {
+
+  /**
+   * Returns the chips to display for a message, suppressing the current-tab
+   * chip when the page context hasn't changed since the previous user message.
+   *
+   * @param {object} msg - A conversationState entry.
+   * @param {string|null} lastContextPageUrl - The page URL of the preceding
+   * user message, or undefined if there is none.
+   * @returns {ContextWebsite[]}
+   */
+  #getVisibleChips(msg, lastContextPageUrl) {
+    // If this message is on the same page as the previous message,
+    // hide the page URL chip to avoid showing duplicate page context
+    if (!msg || msg.role !== "user" || !msg.contextMentions?.length) {
+      return [];
+    }
+    const currentPageUrl = msg.pageUrl;
+    const shouldHideDuplicatePageChip = currentPageUrl && currentPageUrl === lastContextPageUrl;
+    if (shouldHideDuplicatePageChip) {
+      return msg.contextMentions.filter(chip => URL.parse(chip.url)?.href !== currentPageUrl);
+    }
+    return msg.contextMentions;
+  }
+  openAccountSignInAfterError() {
+    const event = new CustomEvent("AIChatContent:AccountSignIn", {
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(event);
+  }
+  #renderMessage(msg, chips) {
     if (!msg) {
       return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <div class=${`chat-bubble chat-bubble-${msg.role}`}>
-        ${msg.role === "user" && msg.contextMentions?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<website-chip-container
-              .websites=${msg.contextMentions}
+        ${chips?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<website-chip-container
+              .websites=${chips}
             ></website-chip-container>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
         <ai-chat-message
           .message=${msg.body}
@@ -1235,6 +1287,16 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       .error=${this.errorObj}
     ></chat-assistant-error>`;
   }
+  #renderMessages() {
+    let lastContextPageUrl;
+    return this.conversationState.map(msg => {
+      const chips = this.#getVisibleChips(msg, lastContextPageUrl);
+      if (msg?.role === "user") {
+        lastContextPageUrl = msg.pageUrl;
+      }
+      return this.#renderMessage(msg, chips);
+    });
+  }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
@@ -1242,9 +1304,8 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         href="${browser_components_aiwindow_ui_components_ai_chat_content_ai_chat_content_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="chat-content-wrapper">
-        ${this.conversationState.map(msg => this.#renderMessage(msg))}
-        ${this.#renderFollowUpSuggestions()} ${this.#renderLoader()}
-        ${this.#renderError()}
+        ${this.#renderMessages()} ${this.#renderFollowUpSuggestions()}
+        ${this.#renderLoader()} ${this.#renderError()}
       </div>
     `;
   }
@@ -1348,4 +1409,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.2426a4fa.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.c020ca3f.iframe.bundle.js.map
