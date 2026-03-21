@@ -1,0 +1,51 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+:host {
+  display: block;
+  min-width: 0;
+}
+
+.chip-container {
+  min-width: 0;
+}
+
+.scroller {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;
+  min-width: 0;
+}
+
+.scroller > slot {
+  display: contents;
+}
+
+::slotted(*) {
+  flex: 0 0 auto;
+}
+
+.chip-history-deleted {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-small);
+  padding: var(--space-small);
+  border-radius: var(--border-radius-medium);
+  background-color: var(--background-color-box-info);
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+  font-style: italic;
+  cursor: default;
+}
+
+.chip-history-deleted-icon {
+  width: var(--size-item-small);
+  height: var(--size-item-small);
+  flex-shrink: 0;
+  opacity: 0.5;
+}
