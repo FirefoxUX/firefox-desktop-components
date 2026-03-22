@@ -12373,10 +12373,9 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const SERIALIZER = chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.DOMSerializer.fromSchema(chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.defaultMarkdownParser.schema);
-
 // eslint-disable-next-line import/no-unassigned-import
 
+const SERIALIZER = chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.DOMSerializer.fromSchema(chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.defaultMarkdownParser.schema);
 
 /**
  * A custom element for managing AI Chat Content
@@ -12438,7 +12437,12 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
             bubbles: true,
             composed: true,
             detail: {
-              url: target.href
+              url: target.href,
+              shiftKey: event.shiftKey,
+              metaKey: event.metaKey,
+              ctrlKey: event.ctrlKey,
+              altKey: event.altKey,
+              button: event.button
             }
           }));
           return;
@@ -12696,4 +12700,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.b1c7fd2d.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.520c6c22.iframe.bundle.js.map
