@@ -747,11 +747,11 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-box-item>\n  <div class=\"slotted\">\n    <img src=\"chrome://global/skin/illustrations/security-error.svg\" />\n    <span>This is an example message</span>\n    <span class=\"text-deemphasized\">\n      Message description would go down here\n    </span>\n  </div>\n</moz-box-item>\n"
+        children: "<moz-box-item>\n  <div class=\"slotted\">\n    <img src=\"chrome://global/skin/illustrations/security-error.svg\"\n    alt=\"Confused Kit is looking at an orange exclamation mark\" />\n    <span>This is an example message</span>\n    <span class=\"text-deemphasized\">\n      Message description would go down here\n    </span>\n  </div>\n</moz-box-item>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"280px\" }}><div style={{ display: \"flex\", justifyContent: \"center\", alignItems: \"center\", flexDirection: \"column\", textAlign: \"center\" }}><img src=\"chrome://global/skin/illustrations/security-error.svg\" style={{ width: \"150px\", marginBlockEnd: \"16px\" }} /><span>{\"This is an example message\"}</span><span class=\"text-deemphasized\"><p>{\"Message description would go down here\"}</p></span></div></moz-box-item></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"280px\" }}><div style={{ display: \"flex\", justifyContent: \"center\", alignItems: \"center\", flexDirection: \"column\", textAlign: \"center\" }}><img src=\"chrome://global/skin/illustrations/security-error.svg\" style={{ width: \"150px\", marginBlockEnd: \"16px\" }} alt=\"Confused Kit is looking at an orange exclamation mark\" /><span>{\"This is an example message\"}</span><span class=\"text-deemphasized\"><p>{\"Message description would go down here\"}</p></span></div></moz-box-item></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
           style: {
@@ -770,7 +770,8 @@ function _createMdxContent(props) {
               style: {
                 width: "150px",
                 marginBlockEnd: "16px"
-              }
+              },
+              alt: "Confused Kit is looking at an orange exclamation mark"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
               children: "This is an example message"
             }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
@@ -1103,4 +1104,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.691402a8.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-README-stories-md.0251eabb.iframe.bundle.js.map

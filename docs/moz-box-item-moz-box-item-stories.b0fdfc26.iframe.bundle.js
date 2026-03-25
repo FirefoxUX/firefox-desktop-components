@@ -404,7 +404,10 @@ const Template = ({
       support-page=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(supportPage)}
     >
       ${slottedContent ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted">
-            <img src="chrome://global/skin/illustrations/security-error.svg" />
+            <img
+              src="chrome://global/skin/illustrations/security-error.svg"
+              alt="Confused Kit is looking at an orange exclamation mark"
+            />
             <span>This is an example message</span>
             <span class="text-deemphasized">
               Message description would go down here
@@ -742,4 +745,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-moz-box-item-stories.3c5951cd.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-moz-box-item-stories.b0fdfc26.iframe.bundle.js.map

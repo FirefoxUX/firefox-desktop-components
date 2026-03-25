@@ -437,7 +437,6 @@ const lazy = {};
 let XPCOMUtils;
 if (!window.IS_STORYBOOK) {
   XPCOMUtils = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs").XPCOMUtils;
-  XPCOMUtils.defineLazyPreferenceGetter(lazy, "virtualListEnabledPref", "browser.firefox-view.virtual-list.enabled");
   ChromeUtils.defineLazyGetter(lazy, "relativeTimeFormat", () => {
     return new Services.intl.RelativeTimeFormat(undefined, {
       style: "narrow"
@@ -613,7 +612,7 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
   }
   async focusIndex(index) {
     // Focus link or button of item
-    if (lazy.virtualListEnabledPref) {
+    if (index >= 0 && index < this.rowEls?.length) {
       let row = this.rootVirtualListEl.getItem(index);
       if (!row) {
         return;
@@ -632,9 +631,6 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         block: "center"
       });
       row.focus();
-    } else if (index >= 0 && index < this.rowEls?.length) {
-      this.rowEls[index].focus();
-      this.activeIndex = index;
     }
   }
   async requestVirtualListUpdate() {
@@ -711,13 +707,11 @@ class FxviewTabListBase extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
         role="list"
         @keydown=${this.handleFocusElementInRow}
       >
-        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(lazy.virtualListEnabledPref, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-            <virtual-list
-              .activeIndex=${this.activeIndex}
-              .items=${this.tabItems}
-              .template=${this.itemTemplate}
-            ></virtual-list>
-          `, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`${this.tabItems.map((tabItem, i) => this.itemTemplate(tabItem, i))}`)}
+        <virtual-list
+          .activeIndex=${this.activeIndex}
+          .items=${this.tabItems}
+          .template=${this.itemTemplate}
+        ></virtual-list>
       </div>
       <slot name="menu"></slot>
     `;
@@ -1977,4 +1971,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.bc19965d726ada185806.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.df226ca8.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.3feb6b67.iframe.bundle.js.map
