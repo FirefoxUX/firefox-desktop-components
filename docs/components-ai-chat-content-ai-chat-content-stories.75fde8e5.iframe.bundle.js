@@ -367,6 +367,7 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       type: Boolean
     }
   };
+  #parentHost = null;
   constructor() {
     super();
     this.type = "in-line";
@@ -374,6 +375,26 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.iconSrc = "";
     this.href = "";
     this.removable = false;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.#parentHost = this.getRootNode()?.host;
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // Dispatch only when the parent is still connected: Chip was removed by
+    // the user and not due to the parent unmounting.
+    if (this.#parentHost?.isConnected) {
+      this.#parentHost.dispatchEvent(new CustomEvent("ai-website-chip:disconnected", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          label: this.label,
+          type: this.type
+        }
+      }));
+    }
+    this.#parentHost = null;
   }
   get #isEmpty() {
     return this.type === "in-line" && !this.label;
@@ -1519,4 +1540,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.a5861ba9.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.75fde8e5.iframe.bundle.js.map

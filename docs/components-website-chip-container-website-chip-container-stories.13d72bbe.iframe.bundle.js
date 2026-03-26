@@ -1,5 +1,12 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3779],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[9],{
+
+/***/ 5136:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "website-chip-container.588347f67666e28e60ff.css";
+
+/***/ }),
 
 /***/ 6266:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -57,6 +64,7 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       type: Boolean
     }
   };
+  #parentHost = null;
   constructor() {
     super();
     this.type = "in-line";
@@ -64,6 +72,26 @@ class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.iconSrc = "";
     this.href = "";
     this.removable = false;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this.#parentHost = this.getRootNode()?.host;
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    // Dispatch only when the parent is still connected: Chip was removed by
+    // the user and not due to the parent unmounting.
+    if (this.#parentHost?.isConnected) {
+      this.#parentHost.dispatchEvent(new CustomEvent("ai-website-chip:disconnected", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          label: this.label,
+          type: this.type
+        }
+      }));
+    }
+    this.#parentHost = null;
   }
   get #isEmpty() {
     return this.type === "in-line" && !this.label;
@@ -153,6 +181,99 @@ customElements.define("ai-website-chip", AIWebsiteChip);
 
 /***/ }),
 
+/***/ 39092:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   WebsiteChipContainer: () => (/* binding */ WebsiteChipContainer)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5136);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(6266);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/** @typedef {import("chrome://browser/content/urlbar/SmartbarInput.mjs").ContextWebsite} ContextWebsite */
+
+/**
+ * Container for rendering a horizontally scrollable row of website chips
+ */
+class WebsiteChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static properties = {
+    websites: {
+      type: Array
+    },
+    chipType: {
+      type: String
+    },
+    removable: {
+      type: Boolean
+    }
+  };
+  constructor() {
+    super();
+    /** @type {ContextWebsite[]} */
+    this.websites = [];
+    this.chipType = "context-chip";
+    this.removable = false;
+  }
+  #onRemoveWebsite(website, event) {
+    event.stopPropagation();
+    this.dispatchEvent(new CustomEvent("ai-website-chip:remove", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        url: website.url,
+        label: website.label
+      }
+    }));
+  }
+  render() {
+    if (!this.websites.length) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="chip-container">
+        <div class="scroller" role="list">
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.websites, website => website.url, website => website.historyDeleted ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="chip-history-deleted" role="listitem">
+                    <img
+                      class="chip-history-deleted-icon"
+                      src="chrome://global/skin/icons/defaultFavicon.svg"
+                    />
+                    <span
+                      data-l10n-id="aiwindow-website-chip-history-deleted"
+                    ></span>
+                  </div>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<ai-website-chip
+                    .type=${this.chipType}
+                    .label=${website.label}
+                    .href=${website.url}
+                    .iconSrc=${website.iconSrc ?? ""}
+                    .removable=${this.removable}
+                    @ai-website-chip:remove=${e => this.#onRemoveWebsite(website, e)}
+                  ></ai-website-chip>`)}
+        </div>
+      </div>
+    `;
+  }
+}
+customElements.define("website-chip-container", WebsiteChipContainer);
+
+/***/ }),
+
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -160,20 +281,16 @@ module.exports = __webpack_require__.p + "ai-website-chip.379290212c8e052259f3.c
 
 /***/ }),
 
-/***/ 82559:
+/***/ 52253:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ContextChip: () => (/* binding */ ContextChip),
-/* harmony export */   InLineCollection: () => (/* binding */ InLineCollection),
-/* harmony export */   InLineDefault: () => (/* binding */ InLineDefault),
-/* harmony export */   InLineEmpty: () => (/* binding */ InLineEmpty),
-/* harmony export */   MixedCollection: () => (/* binding */ MixedCollection),
+/* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(6266);
+/* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39092);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -181,97 +298,44 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Website Chip",
-  component: "ai-website-chip",
-  argTypes: {
-    type: {
-      control: "select",
-      options: ["in-line", "context-chip"]
-    },
-    label: {
-      control: "text"
-    },
-    iconSrc: {
-      control: "text"
-    },
-    href: {
-      control: "text"
-    },
-    removable: {
-      control: "boolean"
-    }
-  },
-  parameters: {
-    fluent: `
-aiwindow-website-chip-placeholder = Tag a tab or site
-aiwindow-website-chip-remove-button =
-  .aria-label = Remove
-    `
-  }
+  title: "Domain-specific UI Widgets/AI Window/Website Chip Container",
+  component: "website-chip-container",
+  // Constrained container to simulate a chat bubble.
+  decorators: [story => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+      <div
+        style="
+          width: 326px;
+          padding: 16px;
+          box-sizing: border-box;
+          border: 1px dashed #ccc;
+        "
+      >
+        ${story()}
+      </div>
+    `]
 });
-const Template = ({
-  type,
-  label,
-  iconSrc,
-  href,
-  removable
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <ai-website-chip
-    .type=${type}
-    .label=${label}
-    .iconSrc=${iconSrc}
-    .href=${href || ""}
-    .removable=${removable ?? false}
-  ></ai-website-chip>
-`;
-const InLineDefault = Template.bind({});
-InLineDefault.args = {
-  type: "in-line",
-  label: "mozilla.org",
-  iconSrc: "chrome://branding/content/about-logo.svg"
-};
-const InLineEmpty = Template.bind({});
-InLineEmpty.args = {
-  type: "in-line",
-  label: "",
-  iconSrc: ""
-};
-const InLineCollection = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <ai-website-chip
-      type="in-line"
-      label="mozilla.org"
-      iconSrc="chrome://branding/content/icon16.png"
-    ></ai-website-chip>
-    <ai-website-chip type="in-line" label=""></ai-website-chip>
-  </div>
-`;
-const ContextChip = Template.bind({});
-ContextChip.args = {
-  type: "context-chip",
+const websites = [{
+  id: "https://example.com",
   label: "example.com",
-  iconSrc: "chrome://branding/content/icon16.png",
-  removable: true
-};
-const MixedCollection = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div style="display: flex; flex-wrap: wrap; gap: 8px;">
-    <ai-website-chip
-      type="in-line"
-      label="mozilla.org"
-      iconSrc="chrome://branding/content/icon16.png"
-    ></ai-website-chip>
-    <ai-website-chip type="in-line" label=""></ai-website-chip>
-    <ai-website-chip
-      type="context-chip"
-      label="example.com"
-      iconSrc="chrome://branding/content/about-logo.svg"
-      href="https://example.com"
-      .removable=${true}
-    ></ai-website-chip>
-  </div>
+  iconSrc: "chrome://branding/content/about-logo.svg"
+}, {
+  id: "https://firefox.com",
+  label: "firefox.com",
+  iconSrc: "chrome://branding/content/icon16.png"
+}, {
+  id: "https://example.com",
+  label: "example.com",
+  iconSrc: "chrome://branding/content/about-logo.svg"
+}];
+const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <website-chip-container
+    .chipType=${"context-chip"}
+    .websites=${websites}
+    .removable=${true}
+  ></website-chip-container>
 `;
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-website-chip-ai-website-chip-stories.2796acd1.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.13d72bbe.iframe.bundle.js.map

@@ -1133,7 +1133,7 @@ __webpack_require__.r(__webpack_exports__);
  */
 /** @typedef {SettingElementConfig & SettingGroupConfigExtensions} SettingGroupConfig */
 
-const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group", "moz-message-bar"]);
+const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group", "moz-message-bar", "a"]);
 const DISMISS_HANDLERS = new Set(["moz-message-bar"]);
 const REORDER_HANDLERS = new Set(["moz-box-group"]);
 
@@ -1358,4 +1358,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.5268bbe8.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.c721d404.iframe.bundle.js.map
