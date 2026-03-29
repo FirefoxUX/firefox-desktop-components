@@ -472,6 +472,7 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     }
     if (changedProperties.has("disabled")) {
       this.childElements.forEach(item => {
+        item.parentDisabled = this.disabled;
         item.requestUpdate();
       });
     }
@@ -634,4 +635,4 @@ const SelectControlItemMixin = superClass => class extends superClass {
 /***/ })
 
 }]);
-//# sourceMappingURL=1291.323fb0c4.iframe.bundle.js.map
+//# sourceMappingURL=1291.6f913edb.iframe.bundle.js.map

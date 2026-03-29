@@ -1076,6 +1076,7 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     }
     if (changedProperties.has("disabled")) {
       this.childElements.forEach(item => {
+        item.parentDisabled = this.disabled;
         item.requestUpdate();
       });
     }
@@ -1332,4 +1333,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-radio-group-README-stories-md.c5991cb1.iframe.bundle.js.map
+//# sourceMappingURL=moz-radio-group-README-stories-md.f1dd26e3.iframe.bundle.js.map

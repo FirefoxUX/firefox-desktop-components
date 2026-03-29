@@ -73,10 +73,12 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
     return this.searchEngineInfo?.icon ? `url(${this.searchEngineInfo.icon})` : "chrome://global/skin/icons/search-glass.svg";
   }
   #setAction(key) {
-    if (key === this.action || !InputCta.ACTIONS.includes(key)) {
+    if (!InputCta.ACTIONS.includes(key)) {
       return;
     }
-    this.action = key;
+    if (key !== this.action) {
+      this.action = key;
+    }
     this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action-change", {
       detail: {
         action: key
@@ -920,4 +922,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.85d7a25a.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.c9b65bd3.iframe.bundle.js.map
