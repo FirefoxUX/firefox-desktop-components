@@ -5,3 +5,10 @@
 .untrusted-link-label {
   text-decoration: underline dashed;
 }
+
+.message-user {
+  p {
+    margin-block-start: 0;
+    margin-block-end: 0;
+  }
+}
