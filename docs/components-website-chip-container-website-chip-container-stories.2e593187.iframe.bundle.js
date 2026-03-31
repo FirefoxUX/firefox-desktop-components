@@ -277,7 +277,7 @@ customElements.define("website-chip-container", WebsiteChipContainer);
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-chip.379290212c8e052259f3.css";
+module.exports = __webpack_require__.p + "ai-website-chip.71ece95a6a645934fd47.css";
 
 /***/ }),
 
@@ -338,4 +338,4 @@ const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPOR
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.8b3fda88.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.2e593187.iframe.bundle.js.map
