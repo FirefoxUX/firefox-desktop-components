@@ -29,6 +29,10 @@
   @media (max-width: 950px) {
     grid-template-rows: 1fr auto;
   }
+
+  @media print {
+    display: none;
+  }
 }
 
 nav {

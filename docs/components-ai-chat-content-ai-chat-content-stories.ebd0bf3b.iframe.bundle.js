@@ -752,7 +752,7 @@ customElements.define("website-chip-container", WebsiteChipContainer);
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-chip.71ece95a6a645934fd47.css";
+module.exports = __webpack_require__.p + "ai-website-chip.6bb52f3ec9870456f3a7.css";
 
 /***/ }),
 
@@ -1027,6 +1027,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }
   };
   #lastScrollReq = null;
+  #overflowObserver = null;
   constructor() {
     super();
     this.assistantIsLoading = false;
@@ -1043,6 +1044,12 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       bubbles: true
     }));
     this.#initFooterActionListeners();
+    this.#initOverflowObserver();
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#overflowObserver?.disconnect();
+    this.#overflowObserver = null;
   }
   #dispatchAction(action, detail) {
     this.dispatchEvent(new CustomEvent("AIChatContent:DispatchAction", {
@@ -1103,6 +1110,15 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     });
     this.addEventListener("open-memories-learn-more", event => {
       this.#dispatchAction("open-memories-learn-more", event.detail);
+    });
+  }
+  #initOverflowObserver() {
+    this.#overflowObserver = new ResizeObserver(() => {
+      const wrapper = this.shadowRoot.querySelector(".chat-content-wrapper");
+      wrapper?.toggleAttribute("overflowing", wrapper.scrollHeight > wrapper.clientHeight);
+    });
+    this.updateComplete.then(() => {
+      this.#overflowObserver.observe(this.shadowRoot.querySelector(".chat-inner-wrapper"));
     });
   }
   #getAssistantMessageBody(messageId) {
@@ -1174,6 +1190,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     if (convIdChanged || isReloadingSameConvo) {
       this.conversationState = [];
       this.followUpSuggestions = [];
+      this.shadowRoot?.querySelector(".chat-inner-wrapper")?.style.removeProperty("--content-height");
       this.requestUpdate();
     }
   }
@@ -1218,7 +1235,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       ordinal
     };
     this.requestUpdate();
-    this.#scrollUserMessageIntoView();
+    if (!isPreviousMessage) {
+      this.#scrollUserMessageIntoView();
+    }
   }
   retryUserMessageAfterError() {
     const lastMessage = this.conversationState.findLast(m => m);
@@ -1287,7 +1306,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         }
         let elTop = lastMessage.offsetTop;
         let spacer = haveMultipleMessages ? "small" : "large";
-        lastMessage.parentNode.style.setProperty("--content-height", `calc(${elTop}px + 100% - var(--space-${spacer}))`);
+        lastMessage.parentNode.style.setProperty("--content-height", `calc(${elTop}px + 100% - var(--space-${spacer}) - var(--space-xsmall))`);
         requestAnimationFrame(() => {
           if (scrollReq == this.#lastScrollReq) {
             lastMessage.scrollIntoView({
@@ -1455,7 +1474,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.99ef17ae8f504
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.ef46f0933eb35ab0dd75.css";
+module.exports = __webpack_require__.p + "ai-chat-content.fc585cfc1489502f343b.css";
 
 /***/ }),
 
@@ -1540,4 +1559,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.49c284e6.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ebd0bf3b.iframe.bundle.js.map

@@ -19,10 +19,21 @@
   display: flex;
   flex: 1;
   flex-direction: column;
+  margin-block-start: var(--space-xsmall);
   min-height: 0;
   overflow-y: auto;
   padding-block: var(--space-large);
   width: 100%;
+
+  &[overflowing] {
+    mask-image: linear-gradient(
+      to bottom,
+      transparent,
+      var(--color-black) var(--size-item-xlarge),
+      var(--color-black) calc(100% - var(--size-item-xlarge)),
+      transparent
+    );
+  }
 
   @media (prefers-reduced-motion: no-preference) {
     scroll-behavior: smooth;

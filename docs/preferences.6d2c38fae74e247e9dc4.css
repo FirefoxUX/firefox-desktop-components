@@ -54,8 +54,11 @@
 }
 
 #categories {
-  margin: 0;
-  margin-inline-start: 42px;
+  min-width: calc(var(--size-sidebar) - 42px);
+
+  @media (max-width: 950px) {
+    min-width: auto;
+  }
 }
 
 #search-container {
@@ -93,6 +96,10 @@
   padding-top: 0;
   padding-inline-end: 42px;
   scroll-padding-top: calc(40px + var(--space-large) + 40px);
+
+  @media (max-width: 830px) {
+    padding-inline: var(--space-medium);
+  }
 }
 
 .pane-container {

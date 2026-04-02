@@ -612,7 +612,7 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ 89472:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.9768588cc70a5e36f078.css";
+module.exports = __webpack_require__.p + "moz-page-nav.22d27291e083ae55172e.css";
 
 /***/ }),
 
@@ -946,4 +946,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.d821a471.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.970a38d1.iframe.bundle.js.map

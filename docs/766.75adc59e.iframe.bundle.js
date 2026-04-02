@@ -427,9 +427,9 @@ customElements.define("moz-page-nav-button", MozPageNavButton);
 /***/ 89472:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.9768588cc70a5e36f078.css";
+module.exports = __webpack_require__.p + "moz-page-nav.22d27291e083ae55172e.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=766.1c222aec.iframe.bundle.js.map
+//# sourceMappingURL=766.75adc59e.iframe.bundle.js.map
