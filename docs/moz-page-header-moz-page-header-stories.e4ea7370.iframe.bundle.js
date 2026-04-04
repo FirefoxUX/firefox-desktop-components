@@ -83,7 +83,7 @@ module.exports = __webpack_require__.p + "moz-page-header.3c8ed3a1b3bc0a1847bb.c
 /***/ 29556:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-breadcrumb-group.3c9c6c0fccb47045b0c3.css";
+module.exports = __webpack_require__.p + "moz-breadcrumb-group.3da241850bca1503ce1f.css";
 
 /***/ }),
 
@@ -124,6 +124,10 @@ class MozBreadcrumb extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
       type: String,
       fluent: true
     },
+    heading: {
+      type: String,
+      fluent: true
+    },
     ariaCurrent: {
       attribute: "aria-current",
       type: String
@@ -132,10 +136,11 @@ class MozBreadcrumb extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   constructor() {
     super();
     this.label = "";
+    this.heading = "";
     this.href = "";
   }
   render() {
-    const labelTemplate = this.label || (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<slot></slot>`;
+    const labelTemplate = this.label || this.heading || (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<slot></slot>`;
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
@@ -239,7 +244,7 @@ customElements.define("moz-breadcrumb-group", MozBreadcrumbGroup);
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozPageHeader)
+/* harmony export */   MozPageHeader: () => (/* binding */ MozPageHeader)
 /* harmony export */ });
 /* harmony import */ var toolkit_themes_shared_design_system_src_text_and_typography_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44311);
 /* harmony import */ var toolkit_content_widgets_moz_page_header_moz_page_header_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15550);
@@ -498,4 +503,4 @@ module.exports = __webpack_require__.p + "moz-breadcrumb.ad10d0dbb7433ab82dc6.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-header-moz-page-header-stories.f632e4e4.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-header-moz-page-header-stories.e4ea7370.iframe.bundle.js.map

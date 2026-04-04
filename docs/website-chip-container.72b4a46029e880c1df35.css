@@ -9,6 +9,9 @@
 
 .chip-container {
   min-width: 0;
+}
+
+:host(.smartbar-context-chips-header) .chip-container {
   padding-inline-start: var(--space-medium);
   /* This padding aligns with border-width to maintain consistent spacing that creates the visual that the chips are coming to the edge. */
   /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */

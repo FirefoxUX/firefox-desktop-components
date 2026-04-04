@@ -86,6 +86,12 @@ class PlaceholderMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       aria-describedby="label description"
     ></a>`;
   }
+  imageTemplate() {
+    if (!this.imageSrc) {
+      return "";
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<img src=${this.imageSrc} role="presentation" />`;
+  }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`
       <link
@@ -98,7 +104,7 @@ class PlaceholderMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       />
       <moz-box-item>
         <div class="placeholder-container">
-          <img src=${this.imageSrc} role="presentation" />
+          ${this.imageTemplate()}
           <div class="text-container">
             ${this.labelTemplate()} ${this.descriptionTemplate()}
           </div>
@@ -178,4 +184,4 @@ WithSupportPage.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=placeholder-message-placeholder-message-stories.d512b80f.iframe.bundle.js.map
+//# sourceMappingURL=placeholder-message-placeholder-message-stories.fee93978.iframe.bundle.js.map

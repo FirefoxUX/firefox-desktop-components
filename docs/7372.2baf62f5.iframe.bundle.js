@@ -13,7 +13,7 @@ module.exports = __webpack_require__.p + "moz-page-header.3c8ed3a1b3bc0a1847bb.c
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozPageHeader)
+/* harmony export */   MozPageHeader: () => (/* binding */ MozPageHeader)
 /* harmony export */ });
 /* harmony import */ var toolkit_themes_shared_design_system_src_text_and_typography_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44311);
 /* harmony import */ var toolkit_content_widgets_moz_page_header_moz_page_header_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(15550);
@@ -157,4 +157,4 @@ customElements.define("moz-page-header", MozPageHeader);
 /***/ })
 
 }]);
-//# sourceMappingURL=7372.2a320a3e.iframe.bundle.js.map
+//# sourceMappingURL=7372.2baf62f5.iframe.bundle.js.map

@@ -74,6 +74,7 @@
   box-shadow:
     var(--smartwindow-shadow, var(--box-shadow-level-2)),
     inset 0 0 5px var(--chat-bubble-inset-color, var(--box-shadow-color-lighter-layer-1));
+  gap: var(--space-medium);
   max-width: 75%;
   overflow-wrap: anywhere;
   padding-inline: var(--space-large);

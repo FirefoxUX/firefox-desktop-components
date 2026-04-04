@@ -13,6 +13,7 @@ module.exports = __webpack_require__.p + "asrouter-newtab-message.884ffdd50849cf
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BlockOnSecondaryButton: () => (/* binding */ BlockOnSecondaryButton),
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   DismissOnSecondaryButton: () => (/* binding */ DismissOnSecondaryButton),
 /* harmony export */   WithSecondaryButton: () => (/* binding */ WithSecondaryButton),
@@ -49,13 +50,17 @@ const Template = ({
       margin-block: 0 var(--space-xlarge);
       margin-inline: auto;
       overflow: hidden;
-      max-width: 300px;
+      max-width: 904px;
     }
   </style>
   <div class="asrouter-newtab-message-wrapper">
     <asrouter-newtab-message
       .messageData=${messageData}
       .cssOverride=${_asrouter_newtab_message_css__WEBPACK_IMPORTED_MODULE_2__}
+      .handleBlock=${() => console.warn("handleBlock called — message permanently blocked")}
+      .handleDismiss=${() => console.warn("handleDismiss called — DISMISS telemetry sent, message closed")}
+      .handleClose=${() => console.warn("handleClose called — message closed")}
+      .handleClick=${source => console.warn(`handleClick called — CLICK telemetry sent, source: ${source}`)}
     ></asrouter-newtab-message>
   </div>
 `;
@@ -122,6 +127,24 @@ DismissOnSecondaryButton.args = {
         label: "Not Now",
         action: {
           dismiss: true
+        }
+      }
+    }
+  }
+};
+const BlockOnSecondaryButton = Template.bind({});
+BlockOnSecondaryButton.args = {
+  messageData: {
+    ...BASE_MESSAGE,
+    content: {
+      ...BASE_MESSAGE.content,
+      secondaryButton: {
+        label: "No Thanks",
+        action: {
+          type: "BLOCK_MESSAGE",
+          data: {
+            id: "TEST_ASROUTER_NEWTAB_MESSAGE"
+          }
         }
       }
     }
@@ -914,10 +937,10 @@ class ASRouterNewTabMessage extends chrome_global_content_lit_utils_mjs__WEBPACK
       }
     }));
   }
-
-  // We don't permanently block on dismiss, re-show behavior is controlled by
-  // the message's frequency cap. If a message should only appear once per
-  // session or lifetime, set that in the message config.
+  #handleXButton() {
+    this.handleBlock?.();
+    this.#handleDismiss();
+  }
   #handleDismiss() {
     this.handleDismiss?.();
   }
@@ -1023,7 +1046,7 @@ class ASRouterNewTabMessage extends chrome_global_content_lit_utils_mjs__WEBPACK
                 size="small"
                 iconSrc="chrome://global/skin/icons/close.svg"
                 data-l10n-id="newtab-activation-window-message-dismiss-button"
-                @click=${this.#handleDismiss.bind(this)}
+                @click=${this.#handleXButton.bind(this)}
               ></moz-button>
             </div>`}
         <div class="message-inner">
@@ -1043,4 +1066,4 @@ customElements.define("asrouter-newtab-message", ASRouterNewTabMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.481389d5.iframe.bundle.js.map
+//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.95957a3f.iframe.bundle.js.map

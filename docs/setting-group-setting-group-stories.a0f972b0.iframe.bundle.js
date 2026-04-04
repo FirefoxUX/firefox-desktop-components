@@ -1215,8 +1215,14 @@ class SettingGroup extends chrome_browser_content_preferences_widgets_setting_el
     if (!this.srdEnabled) {
       this.classList.toggle("subcategory", this.config?.headingLevel == 1);
     }
-    this.toggleAttribute(HiddenAttr.Search, !!this.config?.hiddenFromSearch);
-    this.toggleAttribute(HiddenAttr.Self, !!this.config?.hidden);
+    // Only set/remove attributes when explicitly defined in config
+    // This allows handleVisibilityChange to manage visibility independently
+    if (this.config?.hiddenFromSearch !== undefined) {
+      this.toggleAttribute(HiddenAttr.Search, !!this.config.hiddenFromSearch);
+    }
+    if (this.config?.hidden !== undefined) {
+      this.toggleAttribute(HiddenAttr.Self, this.config.hidden);
+    }
   }
   async handleVisibilityChange() {
     await this.updateComplete;
@@ -1361,4 +1367,4 @@ customElements.define("setting-group", SettingGroup);
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-group-setting-group-stories.560c4a24.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.a0f972b0.iframe.bundle.js.map
