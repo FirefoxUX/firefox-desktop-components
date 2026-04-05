@@ -1016,14 +1016,11 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     tokens: {
       type: Object
     },
-    /**
-     * Trusted URLs for link validation, pushed from parent via child actor.
-     * Passed down to ai-chat-message for synchronous validation during render.
-     * Array type for Xray wrapper compatibility.
-     */
-    trustedUrls: {
-      type: Array,
-      attribute: false
+    seenUrls: {
+      type: Object
+    },
+    conversationId: {
+      type: String
     }
   };
   #lastScrollReq = null;
@@ -1035,7 +1032,21 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.followUpSuggestions = [];
     this.errorObj = null;
     this.isSearching = false;
-    this.trustedUrls = null;
+
+    /**
+     * The set of URLs that have been seen by the conversation. Used for determining
+     * if a URL will be unfurled or not.
+     *
+     * @type {Set<string>}
+     */
+    this.seenUrls = new Set();
+
+    /**
+     * The current conversationId for the seenUrls.
+     *
+     * @type {null | string}
+     */
+    this.conversationId = null;
   }
   connectedCallback() {
     super.connectedCallback();
@@ -1070,7 +1081,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.addEventListener("aiChatContentActor:message", this.messageEvent.bind(this));
     this.addEventListener("aiChatContentActor:truncate", this.truncateEvent.bind(this));
     this.addEventListener("aiChatContentActor:remove-applied-memory", this.removeAppliedMemoryEvent.bind(this));
-    this.addEventListener("aiChatContentActor:trustedUrlsUpdated", this.#handleTrustedUrlsUpdated.bind(this));
+    this.addEventListener("aiChatContentActor:seen-urls", this.#handleSeenUrls.bind(this));
     this.addEventListener("aiChatError:retry-message", this.retryUserMessageAfterError.bind(this));
     this.addEventListener("SmartWindowPrompt:prompt-selected", this.#onFollowUpSelected.bind(this));
     this.addEventListener("aiChatError:new-chat", this.openNewChatAfterError.bind(this));
@@ -1140,11 +1151,27 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       bubbles: true
     }));
   }
-  #handleTrustedUrlsUpdated(event) {
-    const {
-      trustedUrls
-    } = event.detail;
-    this.trustedUrls = Array.isArray(trustedUrls) ? [...trustedUrls] : [];
+
+  /**
+   * Add new seen URLs to the current conversation.
+   *
+   * @param {object} event
+   * @param {object} event.detail
+   * @param {string} event.detail.conversationId
+   * @param {Set<string>} event.detail.seenUrls
+   */
+  #handleSeenUrls({
+    detail: {
+      conversationId,
+      seenUrls
+    }
+  }) {
+    if (this.conversationId == conversationId) {
+      this.seenUrls = this.seenUrls.union(seenUrls);
+    } else {
+      this.conversationId = conversationId;
+      this.seenUrls = seenUrls;
+    }
   }
   messageEvent(event) {
     const message = event.detail;
@@ -1395,7 +1422,8 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           .role=${msg.role}
           .messageId=${msg.messageId}
           .searchTokens=${msg.searchTokens || []}
-          .trustedUrls=${this.trustedUrls}
+          .conversationId=${this.conversationId}
+          .seenUrls=${this.seenUrls}
         ></ai-chat-message>
         ${msg.role === "assistant" ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
               <assistant-message-footer
@@ -1559,4 +1587,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.eb387cd9.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.fc76cda1.iframe.bundle.js.map
