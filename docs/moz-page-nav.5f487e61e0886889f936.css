@@ -3,7 +3,8 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 :host {
-  --page-nav-margin-top: 72px;
+  --page-nav-margin-block-start: var(--dimension-64);
+  --page-nav-margin-inline-start: var(--dimension-40);
   --page-nav-gap: var(--space-large);
   --page-nav-button-gap: var(--space-xsmall);
   --page-nav-border-color: var(--border-color-transparent);
@@ -11,7 +12,7 @@
   --page-nav-heading-logo-size: calc(var(--icon-size) + var(--space-small));
   --page-nav-hr-color: var(--border-color);
 
-  margin-inline-start: 42px;
+  margin-inline-start: var(--page-nav-margin-inline-start);
   position: sticky;
   top: 0;
   height: 100vh;
@@ -48,7 +49,7 @@ nav {
   display: flex;
   align-items: center;
   gap: var(--space-small);
-  margin-block-start: var(--page-nav-margin-top);
+  margin-block-start: var(--page-nav-margin-block-start);
 
   > .logo {
     display: inline-block;
@@ -61,7 +62,7 @@ nav {
     margin-inline-start: calc(var(--space-medium) - ((var(--page-nav-heading-logo-size) - var(--icon-size)) / 2));
 
     @media (max-width: 950px) {
-      margin-inline-start: 4px;
+      margin-inline-start: var(--space-xsmall);
     }
   }
 

@@ -83,8 +83,11 @@
   z-index: 2;
   background-color: var(--background-color-canvas);
   padding-top: 40px;
-  padding-bottom: var(--space-large);
+  padding-bottom: var(--search-container-padding);
   padding-inline: var(--focus-outline-offset);
+  /* Ensure focus indicators on elements below the search container
+     aren't obscured. */
+  margin-bottom: var(--search-container-margin);
 }
 
 #searchInput {
@@ -98,13 +101,16 @@
 }
 
 .main-content {
+  --search-container-padding: var(--space-small);
+  --search-container-margin: calc(var(--focus-outline-width) + var(--focus-outline-offset));
+
   contain: inline-size;
   /* 72px matches moz-page-nav's --page-nav-margin-top, minus the 40px
      padding-top already set in common-shared.css. */
   margin-top: 32px;
   padding-top: 0;
   padding-inline-end: 42px;
-  scroll-padding-top: calc(40px + var(--space-large) + 40px);
+  scroll-padding-top: calc(40px + var(--search-container-padding) + var(--search-container-margin) + 40px);
 
   @media (max-width: 830px) {
     padding-inline: var(--space-medium);

@@ -4,7 +4,7 @@
 /***/ 10139:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav-button.c8493cab36cc7ea13fb3.css";
+module.exports = __webpack_require__.p + "moz-page-nav-button.3abce506fdf03f84bfd7.css";
 
 /***/ }),
 
@@ -612,7 +612,7 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ 89472:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-nav.22d27291e083ae55172e.css";
+module.exports = __webpack_require__.p + "moz-page-nav.5f487e61e0886889f936.css";
 
 /***/ }),
 
@@ -670,12 +670,12 @@ function _createMdxContent(props) {
       }), " is a grouping of navigation buttons that is displayed at the page level,\nintended to change the selected view, provide a heading, and have links to external resources."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-top\": 0, maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
+      mdxSource: "<with-common-styles><moz-page-nav heading=\"This is a nav\" style={{ \"--page-nav-margin-block-start\": 0, maxWidth: \"20ch\", maxHeight: \"275px\" }}><moz-page-nav-button view=\"view-one\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 1\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-two\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 2\"}</p></moz-page-nav-button><moz-page-nav-button view=\"view-three\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\"><p style={{ margin: 0 }}>{\"Test 3\"}</p></moz-page-nav-button><moz-page-nav-button support-page=\"test\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"Support Link\"}</p></moz-page-nav-button><moz-page-nav-button href=\"https://www.example.com\" iconSrc=\"chrome://browser/skin/preferences/category-general.svg\" slot=\"secondary-nav\"><p style={{ margin: 0 }}>{\"External Link\"}</p></moz-page-nav-button></moz-page-nav></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
         children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-page-nav", {
           heading: "This is a nav",
           style: {
-            '--page-nav-margin-top': 0,
+            '--page-nav-margin-block-start': 0,
             maxWidth: '20ch',
             maxHeight: '275px'
           },
@@ -946,4 +946,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.970a38d1.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.8c1145fa.iframe.bundle.js.map
