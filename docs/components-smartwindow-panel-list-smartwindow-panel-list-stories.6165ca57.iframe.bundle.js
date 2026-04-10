@@ -939,7 +939,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       // otherwise we can use the positioned span.
       this.#anchorElement = this.anchor instanceof Element ? this.anchor : this.renderRoot.querySelector(".smartwindow-panel-list-anchor");
     }
-    if (this.sidebarMode && this.#panelList?.open && (changedProperties.has("anchor") || changedProperties.has("groups"))) {
+    if (this.#panelList?.open && (changedProperties.has("anchor") || changedProperties.has("groups"))) {
       this.#reposition();
     }
   }
@@ -1212,4 +1212,4 @@ MultipleGroups.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.be9cf99d.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.6165ca57.iframe.bundle.js.map
