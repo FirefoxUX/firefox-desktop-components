@@ -388,7 +388,7 @@ module.exports = __webpack_require__.p + "moz-card.01584071dc04ac9e6cf1.css";
 /***/ 48678:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "menu-message.71b77186e00b4f61d82d.css";
+module.exports = __webpack_require__.p + "menu-message.a820a8a7f62d2d7a0ed9.css";
 
 /***/ }),
 
@@ -1173,4 +1173,4 @@ customElements.define("menu-message", MenuMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-menu-message-menu-message-stories.5bbfbc02.iframe.bundle.js.map
+//# sourceMappingURL=components-menu-message-menu-message-stories.d2d6e956.iframe.bundle.js.map

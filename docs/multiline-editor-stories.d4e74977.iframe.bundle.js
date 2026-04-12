@@ -12,6 +12,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   DecorationSet: () => (/* binding */ ao),
 /* harmony export */   EditorState: () => (/* binding */ de),
 /* harmony export */   EditorView: () => (/* binding */ Ro),
+/* harmony export */   MarkdownIt: () => (/* binding */ Na),
 /* harmony export */   MarkdownParser: () => (/* binding */ Pa),
 /* harmony export */   MarkdownSerializer: () => (/* binding */ Va),
 /* harmony export */   Plugin: () => (/* binding */ me),
@@ -9984,13 +9985,15 @@ const Hl = [["text", function (t, e) {
     if (!o) return !1;
     let s = o.url;
     if (s.length <= i.length) return !1;
-    s = s.replace(/\*+$/, "");
-    const l = t.md.normalizeLink(s);
-    if (!t.md.validateLink(l)) return !1;
+    let l = s.length;
+    for (; l > 0 && 42 === s.charCodeAt(l - 1);) l--;
+    l !== s.length && (s = s.slice(0, l));
+    const a = t.md.normalizeLink(s);
+    if (!t.md.validateLink(a)) return !1;
     if (!e) {
       t.pending = t.pending.slice(0, -i.length);
       const e = t.push("link_open", "a", 1);
-      e.attrs = [["href", l]], e.markup = "linkify", e.info = "auto";
+      e.attrs = [["href", a]], e.markup = "linkify", e.info = "auto";
       t.push("text", "", 0).content = t.md.normalizeLinkText(s);
       const n = t.push("link_close", "a", -1);
       n.markup = "linkify", n.info = "auto";
@@ -13487,4 +13490,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.3ec98929.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.d4e74977.iframe.bundle.js.map
