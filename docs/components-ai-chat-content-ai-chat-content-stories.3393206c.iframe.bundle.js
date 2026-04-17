@@ -1126,7 +1126,14 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   #initOverflowObserver() {
     this.#overflowObserver = new ResizeObserver(() => {
       const wrapper = this.shadowRoot.querySelector(".chat-content-wrapper");
-      wrapper?.toggleAttribute("overflowing", wrapper.scrollHeight > wrapper.clientHeight);
+      const innerWrapper = this.shadowRoot.querySelector(".chat-inner-wrapper");
+      if (!wrapper || !innerWrapper) {
+        return;
+      }
+      const hasContent = innerWrapper.children.length;
+      // Use a 10px threshold to avoid false positives from layout differences
+      const thresholdPadding = 10;
+      wrapper.toggleAttribute("overflowing", hasContent && wrapper.scrollHeight > wrapper.clientHeight + thresholdPadding);
     });
     this.updateComplete.then(() => {
       this.#overflowObserver.observe(this.shadowRoot.querySelector(".chat-inner-wrapper"));
@@ -1600,4 +1607,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.cce97762.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.3393206c.iframe.bundle.js.map

@@ -54,6 +54,9 @@ class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     });
     this.dispatchEvent(event);
   }
+  #hasInteracted(e) {
+    e.currentTarget.classList.add("has-interacted");
+  }
   render() {
     if (!this.prompts.length) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)``;
@@ -69,6 +72,8 @@ class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
             <moz-button
               class="sw-prompt-button"
               @click=${() => this.#promptSelected(swPrompt)}
+              @mouseenter=${this.#hasInteracted}
+              @focusin=${this.#hasInteracted}
               aria-label=${swPrompt.text}
             >
               ${swPrompt.text}
@@ -85,7 +90,7 @@ customElements.define("smartwindow-prompts", SmartWindowPrompts);
 /***/ 24718:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-prompts.54d594b1148e4a0c0edd.css";
+module.exports = __webpack_require__.p + "smartwindow-prompts.88385a7804e1508a3f11.css";
 
 /***/ }),
 
@@ -887,4 +892,4 @@ FullpageMode.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-prompts-smartwindow-prompts-stories.9f426ef3.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-prompts-smartwindow-prompts-stories.5ef1017d.iframe.bundle.js.map
