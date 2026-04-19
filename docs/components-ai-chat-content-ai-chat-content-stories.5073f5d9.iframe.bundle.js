@@ -832,7 +832,7 @@ customElements.define("website-chip-container", WebsiteChipContainer);
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-chip.3fd75491b82f862033ef.css";
+module.exports = __webpack_require__.p + "ai-website-chip.1e9303af98b32f4d06e8.css";
 
 /***/ }),
 
@@ -1105,6 +1105,9 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   };
   #lastScrollReq = null;
   #overflowObserver = null;
+  #scrollHandler = null;
+  #scrollClickHandler = null;
+  #scrollRafId = null;
   constructor() {
     super();
     this.assistantIsLoading = false;
@@ -1136,11 +1139,13 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }));
     this.#initFooterActionListeners();
     this.#initOverflowObserver();
+    this.#initScrollListener();
   }
   disconnectedCallback() {
     super.disconnectedCallback();
     this.#overflowObserver?.disconnect();
     this.#overflowObserver = null;
+    this.#teardownScrollListener();
   }
   #dispatchAction(action, detail) {
     this.dispatchEvent(new CustomEvent("AIChatContent:DispatchAction", {
@@ -1218,6 +1223,62 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.updateComplete.then(() => {
       this.#overflowObserver.observe(this.shadowRoot.querySelector(".chat-inner-wrapper"));
     });
+  }
+  get #wrapper() {
+    return this.shadowRoot?.querySelector(".chat-content-wrapper");
+  }
+  get #jumpButton() {
+    return this.shadowRoot?.querySelector(".jump-to-bottom-button");
+  }
+  #initScrollListener() {
+    this.updateComplete.then(() => {
+      if (!this.isConnected) {
+        return;
+      }
+      const wrapper = this.#wrapper;
+      const btn = this.#jumpButton;
+      if (!wrapper || !btn) {
+        return;
+      }
+      this.#scrollHandler = () => {
+        if (this.#scrollRafId) {
+          return;
+        }
+        this.#scrollRafId = requestAnimationFrame(() => {
+          this.#scrollRafId = null;
+          const distanceFromBottom = wrapper.scrollHeight - wrapper.scrollTop - wrapper.clientHeight;
+          const threshold = wrapper.clientHeight * 0.5;
+          const show = distanceFromBottom > threshold;
+          const atBottom = distanceFromBottom < 1;
+          if (btn.hasAttribute("visible") !== show) {
+            btn.toggleAttribute("visible", show);
+            btn.toggleAttribute("disabled", !show);
+          }
+          if (wrapper.hasAttribute("scrolled-to-bottom") !== atBottom) {
+            wrapper.toggleAttribute("scrolled-to-bottom", atBottom);
+          }
+        });
+      };
+      this.#scrollClickHandler = () => {
+        wrapper.scrollTop = wrapper.scrollHeight;
+      };
+      wrapper.addEventListener("scroll", this.#scrollHandler);
+      btn.addEventListener("click", this.#scrollClickHandler);
+    });
+  }
+  #teardownScrollListener() {
+    if (this.#scrollRafId) {
+      cancelAnimationFrame(this.#scrollRafId);
+      this.#scrollRafId = null;
+    }
+    if (this.#scrollHandler) {
+      this.#wrapper?.removeEventListener("scroll", this.#scrollHandler);
+      this.#scrollHandler = null;
+    }
+    if (this.#scrollClickHandler) {
+      this.#jumpButton?.removeEventListener("click", this.#scrollClickHandler);
+      this.#scrollClickHandler = null;
+    }
   }
   #getAssistantMessageBody(messageId) {
     if (!messageId) {
@@ -1587,6 +1648,13 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           ${this.#renderLoader()} ${this.#renderError()}
         </div>
       </div>
+      <moz-button
+        class="jump-to-bottom-button"
+        data-l10n-id="aiwindow-jump-to-bottom"
+        data-l10n-attrs="aria-label,tooltiptext"
+        iconsrc="chrome://global/skin/icons/shaft-arrow-down.svg"
+        disabled
+      ></moz-button>
     `;
   }
 }
@@ -1604,7 +1672,7 @@ module.exports = __webpack_require__.p + "assistant-message-footer.99ef17ae8f504
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.630e055098ab7f81cc4d.css";
+module.exports = __webpack_require__.p + "ai-chat-content.b4732888065b21f34350.css";
 
 /***/ }),
 
@@ -1689,4 +1757,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.e805cc0c.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.5073f5d9.iframe.bundle.js.map

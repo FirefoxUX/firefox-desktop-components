@@ -215,7 +215,7 @@ class MozSelect extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozBaseInput
     if (navigator.platform.includes("Mac")) {
       this.panelTrigger?.focus();
     }
-    this.panelList?.toggle(event);
+    this.panelList?.toggle(event, this.panelTrigger);
   }
 
   /**
@@ -492,4 +492,4 @@ customElements.define("moz-option", MozOption);
 /***/ })
 
 }]);
-//# sourceMappingURL=2776.919b74e5.iframe.bundle.js.map
+//# sourceMappingURL=2776.798f39b3.iframe.bundle.js.map

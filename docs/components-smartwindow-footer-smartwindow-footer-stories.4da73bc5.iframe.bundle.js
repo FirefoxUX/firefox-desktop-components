@@ -91,7 +91,7 @@ class SmartwindowFooter extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
           data-l10n-id="smartwindow-footer-history"
           data-l10n-attrs="tooltiptext,aria-label"
           class="footer-action-button"
-          iconsrc="chrome://browser/content/firefoxview/view-history.svg"
+          iconsrc="chrome://browser/skin/history.svg"
           @click=${() => {
       this.handleActionClick("history");
     }}
@@ -119,9 +119,9 @@ customElements.define("smartwindow-footer", SmartwindowFooter);
 /***/ 92118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-footer.8c063d5a650d823f04e1.css";
+module.exports = __webpack_require__.p + "smartwindow-footer.76caa693e99a7c7278a3.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-footer-smartwindow-footer-stories.c3b8c097.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-footer-smartwindow-footer-stories.4da73bc5.iframe.bundle.js.map
