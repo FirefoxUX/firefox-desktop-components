@@ -53,7 +53,7 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
       type: Object
     }
   };
-  static ACTIONS = ["chat", "navigate", "search"];
+  static ACTIONS = ["chat", "navigate", "search", "stop"];
   constructor() {
     super();
     this.action = "";
@@ -67,6 +67,9 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
     return this.action ? `aiwindow-input-cta-submit-label-${this.action}` : "";
   }
   get buttonIconSrc() {
+    if (this.action == "stop") {
+      return "chrome://browser/content/aiwindow/assets/stop-generation.svg";
+    }
     return this.action ? undefined : "chrome://browser/skin/forward.svg";
   }
   get searchIconUrl() {
@@ -88,7 +91,8 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
     }));
   }
   #onAction() {
-    this.dispatchEvent(new CustomEvent("aiwindow-input-cta:on-action", {
+    const eventType = `aiwindow-input-cta:${this.action == "stop" ? "on-stop" : "on-action"}`;
+    this.dispatchEvent(new CustomEvent(eventType, {
       detail: {
         action: this.action
       },
@@ -113,32 +117,36 @@ class InputCta extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MOD
     }
   }
   render() {
-    const panelListTemplate = this.action ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-list id=${this._menuId}>
-          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(InputCta.ACTIONS, key => key, key => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-                @click=${() => this.#setAction(key)}
-                data-l10n-id=${`aiwindow-input-cta-menu-label-${key}`}
-                data-l10n-args=${key === "search" ? JSON.stringify({
+    const isStop = this.action == "stop";
+    const menuActions = InputCta.ACTIONS.filter(a => a !== "stop");
+    const panelListTemplate = this.action && !isStop ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-list id=${this._menuId}>
+            ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(menuActions, key => key, key => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+                  @click=${() => this.#setAction(key)}
+                  data-l10n-id=${`aiwindow-input-cta-menu-label-${key}`}
+                  data-l10n-args=${key == "search" ? JSON.stringify({
       searchEngineName: this.searchEngineInfo.name
     }) : undefined}
-                icon=${key}
-              ></panel-item>`)}
-        </panel-list>` : null;
+                  icon=${key}
+                ></panel-item>`)}
+          </panel-list>` : null;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
         href="${browser_components_aiwindow_ui_components_input_cta_input_cta_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <moz-button
-        type=${this.action ? "split" : "default"}
+        type=${this.action && !isStop ? "split" : "default"}
         class="input-cta"
-        .menuId=${this.action ? this._menuId : undefined}
+        .menuId=${this.action && !isStop ? this._menuId : undefined}
         .iconSrc=${this.buttonIconSrc}
         @click=${this.#onAction}
         ?disabled=${!this.action}
+        .ariaLabel=${isStop ? "Stop response generation" : ""}
+        .title=${isStop ? "Stop response" : ""}
       >
-        <slot>
-          ${this.action && (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span data-l10n-id=${this.actionLabelId}></span>`}
-        </slot>
+        ${isStop ? "" : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<slot>
+              ${this.action && (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span data-l10n-id=${this.actionLabelId}></span>`}
+            </slot>`}
       </moz-button>
       ${panelListTemplate}
     `;
@@ -210,7 +218,7 @@ Navigate.args = {
 /***/ 25814:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "input-cta.bf136afebbd7dbcdda87.css";
+module.exports = __webpack_require__.p + "input-cta.1a666282147915b611c7.css";
 
 /***/ }),
 
@@ -946,4 +954,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.1911ee7e.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.6782078c.iframe.bundle.js.map

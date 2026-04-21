@@ -1350,11 +1350,11 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }
   }
   #setMessageCompleteAttr(message) {
+    this.assistantIsLoading = false;
     const assistantLastMessage = this.conversationState.findLast(msg => msg?.messageId === message.content.id);
-    if (!assistantLastMessage) {
-      return;
+    if (assistantLastMessage) {
+      assistantLastMessage.isLastChunk = true;
     }
-    assistantLastMessage.isLastChunk = true;
     this.requestUpdate();
   }
 
@@ -1757,4 +1757,4 @@ Conversation.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.5073f5d9.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.ccefbae7.iframe.bundle.js.map
