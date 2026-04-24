@@ -2,19 +2,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-:host {
-  --moz-reorderable-list-indicator-height: var(--dimension-2);
-  --moz-reorderable-list-indicator-color: var(--color-accent-primary);
+@import url("chrome://global/content/elements/moz-reorderable-list.tokens.css");
 
+:host {
   position: relative;
   display: block;
 }
 
 .indicator {
-  height: var(--moz-reorderable-list-indicator-height);
-  background-color: var(--moz-reorderable-list-indicator-color);
+  height: var(--reorderable-list-indicator-size);
+  background-color: var(--reorderable-list-indicator-background-color);
   pointer-events: none;
-  margin-block: calc(-1 * var(--moz-reorderable-list-indicator-height));
+  margin-block: calc(-1 * var(--reorderable-list-indicator-margin));
   width: 4em;
   position: absolute;
   z-index: 1;

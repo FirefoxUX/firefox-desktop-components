@@ -4,7 +4,7 @@
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.7c68870cf0155238898f.css";
+module.exports = __webpack_require__.p + "moz-promo.8e6867ad9a2998b20234.css";
 
 /***/ }),
 
@@ -37,7 +37,7 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} message - The message of the promo element.
  * @property {string} imageSrc - The main image of the promo element.
  * @property {string} imageAlignment - How the image should be aligned. Can be "start", "end", "center".
- * @property {string} imageWidth - How big the image is sized. Can be "default" or "large".
+ * @property {string} imageWidth - How big the image is sized. Can be "default", "small" or "large".
  * @property {string} imageDisplay - Whether the image touches the edge of the promo or has a little bit of padding around it. Can be "cover" or "padded".
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
@@ -131,4 +131,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=9572.c10b71c4.iframe.bundle.js.map
+//# sourceMappingURL=9572.e49f87de.iframe.bundle.js.map

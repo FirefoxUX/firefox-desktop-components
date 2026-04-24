@@ -14,6 +14,11 @@
   TODO: need HCM styles
 */
 
+:host {
+  display: flex;
+  flex-direction: column;
+}
+
 /* MozPromo layout */
 
 :host([type="vibrant"]) {
@@ -33,6 +38,7 @@
   gap: var(--space-medium);
   align-items: center;
   overflow: hidden;
+  flex-grow: 1;
 }
 
 .text-container {

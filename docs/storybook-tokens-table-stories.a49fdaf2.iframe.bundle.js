@@ -284,6 +284,9 @@ const tokensTable = {
     },
     name: "--promo-background-color-vibrant"
   }, {
+    value: "var(--color-accent-primary)",
+    name: "--reorderable-list-indicator-background-color"
+  }, {
     value: "var(--button-background-color)",
     name: "--toggle-background-color"
   }, {
@@ -1514,6 +1517,9 @@ const tokensTable = {
     value: "calc(2 * var(--size-image-xlarge))",
     name: "--promo-image-size-large"
   }, {
+    value: "2px",
+    name: "--reorderable-list-indicator-size"
+  }, {
     value: "var(--size-item-small)",
     name: "--toggle-height"
   }, {
@@ -1571,6 +1577,9 @@ const tokensTable = {
   }, {
     value: "var(--space-medium)",
     name: "--promo-padding"
+  }, {
+    value: "var(--reorderable-list-indicator-size)",
+    name: "--reorderable-list-indicator-margin"
   }, {
     value: "1px",
     name: "--toggle-dot-margin"
@@ -3069,6 +3078,9 @@ const variableLookupTable = {
     default: "light-dark(var(--color-violet-80), var(--color-violet-0))"
   },
   "promo-padding": "var(--space-medium)",
+  "reorderable-list-indicator-background-color": "var(--color-accent-primary)",
+  "reorderable-list-indicator-margin": "var(--reorderable-list-indicator-size)",
+  "reorderable-list-indicator-size": "2px",
   "toggle-background-color": "var(--button-background-color)",
   "toggle-background-color-hover": "var(--button-background-color-hover)",
   "toggle-background-color-active": "var(--button-background-color-active)",
@@ -3670,4 +3682,4 @@ module.exports = __webpack_require__.p + "tokens-table.e288c078a012cd609c4c.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.b44bba63.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.a49fdaf2.iframe.bundle.js.map
