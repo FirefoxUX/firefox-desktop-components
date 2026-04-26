@@ -356,35 +356,6 @@ setting-group:has(> moz-card).spotlight {
   padding: 0.3em;
 }
 
-#updateBox {
-  margin-block: 4px 32px;
-}
-
-/* Work around bug 560067 - animated images in visibility: hidden
- * still eat CPU. */
-#updateDeck > *:not(.deck-selected) > .update-throbber {
-  display: none;
-}
-
-#updateDeck > hbox > button {
-  margin-block: 0;
-  margin-inline-end: 0;
-}
-
-#updateDeck > hbox > label {
-  flex: 1;
-  margin-inline-end: 5px !important;
-}
-
-.manualLink {
-  margin-inline-start: 6px !important;
-}
-
-#updateRadioGroup > radio {
-  min-height: 30px;
-  margin: 2px 0;
-}
-
 #filter {
   flex: 1;
   margin: 4px 0 8px;
@@ -983,27 +954,6 @@ dialog > .sync-engines-list + hbox {
   vertical-align: text-bottom;
 }
 
-.update-throbber {
-  width: 1.3em;
-  min-height: 1.3em;
-  margin-inline-end: 8px;
-  content: url("chrome://global/skin/icons/loading.svg");
-  -moz-context-properties: fill;
-  fill: var(--color-accent-primary);
-}
-
-.face-sad::before {
-  content: "\01F641";
-  font-size: 1.3em;
-  margin-inline-end: 8px;
-}
-
-.face-smile::before {
-  content: "\01F600";
-  font-size: 1.3em;
-  margin-inline-end: 8px;
-}
-
 .info-box-container {
   background-color: var(--background-color-box-info);
   padding: 9px;
@@ -1182,15 +1132,6 @@ menulist[indicator="true"] > menupopup menuitem[indicator="true"]:not([image]) >
 /* Menulist styles */
 .label-item {
   font-size: 0.8em;
-}
-
-.updateSettingCrossUserWarningContainer {
-  margin-block-end: 17px;
-}
-
-#updateSettingCrossUserWarningDesc {
-  padding-inline-start: calc(16px + 6px); /* radio-check's width + margin-inline-end */
-  margin-block-start: 20px;
 }
 
 richlistitem .text-link {

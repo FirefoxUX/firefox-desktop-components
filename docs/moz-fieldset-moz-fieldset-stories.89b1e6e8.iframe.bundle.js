@@ -1429,7 +1429,7 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
     return this.#value;
   }
   get hasValue() {
-    return this.value === 0 || !!this.value;
+    return this.value === 0 || this.value === false || !!this.value;
   }
   set focusedIndex(newIndex) {
     if (this.#focusedIndex !== newIndex) {
@@ -1446,10 +1446,14 @@ class SelectControlBaseElement extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1
       this.syncFocusState();
     }
   }
+  focus() {
+    this.childElements[this.focusableIndex]?.focus();
+    this.#focusedIndex = undefined;
+  }
   get focusableIndex() {
     let activeEl = this.getRootNode().activeElement;
     let childElFocused = activeEl?.localName == this.constructor.childElementName;
-    if (this.#checkedIndex != undefined && this.#value && (this.type == "radio" || !childElFocused)) {
+    if (this.#checkedIndex != undefined && this.hasValue && (this.type == "radio" || !childElFocused || this.#focusedIndex == undefined)) {
       return this.#checkedIndex;
     }
     if (this.#focusedIndex != undefined && this.type === "listbox" && childElFocused) {
@@ -1838,4 +1842,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.66a95121.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.89b1e6e8.iframe.bundle.js.map
