@@ -45,7 +45,7 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  gap: var(--space-xsmall);
+  gap: var(--space-small);
 }
 
 .image-container {

@@ -11504,6 +11504,52 @@ module.exports = __webpack_require__.p + "ai-chat-search-button.3cf1bc8cb199ad9b
 
 /***/ }),
 
+/***/ 14368:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CHAT_WRAPPER_ELEMENTS: () => (/* binding */ CHAT_WRAPPER_ELEMENTS),
+/* harmony export */   parseMarkdown: () => (/* binding */ parseMarkdown)
+/* harmony export */ });
+/* harmony import */ var chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1920);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/**
+ * Markdown parser for Smart Window chat messages.
+ */
+
+
+const CHAT_WRAPPER_ELEMENTS = {
+  table: "ai-chat-table"
+};
+
+// Create with default preset for markdown parsing similar to GFM. Among other
+// things this enables us to render tables.
+const md = (0,chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_0__.MarkdownIt)("default", {
+  html: false
+});
+
+// Add element wrapper rules.
+for (const [element, wrapper] of Object.entries(CHAT_WRAPPER_ELEMENTS)) {
+  md.renderer.rules[`${element}_open`] = (tokens, index, options, _env, renderer) => `<${wrapper}>${renderer.renderToken(tokens, index, options)}`;
+  md.renderer.rules[`${element}_close`] = (tokens, index, options, _env, renderer) => `${renderer.renderToken(tokens, index, options)}</${wrapper}>`;
+}
+
+/**
+ * Parse markdown to HTML.
+ *
+ * @param {string} markdown - The markdown string to parse
+ * @returns {string} HTML string
+ */
+function parseMarkdown(markdown) {
+  return md.render(markdown);
+}
+
+/***/ }),
+
 /***/ 26284:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -11798,7 +11844,7 @@ function wrapChar(parentNode, element, index) {
 /***/ 29334:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-message.c01f15c6b420904eab4e.css";
+module.exports = __webpack_require__.p + "ai-chat-message.b5387dca31db552bd781.css";
 
 /***/ }),
 
@@ -11806,6 +11852,13 @@ module.exports = __webpack_require__.p + "ai-chat-message.c01f15c6b420904eab4e.c
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-button.e38fb0776ed3171203fb.css";
+
+/***/ }),
+
+/***/ 32718:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "ai-chat-table.19a3558f9981cff3c0b9.css";
 
 /***/ }),
 
@@ -12380,6 +12433,44 @@ customElements.define("moz-button", MozButton);
 
 /***/ }),
 
+/***/ 81338:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AIChatTable: () => (/* binding */ AIChatTable)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_chat_table_ai_chat_table_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(32718);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * A custom element for rendering markdown tables in chat messages.
+ */
+class AIChatTable extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_chat_table_ai_chat_table_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="table-wrapper">
+        <slot></slot>
+      </div>
+    `;
+  }
+}
+customElements.define("ai-chat-table", AIChatTable);
+
+/***/ }),
+
 /***/ 98826:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -12390,19 +12481,23 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var browser_components_aiwindow_ui_components_ai_chat_message_ai_chat_message_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29334);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(1920);
+/* harmony import */ var chrome_browser_content_aiwindow_modules_ChatMarkdownParser_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(14368);
 /* harmony import */ var chrome_browser_content_aiwindow_components_ai_chat_search_button_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(70422);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_chat_table_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(81338);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+/* global Sanitizer */
 
 
 
 
 // eslint-disable-next-line import/no-unassigned-import
 
-const SERIALIZER = chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.DOMSerializer.fromSchema(chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.defaultMarkdownParser.schema);
+// eslint-disable-next-line import/no-unassigned-import
+
 
 /**
  * A custom element for rendering a single chat message, either a user message or an
@@ -12669,21 +12764,28 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
 
   /**
-   * Parse markdown content to HTML using ProseMirror
+   * Custom sanitizer for chat messages.
+   *
+   * @type {Sanitizer}
+   */
+  static #chatMessageSanitizer;
+  static {
+    this.#chatMessageSanitizer = new Sanitizer();
+    for (const element of Object.values(chrome_browser_content_aiwindow_modules_ChatMarkdownParser_mjs__WEBPACK_IMPORTED_MODULE_3__.CHAT_WRAPPER_ELEMENTS)) {
+      this.#chatMessageSanitizer.allowElement(element);
+    }
+  }
+
+  /**
+   * Parse markdown content to HTML.
    *
    * @param {string} markdown the Markdown to parse
    * @param {Element} element the element in which to insert the parsed markdown.
    */
-  parseMarkdown(markdown, element) {
-    const node = chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_3__.defaultMarkdownParser.parse(markdown);
-    const fragment = SERIALIZER.serializeFragment(node.content);
-
-    // Convert DocumentFragment to HTML string
-    const container = this.ownerDocument.createElement("div");
-    container.appendChild(fragment);
-
-    // Sanitize the HTML string by using "setHTML"
-    element.setHTML(container.innerHTML);
+  #parseMarkdown(markdown, element) {
+    element.setHTML((0,chrome_browser_content_aiwindow_modules_ChatMarkdownParser_mjs__WEBPACK_IMPORTED_MODULE_3__.parseMarkdown)(markdown), {
+      sanitizer: AIChatMessage.#chatMessageSanitizer
+    });
   }
 
   /**
@@ -12693,7 +12795,7 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
    * @param {Element} element
    */
   parseUserMarkdown(markdown, element) {
-    this.parseMarkdown(markdown, element);
+    this.#parseMarkdown(markdown, element);
     this.#replaceWebsiteMentions(element);
   }
 
@@ -12719,7 +12821,7 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }
 
     // Parse the message into markdown, and unfurl any unseen links.
-    this.parseMarkdown(this.message, messageElement);
+    this.#parseMarkdown(this.message, messageElement);
     this.#unfurlUnseenLinks(messageElement);
 
     // Track the properties for memoization.
@@ -12767,4 +12869,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.023e910c.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.2f67cb63.iframe.bundle.js.map

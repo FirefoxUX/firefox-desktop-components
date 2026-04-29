@@ -192,6 +192,11 @@ label {
   color: var(--text-color-deemphasized);
 }
 
+.firefoxLabs-description {
+  color: var(--text-color-deemphasized);
+  margin: 0;
+}
+
 .tip-caption {
   font-size: 0.9em;
   color: var(--text-color-deemphasized);
