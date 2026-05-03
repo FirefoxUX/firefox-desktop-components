@@ -100,7 +100,7 @@ function escapeHtmlEntities(text) {
 function navigateToLink(e, url = e.originalTarget.url, {
   forceNewTab = true
 } = {}) {
-  let currentWindow = e.target.documentGlobal.browsingContext.embedderWindowGlobal.browsingContext.window;
+  let currentWindow = e.target.ownerGlobal.browsingContext.embedderWindowGlobal.browsingContext.window;
   if (currentWindow.openTrustedLinkIn) {
     const originalEvent = e.detail.originalEvent;
     const isModifierClick = lazy.AppConstants.platform == "macosx" ? originalEvent.metaKey : originalEvent.ctrlKey;
@@ -2089,4 +2089,4 @@ module.exports = __webpack_require__.p + "fxview-tab-row.bc19965d726ada185806.cs
 /***/ })
 
 }]);
-//# sourceMappingURL=fxview-tab-list-stories.ab1390cd.iframe.bundle.js.map
+//# sourceMappingURL=fxview-tab-list-stories.91117fd0.iframe.bundle.js.map

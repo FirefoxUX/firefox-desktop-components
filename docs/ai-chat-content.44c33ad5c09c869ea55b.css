@@ -84,6 +84,8 @@
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+  --smartwindow-message-chat-bubble-line-height: 1.5; /* for readability */
+  line-height: var(--smartwindow-message-chat-bubble-line-height);
   padding-block: var(--space-large);
 }
 
