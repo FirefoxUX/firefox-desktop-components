@@ -49,7 +49,7 @@ class BreachAlert extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
   }
   _handleCta(_event) {
     Glean.trustpanel.breachAlertDiscoveredMonitor.record();
-    this.ownerGlobal.switchToTabHavingURI("https://monitor.mozilla.org/?utm_medium=referral&utm_source=firefox-desktop&utm_campaign=privacy-panel&utm_content=sign-up-global", true);
+    this.documentGlobal.switchToTabHavingURI("https://monitor.mozilla.org/?utm_medium=referral&utm_source=firefox-desktop&utm_campaign=privacy-panel&utm_content=sign-up-global", true);
     // TODO (bug 2024187): Store dismissal
   }
   _handleDismiss(_event) {
@@ -154,4 +154,4 @@ AnonymousBreachAlert.argTypes = {
 /***/ })
 
 }]);
-//# sourceMappingURL=breach-alert-panel-stories.b3181c36.iframe.bundle.js.map
+//# sourceMappingURL=breach-alert-panel-stories.4a233b44.iframe.bundle.js.map
