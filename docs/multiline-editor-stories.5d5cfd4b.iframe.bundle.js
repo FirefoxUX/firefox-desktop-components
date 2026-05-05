@@ -12094,7 +12094,7 @@ customElements.define("moz-multiline-editor", MultilineEditor);
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "panel-item.07c6bf63273afcf75f60.css";
+module.exports = __webpack_require__.p + "panel-item.e48be2153f8c34bd7c37.css";
 
 /***/ }),
 
@@ -13479,4 +13479,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.5a2d2ed2.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.5d5cfd4b.iframe.bundle.js.map
