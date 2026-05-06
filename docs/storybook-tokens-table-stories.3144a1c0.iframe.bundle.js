@@ -235,6 +235,30 @@ const tokensTable = {
     name: "--button-background-color-selected"
   }, {
     value: {
+      light: "var(--color-white)",
+      dark: "rgb(66, 65, 77)",
+      nativeTheme: "Field",
+      default: "light-dark(var(--color-white), rgb(66, 65, 77))"
+    },
+    name: "--panel-background-color"
+  }, {
+    value: {
+      light: "color-mix(in srgb, currentColor 12%, transparent)",
+      dark: "color-mix(in srgb, currentColor 17%, transparent)",
+      nativeTheme: "color-mix(in srgb, currentColor 17%, transparent)",
+      default: "light-dark(color-mix(in srgb, currentColor 12%, transparent), color-mix(in srgb, currentColor 17%, transparent))"
+    },
+    name: "--panel-background-color-dimmed"
+  }, {
+    value: {
+      light: "color-mix(in srgb, currentColor 20%, transparent)",
+      dark: "color-mix(in srgb, currentColor 14%, transparent)",
+      nativeTheme: "color-mix(in srgb, currentColor 30%, transparent)",
+      default: "light-dark(color-mix(in srgb, currentColor 20%, transparent), color-mix(in srgb, currentColor 14%, transparent))"
+    },
+    name: "--panel-background-color-dimmed-further"
+  }, {
+    value: {
       default: "var(--background-color-canvas)"
     },
     name: "--table-row-background-color"
@@ -268,7 +292,35 @@ const tokensTable = {
       nativeTheme: "Field",
       default: "light-dark(var(--color-white), rgb(66, 65, 77))"
     },
-    name: "--toolbar-field-focus-background-color"
+    name: "--toolbar-field-background-color-focus"
+  }, {
+    value: {
+      light: "#f9f9fb",
+      dark: "rgb(43, 42, 51)",
+      nativeTheme: "color-mix(in srgb, -moz-dialog 85%, var(--color-white))",
+      default: "light-dark(#f9f9fb, rgb(43, 42, 51))"
+    },
+    name: "--toolbar-background-color"
+  }, {
+    value: "color-mix(in srgb, currentColor 17%, transparent)",
+    name: "--toolbarbutton-background-color-hover"
+  }, {
+    value: "color-mix(in srgb, currentColor 30%, transparent)",
+    name: "--toolbarbutton-background-color-active"
+  }, {
+    value: {
+      light: "rgb(234, 234, 237)",
+      dark: "var(--color-gray-90)",
+      nativeTheme: "-moz-headerbar",
+      default: "light-dark(rgb(234, 234, 237), var(--color-gray-90))"
+    },
+    name: "--toolbox-background-color"
+  }, {
+    value: {
+      default: "var(--toolbox-background-color)",
+      nativeTheme: "-moz-headerbarinactive"
+    },
+    name: "--toolbox-background-color-inactive"
   }, {
     value: {
       default: "transparent",
@@ -305,6 +357,15 @@ const tokensTable = {
   }, {
     value: "var(--color-accent-primary)",
     name: "--reorderable-list-indicator-background-color"
+  }, {
+    value: "var(--button-background-color)",
+    name: "--select-background-color"
+  }, {
+    value: "var(--button-background-color-hover)",
+    name: "--select-background-color-hover"
+  }, {
+    value: "var(--button-background-color-disabled)",
+    name: "--select-background-color-disabled"
   }, {
     value: "var(--button-background-color)",
     name: "--toggle-background-color"
@@ -558,6 +619,14 @@ const tokensTable = {
     name: "--input-border-color"
   }, {
     value: {
+      light: "rgb(240, 240, 244)",
+      dark: "rgb(82, 82, 94)",
+      nativeTheme: "ThreeDShadow",
+      default: "light-dark(rgb(240, 240, 244), rgb(82, 82, 94))"
+    },
+    name: "--panel-border-color"
+  }, {
+    value: {
       default: "var(--border-color-transparent)",
       prefersContrast: "var(--input-border-color)"
     },
@@ -567,7 +636,7 @@ const tokensTable = {
       default: "color-mix(in srgb, var(--focus-outline-color) 50%, transparent)",
       prefersContrast: "var(--focus-outline-color)"
     },
-    name: "--toolbar-field-focus-border-color"
+    name: "--toolbar-field-border-color-focus"
   }, {
     value: "var(--border-color)",
     name: "--badge-border-color"
@@ -597,6 +666,12 @@ const tokensTable = {
   }, {
     value: "var(--color-violet-30)",
     name: "--promo-border-color-vibrant"
+  }, {
+    value: "var(--button-border-color-hover)",
+    name: "--select-border-color-hover"
+  }, {
+    value: "var(--button-border-color-disabled)",
+    name: "--select-border-color-disabled"
   }, {
     value: "var(--border-color-interactive)",
     name: "--toggle-border-color"
@@ -641,6 +716,12 @@ const tokensTable = {
     value: "var(--border-radius-large)",
     name: "--card-border-radius"
   }, {
+    value: "var(--border-radius-small)",
+    name: "--panel-menuitem-border-radius"
+  }, {
+    value: "var(--border-radius-medium)",
+    name: "--panel-border-radius"
+  }, {
     value: "var(--button-border-radius)",
     name: "--toolbarbutton-border-radius"
   }, {
@@ -652,6 +733,9 @@ const tokensTable = {
   }, {
     value: "var(--border-radius-medium)",
     name: "--promo-border-radius"
+  }, {
+    value: "var(--button-border-radius)",
+    name: "--select-border-radius"
   }, {
     value: "var(--border-radius-circle)",
     name: "--toggle-border-radius"
@@ -739,6 +823,9 @@ const tokensTable = {
   }, {
     value: "var(--box-shadow-level-4)",
     name: "--card-box-shadow-hover"
+  }, {
+    value: "0 0 var(--panel-box-shadow-margin) hsla(0, 0%, 0%, 0.2)",
+    name: "--panel-box-shadow"
   }, {
     value: "var(--box-shadow-level-3)",
     name: "--popup-box-shadow"
@@ -1226,31 +1313,6 @@ const tokensTable = {
     value: "var(--color-accent-attention)",
     name: "--button-attention-dot-color"
   }, {
-    value: {
-      light: "var(--color-gray-100)",
-      dark: "var(--color-gray-05)",
-      nativeTheme: "inherit",
-      prefersContrast: "FieldText",
-      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
-    },
-    name: "--toolbar-field-color"
-  }, {
-    value: {
-      light: "var(--color-black)",
-      dark: "var(--color-gray-05)",
-      nativeTheme: "FieldText",
-      default: "light-dark(var(--color-black), var(--color-gray-05))"
-    },
-    name: "--toolbar-field-focus-color"
-  }, {
-    value: {
-      light: "var(--color-gray-100)",
-      dark: "var(--color-gray-05)",
-      nativeTheme: "-moz-dialogtext",
-      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
-    },
-    name: "--toolbar-color"
-  }, {
     value: "var(--text-color-deemphasized)",
     name: "--toolbarseparator-color"
   }, {
@@ -1379,26 +1441,6 @@ const tokensTable = {
     value: "1px",
     name: "--link-focus-outline-offset"
   }, {
-    value: {
-      default: "transparent",
-      prefersContrast: "currentColor",
-      forcedColors: "SelectedItem"
-    },
-    name: "--toolbarbutton-hover-outline-color"
-  }, {
-    value: {
-      default: "transparent",
-      prefersContrast: "currentColor",
-      forcedColors: "ButtonText"
-    },
-    name: "--toolbarbutton-active-outline-color"
-  }, {
-    value: {
-      default: "var(--toolbarbutton-active-outline-color)",
-      forcedColors: "SelectedItem"
-    },
-    name: "--toolbarbutton-selected-outline-color"
-  }, {
     value: "var(--border-width) solid var(--toolbarbutton-outline-color)",
     name: "--toolbarbutton-outline"
   }, {
@@ -1407,6 +1449,26 @@ const tokensTable = {
       forcedColors: "ButtonText"
     },
     name: "--toolbarbutton-outline-color"
+  }, {
+    value: {
+      default: "transparent",
+      prefersContrast: "currentColor",
+      forcedColors: "SelectedItem"
+    },
+    name: "--toolbarbutton-outline-color-hover"
+  }, {
+    value: {
+      default: "transparent",
+      prefersContrast: "currentColor",
+      forcedColors: "ButtonText"
+    },
+    name: "--toolbarbutton-outline-color-active"
+  }, {
+    value: {
+      default: "var(--toolbarbutton-outline-color-active)",
+      forcedColors: "SelectedItem"
+    },
+    name: "--toolbarbutton-outline-color-selected"
   }, {
     value: "calc(-1 * var(--border-width))",
     name: "--toolbarbutton-outline-offset"
@@ -1526,6 +1588,9 @@ const tokensTable = {
   }, {
     value: "var(--font-size-small)",
     name: "--button-font-size-small"
+  }, {
+    value: "var(--button-font-size)",
+    name: "--select-font-size"
   }],
   "font-weight": [{
     value: "normal",
@@ -1542,6 +1607,12 @@ const tokensTable = {
   }, {
     value: "var(--font-weight-semibold)",
     name: "--button-font-weight"
+  }, {
+    value: "var(--button-font-weight)",
+    name: "--select-font-weight"
+  }, {
+    value: "var(--font-weight)",
+    name: "--select-option-font-weight"
   }],
   size: [{
     value: "var(--dimension-40)",
@@ -1623,6 +1694,9 @@ const tokensTable = {
     },
     name: "--page-main-content-width"
   }, {
+    value: "initial",
+    name: "--panel-width"
+  }, {
     value: "var(--size-item-large)",
     name: "--message-bar-container-min-height"
   }, {
@@ -1637,6 +1711,9 @@ const tokensTable = {
   }, {
     value: "2px",
     name: "--reorderable-list-indicator-size"
+  }, {
+    value: "var(--button-min-height)",
+    name: "--select-min-height"
   }, {
     value: "var(--size-item-small)",
     name: "--toggle-height"
@@ -1690,29 +1767,56 @@ const tokensTable = {
     value: "var(--space-small)",
     name: "--checkbox-margin-inline"
   }, {
+    value: "var(--panel-menuitem-margin-block) var(--panel-menuitem-margin-inline)",
+    name: "--panel-menuitem-margin"
+  }, {
+    value: "0px",
+    name: "--panel-menuitem-margin-block"
+  }, {
     value: "8px",
-    name: "--toolbar-start-end-padding"
+    name: "--panel-menuitem-margin-inline"
+  }, {
+    value: "var(--panel-menuitem-padding-block) var(--panel-menuitem-padding-inline)",
+    name: "--panel-menuitem-padding"
+  }, {
+    value: "8px",
+    name: "--panel-menuitem-padding-block"
+  }, {
+    value: "8px",
+    name: "--panel-menuitem-padding-inline"
+  }, {
+    value: "4px",
+    name: "--panel-box-shadow-margin"
+  }, {
+    value: "16px",
+    name: "--panel-padding"
+  }, {
+    value: "4px",
+    name: "--panel-padding-block"
+  }, {
+    value: "8px",
+    name: "--toolbar-padding-inline"
   }, {
     value: "2px",
-    name: "--toolbarbutton-outer-padding"
+    name: "--toolbarbutton-padding-outer"
   }, {
     value: "1px",
-    name: "--toolbarbutton-outer-padding-narrow"
+    name: "--toolbarbutton-padding-outer-narrow"
   }, {
     value: "8px",
-    name: "--toolbarbutton-inner-padding"
+    name: "--toolbarbutton-padding-inner"
   }, {
     value: "7px",
-    name: "--toolbarbutton-inner-padding-narrow"
+    name: "--toolbarbutton-padding-inner-narrow"
   }, {
     value: "6px",
-    name: "--toolbarbutton-inner-padding-compact"
+    name: "--toolbarbutton-padding-inner-compact"
   }, {
     value: "9px",
-    name: "--toolbarbutton-inner-padding-touch"
+    name: "--toolbarbutton-padding-inner-touch"
   }, {
     value: "8px",
-    name: "--toolbarbutton-inner-padding-touch-narrow"
+    name: "--toolbarbutton-padding-inner-touch-narrow"
   }, {
     value: "var(--space-small)",
     name: "--breadcrumb-gap"
@@ -2016,6 +2120,53 @@ const tokensTable = {
     name: "--link-color-visited"
   }, {
     value: {
+      light: "var(--color-black)",
+      dark: "rgb(251, 251, 254)",
+      nativeTheme: "FieldText",
+      default: "light-dark(var(--color-black), rgb(251, 251, 254))"
+    },
+    name: "--panel-text-color"
+  }, {
+    value: {
+      light: "var(--color-gray-100)",
+      dark: "var(--color-gray-05)",
+      nativeTheme: "inherit",
+      prefersContrast: "FieldText",
+      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
+    },
+    name: "--toolbar-field-text-color"
+  }, {
+    value: {
+      light: "var(--color-black)",
+      dark: "var(--color-gray-05)",
+      nativeTheme: "FieldText",
+      default: "light-dark(var(--color-black), var(--color-gray-05))"
+    },
+    name: "--toolbar-field-text-color-focus"
+  }, {
+    value: {
+      light: "var(--color-gray-100)",
+      dark: "var(--color-gray-05)",
+      nativeTheme: "-moz-dialogtext",
+      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
+    },
+    name: "--toolbar-text-color"
+  }, {
+    value: {
+      light: "var(--color-gray-100)",
+      dark: "var(--color-gray-05)",
+      nativeTheme: "-moz-headerbartext",
+      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
+    },
+    name: "--toolbox-text-color"
+  }, {
+    value: {
+      default: "var(--toolbox-text-color)",
+      nativeTheme: "-moz-headerbarinactivetext"
+    },
+    name: "--toolbox-text-color-inactive"
+  }, {
+    value: {
       default: "var(--text-color-deemphasized)",
       forcedColors: "CanvasText"
     },
@@ -2060,6 +2211,18 @@ const tokensTable = {
     },
     name: "--promo-message-text-color-vibrant"
   }, {
+    value: "var(--text-color)",
+    name: "--select-option-text-color"
+  }, {
+    value: "var(--button-text-color)",
+    name: "--select-text-color"
+  }, {
+    value: "var(--button-text-color-hover)",
+    name: "--select-text-color-hover"
+  }, {
+    value: "var(--button-text-color-disabled)",
+    name: "--select-text-color-disabled"
+  }, {
     value: "var(--button-text-color-menu)",
     name: "--box-button-text-color"
   }, {
@@ -2078,6 +2241,9 @@ const tokensTable = {
   }, {
     value: "var(--promo-border-width) solid var(--promo-border-color)",
     name: "--promo-border"
+  }, {
+    value: "var(--button-border)",
+    name: "--select-border"
   }, {
     value: "var(--box-border-width) solid var(--box-border-color)",
     name: "--box-border"
@@ -2156,6 +2322,9 @@ const tokensTable = {
     value: "var(--icon-color-information)",
     name: "--message-bar-icon-color"
   }, {
+    value: "var(--button-icon-fill)",
+    name: "--select-icon-fill"
+  }, {
     value: "var(--icon-color)",
     name: "--box-icon-fill"
   }, {
@@ -2184,8 +2353,14 @@ const tokensTable = {
     },
     name: "--opacity-deemphasized"
   }, {
+    value: {
+      default: "var(--button-opacity-disabled)",
+      prefersContrast: 0.3
+    },
+    name: "--toolbarbutton-opacity-disabled"
+  }, {
     value: "var(--button-opacity-disabled)",
-    name: "--toolbarbutton-disabled-opacity"
+    name: "--select-opacity-disabled"
   }],
   "icon-size": [{
     value: "var(--icon-size-small)",
@@ -2252,52 +2427,10 @@ const tokensTable = {
     name: "--table-header-text-color"
   }],
   uncategorized: [{
-    value: {
-      light: "#f9f9fb",
-      dark: "rgb(43, 42, 51)",
-      nativeTheme: "color-mix(in srgb, -moz-dialog 85%, var(--color-white))",
-      default: "light-dark(#f9f9fb, rgb(43, 42, 51))"
-    },
-    name: "--toolbar-bgcolor"
-  }, {
-    value: "color-mix(in srgb, currentColor 17%, transparent)",
-    name: "--toolbarbutton-hover-background"
-  }, {
-    value: "color-mix(in srgb, currentColor 30%, transparent)",
-    name: "--toolbarbutton-active-background"
-  }, {
-    value: {
-      light: "rgb(234, 234, 237)",
-      dark: "var(--color-gray-90)",
-      nativeTheme: "-moz-headerbar",
-      default: "light-dark(rgb(234, 234, 237), var(--color-gray-90))"
-    },
-    name: "--toolbox-bgcolor"
-  }, {
-    value: {
-      default: "var(--toolbox-bgcolor)",
-      nativeTheme: "-moz-headerbarinactive"
-    },
-    name: "--toolbox-bgcolor-inactive"
-  }, {
-    value: {
-      light: "var(--color-gray-100)",
-      dark: "var(--color-gray-05)",
-      nativeTheme: "-moz-headerbartext",
-      default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
-    },
-    name: "--toolbox-textcolor"
-  }, {
-    value: {
-      default: "var(--toolbox-textcolor)",
-      nativeTheme: "-moz-headerbarinactivetext"
-    },
-    name: "--toolbox-textcolor-inactive"
-  }, {
-    value: "var(--toolbar-bgcolor)",
+    value: "var(--toolbar-background-color)",
     name: "--tab-selected-bgcolor"
   }, {
-    value: "var(--toolbar-color)",
+    value: "var(--toolbar-text-color)",
     name: "--tab-selected-textcolor"
   }]
 };
@@ -3186,6 +3319,49 @@ const variableLookupTable = {
       default: "664px"
     }
   },
+  "panel-menuitem-border-radius": "var(--border-radius-small)",
+  "panel-menuitem-margin": "var(--panel-menuitem-margin-block) var(--panel-menuitem-margin-inline)",
+  "panel-menuitem-margin-block": "0px",
+  "panel-menuitem-margin-inline": "8px",
+  "panel-menuitem-padding": "var(--panel-menuitem-padding-block) var(--panel-menuitem-padding-inline)",
+  "panel-menuitem-padding-block": "8px",
+  "panel-menuitem-padding-inline": "8px",
+  "panel-background-color": {
+    light: "var(--color-white)",
+    dark: "rgb(66, 65, 77)",
+    nativeTheme: "Field",
+    default: "light-dark(var(--color-white), rgb(66, 65, 77))"
+  },
+  "panel-background-color-dimmed": {
+    light: "color-mix(in srgb, currentColor 12%, transparent)",
+    dark: "color-mix(in srgb, currentColor 17%, transparent)",
+    nativeTheme: "color-mix(in srgb, currentColor 17%, transparent)",
+    default: "light-dark(color-mix(in srgb, currentColor 12%, transparent), color-mix(in srgb, currentColor 17%, transparent))"
+  },
+  "panel-background-color-dimmed-further": {
+    light: "color-mix(in srgb, currentColor 20%, transparent)",
+    dark: "color-mix(in srgb, currentColor 14%, transparent)",
+    nativeTheme: "color-mix(in srgb, currentColor 30%, transparent)",
+    default: "light-dark(color-mix(in srgb, currentColor 20%, transparent), color-mix(in srgb, currentColor 14%, transparent))"
+  },
+  "panel-border-color": {
+    light: "rgb(240, 240, 244)",
+    dark: "rgb(82, 82, 94)",
+    nativeTheme: "ThreeDShadow",
+    default: "light-dark(rgb(240, 240, 244), rgb(82, 82, 94))"
+  },
+  "panel-border-radius": "var(--border-radius-medium)",
+  "panel-box-shadow": "0 0 var(--panel-box-shadow-margin) hsla(0, 0%, 0%, 0.2)",
+  "panel-box-shadow-margin": "4px",
+  "panel-padding": "16px",
+  "panel-padding-block": "4px",
+  "panel-text-color": {
+    light: "var(--color-black)",
+    dark: "rgb(251, 251, 254)",
+    nativeTheme: "FieldText",
+    default: "light-dark(var(--color-black), rgb(251, 251, 254))"
+  },
+  "panel-width": "initial",
   "popup-box-shadow": "var(--box-shadow-level-3)",
   "table-background-color": {
     light: "#f8f8fa",
@@ -3228,10 +3404,14 @@ const variableLookupTable = {
       default: "light-dark(rgba(0, 0, 0, 0.05), rgba(255, 255, 255, 0.05))"
     }
   },
-  "toolbar-start-end-padding": "8px",
+  "toolbar-padding-inline": "8px",
   "toolbar-field-border-color": {
     default: "var(--border-color-transparent)",
     prefersContrast: "var(--input-border-color)"
+  },
+  "toolbar-field-border-color-focus": {
+    default: "color-mix(in srgb, var(--focus-outline-color) 50%, transparent)",
+    prefersContrast: "var(--focus-outline-color)"
   },
   "toolbar-field-background-color": {
     light: "rgba(0, 0, 0, 0.05)",
@@ -3239,48 +3419,44 @@ const variableLookupTable = {
     prefersContrast: "Field",
     default: "light-dark(rgba(0, 0, 0, 0.05), var(--color-black-alpha-30))"
   },
-  "toolbar-field-color": {
+  "toolbar-field-background-color-focus": {
+    light: "var(--color-white)",
+    dark: "rgb(66, 65, 77)",
+    nativeTheme: "Field",
+    default: "light-dark(var(--color-white), rgb(66, 65, 77))"
+  },
+  "toolbar-field-text-color": {
     light: "var(--color-gray-100)",
     dark: "var(--color-gray-05)",
     nativeTheme: "inherit",
     prefersContrast: "FieldText",
     default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
   },
-  "toolbar-field-focus-background-color": {
-    light: "var(--color-white)",
-    dark: "rgb(66, 65, 77)",
-    nativeTheme: "Field",
-    default: "light-dark(var(--color-white), rgb(66, 65, 77))"
-  },
-  "toolbar-field-focus-color": {
+  "toolbar-field-text-color-focus": {
     light: "var(--color-black)",
     dark: "var(--color-gray-05)",
     nativeTheme: "FieldText",
     default: "light-dark(var(--color-black), var(--color-gray-05))"
   },
-  "toolbar-field-focus-border-color": {
-    default: "color-mix(in srgb, var(--focus-outline-color) 50%, transparent)",
-    prefersContrast: "var(--focus-outline-color)"
-  },
-  "toolbar-bgcolor": {
+  "toolbar-background-color": {
     light: "#f9f9fb",
     dark: "rgb(43, 42, 51)",
     nativeTheme: "color-mix(in srgb, -moz-dialog 85%, var(--color-white))",
     default: "light-dark(#f9f9fb, rgb(43, 42, 51))"
   },
-  "toolbar-color": {
+  "toolbar-text-color": {
     light: "var(--color-gray-100)",
     dark: "var(--color-gray-05)",
     nativeTheme: "-moz-dialogtext",
     default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
   },
-  "toolbarbutton-outer-padding": "2px",
-  "toolbarbutton-outer-padding-narrow": "1px",
-  "toolbarbutton-inner-padding": "8px",
-  "toolbarbutton-inner-padding-narrow": "7px",
-  "toolbarbutton-inner-padding-compact": "6px",
-  "toolbarbutton-inner-padding-touch": "9px",
-  "toolbarbutton-inner-padding-touch-narrow": "8px",
+  "toolbarbutton-padding-outer": "2px",
+  "toolbarbutton-padding-outer-narrow": "1px",
+  "toolbarbutton-padding-inner": "8px",
+  "toolbarbutton-padding-inner-narrow": "7px",
+  "toolbarbutton-padding-inner-compact": "6px",
+  "toolbarbutton-padding-inner-touch": "9px",
+  "toolbarbutton-padding-inner-touch-narrow": "8px",
   "toolbarbutton-icon-fill": {
     light: "var(--color-gray-70)",
     dark: "var(--color-gray-05)",
@@ -3299,49 +3475,52 @@ const variableLookupTable = {
     nativeTheme: "AccentColorText",
     default: "light-dark(var(--color-gray-20), var(--color-gray-90))"
   },
-  "toolbarbutton-disabled-opacity": "var(--button-opacity-disabled)",
+  "toolbarbutton-opacity-disabled": {
+    default: "var(--button-opacity-disabled)",
+    prefersContrast: 0.3
+  },
   "toolbarbutton-border-radius": "var(--button-border-radius)",
-  "toolbarbutton-hover-background": "color-mix(in srgb, currentColor 17%, transparent)",
-  "toolbarbutton-hover-outline-color": {
-    default: "transparent",
-    prefersContrast: "currentColor",
-    forcedColors: "SelectedItem"
-  },
-  "toolbarbutton-active-background": "color-mix(in srgb, currentColor 30%, transparent)",
-  "toolbarbutton-active-outline-color": {
-    default: "transparent",
-    prefersContrast: "currentColor",
-    forcedColors: "ButtonText"
-  },
-  "toolbarbutton-selected-outline-color": {
-    default: "var(--toolbarbutton-active-outline-color)",
-    forcedColors: "SelectedItem"
-  },
+  "toolbarbutton-background-color-hover": "color-mix(in srgb, currentColor 17%, transparent)",
+  "toolbarbutton-background-color-active": "color-mix(in srgb, currentColor 30%, transparent)",
   "toolbarbutton-outline": "var(--border-width) solid var(--toolbarbutton-outline-color)",
   "toolbarbutton-outline-color": {
     default: "transparent",
     forcedColors: "ButtonText"
   },
+  "toolbarbutton-outline-color-hover": {
+    default: "transparent",
+    prefersContrast: "currentColor",
+    forcedColors: "SelectedItem"
+  },
+  "toolbarbutton-outline-color-active": {
+    default: "transparent",
+    prefersContrast: "currentColor",
+    forcedColors: "ButtonText"
+  },
+  "toolbarbutton-outline-color-selected": {
+    default: "var(--toolbarbutton-outline-color-active)",
+    forcedColors: "SelectedItem"
+  },
   "toolbarbutton-outline-offset": "calc(-1 * var(--border-width))",
   "toolbarseparator-color": "var(--text-color-deemphasized)",
-  "toolbox-bgcolor": {
+  "toolbox-background-color": {
     light: "rgb(234, 234, 237)",
     dark: "var(--color-gray-90)",
     nativeTheme: "-moz-headerbar",
     default: "light-dark(rgb(234, 234, 237), var(--color-gray-90))"
   },
-  "toolbox-bgcolor-inactive": {
-    default: "var(--toolbox-bgcolor)",
+  "toolbox-background-color-inactive": {
+    default: "var(--toolbox-background-color)",
     nativeTheme: "-moz-headerbarinactive"
   },
-  "toolbox-textcolor": {
+  "toolbox-text-color": {
     light: "var(--color-gray-100)",
     dark: "var(--color-gray-05)",
     nativeTheme: "-moz-headerbartext",
     default: "light-dark(var(--color-gray-100), var(--color-gray-05))"
   },
-  "toolbox-textcolor-inactive": {
-    default: "var(--toolbox-textcolor)",
+  "toolbox-text-color-inactive": {
+    default: "var(--toolbox-text-color)",
     nativeTheme: "-moz-headerbarinactivetext"
   },
   "badge-text-color": {
@@ -3429,6 +3608,23 @@ const variableLookupTable = {
   "reorderable-list-indicator-background-color": "var(--color-accent-primary)",
   "reorderable-list-indicator-margin": "var(--reorderable-list-indicator-size)",
   "reorderable-list-indicator-size": "2px",
+  "select-background-color": "var(--button-background-color)",
+  "select-background-color-hover": "var(--button-background-color-hover)",
+  "select-background-color-disabled": "var(--button-background-color-disabled)",
+  "select-border": "var(--button-border)",
+  "select-border-color-hover": "var(--button-border-color-hover)",
+  "select-border-color-disabled": "var(--button-border-color-disabled)",
+  "select-border-radius": "var(--button-border-radius)",
+  "select-font-size": "var(--button-font-size)",
+  "select-font-weight": "var(--button-font-weight)",
+  "select-icon-fill": "var(--button-icon-fill)",
+  "select-min-height": "var(--button-min-height)",
+  "select-opacity-disabled": "var(--button-opacity-disabled)",
+  "select-option-font-weight": "var(--font-weight)",
+  "select-option-text-color": "var(--text-color)",
+  "select-text-color": "var(--button-text-color)",
+  "select-text-color-hover": "var(--button-text-color-hover)",
+  "select-text-color-disabled": "var(--button-text-color-disabled)",
   "toggle-background-color": "var(--button-background-color)",
   "toggle-background-color-hover": "var(--button-background-color-hover)",
   "toggle-background-color-active": "var(--button-background-color-active)",
@@ -3512,12 +3708,12 @@ const variableLookupTable = {
   "tab-pinned-container-margin-inline-expanded": "var(--space-small)",
   "tab-pinned-expanded-background-width": "var(--dimension-40)",
   "tab-pinned-margin-inline-expanded": "var(--space-xsmall)",
-  "tab-selected-bgcolor": "var(--toolbar-bgcolor)",
+  "tab-selected-bgcolor": "var(--toolbar-background-color)",
   "tab-selected-outline-color": {
     default: "transparent",
     prefersContrast: "currentColor"
   },
-  "tab-selected-textcolor": "var(--toolbar-color)",
+  "tab-selected-textcolor": "var(--toolbar-text-color)",
   "tab-vertical-block-margin": "var(--dimension-2)",
   "tab-vertical-inline-padding": "var(--space-medium)"
 };
@@ -4034,4 +4230,4 @@ module.exports = __webpack_require__.p + "tokens-table.e288c078a012cd609c4c.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.31268067.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.3144a1c0.iframe.bundle.js.map

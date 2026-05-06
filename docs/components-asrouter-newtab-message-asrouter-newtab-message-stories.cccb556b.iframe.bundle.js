@@ -46,7 +46,7 @@ const Template = ({
       background-color: var(--background-color-canvas);
       border: 2px solid var(--card-border-color);
       color: var(--text-color);
-      border-radius: var(--border-radius-medium);
+      border-radius: var(--border-radius-large);
       margin-block: 0 var(--space-xlarge);
       margin-inline: auto;
       overflow: hidden;
@@ -1099,4 +1099,4 @@ customElements.define("asrouter-newtab-message", ASRouterNewTabMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.f895f92f.iframe.bundle.js.map
+//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.cccb556b.iframe.bundle.js.map
