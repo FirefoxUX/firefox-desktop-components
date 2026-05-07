@@ -1398,6 +1398,9 @@ class PanelItem extends HTMLElement {
   set type(val) {
     this.setAttribute("type", val);
   }
+  click() {
+    this.button.click();
+  }
   focus() {
     this.button.focus();
   }
@@ -1922,4 +1925,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.b10b68a7.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.6325960d.iframe.bundle.js.map

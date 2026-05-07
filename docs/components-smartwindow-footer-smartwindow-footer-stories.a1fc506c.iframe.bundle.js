@@ -86,7 +86,6 @@ class SmartwindowFooter extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
       />
       <div class="footer-container">
         <moz-button
-          size="small"
           type="ghost"
           data-l10n-id="smartwindow-footer-history"
           data-l10n-attrs="tooltiptext,aria-label"
@@ -97,7 +96,6 @@ class SmartwindowFooter extends chrome_global_content_lit_utils_mjs__WEBPACK_IMP
     }}
         ></moz-button>
         <moz-button
-          size="small"
           type="ghost"
           data-l10n-id="smartwindow-footer-chats"
           data-l10n-attrs="tooltiptext,aria-label"
@@ -119,9 +117,9 @@ customElements.define("smartwindow-footer", SmartwindowFooter);
 /***/ 92118:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-footer.76caa693e99a7c7278a3.css";
+module.exports = __webpack_require__.p + "smartwindow-footer.7c62a8243e1889601218.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-footer-smartwindow-footer-stories.4da73bc5.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-footer-smartwindow-footer-stories.a1fc506c.iframe.bundle.js.map

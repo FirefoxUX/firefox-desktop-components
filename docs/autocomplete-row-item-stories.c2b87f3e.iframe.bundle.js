@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[7752],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[308,7752],{
 
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -777,6 +777,9 @@ class PanelItem extends HTMLElement {
   set type(val) {
     this.setAttribute("type", val);
   }
+  click() {
+    this.button.click();
+  }
   focus() {
     this.button.focus();
   }
@@ -865,7 +868,236 @@ class PanelItem extends HTMLElement {
 }
 customElements.define("panel-item", PanelItem);
 
+/***/ }),
+
+/***/ 48256:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(83676);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(37752);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    description: {
+      type: String,
+      fluent: true
+    },
+    value: {
+      type: String
+    },
+    icon: {
+      type: String
+    },
+    actions: {
+      type: Object
+    }
+  };
+  #openActionsMenu(anchor, actions) {
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    const menupopup = document.createElementNS(XUL_NS, "menupopup");
+    for (const {
+      label,
+      action
+    } of actions) {
+      const menuitem = document.createElementNS(XUL_NS, "menuitem");
+      menuitem.setAttribute("label", label);
+      menuitem.addEventListener("command", () => action());
+      menupopup.appendChild(menuitem);
+    }
+    const panel = this.closest("panel");
+    panel?.setAttribute("noautohide", "true");
+    menupopup.addEventListener("popuphiding", () => {
+      panel?.removeAttribute("noautohide");
+      menupopup.remove();
+    });
+    document.documentElement.appendChild(menupopup);
+    menupopup.openPopup(anchor, "after_start");
+  }
+  getSecondaryActionItemIcon(type) {
+    switch (type) {
+      case "edit":
+        return "chrome://global/skin/icons/edit.svg";
+      case "menupopup":
+        return "chrome://global/skin/icons/more.svg";
+      default:
+        return "chrome://global/skin/icons/settings.svg";
+    }
+  }
+  renderSecondaryActionButton() {
+    const {
+      type,
+      action,
+      actions
+    } = this.actions.secondary;
+    const stopMouseEvents = e => e.stopPropagation();
+
+    // We're expecting a single action
+    if (action) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+        @mousedown=${stopMouseEvents}
+        @mouseup=${stopMouseEvents}
+        @click=${e => {
+        e.stopPropagation();
+        action();
+      }}
+        type="icon ghost"
+        .iconSrc=${this.getSecondaryActionItemIcon(type)}
+        class="secondary-action"
+      ></moz-button>`;
+    }
+
+    // We're expecting multiple actions for this item
+    if (actions) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+        @mousedown=${stopMouseEvents}
+        @mouseup=${stopMouseEvents}
+        @click=${e => {
+        e.stopPropagation();
+        this.#openActionsMenu(e.currentTarget, actions);
+      }}
+        type="icon ghost"
+        type="icon ghost"
+        .iconSrc=${this.getSecondaryActionItemIcon(type)}
+        class="secondary-action"
+        menuId="secondary-action-menu"
+      ></moz-button>`;
+    }
+    return "";
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div @click=${this.actions?.primary} class="row-item">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img role="presentation" class="icon" src=${this.icon} />`)}
+        <div class="labels-container">
+          <span class="label">${this.label}</span>
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.description, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="description">${this.description}</span>`)}
+        </div>
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.actions?.secondary, () => this.renderSecondaryActionButton())}
+      </div>
+    `;
+  }
+}
+customElements.define("autocomplete-row-item", AutocompleteRowItem);
+
+/***/ }),
+
+/***/ 74553:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   WithSingleSecondaryAction: () => (/* binding */ WithSingleSecondaryAction),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _autocomplete_row_item_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48256);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Credential Management/Autocomplete",
+  component: "autocomplete-row-item",
+  argTypes: {
+    label: {
+      control: {
+        type: "text"
+      }
+    },
+    description: {
+      control: {
+        type: "text"
+      }
+    },
+    value: {
+      control: {
+        type: "text"
+      }
+    },
+    icon: {
+      control: {
+        type: "text"
+      }
+    },
+    actions: {
+      control: {
+        type: "object"
+      }
+    }
+  }
+});
+const Template = ({
+  label,
+  description,
+  value,
+  icon,
+  actions
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <autocomplete-row-item
+    .label=${label}
+    .description=${description}
+    .value=${value}
+    .icon=${icon}
+    .actions=${actions}
+  ></autocomplete-row-item>
+`;
+const Default = Template.bind({});
+Default.args = {
+  label: "example@example.com",
+  description: "From this website",
+  value: "example@example.com",
+  icon: "chrome://global/skin/icons/defaultFavicon.svg",
+  actions: {
+    primary: () => alert("Primary action!")
+  }
+};
+const WithSingleSecondaryAction = Template.bind({});
+WithSingleSecondaryAction.args = {
+  label: "example@example.com",
+  description: "From this website",
+  value: "example@example.com",
+  icon: "chrome://global/skin/icons/defaultFavicon.svg",
+  actions: {
+    primary: () => alert("Primary action!"),
+    secondary: {
+      type: "edit",
+      action: () => alert("secondary action")
+    }
+  }
+};
+
+/***/ }),
+
+/***/ 83676:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "autocomplete-row-item.abab3d5a20ba1f4808c2.css";
+
 /***/ })
 
 }]);
-//# sourceMappingURL=7752.f41b39c3.iframe.bundle.js.map
+//# sourceMappingURL=autocomplete-row-item-stories.c2b87f3e.iframe.bundle.js.map

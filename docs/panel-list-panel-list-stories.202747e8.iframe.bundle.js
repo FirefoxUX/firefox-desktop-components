@@ -1,10 +1,223 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[308,7752],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[5118,7752],{
 
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "panel-item.e48be2153f8c34bd7c37.css";
+
+/***/ }),
+
+/***/ 17473:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Icons: () => (/* binding */ Icons),
+/* harmony export */   Open: () => (/* binding */ Open),
+/* harmony export */   Simple: () => (/* binding */ Simple),
+/* harmony export */   SubMenu: () => (/* binding */ SubMenu),
+/* harmony export */   Wide: () => (/* binding */ Wide),
+/* harmony export */   WithAccesskeys: () => (/* binding */ WithAccesskeys),
+/* harmony export */   WithBadge: () => (/* binding */ WithBadge),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _panel_list_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(37752);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+let accesskeyOptions = ["n", "w", "e", "c", "b"];
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Panel List",
+  component: "panel-list",
+  argTypes: {
+    accesskeys: {
+      if: {
+        arg: "showAccesskeys",
+        truthy: true
+      }
+    }
+  },
+  parameters: {
+    status: "stable",
+    actions: {
+      handles: ["showing", "shown", "hidden", "click"]
+    },
+    fluent: `
+panel-list-item-one = Item One
+panel-list-item-two = Item Two
+panel-list-item-three = Item Three
+panel-list-disabled = Disabled
+panel-list-checked = Checked
+panel-list-badged = Badged, look at me
+panel-list-passwords = Passwords
+panel-list-settings = Settings
+submenu-item-one = Submenu Item One
+submenu-item-two = Submenu Item Two
+submenu-item-three = Submenu Item Three
+    `
+  }
+});
+const Template = ({
+  isOpen,
+  items,
+  wideAnchor,
+  hasSubMenu,
+  showAccesskeys,
+  accesskeys
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+  <style>
+    panel-item[icon="passwords"]::part(button) {
+      background-image: url("chrome://browser/skin/login.svg");
+    }
+    panel-item[icon="settings"]::part(button) {
+      background-image: url("chrome://global/skin/icons/settings.svg");
+    }
+    moz-button {
+      position: absolute;
+    }
+    moz-button::part(button) {
+      background-image: url("chrome://global/skin/icons/more.svg");
+    }
+    moz-button[wide] {
+      width: 400px !important;
+    }
+    .end {
+      inset-inline-end: 30px;
+    }
+
+    .bottom {
+      inset-block-end: 30px;
+    }
+  </style>
+  ${isOpen ? "" : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <moz-button
+          type="icon ghost"
+          menuid="panel-list"
+          ?wide=${wideAnchor}
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="end"
+          menuid="panel-list"
+          ?wide=${wideAnchor}
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="bottom"
+          menuid="panel-list"
+          ?wide=${wideAnchor}
+        ></moz-button>
+        <moz-button
+          type="icon ghost"
+          class="bottom end"
+          menuid="panel-list"
+          ?wide=${wideAnchor}
+        ></moz-button>
+      `}
+  <panel-list
+    id="panel-list"
+    ?stay-open=${isOpen}
+    ?open=${isOpen}
+    ?min-width-from-anchor=${wideAnchor}
+  >
+    ${items.map((item, index) => {
+  // Always showing submenu on the first item for simplicity.
+  let showSubMenu = hasSubMenu && index == 0;
+  let subMenuId = showSubMenu ? "example-sub-menu" : undefined;
+  return item == "<hr>" ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <hr /> ` : (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <panel-item
+              icon=${item.icon ?? ""}
+              ?checked=${item.checked}
+              ?disabled=${item.disabled}
+              type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.checked ? "checkbox" : undefined)}
+              ?badged=${item.badged}
+              badge-type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.badgeType)}
+              data-l10n-id=${item.l10nId ?? item}
+              submenu=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(subMenuId)}
+              accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(showAccesskeys ? accesskeys[index] : "")}
+            >
+              ${showSubMenu ? subMenuTemplate() : ""}
+            </panel-item>
+          `;
+})}
+  </panel-list>
+`;
+const subMenuTemplate = () => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+  <panel-list slot="submenu" id="example-sub-menu">
+    <panel-item data-l10n-id="submenu-item-one"></panel-item>
+    <panel-item data-l10n-id="submenu-item-two"></panel-item>
+    <panel-item data-l10n-id="submenu-item-three"></panel-item>
+  </panel-list>
+`;
+const Simple = Template.bind({});
+Simple.args = {
+  isOpen: false,
+  wideAnchor: false,
+  items: ["panel-list-item-one", {
+    l10nId: "panel-list-item-two"
+  }, "panel-list-item-three", "<hr>", {
+    l10nId: "panel-list-disabled",
+    disabled: true
+  }, {
+    l10nId: "panel-list-checked",
+    checked: true
+  }, {
+    l10nId: "panel-list-badged",
+    badged: true,
+    icon: "settings"
+  }],
+  showAccesskeys: false
+};
+const Icons = Template.bind({});
+Icons.args = {
+  isOpen: false,
+  wideAnchor: false,
+  items: [{
+    l10nId: "panel-list-passwords",
+    icon: "passwords"
+  }, {
+    l10nId: "panel-list-settings",
+    icon: "settings"
+  }]
+};
+const Open = Template.bind({});
+Open.args = {
+  ...Simple.args,
+  wideAnchor: false,
+  isOpen: true
+};
+const Wide = Template.bind({});
+Wide.args = {
+  ...Simple.args,
+  wideAnchor: true
+};
+const SubMenu = Template.bind({});
+SubMenu.args = {
+  ...Simple.args,
+  hasSubMenu: true
+};
+const WithAccesskeys = Template.bind({});
+WithAccesskeys.args = {
+  ...Simple.args,
+  showAccesskeys: true,
+  accesskeys: accesskeyOptions
+};
+const WithBadge = Template.bind({});
+WithBadge.args = {
+  ...Simple.args,
+  items: [{
+    l10nId: "panel-list-item-one",
+    badgeType: "new"
+  }, {
+    l10nId: "panel-list-item-two",
+    badgeType: "beta"
+  }]
+};
 
 /***/ }),
 
@@ -777,6 +990,9 @@ class PanelItem extends HTMLElement {
   set type(val) {
     this.setAttribute("type", val);
   }
+  click() {
+    this.button.click();
+  }
   focus() {
     this.button.focus();
   }
@@ -865,236 +1081,7 @@ class PanelItem extends HTMLElement {
 }
 customElements.define("panel-item", PanelItem);
 
-/***/ }),
-
-/***/ 48256:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(83676);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(37752);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    label: {
-      type: String,
-      fluent: true
-    },
-    description: {
-      type: String,
-      fluent: true
-    },
-    value: {
-      type: String
-    },
-    icon: {
-      type: String
-    },
-    actions: {
-      type: Object
-    }
-  };
-  #openActionsMenu(anchor, actions) {
-    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
-    const menupopup = document.createElementNS(XUL_NS, "menupopup");
-    for (const {
-      label,
-      action
-    } of actions) {
-      const menuitem = document.createElementNS(XUL_NS, "menuitem");
-      menuitem.setAttribute("label", label);
-      menuitem.addEventListener("command", () => action());
-      menupopup.appendChild(menuitem);
-    }
-    const panel = this.closest("panel");
-    panel?.setAttribute("noautohide", "true");
-    menupopup.addEventListener("popuphiding", () => {
-      panel?.removeAttribute("noautohide");
-      menupopup.remove();
-    });
-    document.documentElement.appendChild(menupopup);
-    menupopup.openPopup(anchor, "after_start");
-  }
-  getSecondaryActionItemIcon(type) {
-    switch (type) {
-      case "edit":
-        return "chrome://global/skin/icons/edit.svg";
-      case "menupopup":
-        return "chrome://global/skin/icons/more.svg";
-      default:
-        return "chrome://global/skin/icons/settings.svg";
-    }
-  }
-  renderSecondaryActionButton() {
-    const {
-      type,
-      action,
-      actions
-    } = this.actions.secondary;
-    const stopMouseEvents = e => e.stopPropagation();
-
-    // We're expecting a single action
-    if (action) {
-      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
-        @mousedown=${stopMouseEvents}
-        @mouseup=${stopMouseEvents}
-        @click=${e => {
-        e.stopPropagation();
-        action();
-      }}
-        type="icon ghost"
-        .iconSrc=${this.getSecondaryActionItemIcon(type)}
-        class="secondary-action"
-      ></moz-button>`;
-    }
-
-    // We're expecting multiple actions for this item
-    if (actions) {
-      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
-        @mousedown=${stopMouseEvents}
-        @mouseup=${stopMouseEvents}
-        @click=${e => {
-        e.stopPropagation();
-        this.#openActionsMenu(e.currentTarget, actions);
-      }}
-        type="icon ghost"
-        type="icon ghost"
-        .iconSrc=${this.getSecondaryActionItemIcon(type)}
-        class="secondary-action"
-        menuId="secondary-action-menu"
-      ></moz-button>`;
-    }
-    return "";
-  }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div @click=${this.actions?.primary} class="row-item">
-        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img role="presentation" class="icon" src=${this.icon} />`)}
-        <div class="labels-container">
-          <span class="label">${this.label}</span>
-          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.description, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="description">${this.description}</span>`)}
-        </div>
-        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.actions?.secondary, () => this.renderSecondaryActionButton())}
-      </div>
-    `;
-  }
-}
-customElements.define("autocomplete-row-item", AutocompleteRowItem);
-
-/***/ }),
-
-/***/ 74553:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   WithSingleSecondaryAction: () => (/* binding */ WithSingleSecondaryAction),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _autocomplete_row_item_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48256);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// eslint-disable-next-line import/no-unresolved
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Credential Management/Autocomplete",
-  component: "autocomplete-row-item",
-  argTypes: {
-    label: {
-      control: {
-        type: "text"
-      }
-    },
-    description: {
-      control: {
-        type: "text"
-      }
-    },
-    value: {
-      control: {
-        type: "text"
-      }
-    },
-    icon: {
-      control: {
-        type: "text"
-      }
-    },
-    actions: {
-      control: {
-        type: "object"
-      }
-    }
-  }
-});
-const Template = ({
-  label,
-  description,
-  value,
-  icon,
-  actions
-}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <autocomplete-row-item
-    .label=${label}
-    .description=${description}
-    .value=${value}
-    .icon=${icon}
-    .actions=${actions}
-  ></autocomplete-row-item>
-`;
-const Default = Template.bind({});
-Default.args = {
-  label: "example@example.com",
-  description: "From this website",
-  value: "example@example.com",
-  icon: "chrome://global/skin/icons/defaultFavicon.svg",
-  actions: {
-    primary: () => alert("Primary action!")
-  }
-};
-const WithSingleSecondaryAction = Template.bind({});
-WithSingleSecondaryAction.args = {
-  label: "example@example.com",
-  description: "From this website",
-  value: "example@example.com",
-  icon: "chrome://global/skin/icons/defaultFavicon.svg",
-  actions: {
-    primary: () => alert("Primary action!"),
-    secondary: {
-      type: "edit",
-      action: () => alert("secondary action")
-    }
-  }
-};
-
-/***/ }),
-
-/***/ 83676:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "autocomplete-row-item.abab3d5a20ba1f4808c2.css";
-
 /***/ })
 
 }]);
-//# sourceMappingURL=autocomplete-row-item-stories.7ff360d1.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.202747e8.iframe.bundle.js.map

@@ -1332,6 +1332,9 @@ class PanelItem extends HTMLElement {
   set type(val) {
     this.setAttribute("type", val);
   }
+  click() {
+    this.button.click();
+  }
   focus() {
     this.button.focus();
   }
@@ -3335,4 +3338,4 @@ if (globalThis.customElements) {
 /***/ })
 
 }]);
-//# sourceMappingURL=migration-wizard-stories.2a981f8a.iframe.bundle.js.map
+//# sourceMappingURL=migration-wizard-stories.b4472024.iframe.bundle.js.map

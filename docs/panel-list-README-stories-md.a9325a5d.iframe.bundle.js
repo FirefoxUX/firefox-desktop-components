@@ -805,6 +805,9 @@ class PanelItem extends HTMLElement {
   set type(val) {
     this.setAttribute("type", val);
   }
+  click() {
+    this.button.click();
+  }
   focus() {
     this.button.focus();
   }
@@ -1554,4 +1557,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.fe9c650e.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.a9325a5d.iframe.bundle.js.map
