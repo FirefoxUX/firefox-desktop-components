@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[7447,7752],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[308,7752],{
 
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -288,7 +288,7 @@ class PanelList extends HTMLElement {
         // Never want to have a negative value for topOffset, so ensure it's at least 10px.
         topOffset = Math.max(roundedAnchorTop - roundedPanelHeight, VIEWPORT_PANEL_MIN_MARGIN);
         // Provide a max-height for larger elements which will provide scrolling as needed.
-        this.style.maxHeight = `${roundedAnchorTop + VIEWPORT_PANEL_MIN_MARGIN}px`;
+        this.style.maxHeight = `${roundedAnchorTop - VIEWPORT_PANEL_MIN_MARGIN}px`;
         valign = "top";
       } else {
         topOffset = roundedAnchorBottom;
@@ -875,21 +875,11 @@ customElements.define("panel-item", PanelItem);
 
 /***/ }),
 
-/***/ 45042:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "smartwindow-panel-list.e7740163dff1210e08a1.css";
-
-/***/ }),
-
-/***/ 55362:
+/***/ 48256:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SmartwindowPanelList: () => (/* binding */ SmartwindowPanelList)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45042);
+/* harmony import */ var toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(83676);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
 /* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(37752);
@@ -900,378 +890,219 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
 // eslint-disable-next-line import/no-unassigned-import
 
-
-/**
- * A generic panel list component for displaying grouped items in a popup.
- *
- * This component is agnostic to the data it displays - consumers control
- * all logic including filtering, truncation, and special item handling.
- *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string}} ListItem
- * @typedef {{items: ListItem[], headerL10nId?: string}} ItemGroup
- * @property {ItemGroup[]} groups - Grouped list items to display
- * @property {string} placeholderL10nId - Fluent ID for empty state message
- * @property {object} anchor - Positioning anchor {left, top, width, height}
- */
-class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
+class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    groups: {
-      type: Array
+    label: {
+      type: String,
+      fluent: true
     },
-    anchor: {
-      type: Object
+    description: {
+      type: String,
+      fluent: true
     },
-    placeholderL10nId: {
+    value: {
       type: String
     },
-    alwaysOpen: {
-      type: Boolean
+    icon: {
+      type: String
     },
-    sidebarMode: {
-      type: Boolean
+    actions: {
+      type: Object
     }
   };
-  #panelList = null;
-  #anchorElement = null;
-  constructor() {
-    super();
-    this.groups = [];
-    this.anchor = null;
-    this.placeholderL10nId = "";
-    this.alwaysOpen = false;
-    this.sidebarMode = false;
-  }
-  firstUpdated() {
-    this.#panelList = this.shadowRoot.querySelector("panel-list");
-    this.#panelList.addEventListener("shown", () => {
-      if (this.sidebarMode) {
-        this.#clampToViewport();
-      }
+  #openActionsMenu(anchor, actions) {
+    const XUL_NS = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul";
+    const menupopup = document.createElementNS(XUL_NS, "menupopup");
+    for (const {
+      label,
+      action
+    } of actions) {
+      const menuitem = document.createElementNS(XUL_NS, "menuitem");
+      menuitem.setAttribute("label", label);
+      menuitem.addEventListener("command", () => action());
+      menupopup.appendChild(menuitem);
+    }
+    const panel = this.closest("panel");
+    panel?.setAttribute("noautohide", "true");
+    menupopup.addEventListener("popuphiding", () => {
+      panel?.removeAttribute("noautohide");
+      menupopup.remove();
     });
-    if (this.alwaysOpen) {
-      this.show();
+    document.documentElement.appendChild(menupopup);
+    menupopup.openPopup(anchor, "after_start");
+  }
+  getSecondaryActionItemIcon(type) {
+    switch (type) {
+      case "edit":
+        return "chrome://global/skin/icons/edit.svg";
+      case "menupopup":
+        return "chrome://global/skin/icons/more.svg";
+      default:
+        return "chrome://global/skin/icons/settings.svg";
     }
   }
-  #clampToViewport() {
-    const panelEl = this.#panelList;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const panelRect = panelEl.getBoundingClientRect();
-    const effectiveWidth = Math.min(panelRect.width, viewportWidth);
-    const effectiveHeight = Math.min(panelRect.height, viewportHeight);
-    let x = parseFloat(panelEl.style.left) || 0;
-    let y = parseFloat(panelEl.style.top) || 0;
-    x = Math.max(0, Math.min(x, viewportWidth - effectiveWidth));
-    y = Math.max(0, Math.min(y, viewportHeight - effectiveHeight));
-    panelEl.style.maxWidth = `${viewportWidth}px`;
-    panelEl.style.left = `${x}px`;
-    panelEl.style.top = `${y}px`;
-  }
-  #reposition() {
-    requestAnimationFrame(() => {
-      const anchorElement = this.#anchorElement;
-      if (!anchorElement || !this.#panelList?.open) {
-        return;
-      }
-      const panelEl = this.#panelList;
-      const anchorRect = anchorElement.getBoundingClientRect();
-      const panelHeight = panelEl.scrollHeight;
-      const valign = panelEl.getAttribute("valign");
-      const VIEWPORT_PANEL_MIN_MARGIN = 10;
-      let topOffset;
-      if (valign === "top") {
-        topOffset = Math.max(anchorRect.top - panelHeight, VIEWPORT_PANEL_MIN_MARGIN);
-      } else {
-        topOffset = anchorRect.bottom;
-      }
-      panelEl.style.top = `${topOffset + window.scrollY}px`;
-      this.#clampToViewport();
-    });
-  }
-  updated(changedProperties) {
-    super.updated(changedProperties);
-    if (changedProperties.has("anchor")) {
-      // If anchor is an element use it directly,
-      // otherwise we can use the positioned span.
-      this.#anchorElement = this.anchor instanceof Element ? this.anchor : this.renderRoot.querySelector(".smartwindow-panel-list-anchor");
-    }
-    if (this.#panelList?.open && (changedProperties.has("anchor") || changedProperties.has("groups"))) {
-      this.#reposition();
-    }
-  }
-  async show() {
-    await this.updateComplete;
-    this.#panelList.show(null, this.#anchorElement);
-  }
-  async hide() {
-    await this.updateComplete;
-    this.#panelList.hide();
-  }
-  async toggle() {
-    await this.updateComplete;
-    this.#panelList.toggle(null, this.#anchorElement);
-  }
-  handlePanelClick(e) {
-    const panelItem = e.target.closest("panel-item");
-    if (panelItem && !panelItem.classList.contains("panel-section-header")) {
-      const event = new CustomEvent("item-selected", {
-        detail: {
-          id: panelItem.itemId,
-          label: panelItem.itemLabel || panelItem.textContent.trim(),
-          icon: panelItem.itemIcon
-        },
-        bubbles: true,
-        composed: true,
-        cancelable: true
-      });
-      this.dispatchEvent(event);
-    }
-  }
-  handleKeyDown(e) {
-    this.dispatchEvent(new CustomEvent("panel-keydown", {
-      detail: {
-        originalEvent: e
-      },
-      bubbles: true,
-      composed: true
-    }));
-  }
+  renderSecondaryActionButton() {
+    const {
+      type,
+      action,
+      actions
+    } = this.actions.secondary;
+    const stopMouseEvents = e => e.stopPropagation();
 
-  // -------------------------
-  // Render helpers
-  // -------------------------
+    // We're expecting a single action
+    if (action) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+        @mousedown=${stopMouseEvents}
+        @mouseup=${stopMouseEvents}
+        @click=${e => {
+        e.stopPropagation();
+        action();
+      }}
+        type="icon ghost"
+        .iconSrc=${this.getSecondaryActionItemIcon(type)}
+        class="secondary-action"
+      ></moz-button>`;
+    }
 
-  #isEmpty() {
-    return !this.groups.length || this.groups.every(g => !g.items?.length);
-  }
-  #renderAnchor() {
-    if (!this.anchor) {
-      return null;
+    // We're expecting multiple actions for this item
+    if (actions) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+        @mousedown=${stopMouseEvents}
+        @mouseup=${stopMouseEvents}
+        @click=${e => {
+        e.stopPropagation();
+        this.#openActionsMenu(e.currentTarget, actions);
+      }}
+        type="icon ghost"
+        type="icon ghost"
+        .iconSrc=${this.getSecondaryActionItemIcon(type)}
+        class="secondary-action"
+        menuId="secondary-action-menu"
+      ></moz-button>`;
     }
-    const rect = this.getBoundingClientRect();
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
-      class="smartwindow-panel-list-anchor"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)({
-      "--anchor-left": `${this.anchor.left - rect.left}px`,
-      "--anchor-top": `${this.anchor.top - rect.top}px`,
-      "--anchor-width": `${this.anchor.width}px`,
-      "--anchor-height": `${this.anchor.height}px`
-    })}
-    ></span>`;
-  }
-  #renderEmptyState() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      disabled
-      role="presentation"
-      class="panel-section-header"
-      data-l10n-id=${this.placeholderL10nId}
-    ></panel-item>`;
-  }
-  #renderGroupHeader(headerL10nId) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      disabled
-      role="presentation"
-      class="panel-section-header"
-      data-l10n-id=${headerL10nId}
-    ></panel-item>`;
-  }
-  #computeItemStyles(item) {
-    const styles = {};
-    if (item.icon) {
-      styles["--panel-item-icon-url"] = `url(${item.icon})`;
-    }
-    return styles;
-  }
-  #renderItem(item) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      .itemId=${item.id}
-      .itemLabel=${item.label}
-      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.icon ? "true" : undefined)}
-      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(this.#computeItemStyles(item))}
-    >
-      ${item.l10nId ? "" : item.label}
-    </panel-item>`;
-  }
-  #renderGroup(group) {
-    if (!group.items?.length) {
-      return null;
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${group.headerL10nId ? this.#renderGroupHeader(group.headerL10nId) : null}
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
-    `;
-  }
-  #renderGroups() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(this.groups, (_group, index) => index, group => this.#renderGroup(group));
+    return "";
   }
   render() {
-    const isEmpty = this.#isEmpty();
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__}"
+        href="${toolkit_components_satchel_autocomplete_row_item_autocomplete_row_item_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
-      ${this.#renderAnchor()}
-      <panel-list
-        @click=${this.handlePanelClick}
-        @keydown=${this.handleKeyDown}
-      >
-        ${isEmpty ? this.#renderEmptyState() : this.#renderGroups()}
-      </panel-list>
+      <div @click=${this.actions?.primary} class="row-item">
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.icon, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img role="presentation" class="icon" src=${this.icon} />`)}
+        <div class="labels-container">
+          <span class="label">${this.label}</span>
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.description, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="description">${this.description}</span>`)}
+        </div>
+        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.when)(this.actions?.secondary, () => this.renderSecondaryActionButton())}
+      </div>
     `;
   }
 }
-customElements.define("smartwindow-panel-list", SmartwindowPanelList);
+customElements.define("autocomplete-row-item", AutocompleteRowItem);
 
 /***/ }),
 
-/***/ 98231:
+/***/ 74553:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Empty: () => (/* binding */ Empty),
-/* harmony export */   MultipleGroups: () => (/* binding */ MultipleGroups),
-/* harmony export */   SingleGroup: () => (/* binding */ SingleGroup),
-/* harmony export */   SingleTab: () => (/* binding */ SingleTab),
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   WithSingleSecondaryAction: () => (/* binding */ WithSingleSecondaryAction),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(55362);
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _autocomplete_row_item_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(48256);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+// eslint-disable-next-line import/no-unresolved
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Smartwindow Panel List",
-  component: "smartwindow-panel-list",
+  title: "Domain-specific UI Widgets/Credential Management/Autocomplete",
+  component: "autocomplete-row-item",
   argTypes: {
-    groups: {
-      control: "object"
+    label: {
+      control: {
+        type: "text"
+      }
     },
-    placeholderL10nId: {
-      control: "text"
+    description: {
+      control: {
+        type: "text"
+      }
+    },
+    value: {
+      control: {
+        type: "text"
+      }
+    },
+    icon: {
+      control: {
+        type: "text"
+      }
+    },
+    actions: {
+      control: {
+        type: "object"
+      }
     }
-  },
-  decorators: [],
-  parameters: {
-    fluent: `
-smartbar-mentions-list-no-results-label = No results found
-smartbar-mentions-single-tab-label = Recent Sites
-smartbar-mentions-list-open-tabs-label = Tabs
-smartbar-mentions-list-previously-visited-pages-label = Previously visited
-    `
   }
 });
 const Template = ({
-  groups,
-  placeholderL10nId
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div style="width: 300px; height: 400px; position: relative;">
-    <smartwindow-panel-list
-      .groups=${groups}
-      .placeholderL10nId=${placeholderL10nId}
-      .anchor=${{
-  left: 20,
-  top: 20,
-  width: 100,
-  height: 30
-}}
-      .alwaysOpen=${true}
-    ></smartwindow-panel-list>
-  </div>
+  label,
+  description,
+  value,
+  icon,
+  actions
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <autocomplete-row-item
+    .label=${label}
+    .description=${description}
+    .value=${value}
+    .icon=${icon}
+    .actions=${actions}
+  ></autocomplete-row-item>
 `;
-const Empty = Template.bind({});
-Empty.args = {
-  groups: [],
-  placeholderL10nId: "smartbar-mentions-list-no-results-label"
+const Default = Template.bind({});
+Default.args = {
+  label: "example@example.com",
+  description: "From this website",
+  value: "example@example.com",
+  icon: "chrome://global/skin/icons/defaultFavicon.svg",
+  actions: {
+    primary: () => alert("Primary action!")
+  }
 };
-const SingleTab = Template.bind({});
-SingleTab.args = {
-  groups: [{
-    headerL10nId: "smartbar-mentions-single-tab-label",
-    items: [{
-      id: "current-tab",
-      label: "Smart window chat",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "closed1",
-      label: "MDN Web Docs",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "closed2",
-      label: "Wikipedia",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "closed3",
-      label: "GitHub",
-      icon: "chrome://branding/content/icon16.png"
-    }]
-  }],
-  placeholderL10nId: ""
+const WithSingleSecondaryAction = Template.bind({});
+WithSingleSecondaryAction.args = {
+  label: "example@example.com",
+  description: "From this website",
+  value: "example@example.com",
+  icon: "chrome://global/skin/icons/defaultFavicon.svg",
+  actions: {
+    primary: () => alert("Primary action!"),
+    secondary: {
+      type: "edit",
+      action: () => alert("secondary action")
+    }
+  }
 };
-const SingleGroup = Template.bind({});
-SingleGroup.args = {
-  groups: [{
-    headerL10nId: "smartbar-mentions-list-open-tabs-label",
-    items: [{
-      id: "tab1",
-      label: "Mozilla Firefox",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "tab2",
-      label: "GitHub",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "tab3",
-      label: "Stack Overflow",
-      icon: "chrome://branding/content/icon16.png"
-    }]
-  }],
-  placeholderL10nId: ""
-};
-const MultipleGroups = Template.bind({});
-MultipleGroups.args = {
-  groups: [{
-    headerL10nId: "smartbar-mentions-list-open-tabs-label",
-    items: [{
-      id: "tab1",
-      label: "Mozilla Firefox",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "tab2",
-      label: "GitHub",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "tab3",
-      label: "Stack Overflow",
-      icon: "chrome://branding/content/icon16.png"
-    }]
-  }, {
-    headerL10nId: "smartbar-mentions-list-previously-visited-pages-label",
-    items: [{
-      id: "closed1",
-      label: "MDN Web Docs",
-      icon: "chrome://branding/content/icon16.png"
-    }, {
-      id: "closed2",
-      label: "Wikipedia",
-      icon: "chrome://branding/content/icon16.png"
-    }]
-  }],
-  placeholderL10nId: ""
-};
+
+/***/ }),
+
+/***/ 83676:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "autocomplete-row-item.abab3d5a20ba1f4808c2.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.cd15d309.iframe.bundle.js.map
+//# sourceMappingURL=autocomplete-row-item-stories.fec5ccd6.iframe.bundle.js.map

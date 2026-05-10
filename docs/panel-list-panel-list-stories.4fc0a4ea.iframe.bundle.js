@@ -501,7 +501,7 @@ class PanelList extends HTMLElement {
         // Never want to have a negative value for topOffset, so ensure it's at least 10px.
         topOffset = Math.max(roundedAnchorTop - roundedPanelHeight, VIEWPORT_PANEL_MIN_MARGIN);
         // Provide a max-height for larger elements which will provide scrolling as needed.
-        this.style.maxHeight = `${roundedAnchorTop + VIEWPORT_PANEL_MIN_MARGIN}px`;
+        this.style.maxHeight = `${roundedAnchorTop - VIEWPORT_PANEL_MIN_MARGIN}px`;
         valign = "top";
       } else {
         topOffset = roundedAnchorBottom;
@@ -1089,4 +1089,4 @@ customElements.define("panel-item", PanelItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-panel-list-stories.8dfe8330.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-panel-list-stories.4fc0a4ea.iframe.bundle.js.map

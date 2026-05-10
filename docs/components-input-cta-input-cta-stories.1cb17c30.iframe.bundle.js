@@ -327,7 +327,7 @@ Navigate.args = {
 /***/ 25814:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "input-cta.7a68a7e02e711c201133.css";
+module.exports = __webpack_require__.p + "input-cta.6c36074f0c468c66efdb.css";
 
 /***/ }),
 
@@ -909,7 +909,7 @@ class PanelList extends HTMLElement {
         // Never want to have a negative value for topOffset, so ensure it's at least 10px.
         topOffset = Math.max(roundedAnchorTop - roundedPanelHeight, VIEWPORT_PANEL_MIN_MARGIN);
         // Provide a max-height for larger elements which will provide scrolling as needed.
-        this.style.maxHeight = `${roundedAnchorTop + VIEWPORT_PANEL_MIN_MARGIN}px`;
+        this.style.maxHeight = `${roundedAnchorTop - VIEWPORT_PANEL_MIN_MARGIN}px`;
         valign = "top";
       } else {
         topOffset = roundedAnchorBottom;
@@ -1930,4 +1930,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-input-cta-input-cta-stories.f157a63d.iframe.bundle.js.map
+//# sourceMappingURL=components-input-cta-input-cta-stories.1cb17c30.iframe.bundle.js.map
