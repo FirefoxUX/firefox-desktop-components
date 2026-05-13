@@ -291,7 +291,7 @@ customElements.define("moz-box-group", MozBoxGroup);
 /***/ 70020:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-item.a7542f42812591f16004.css";
+module.exports = __webpack_require__.p + "moz-box-item.0b29da91171a9c88d76f.css";
 
 /***/ }),
 
@@ -577,4 +577,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=8102.e9920907.iframe.bundle.js.map
+//# sourceMappingURL=8102.33c4409a.iframe.bundle.js.map

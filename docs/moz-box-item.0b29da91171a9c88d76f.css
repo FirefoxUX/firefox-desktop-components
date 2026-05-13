@@ -80,6 +80,10 @@ slot[name="actions-start"] {
   flex-shrink: 0;
 }
 
+.actions {
+  word-wrap: normal;
+}
+
 .actions:has(> slot:not(:has-slotted)) {
   display: none;
 }

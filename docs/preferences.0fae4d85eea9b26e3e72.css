@@ -1431,6 +1431,31 @@ setting-group[groupid="aiFeatures"] {
   --toggle-height: 20px;
 }
 
+.custom-model-save-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-medium);
+}
+
+.custom-model-save-confirmation {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-small);
+  min-inline-size: 0;
+
+  > span {
+    min-inline-size: 0;
+  }
+}
+
+.custom-model-save-confirmation-icon {
+  -moz-context-properties: fill;
+  fill: var(--icon-color-success);
+  width: var(--icon-size);
+  height: var(--icon-size);
+}
+
 .ai-controls-description {
   --ai-controls-description-image-margin: calc(64px + var(--space-large));
   --ai-controls-description-background-color: light-dark(var(--color-violet-0), var(--color-violet-90));

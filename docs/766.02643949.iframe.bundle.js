@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[766,1256,8400],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[766,8400],{
 
 /***/ 10139:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -135,164 +135,6 @@ function formatUTMParams(contentAttribute, url) {
 
 /***/ }),
 
-/***/ 31667:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   Mobile: () => (/* binding */ Mobile),
-/* harmony export */   WithFooterLinks: () => (/* binding */ WithFooterLinks),
-/* harmony export */   WithSearch: () => (/* binding */ WithSearch),
-/* harmony export */   WithSearchScroll: () => (/* binding */ WithSearchScroll),
-/* harmony export */   WithoutIcons: () => (/* binding */ WithoutIcons),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_page_nav_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(60766);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Page Nav",
-  component: "moz-page-nav",
-  parameters: {
-    status: "in-development",
-    actions: {
-      handles: ["change-view"]
-    },
-    fluent: `
-moz-page-nav-button-one = View 1
-  .title = View 1
-moz-page-nav-button-two = View 2
-  .title = View 2
-moz-page-nav-button-three = View 3
-  .title = View 3
-moz-page-nav-button-four = Support Link
-  .title = Support Link
-moz-page-nav-button-five = External Link
-  .title = External Link
-moz-page-nav-heading =
-  .heading = Heading
-moz-page-nav-search-input =
-  .aria-label = Search Storybook
-  .placeholder = Search Storybook
-     `
-  }
-});
-const Template = ({
-  hasFooterLinks,
-  hasIcons,
-  showSearch,
-  type = "",
-  customHeight = "initial"
-}) => {
-  let iconSrc = hasIcons ? "chrome://global/skin/icons/settings.svg" : undefined;
-  return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-    <style>
-      #page {
-        height: ${customHeight};
-        display: flex;
-        max-height: ${customHeight};
-
-        @media (max-width: 52rem) {
-          grid-template-columns: 82px 1fr;
-        }
-      }
-      moz-page-nav:not([type="mobile"]) {
-        height: ${customHeight};
-        margin-inline-start: 10px;
-        --page-nav-margin-block-start: 10px;
-
-        @media (max-width: 52rem) {
-          margin-inline-start: 0;
-        }
-      }
-    </style>
-    <div id="page">
-      <moz-page-nav data-l10n-id="moz-page-nav-heading" type=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(type)}>
-        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(showSearch, () => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-input-search
-              slot="subheading"
-              data-l10n-id="moz-page-nav-search-input"
-            ></moz-input-search>`)}
-        <moz-page-nav-button
-          view="view-one"
-          data-l10n-id="moz-page-nav-button-one"
-          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-        >
-        </moz-page-nav-button>
-        <moz-page-nav-button
-          view="view-two"
-          data-l10n-id="moz-page-nav-button-two"
-          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-        >
-        </moz-page-nav-button>
-        <moz-page-nav-button
-          view="view-three"
-          data-l10n-id="moz-page-nav-button-three"
-          iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-        >
-        </moz-page-nav-button>
-        ${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.when)(hasFooterLinks, () => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <moz-page-nav-button
-                support-page="test"
-                data-l10n-id="moz-page-nav-button-four"
-                iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-                slot="secondary-nav"
-              >
-              </moz-page-nav-button>
-              <moz-page-nav-button
-                href="https://www.example.com"
-                data-l10n-id="moz-page-nav-button-five"
-                iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-                slot="secondary-nav"
-              >
-              </moz-page-nav-button>`)}
-      </moz-page-nav>
-      <main></main>
-    </div>
-  `;
-};
-const Default = Template.bind({});
-Default.args = {
-  hasFooterLinks: false,
-  hasIcons: true,
-  showSearch: false,
-  customHeight: "100%"
-};
-const WithFooterLinks = Template.bind({});
-WithFooterLinks.args = {
-  ...Default.args,
-  hasFooterLinks: true,
-  customHeight: "100%"
-};
-const WithoutIcons = Template.bind({});
-WithoutIcons.args = {
-  ...Default.args,
-  hasIcons: false,
-  customHeight: "100%"
-};
-const WithSearch = Template.bind({});
-WithSearch.args = {
-  ...Default.args,
-  showSearch: true,
-  customHeight: "100%"
-};
-const WithSearchScroll = Template.bind({});
-WithSearchScroll.args = {
-  ...Default.args,
-  showSearch: true,
-  customHeight: "190px"
-};
-const Mobile = Template.bind({});
-Mobile.args = {
-  type: "mobile"
-};
-
-/***/ }),
-
 /***/ 60766:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -336,6 +178,9 @@ __webpack_require__.r(__webpack_exports__);
  *   not match any button. When true, a non-matching currentView is allowed to
  *   persist without forcing a selection — used by about:preferences to support
  *   sub-pages and search-results states where no category should be highlighted.
+ * @property {Array} pageNavButtons - The array of all page nav buttons
+ * @property {Array} secondaryNavButtons - The array of all secondary nav buttons
+ * @property {Array} visiblePageNavButtons - The array of visible page nav buttons
  * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
  * @slot [subheading] - Used to append page specific search input or notification to the nav.
  */
@@ -354,6 +199,18 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     },
     allowNoSelection: {
       type: Boolean
+    },
+    pageNavButtons: {
+      type: Array,
+      state: true
+    },
+    secondaryNavButtons: {
+      type: Array,
+      state: true
+    },
+    visiblePageNavButtons: {
+      type: Array,
+      state: true
     }
   };
   static queries = {
@@ -368,15 +225,12 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
      */
     this.type = "default";
     this.allowNoSelection = false;
+    this.pageNavButtons = [];
+    this.secondaryNavButtons = [];
+    this.visiblePageNavButtons = [];
   }
-  get pageNavButtons() {
-    return this.getVisibleSlottedChildren(this.primaryNavGroupSlot);
-  }
-  get secondaryNavButtons() {
-    return this.getVisibleSlottedChildren(this.secondaryNavGroupSlot);
-  }
-  getVisibleSlottedChildren(el) {
-    return el?.assignedElements().filter(element => element?.localName === "moz-page-nav-button" && this.checkElementVisibility(element));
+  getSlottedChildren(el) {
+    return el?.assignedElements().filter(element => element?.localName === "moz-page-nav-button");
   }
   checkElementVisibility(element) {
     let computedStyles = window.getComputedStyle(element);
@@ -395,7 +249,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   }
   focusPreviousView() {
-    let pageNavButtons = this.pageNavButtons;
+    let pageNavButtons = this.visiblePageNavButtons;
     let currentIndex = pageNavButtons.findIndex(b => b.selected);
     let prev = pageNavButtons[currentIndex - 1];
     if (prev) {
@@ -404,7 +258,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   }
   focusNextView() {
-    let pageNavButtons = this.pageNavButtons;
+    let pageNavButtons = this.visiblePageNavButtons;
     let currentIndex = pageNavButtons.findIndex(b => b.selected);
     let next = pageNavButtons[currentIndex + 1];
     if (next) {
@@ -412,10 +266,13 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       next.buttonEl.focus();
     }
   }
-  onPrimaryNavChange() {
+  onPrimaryNavChange(event) {
+    this.pageNavButtons = this.getSlottedChildren(event.target);
+    this.visiblePageNavButtons = this.pageNavButtons.filter(this.checkElementVisibility);
     this.updateNavButtonsState();
   }
   onSecondaryNavChange(event) {
+    this.secondaryNavButtons = this.getSlottedChildren(event.target);
     let secondaryNavElements = event.target.assignedElements();
     this.hasSecondaryNav = !!secondaryNavElements.length;
   }
@@ -424,13 +281,15 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
   }
   updateNavButtonsState() {
     let isViewSelected = false;
-    let assignedPageNavButtons = this.pageNavButtons;
-    for (let button of assignedPageNavButtons) {
+    for (let button of this.pageNavButtons) {
       button.selected = button.view == this.currentView;
+    }
+    let visibleButtons = this.pageNavButtons.filter(this.checkElementVisibility);
+    for (let button of visibleButtons) {
       isViewSelected = isViewSelected || button.selected;
     }
-    if (!isViewSelected && assignedPageNavButtons.length && (!this.currentView || !this.allowNoSelection)) {
-      assignedPageNavButtons[0].activate();
+    if (!isViewSelected && visibleButtons.length && (!this.currentView || !this.allowNoSelection)) {
+      visibleButtons[0].activate();
     }
   }
   render() {
@@ -590,4 +449,4 @@ module.exports = __webpack_require__.p + "moz-page-nav.89ac50dc01027581ad95.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-moz-page-nav-stories.e26effe2.iframe.bundle.js.map
+//# sourceMappingURL=766.02643949.iframe.bundle.js.map

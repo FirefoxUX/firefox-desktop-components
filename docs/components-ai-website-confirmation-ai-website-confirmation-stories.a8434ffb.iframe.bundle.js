@@ -26,6 +26,7 @@ __webpack_require__.r(__webpack_exports__);
 
 const SELECTION_CHANGE_EVENT = "ai-website-confirmation:selection-change";
 const CLOSE_CONFIRMATION_EVENT = "ai-website-confirmation:close";
+const SUBMIT_CONFIRMATION_EVENT = "ai-website-confirmation:submit";
 
 /**
  * A container component for listing and managing multiple AI website selects
@@ -122,6 +123,23 @@ class AIWebsiteConfirmation extends chrome_global_content_lit_utils_mjs__WEBPACK
   }
 
   /**
+   * Handle confirm button click
+   */
+  handleConfirm() {
+    const selectedTabs = this.getSelectedTabs();
+    if (selectedTabs.length === 0) {
+      return;
+    }
+
+    // TODO: Dispatch selection event with selected tabs  https://bugzilla.mozilla.org/show_bug.cgi?id=2031516
+    const closeEvent = new CustomEvent(SUBMIT_CONFIRMATION_EVENT, {
+      bubbles: true,
+      composed: true
+    });
+    this.dispatchEvent(closeEvent);
+  }
+
+  /**
    * Dispatch selection event helper
    */
   dispatchSelectionEvent() {
@@ -182,6 +200,7 @@ class AIWebsiteConfirmation extends chrome_global_content_lit_utils_mjs__WEBPACK
             >
             </moz-button>
             <moz-button
+              @click=${this.handleConfirm}
               type="primary"
               ?disabled=${confirmButtonDisabled}
               data-l10n-id=${confirmButtonL10nId}
@@ -1429,4 +1448,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-website-confirmation-ai-website-confirmation-stories.e43fa590.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-website-confirmation-ai-website-confirmation-stories.a8434ffb.iframe.bundle.js.map

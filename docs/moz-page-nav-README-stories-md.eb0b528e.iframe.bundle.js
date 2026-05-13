@@ -345,6 +345,9 @@ __webpack_require__.r(__webpack_exports__);
  *   not match any button. When true, a non-matching currentView is allowed to
  *   persist without forcing a selection — used by about:preferences to support
  *   sub-pages and search-results states where no category should be highlighted.
+ * @property {Array} pageNavButtons - The array of all page nav buttons
+ * @property {Array} secondaryNavButtons - The array of all secondary nav buttons
+ * @property {Array} visiblePageNavButtons - The array of visible page nav buttons
  * @slot [default] - Used to append moz-page-nav-button elements to the navigation.
  * @slot [subheading] - Used to append page specific search input or notification to the nav.
  */
@@ -363,6 +366,18 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     },
     allowNoSelection: {
       type: Boolean
+    },
+    pageNavButtons: {
+      type: Array,
+      state: true
+    },
+    secondaryNavButtons: {
+      type: Array,
+      state: true
+    },
+    visiblePageNavButtons: {
+      type: Array,
+      state: true
     }
   };
   static queries = {
@@ -377,15 +392,12 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
      */
     this.type = "default";
     this.allowNoSelection = false;
+    this.pageNavButtons = [];
+    this.secondaryNavButtons = [];
+    this.visiblePageNavButtons = [];
   }
-  get pageNavButtons() {
-    return this.getVisibleSlottedChildren(this.primaryNavGroupSlot);
-  }
-  get secondaryNavButtons() {
-    return this.getVisibleSlottedChildren(this.secondaryNavGroupSlot);
-  }
-  getVisibleSlottedChildren(el) {
-    return el?.assignedElements().filter(element => element?.localName === "moz-page-nav-button" && this.checkElementVisibility(element));
+  getSlottedChildren(el) {
+    return el?.assignedElements().filter(element => element?.localName === "moz-page-nav-button");
   }
   checkElementVisibility(element) {
     let computedStyles = window.getComputedStyle(element);
@@ -404,7 +416,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   }
   focusPreviousView() {
-    let pageNavButtons = this.pageNavButtons;
+    let pageNavButtons = this.visiblePageNavButtons;
     let currentIndex = pageNavButtons.findIndex(b => b.selected);
     let prev = pageNavButtons[currentIndex - 1];
     if (prev) {
@@ -413,7 +425,7 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
     }
   }
   focusNextView() {
-    let pageNavButtons = this.pageNavButtons;
+    let pageNavButtons = this.visiblePageNavButtons;
     let currentIndex = pageNavButtons.findIndex(b => b.selected);
     let next = pageNavButtons[currentIndex + 1];
     if (next) {
@@ -421,10 +433,13 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
       next.buttonEl.focus();
     }
   }
-  onPrimaryNavChange() {
+  onPrimaryNavChange(event) {
+    this.pageNavButtons = this.getSlottedChildren(event.target);
+    this.visiblePageNavButtons = this.pageNavButtons.filter(this.checkElementVisibility);
     this.updateNavButtonsState();
   }
   onSecondaryNavChange(event) {
+    this.secondaryNavButtons = this.getSlottedChildren(event.target);
     let secondaryNavElements = event.target.assignedElements();
     this.hasSecondaryNav = !!secondaryNavElements.length;
   }
@@ -433,13 +448,15 @@ class MozPageNav extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_M
   }
   updateNavButtonsState() {
     let isViewSelected = false;
-    let assignedPageNavButtons = this.pageNavButtons;
-    for (let button of assignedPageNavButtons) {
+    for (let button of this.pageNavButtons) {
       button.selected = button.view == this.currentView;
+    }
+    let visibleButtons = this.pageNavButtons.filter(this.checkElementVisibility);
+    for (let button of visibleButtons) {
       isViewSelected = isViewSelected || button.selected;
     }
-    if (!isViewSelected && assignedPageNavButtons.length && (!this.currentView || !this.allowNoSelection)) {
-      assignedPageNavButtons[0].activate();
+    if (!isViewSelected && visibleButtons.length && (!this.currentView || !this.allowNoSelection)) {
+      visibleButtons[0].activate();
     }
   }
   render() {
@@ -946,4 +963,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-page-nav-README-stories-md.48ddd991.iframe.bundle.js.map
+//# sourceMappingURL=moz-page-nav-README-stories-md.eb0b528e.iframe.bundle.js.map
