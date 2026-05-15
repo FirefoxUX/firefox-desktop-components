@@ -86,10 +86,6 @@ moz-button.close-button::part(button) {
   flex-shrink: 0;
 }
 
-.tabs-list::-webkit-scrollbar {
-  display: none;
-}
-
 .fade-overlay {
   position: absolute;
   inset-inline: 0;

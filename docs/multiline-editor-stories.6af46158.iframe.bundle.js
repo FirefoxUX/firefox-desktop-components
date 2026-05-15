@@ -11561,6 +11561,33 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
     maxLength: {
       type: Number,
       attribute: "maxlength"
+    },
+    // ARIA combobox state forwarded from the host to the inner contenteditable.
+    // reflect:false so the host attribute stays the source of truth.
+    ariaControls: {
+      type: String,
+      attribute: "aria-controls",
+      reflect: false
+    },
+    ariaAutoComplete: {
+      type: String,
+      attribute: "aria-autocomplete",
+      reflect: false
+    },
+    ariaExpanded: {
+      type: String,
+      attribute: "aria-expanded",
+      reflect: false
+    },
+    ariaActiveDescendant: {
+      type: String,
+      attribute: "aria-activedescendant",
+      reflect: false
+    },
+    ariaHasPopup: {
+      type: String,
+      attribute: "aria-haspopup",
+      reflect: false
     }
   };
   static schema = new chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_4__.Schema({
@@ -11570,12 +11597,35 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
       text: chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_4__.basicSchema.spec.nodes.get("text")
     }
   });
+
+  /**
+   * ARIA state forwarded from the host's reactive Lit properties to the inner
+   * contenteditable. Each entry pairs the property name (used in `updated()`
+   * change detection) with the attribute name applied to the inner element.
+   */
+  static FORWARDED_ARIA = [{
+    prop: "ariaControls",
+    attr: "aria-controls"
+  }, {
+    prop: "ariaAutoComplete",
+    attr: "aria-autocomplete"
+  }, {
+    prop: "ariaExpanded",
+    attr: "aria-expanded"
+  }, {
+    prop: "ariaActiveDescendant",
+    attr: "aria-activedescendant"
+  }, {
+    prop: "ariaHasPopup",
+    attr: "aria-haspopup"
+  }];
   #pendingValue = "";
   #placeholderPlugin;
   #plugins;
   #suppressInputEvent = false;
   #view;
   #markdownSerializer;
+  #innerRole = null;
   constructor() {
     super();
     this.placeholder = "";
@@ -11654,6 +11704,42 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
     } finally {
       this.#suppressInputEvent = false;
     }
+  }
+
+  /**
+   * The plain-text content of the editor with atom nodes (e.g. mentions)
+   * contributing zero characters. Useful for persisting input alongside a
+   * structured list of inline atoms.
+   *
+   * @type {string}
+   */
+  get plainText() {
+    if (!this.#view) {
+      return this.#pendingValue;
+    }
+    return this.#view.state.doc.textBetween(0, this.#view.state.doc.content.size, "\n", "");
+  }
+
+  /**
+   * Convert a ProseMirror document position to a text-character offset that
+   * matches `plainText`.
+   *
+   * @param {number} pos
+   * @returns {number}
+   */
+  posToTextOffset(pos) {
+    return this.#textOffsetFromPos(pos, this.#view?.state.doc, "\n", "");
+  }
+
+  /**
+   * Convert a text-character offset (matching `plainText`) to a ProseMirror
+   * document position.
+   *
+   * @param {number} offset
+   * @returns {number}
+   */
+  textOffsetToPos(offset) {
+    return this.#posFromTextOffset(offset);
   }
 
   /**
@@ -11750,6 +11836,14 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
    */
   connectedCallback() {
     super.connectedCallback();
+    // Capture a consumer-supplied role for the inner contenteditable before
+    // hiding this host element from the accessibility tree. With
+    // delegatesFocus, screen readers focus the inner contenteditable, so its
+    // role and ARIA state are what get announced.
+    const hostRole = this.getAttribute("role");
+    if (hostRole && hostRole !== "presentation") {
+      this.#innerRole = hostRole;
+    }
     this.setAttribute("role", "presentation");
   }
 
@@ -11775,7 +11869,9 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
    * @param {Map} changedProps
    */
   updated(changedProps) {
-    if (changedProps.has("placeholder") || changedProps.has("plugins") || changedProps.has("readOnly")) {
+    if (changedProps.has("placeholder") || changedProps.has("plugins") || changedProps.has("readOnly") || MultilineEditor.FORWARDED_ARIA.some(({
+      prop
+    }) => changedProps.has(prop))) {
       this.#refreshView();
     }
   }
@@ -12008,11 +12104,11 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
     });
     return schema.node("doc", null, paragraphs);
   }
-  #textOffsetFromPos(pos, doc = this.#view?.state.doc) {
+  #textOffsetFromPos(pos, doc = this.#view?.state.doc, blockSeparator = "\n", leafText = "\n") {
     if (!doc) {
       return 0;
     }
-    return doc.textBetween(0, pos, "\n", "\n").length;
+    return doc.textBetween(0, pos, blockSeparator, leafText).length;
   }
   #posFromTextOffset(offset, doc = this.#view?.state.doc) {
     if (!doc) {
@@ -12066,12 +12162,28 @@ class MultilineEditor extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPOR
     return doc.textBetween(0, doc.content.size, "\n", "\n").length;
   }
   #viewAttributes() {
-    return {
+    const attrs = {
       "aria-label": this.placeholder,
-      "aria-multiline": "true",
-      "aria-readonly": this.readOnly ? "true" : "false",
-      role: "textbox"
+      "aria-readonly": this.readOnly ? "true" : "false"
     };
+    if (this.#innerRole) {
+      // Combobox is a single-line widget per ARIA; omit aria-multiline so the
+      // role's semantics aren't muddled.
+      attrs.role = this.#innerRole;
+    } else {
+      attrs.role = "textbox";
+      attrs["aria-multiline"] = "true";
+    }
+    for (const {
+      prop,
+      attr
+    } of MultilineEditor.FORWARDED_ARIA) {
+      const value = this[prop];
+      if (value != null) {
+        attrs[attr] = value;
+      }
+    }
+    return attrs;
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
@@ -13112,7 +13224,11 @@ class Mentions {
   }
 
   /**
-   * Insert a mention.
+   * Insert a mention by replacing the given range with the chip and appending
+   * a trailing space. Used by the @-typing flow where `from..to` covers the
+   * `@…` trigger; the trailing space and view focus are UX niceties for that
+   * flow. For programmatic insertions that don't replace existing text (e.g.
+   * restoring saved input state), use {@link Mentions#insertNode} instead.
    *
    * @param {MentionData} mention - Mention data
    * @param {number} from - Start position
@@ -13120,23 +13236,43 @@ class Mentions {
    */
   insert(mention, from, to) {
     const view = this.#editor.view;
-    const {
-      state
-    } = view;
-    const mentionNode = state.schema.nodes.mention.create({
-      type: mention.type,
-      id: mention.id,
-      label: mention.label
-    });
     try {
-      const tr = state.tr;
-      tr.replaceRangeWith(from, to, mentionNode);
+      const tr = this.#buildInsertNodeTransaction(mention, from, to);
       tr.insertText(" ");
       view.dispatch(tr);
       view.focus();
     } catch (e) {
       console.error("Failed to insert mention:", e);
     }
+  }
+
+  /**
+   * Insert a mention chip at a single position without altering surrounding
+   * text or moving focus. Suitable for programmatic insertions that should
+   * not perturb the document beyond adding the chip.
+   *
+   * @param {MentionData} mention - Mention data
+   * @param {number} pos - Document position to insert at
+   */
+  insertNode(mention, pos) {
+    const view = this.#editor.view;
+    try {
+      const tr = this.#buildInsertNodeTransaction(mention, pos, pos);
+      view.dispatch(tr);
+    } catch (e) {
+      console.error("Failed to insert mention:", e);
+    }
+  }
+  #buildInsertNodeTransaction(mention, from, to) {
+    const {
+      state
+    } = this.#editor.view;
+    const mentionNode = state.schema.nodes.mention.create({
+      type: mention.type,
+      id: mention.id,
+      label: mention.label
+    });
+    return state.tr.replaceRangeWith(from, to, mentionNode);
   }
 
   /**
@@ -13487,4 +13623,4 @@ WithMentionsCustomElement.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=multiline-editor-stories.e36eeac9.iframe.bundle.js.map
+//# sourceMappingURL=multiline-editor-stories.6af46158.iframe.bundle.js.map

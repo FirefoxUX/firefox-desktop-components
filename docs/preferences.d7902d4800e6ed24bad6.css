@@ -6,14 +6,17 @@
 
 /* Global rules */
 :root {
-  /**
-   * Headings are currently 1 level higher than they should be. Eventually
-   * "Settings" will become our h1 and everything will drop down a level so our
-   * h1s become h2s, h2s become h3s, etc.
-   */
-  --font-size-heading-xlarge: var(--font-size-xlarge);
-  --font-size-heading-large: var(--font-size-large);
-  --font-size-heading-medium: var(--font-size-medium);
+  /* stylelint-disable-next-line media-query-no-invalid */
+  @media not -moz-pref("browser.settings-redesign.enabled") {
+    /**
+     * Pre-SRD, headings are 1 level higher than they should be. These overrides
+     * size them as if they were one level lower. With SRD on, the widgets
+     * already render the correct level, so we don't need these.
+     */
+    --font-size-heading-xlarge: var(--font-size-xlarge);
+    --font-size-heading-large: var(--font-size-large);
+    --font-size-heading-medium: var(--font-size-medium);
+  }
   --select-max-width: 20rem;
 
   --card-padding-inline: var(--space-xlarge);
@@ -1524,6 +1527,11 @@ setting-group[groupid="aiStatesDescription"] {
 .hidden-category {
   display: none;
 }
+
+.nav-separator {
+  width: 100%;
+}
+
 /* Platform-specific tweaks & overrides */
 
 @media (-moz-platform: macos) {
@@ -1583,6 +1591,10 @@ setting-group[groupid="aiStatesDescription"] {
 
 .search-header:has(.section-heading) {
   margin: 0;
+}
+
+setting-pane[onsearchpane] {
+  margin-block-start: var(--space-large);
 }
 
 /* Styles for the "sponsors support our mission" message and link on the Home tab */

@@ -4,7 +4,7 @@
 /***/ 15550:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-page-header.3c8ed3a1b3bc0a1847bb.css";
+module.exports = __webpack_require__.p + "moz-page-header.d1aa533729ddf1e80f05.css";
 
 /***/ }),
 
@@ -39,6 +39,7 @@ window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozPageHeader.ftl");
  * @property {string} supportPage - Optional URL for a related support article.
  * @property {boolean} backButton - Whether or not the header should include a back button.
  * @property {"beta" | "new" | undefined} badge - Include a badge of this type with matching text.
+ * @property {number} headingLevel - Heading level to render (1-6). Defaults to 2.
  * @slot breadcrumbs - Container for a <moz-breadcrumb-group, shown above the heading.
  * @fires navigate-back
  *  Event indicating the backwards navigation should occur.
@@ -65,10 +66,13 @@ class MozPageHeader extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
     },
     badge: {
       type: String
+    },
+    headingLevel: {
+      type: Number
     }
   };
   static queries = {
-    headingEl: "h1",
+    headingEl: "#heading",
     backButtonEl: "moz-button"
   };
   constructor() {
@@ -80,6 +84,7 @@ class MozPageHeader extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
     this.backButton = false;
     /** @type {"beta" | "new" | undefined} */
     this.badge = undefined;
+    this.headingLevel = 2;
   }
   backButtonTemplate() {
     if (!this.backButton) {
@@ -129,6 +134,23 @@ class MozPageHeader extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
   handleBack() {
     this.dispatchEvent(new Event("navigate-back"));
   }
+  headingTemplate() {
+    switch (this.headingLevel) {
+      case 1:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h1 id="heading">${this.heading}</h1>`;
+      case 3:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h3 id="heading">${this.heading}</h3>`;
+      case 4:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h4 id="heading">${this.heading}</h4>`;
+      case 5:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h5 id="heading">${this.heading}</h5>`;
+      case 6:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h6 id="heading">${this.heading}</h6>`;
+      case 2:
+      default:
+        return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h2 id="heading">${this.heading}</h2>`;
+    }
+  }
   render() {
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
@@ -143,8 +165,7 @@ class MozPageHeader extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitEl
         <slot name="breadcrumbs"></slot>
         <div class="heading">
           ${this.backButtonTemplate()}${this.iconTemplate()}
-          <h1 id="heading">${this.heading}</h1>
-          ${this.badgeTemplate()}
+          ${this.headingTemplate()} ${this.badgeTemplate()}
           ${!this.description ? this.supportLinkTemplate() : ""}
         </div>
         ${this.descriptionTemplate()}
@@ -157,4 +178,4 @@ customElements.define("moz-page-header", MozPageHeader);
 /***/ })
 
 }]);
-//# sourceMappingURL=7372.2baf62f5.iframe.bundle.js.map
+//# sourceMappingURL=7372.0ad0f94a.iframe.bundle.js.map

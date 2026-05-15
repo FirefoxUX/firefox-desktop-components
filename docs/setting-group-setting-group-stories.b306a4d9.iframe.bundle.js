@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,5944,8050],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3654,5944,7550],{
 
 /***/ 5540:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -682,17 +682,194 @@ customElements.define("moz-input-folder", MozInputFolder);
 
 /***/ }),
 
-/***/ 38626:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "setting-control.4f84dc15c74cc0fc8ad6.css";
-
-/***/ }),
-
 /***/ 42572:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-input-folder.c37458f251bdc5f6c043.css";
+
+/***/ }),
+
+/***/ 42717:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   BoxGroup: () => (/* binding */ BoxGroup),
+/* harmony export */   BrowserLayout: () => (/* binding */ BrowserLayout),
+/* harmony export */   Group: () => (/* binding */ Group),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_group_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(97959);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Settings/Setting Group",
+  component: "setting-group",
+  parameters: {
+    status: "in-development",
+    handles: ["click", "input", "change"],
+    fluent: `
+group-example-label =
+  .label = Complicated grouping
+  .description = This group is showing that there can be a complicated config, not necessarily that this level of nesting should be used.
+checkbox-example-input =
+  .label = Checkbox example of setting-control
+  .description = Could have a description like moz-checkbox.
+checkbox-example-input2 =
+  .label = Another checkbox
+browser-layout-label =
+  .label = Browser layout
+browser-layout-radio-horizontal =
+  .label = Horizontal tabs
+  .description = Displayed at the top of the browser
+browser-layout-radio-vertical =
+  .label = Vertical tabs
+  .description = Displayed on the side, in the sidebar
+browser-layout-sidebar =
+  .label = Show sidebar
+  .description = Quickly access bookmarks, tabs from your phone, AI chatbots, and more without leaving your main view
+cookies-and-site-data =
+  .label = Cookies and Site Data
+  .description = Manage and delete cookies, history, cache, and site settings.
+clear-browsing-data =
+    .label = Clear browsing data
+storage-usage =
+  .label = Your stored cookies, site data, and cache are currently using { $value } { $unit } of disk space.
+manage-browsing-data =
+  .label = Manage browsing data
+manage-exceptions =
+  .label = Manage exceptions
+  .description = You can specify which websites are always or never allowed to use cookies and site data.
+radio-example-input =
+  .label = This is a radio group
+  .description = With a lovely description.
+radio-one =
+  .label = One
+  .description = This is the first option.
+radio-two =
+  .label = Two
+radio-three =
+  .label = Three
+`
+  }
+});
+function getSetting() {
+  return {
+    value: true,
+    on() {},
+    off() {},
+    userChange() {},
+    visible: () => true,
+    getControlConfig: c => c,
+    controllingExtensionInfo: {}
+  };
+}
+const Template = ({
+  config
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <setting-group .config=${config} .getSetting=${getSetting}></setting-group>
+`;
+const BOX_GROUP_CONFIG = {
+  id: "data-usage-group",
+  control: "moz-box-group",
+  items: [{
+    id: "data-usage",
+    l10nId: "storage-usage",
+    control: "moz-box-item",
+    controlAttrs: {
+      "data-l10n-args": JSON.stringify({
+        value: 1.8,
+        unit: "GB"
+      })
+    }
+  }, {
+    id: "manage-browsing-data",
+    l10nId: "manage-browsing-data",
+    control: "moz-box-button"
+  }, {
+    id: "manage-exceptions",
+    l10nId: "manage-exceptions",
+    control: "moz-box-button"
+  }]
+};
+const Group = Template.bind({});
+Group.args = {
+  config: {
+    id: "group-example",
+    l10nId: "group-example-label",
+    items: [{
+      id: "checkbox-example",
+      l10nId: "checkbox-example-input"
+    }, {
+      id: "checkbox-example2",
+      l10nId: "checkbox-example-input2",
+      supportPage: "example-support",
+      iconSrc: "chrome://global/skin/icons/highlights.svg",
+      items: [{
+        id: "checkbox-example",
+        l10nId: "checkbox-example-input"
+      }, {
+        id: "radio-example",
+        l10nId: "radio-example-input",
+        control: "moz-radio-group",
+        options: [{
+          l10nId: "radio-one",
+          value: "one"
+        }, {
+          l10nId: "radio-two",
+          value: "two",
+          items: [BOX_GROUP_CONFIG]
+        }, {
+          l10nId: "radio-three",
+          value: "three"
+        }]
+      }]
+    }]
+  }
+};
+const BrowserLayout = Template.bind({});
+BrowserLayout.args = {
+  config: {
+    id: "browser-layout-example",
+    l10nId: "browser-layout-label",
+    items: [{
+      id: "tabs-layout",
+      control: "moz-radio-group",
+      options: [{
+        id: "horizontal-tabs",
+        l10nId: "browser-layout-radio-horizontal",
+        value: true
+      }, {
+        id: "vertical-tabs",
+        l10nId: "browser-layout-radio-vertical",
+        value: false
+      }]
+    }, {
+      id: "show-sidebar",
+      l10nId: "browser-layout-sidebar"
+    }]
+  }
+};
+const BoxGroup = Template.bind({});
+BoxGroup.args = {
+  config: {
+    id: "cookies-data",
+    l10nId: "cookies-and-site-data",
+    supportPage: "sure",
+    items: [{
+      l10nId: "clear-browsing-data",
+      control: "moz-box-button",
+      controlAttrs: {
+        iconsrc: "chrome://browser/skin/flame.svg"
+      }
+    }, BOX_GROUP_CONFIG]
+  }
+};
 
 /***/ }),
 
@@ -794,6 +971,7 @@ customElements.define("moz-input-text", MozInputText);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   SettingElement: () => (/* binding */ SettingElement),
+/* harmony export */   bumpHeadingLevelForSrd: () => (/* binding */ bumpHeadingLevelForSrd),
 /* harmony export */   spread: () => (/* binding */ spread)
 /* harmony export */ });
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
@@ -804,6 +982,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+const {
+  XPCOMUtils
+} = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
+const lazy = XPCOMUtils.declareLazy({
+  srdEnabled: {
+    pref: "browser.settings-redesign.enabled"
+  }
+});
 
 /** @import { AttributePart } from "chrome://global/content/vendor/lit.all.mjs" */
 
@@ -897,6 +1083,35 @@ class SpreadDirective extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_
   }
 }
 const spread = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.directive)(SpreadDirective);
+
+/**
+ * controlAttrs keys that carry a heading level destined for moz-fieldset
+ * (or another widget that exposes a `headingLevel` Lit property). Both
+ * the lowercase HTML attribute form and the Lit property-binding form
+ * are recognized; setAttribute folds case so `headingLevel` works too.
+ */
+const HEADING_LEVEL_KEYS = ["headinglevel", "headingLevel", ".headingLevel"];
+
+/**
+ * Translate a config-supplied heading level into the level we should
+ * actually render at. With SRD on, the pane title (moz-page-header)
+ * sits at h2 instead of legacy XUL's h1, so headings nested inside the
+ * pane shift one level deeper. Top-level section headings (h1) jump
+ * to h3 so they sit immediately below the new pane title rather than
+ * colliding with it.
+ *
+ * @param {number | undefined} level
+ * @param {boolean} srdEnabled
+ * @returns {number | undefined}
+ */
+function bumpHeadingLevelForSrd(level, srdEnabled) {
+  if (!srdEnabled || typeof level !== "number") {
+    return level;
+  }
+  // Floor at 3 so legacy `headinglevel: 1` (the pre-SRD "section heading"
+  // tier) doesn't become h2 and collide with the moz-page-header pane title.
+  return Math.max(level + 1, 3);
+}
 class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   /**
    * The default properties that the setting element accepts.
@@ -904,6 +1119,16 @@ class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
    * @param {SettingElementConfig} config
    */
   getCommonPropertyMapping(config) {
+    let controlAttrs = {
+      ...(config.controlAttrs ?? {})
+    };
+    if (lazy.srdEnabled) {
+      for (let key of HEADING_LEVEL_KEYS) {
+        if (typeof controlAttrs[key] === "number") {
+          controlAttrs[key] = bumpHeadingLevelForSrd(controlAttrs[key], lazy.srdEnabled);
+        }
+      }
+    }
     return {
       id: config.id,
       "data-l10n-id": config.l10nId ? config.l10nId : undefined,
@@ -912,165 +1137,286 @@ class SettingElement extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       "data-subcategory": config.subcategory,
       ".supportPage": config.supportPage != undefined ? config.supportPage : undefined,
       slot: config.slot,
-      ...config.controlAttrs
+      ...controlAttrs
     };
   }
 }
 
 /***/ }),
 
-/***/ 88941:
+/***/ 97959:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Checkbox: () => (/* binding */ Checkbox),
-/* harmony export */   ExtensionControlled: () => (/* binding */ ExtensionControlled),
-/* harmony export */   Radio: () => (/* binding */ Radio),
-/* harmony export */   Select: () => (/* binding */ Select),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   SettingGroup: () => (/* binding */ SettingGroup)
 /* harmony export */ });
-/* harmony import */ var browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(38626);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(76664);
 /* harmony import */ var chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(5540);
-
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Settings/Setting Control",
-  component: "setting-control",
-  parameters: {
-    status: "in-development",
-    handles: ["click", "input", "change"],
-    fluent: `
-checkbox-example-input =
-  .label = Checkbox example of setting-control
-  .description = Could have a description like moz-checkbox.
-select-example-input =
-  .label = Select example of setting-control
-  .description = Could have a description like moz-select.
-select-option-0 =
-  .label = Option 0
-select-option-1 =
-  .label = Option 1
-select-option-2 =
-  .label = Option 2
-radio-example-input =
-  .label = Radio example of setting-control
-  .description = Could have a description like moz-radio-group.
-radio-option-0 =
-  .label = Option 0
-radio-option-1 =
-  .label = Option 1
-  .description = It's a full moz-radio
-radio-option-2 =
-  .label = Option 2
-extension-controlled-input =
-  .label = Setting controlled by extension
-extension-controlled-message = <strong>My Extension</strong> requires Controlled Setting.
-disable-extension =
-  .label = Disable extension
-  .tooltiptext = Disable extension
-extension-controlled-enable-2 = Storybook Only: Refresh the page to enable the extension. To re-enable this extension visit <a data-l10n-name="addons-link">Extensions and themes</a>.`
-  }
+
+
+/**
+ * @import { SettingElementConfig } from "chrome://browser/content/preferences/widgets/setting-element.mjs"
+ * @import { SettingControlConfig, SettingControlEvent } from "../setting-control/setting-control.mjs"
+ * @import { Preferences } from "chrome://global/content/preferences/Preferences.mjs"
+ * @import { TemplateResult } from "chrome://global/content/vendor/lit.all.mjs";
+ */
+
+/**
+ * @typedef {object} SettingGroupConfigExtensions
+ * @property {SettingControlConfig[]} items Array of SettingControlConfigs to render.
+ * @property {number} [headingLevel] A heading level to create the legend as (1-6).
+ * @property {boolean} [inProgress]
+ * Hide this section unless the browser.settings-redesign.enabled or
+ * browser.settings-redesign.<groupid>.enabled prefs are true.
+ * @property {"default"|"always"|"never"} [card]
+ * Whether to use a card. Default: use a card after SRD or in a sub-pane.
+ * @property {boolean} [hiddenFromSearch]
+ * Whether this group should be hidden from search.
+ * @property {boolean} [hidden] Whether this group should be visible.
+ */
+/** @typedef {SettingElementConfig & SettingGroupConfigExtensions} SettingGroupConfig */
+
+const CLICK_HANDLERS = new Set(["dialog-button", "moz-box-button", "moz-box-item", "moz-box-link", "moz-button", "moz-box-group", "moz-message-bar", "a"]);
+const DISMISS_HANDLERS = new Set(["moz-message-bar"]);
+const REORDER_HANDLERS = new Set(["moz-box-group"]);
+
+/**
+ * Enumish of attribute names used for changing setting-group and groupbox
+ * visibilities based on the visibility of child setting-controls.
+ */
+const HiddenAttr = Object.freeze({
+  /** Attribute used to hide elements without using the hidden attribute. */
+  Self: "data-hidden-by-setting-group",
+  /** Attribute used to signal that this element should not be searchable. */
+  Search: "data-hidden-from-search"
 });
-const Template = ({
-  config,
-  setting
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-  <link
-    rel="stylesheet"
-    href="${browser_components_preferences_widgets_setting_control_setting_control_css__WEBPACK_IMPORTED_MODULE_0__}"
-  /><setting-control .config=${config} .setting=${setting}></setting-control>
-`;
-const DEFAULT_SETTING = {
-  value: 1,
-  on() {},
-  off() {},
-  userChange() {},
-  getControlConfig: c => c,
-  controllingExtensionInfo: {},
-  visible: true
-};
-const Checkbox = Template.bind({});
-Checkbox.args = {
-  config: {
-    id: "checkbox-example",
-    l10nId: "checkbox-example-input"
-  },
-  setting: DEFAULT_SETTING
-};
-const Select = Template.bind({});
-Select.args = {
-  config: {
-    id: "select-example",
-    l10nId: "select-example-input",
-    control: "moz-select",
-    supportPage: "example-support",
-    options: [{
-      value: 0,
-      l10nId: "select-option-0"
-    }, {
-      value: 1,
-      l10nId: "select-option-1"
-    }, {
-      value: 2,
-      l10nId: "select-option-2"
-    }]
-  },
-  setting: DEFAULT_SETTING
-};
-const Radio = Template.bind({});
-Radio.args = {
-  config: {
-    id: "radio-example",
-    l10nId: "radio-example-input",
-    control: "moz-radio-group",
-    supportPage: "example-support",
-    options: [{
-      value: 0,
-      l10nId: "radio-option-0"
-    }, {
-      value: 1,
-      l10nId: "radio-option-1",
-      supportPage: "support-page"
-    }, {
-      value: 2,
-      l10nId: "radio-option-2"
-    }]
-  },
-  setting: DEFAULT_SETTING
-};
-const ExtensionControlled = Template.bind({});
-ExtensionControlled.args = {
-  config: {
-    id: "extension-controlled-example",
-    l10nId: "extension-controlled-input",
-    pref: "privacy.userContext.enabled"
-  },
-  setting: {
-    ...DEFAULT_SETTING,
-    disableControllingExtension() {
-      delete this.controllingExtensionInfo.id;
-      delete this.controllingExtensionInfo.name;
-      document.querySelector("with-common-styles").shadowRoot.querySelector("setting-control").requestUpdate();
+class SettingGroup extends chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.SettingElement {
+  static properties = {
+    config: {
+      type: Object
     },
-    controllingExtensionInfo: {
-      id: "extension-controlled-example",
-      l10nId: "extension-controlled-message",
-      name: "My Extension",
-      supportPage: "preferences",
-      // NOTE: allowControl defaults to false, but it can be set to true
-      allowControl: false
+    groupId: {
+      type: String
+    },
+    getSetting: {
+      type: Function
+    },
+    srdEnabled: {
+      type: Boolean
+    },
+    inSubPane: {
+      type: Boolean
+    }
+  };
+  static queries = {
+    allControlEls: {
+      all: "setting-control"
+    },
+    fieldsetEl: "moz-fieldset"
+  };
+
+  /**
+   * Immediate child control elements. See {@link SettingGroup.allControlEls} to
+   * get all ancestors.
+   */
+  get childControlEls() {
+    if (!this.config) {
+      return [];
+    }
+    // @ts-expect-error bug 1997478
+    return [...this.fieldsetEl.children].filter(child => child instanceof chrome_browser_content_preferences_widgets_setting_control_mjs__WEBPACK_IMPORTED_MODULE_2__.SettingControl);
+  }
+  constructor() {
+    super();
+
+    /**
+     * @type {Preferences['getSetting'] | undefined}
+     */
+    this.getSetting = undefined;
+
+    /**
+     * @type {SettingGroupConfig | undefined}
+     */
+    this.config = undefined;
+
+    /**
+     * Set by initSettingGroup based on browser.settings-redesign.enabled.
+     */
+    this.srdEnabled = false;
+    /**
+     * Set by setting-pane if this is a sub pane so we can render cards even if SRD is off.
+     */
+    this.inSubPane = false;
+  }
+  createRenderRoot() {
+    return this;
+  }
+  willUpdate() {
+    if (!this.srdEnabled) {
+      this.classList.toggle("subcategory", this.config?.headingLevel == 1);
+    }
+    // Only set/remove attributes when explicitly defined in config
+    // This allows handleVisibilityChange to manage visibility independently
+    if (this.config?.hiddenFromSearch !== undefined) {
+      this.toggleAttribute(HiddenAttr.Search, !!this.config.hiddenFromSearch);
+    }
+    if (this.config?.hidden !== undefined) {
+      this.toggleAttribute(HiddenAttr.Self, this.config.hidden);
     }
   }
-};
+  async handleVisibilityChange() {
+    await this.updateComplete;
+
+    // Don't change visibility if explicitly hidden by config
+    if (this.config?.hidden) {
+      return;
+    }
+    let hasVisibleControls = !!this.childControlEls?.length && this.childControlEls?.some(el => !el.hidden);
+    let groupbox = /** @type {XULElement} */this.closest("groupbox");
+    if (hasVisibleControls) {
+      if (this.hasAttribute(HiddenAttr.Self)) {
+        this.removeAttribute(HiddenAttr.Self);
+        this.removeAttribute(HiddenAttr.Search);
+      }
+      if (groupbox && groupbox.hasAttribute(HiddenAttr.Self)) {
+        groupbox.removeAttribute(HiddenAttr.Search);
+        groupbox.removeAttribute(HiddenAttr.Self);
+      }
+    } else {
+      this.setAttribute(HiddenAttr.Self, "");
+      this.setAttribute(HiddenAttr.Search, "true");
+      if (groupbox && !groupbox.hasAttribute(HiddenAttr.Search)) {
+        groupbox.setAttribute(HiddenAttr.Search, "true");
+        groupbox.setAttribute(HiddenAttr.Self, "");
+      }
+    }
+  }
+  async getUpdateComplete() {
+    let result = await super.getUpdateComplete();
+    // @ts-expect-error bug 1997478
+    await Promise.all([...this.allControlEls].map(el => el.updateComplete));
+    return result;
+  }
+
+  /**
+   * Notify child controls when their input has fired an event. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<InputEvent>} e
+   */
+  onChange(e) {
+    let inputEl = e.target;
+    inputEl.control?.onChange(inputEl);
+  }
+
+  /**
+   * Notify child controls when their input has been clicked. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<MouseEvent>} e
+   */
+  onClick(e) {
+    let inputEl = e.target;
+    if (!CLICK_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onClick(e);
+  }
+
+  /**
+   * Notify child controls when message bar has been dismissed. When controls
+   * are nested the parent receives events for the nested controls, so this is
+   * actually easier to manage here; it also registers fewer listeners.
+   *
+   * @param {SettingControlEvent<CustomEvent>} e
+   */
+  onMessageBarDismiss(e) {
+    let inputEl = e.target;
+    if (!DISMISS_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onMessageBarDismiss(e);
+  }
+
+  /**
+   * Notify child controls when items have been reordered. The reorder event is
+   * a CustomEvent that bubbles from reorderable moz-box-group elements when
+   * items are reordered via drag-and-drop or keyboard shortcuts.
+   *
+   * The detail object of the reorder event contains the following properties:
+   *
+   * - `draggedElement`: The element that was reordered.
+   * - `targetElement`: The element that the dragged element was reordered relative to.
+   * - `position`: The position of the drop relative to the target element. -1
+   *   means before, 0 means after.
+   * - `draggedIndex`: The original index of the element being reordered.
+   * - `targetIndex`: The new index of the draggedElement after reordering.
+   *
+   * @param {SettingControlEvent<CustomEvent>} e
+   */
+  onReorder(e) {
+    let inputEl = e.target;
+    if (!REORDER_HANDLERS.has(inputEl.localName)) {
+      return;
+    }
+    inputEl.control?.onReorder(e);
+  }
+
+  /**
+   * @param {SettingControlConfig} item
+   */
+  itemTemplate(item) {
+    let setting = this.getSetting(item.id);
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<setting-control
+      .setting=${setting}
+      .config=${item}
+      .getSetting=${this.getSetting}
+    ></setting-control>`;
+  }
+
+  /**
+   * @param {TemplateResult} content The content to render in a container.
+   */
+  containerTemplate(content) {
+    if ((this.srdEnabled || this.inSubPane || this.config.card == "always") && this.config.card != "never") {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-card>${content}</moz-card>`;
+    }
+    return content;
+  }
+  render() {
+    if (!this.config) {
+      return "";
+    }
+    let headingLevel = this.config.headingLevel;
+    if (this.srdEnabled) {
+      headingLevel = (0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.bumpHeadingLevelForSrd)(headingLevel ?? 2, true);
+    }
+    return this.containerTemplate((0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<moz-fieldset
+        .headingLevel=${headingLevel}
+        @change=${this.onChange}
+        @toggle=${this.onChange}
+        @click=${this.onClick}
+        @message-bar:user-dismissed=${this.onMessageBarDismiss}
+        @reorder=${this.onReorder}
+        @visibility-change=${this.handleVisibilityChange}
+        ${(0,chrome_browser_content_preferences_widgets_setting_element_mjs__WEBPACK_IMPORTED_MODULE_1__.spread)(this.getCommonPropertyMapping(this.config))}
+        >${this.config.items.map(item => this.itemTemplate(item))}</moz-fieldset
+      >`);
+  }
+}
+customElements.define("setting-group", SettingGroup);
 
 /***/ })
 
 }]);
-//# sourceMappingURL=setting-control-setting-control-stories.fbd005d4.iframe.bundle.js.map
+//# sourceMappingURL=setting-group-setting-group-stories.b306a4d9.iframe.bundle.js.map

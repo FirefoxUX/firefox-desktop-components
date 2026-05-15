@@ -120,7 +120,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
     }
     this.open = true;
     this.toggleAttribute("data-open", true);
-    this.updateComplete.then(() => this.#focusItemAt(0));
+    this.updateComplete.then(() => this.#focusDeleteButtonAt(0));
     this.#dispatchToggleAppliedMemories({
       isOpen: true
     });
@@ -154,7 +154,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
     }
     this.toggleAttribute("data-open", this.open);
     if (this.open) {
-      this.updateComplete.then(() => this.#focusItemAt(0));
+      this.updateComplete.then(() => this.#focusDeleteButtonAt(0));
     }
     this.#dispatchToggleAppliedMemories({
       isOpen: this.open
@@ -181,43 +181,44 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         this.shadowRoot.querySelector(".memories-trigger")?.focus();
         break;
       case "Tab":
-        this.#closePopover();
-        this.shadowRoot.querySelector(".memories-trigger")?.focus();
+        if (!event.shiftKey && this.shadowRoot.activeElement === this.shadowRoot.querySelector(".retry-without-memories-button")) {
+          this.#closePopover();
+        }
         break;
       case "ArrowDown":
         event.preventDefault();
-        this.#moveFocus(1);
+        this.#moveDeleteFocus(1);
         break;
       case "ArrowUp":
         event.preventDefault();
-        this.#moveFocus(-1);
+        this.#moveDeleteFocus(-1);
         break;
       case "Home":
         event.preventDefault();
-        this.#focusItemAt(0);
+        this.#focusDeleteButtonAt(0);
         break;
       case "End":
         event.preventDefault();
-        this.#focusItemAt(-1);
+        this.#focusDeleteButtonAt(-1);
         break;
     }
   }
-  get #menuItems() {
+  get #deleteButtons() {
     const popover = this.shadowRoot.querySelector(".popover");
-    return popover ? [...popover.querySelectorAll("[data-focusable]")] : [];
+    return popover ? [...popover.querySelectorAll(".memories-remove-button")] : [];
   }
-  #moveFocus(direction) {
-    const items = this.#menuItems;
+  #moveDeleteFocus(direction) {
+    const items = this.#deleteButtons;
     if (!items.length) {
       return;
     }
     const active = this.shadowRoot.activeElement;
     const currentIndex = items.indexOf(active);
     const nextIndex = (currentIndex + direction + items.length) % items.length;
-    this.#focusItemAt(nextIndex);
+    this.#focusDeleteButtonAt(nextIndex);
   }
-  #focusItemAt(index) {
-    const items = this.#menuItems;
+  #focusDeleteButtonAt(index) {
+    const items = this.#deleteButtons;
     if (!items.length) {
       return;
     }
@@ -274,7 +275,6 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         ></p>
         <button
           class="memories-callout-learn-more"
-          role="menuitem"
           data-focusable
           data-l10n-id="aiwindow-memories-learn-more"
           @click=${() => {
@@ -296,7 +296,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <div
         class="popover ${isOpen ? "open" : ""}"
-        role="menu"
+        role="dialog"
         data-l10n-id="aiwindow-applied-memories-popover"
         data-l10n-attrs="aria-label"
         ?inert=${!isOpen}
@@ -304,23 +304,28 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
       >
         ${this.#showCalloutState ? this.renderCallout() : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
 
-        <moz-box-group class="memories-list" role="none">
+        <moz-box-group
+          class="memories-list"
+          role="list"
+          data-l10n-id="aiwindow-applied-memories-list"
+          data-l10n-attrs="aria-label"
+        >
           ${visibleMemories.map(memory => {
       // @todo Bug 2010069
       // Localize aria-label
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
               <moz-box-item
                 class="memories-list-item"
+                role="listitem"
                 .label=${memory.memory_summary}
               >
                 <moz-button
                   class="memories-remove-button"
-                  role="menuitem"
-                  data-focusable
+                  tabindex="-1"
                   type="ghost"
                   size="small"
                   iconsrc="chrome://global/skin/icons/delete.svg"
-                  aria-label="Remove this memory"
+                  aria-label="Delete ${memory.memory_summary}"
                   @click=${event => this._onRemoveMemory(event, memory)}
                   slot="actions"
                 ></moz-button>
@@ -329,14 +334,12 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
     })}
         </moz-box-group>
 
-        <div id="manage-memories-row" class="popover-action-row" role="none">
+        <div id="manage-memories-row" class="popover-action-row">
           <moz-button
             type="ghost"
             size="default"
             iconsrc="chrome://global/skin/icons/settings.svg"
             iconposition="start"
-            role="menuitem"
-            data-focusable
             class="popover-action-row-button manage-memories-button"
             data-l10n-id="aiwindow-manage-memories"
             data-l10n-attrs="label"
@@ -344,18 +347,12 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
           ></moz-button>
         </div>
 
-        <div
-          id="retry-without-memories-row"
-          class="popover-action-row"
-          role="none"
-        >
+        <div id="retry-without-memories-row" class="popover-action-row">
           <moz-button
             type="ghost"
             size="default"
             iconsrc="chrome://global/skin/icons/reload.svg"
             iconposition="start"
-            role="menuitem"
-            data-focusable
             class="popover-action-row-button retry-without-memories-button"
             data-l10n-id="aiwindow-retry-without-memories"
             data-l10n-attrs="label"
@@ -380,7 +377,7 @@ class AppliedMemoriesButton extends chrome_global_content_lit_utils_mjs__WEBPACK
         size="small"
         iconposition="start"
         iconsrc="chrome://browser/content/aiwindow/assets/memories-on.svg"
-        aria-haspopup="menu"
+        aria-haspopup="dialog"
         aria-expanded=${this.open && this._hasMemories}
         data-l10n-id="aiwindow-memories-used"
         data-l10n-attrs="label"
@@ -2100,7 +2097,7 @@ customElements.define("assistant-message-footer", AssistantMessageFooter);
 /***/ 65554:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-website-confirmation.c3a6b72eb790097d2af9.css";
+module.exports = __webpack_require__.p + "ai-website-confirmation.96b751c09198cafa6772.css";
 
 /***/ }),
 
@@ -3941,4 +3938,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.6575a28f.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.66fd174e.iframe.bundle.js.map
