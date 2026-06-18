@@ -1,0 +1,139 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  @media (max-width: 950px) {
+    --page-nav-button-padding: var(--page-nav-button-padding-small);
+  }
+}
+
+:host(:not([hidden])) {
+  display: flex;
+  flex-direction: column;
+}
+
+:host([iconsrc]) {
+  @media (max-width: 950px) {
+    width: var(--button-size-icon);
+  }
+}
+
+a[href],
+button {
+  background-color: var(--page-nav-button-background-color);
+  transition: background-color 150ms;
+  border: var(--page-nav-button-border-color);
+  -moz-context-properties: fill, fill-opacity;
+  fill: var(--icon-color);
+  display: flex;
+  gap: var(--space-medium);
+  align-items: center;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: normal;
+  border-radius: var(--page-nav-button-border-radius);
+  color: var(--page-nav-button-text-color);
+  text-align: start;
+  padding: var(--page-nav-button-padding);
+  position: relative;
+
+  @media (forced-colors) {
+    transition: none;
+  }
+
+  @media (prefers-contrast) {
+    border: 1px solid var(--page-nav-button-border-color, var(--border-color-transparent));
+  }
+
+  @media (max-width: 950px) {
+    height: var(--button-size-icon);
+    justify-content: center;
+  }
+}
+
+a[href] {
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+a[href]:hover,
+button:hover:not([selected]) {
+  color: var(--page-nav-button-text-color-hover);
+  background-color: var(--page-nav-button-background-color-hover);
+  border-color: var(--page-nav-button-border-color-hover);
+
+  &:active {
+    color: var(--page-nav-button-text-color-active);
+    background-color: var(--page-nav-button-background-color-active);
+    border-color: var(--page-nav-button-border-color-active);
+  }
+}
+
+button {
+  &:hover {
+    cursor: pointer;
+  }
+
+  &[selected] {
+    color: var(--page-nav-button-text-color-selected);
+    background-color: var(--page-nav-button-background-color-selected);
+    font-weight: var(--font-weight-semibold);
+
+    @media (prefers-contrast) {
+      border-color: var(--border-color-selected);
+    }
+
+    &::before {
+      background-color: var(--page-nav-button-indicator-background-color);
+    }
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    position: absolute;
+    inset-block: 0;
+    inset-inline-start: 0;
+    width: var(--page-nav-button-indicator-width);
+    background-color: transparent;
+    border-start-start-radius: var(--page-nav-button-border-radius);
+    border-end-start-radius: var(--page-nav-button-border-radius);
+
+    @media (prefers-contrast) {
+      border-radius: 0;
+    }
+  }
+}
+
+a[href]:focus-visible,
+button:focus-visible,
+button[selected]:focus-visible {
+  outline: var(--focus-outline);
+  outline-offset: var(--page-nav-focus-outline-offset);
+  border-radius: var(--page-nav-button-border-radius-focused);
+}
+
+.page-nav-icon {
+  height: var(--icon-size);
+  width: var(--icon-size);
+  -moz-context-properties: fill;
+  fill: currentColor;
+}
+
+slot {
+  margin: 0;
+  padding-inline-start: 0;
+  user-select: none;
+
+  @media (max-width: 950px) {
+    display: inline-block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    .page-nav-icon + & {
+      display: none;
+    }
+  }
+}
