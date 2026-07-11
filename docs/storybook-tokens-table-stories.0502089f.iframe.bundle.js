@@ -2155,6 +2155,9 @@ const tokensTable = {
     value: "var(--font-weight-semibold)",
     name: "--button-font-weight"
   }, {
+    value: "var(--font-weight-semibold)",
+    name: "--badge-font-weight"
+  }, {
     value: "var(--button-font-weight)",
     name: "--select-font-weight"
   }, {
@@ -5320,6 +5323,7 @@ const variableLookupTable = {
   },
   "badge-border-radius": "var(--border-radius-small)",
   "badge-border-width": "1px",
+  "badge-font-weight": "var(--font-weight-semibold)",
   "badge-padding-block": "0",
   "badge-padding-inline": "var(--space-xsmall)",
   "badge-text-color": {
@@ -6422,4 +6426,4 @@ module.exports = __webpack_require__.p + "tokens-table.e288c078a012cd609c4c.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.b401d28f.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.0502089f.iframe.bundle.js.map

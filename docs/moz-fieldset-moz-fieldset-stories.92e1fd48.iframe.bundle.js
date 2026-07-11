@@ -495,7 +495,7 @@ module.exports = __webpack_require__.p + "moz-fieldset.0ffaeb8b59bcbba2aaaa.css"
 /***/ 61138:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-badge.2b2bbeaf1d9bbdfc42b0.css";
+module.exports = __webpack_require__.p + "moz-badge.39a25051922e42f55e5e.css";
 
 /***/ }),
 
@@ -1878,4 +1878,4 @@ customElements.define("moz-radio", MozRadio);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.4fe238a0.iframe.bundle.js.map
+//# sourceMappingURL=moz-fieldset-moz-fieldset-stories.92e1fd48.iframe.bundle.js.map
