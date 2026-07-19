@@ -255,6 +255,7 @@
 
     &:checked {
       --radio-indicator-background-color: var(--checkbox-background-color-checked);
+      forced-color-adjust: none;
 
       background: radial-gradient(circle at 50%, var(--radio-indicator-background-color) 4px, transparent 4px);
       background-color: transparent;

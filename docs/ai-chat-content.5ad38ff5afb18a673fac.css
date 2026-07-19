@@ -49,6 +49,10 @@
         content: "";
         height: var(--size-item-xlarge);
         inset-inline: 0;
+        margin-inline: auto;
+        /* Also caps the backdrop-filter surface well under WebRender's
+        4096px limit so the blur doesn't silently drop on large screens. */
+        max-width: var(--smartwindow-content-max-width);
         position: fixed;
       }
 

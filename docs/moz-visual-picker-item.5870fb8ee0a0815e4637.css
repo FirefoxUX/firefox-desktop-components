@@ -36,11 +36,14 @@
       flex-shrink: 0;
     }
   }
+}
 
-  &:not([labelposition="outside"]) .text-content:has(.label, .description) {
-    text-align: start;
-    flex: 1;
-  }
+/**
+ * Unnested because :not() must live inside :host()
+ */
+:host([orientation="vertical"]:not([labelposition="outside"])) .text-content:has(.label, .description) {
+  text-align: start;
+  flex: 1;
 }
 
 .picker-item {

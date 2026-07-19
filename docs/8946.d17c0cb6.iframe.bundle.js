@@ -441,6 +441,7 @@ class ThemePicker extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       />
       ${this.appearanceChooserTemplate()}
       <moz-visual-picker
+        type="listbox"
         .value=${this.activeThemeId}
         @change=${this.themeChange}
       >
@@ -463,4 +464,4 @@ customElements.define("theme-picker", ThemePicker);
 /***/ })
 
 }]);
-//# sourceMappingURL=8946.7cbe5bdd.iframe.bundle.js.map
+//# sourceMappingURL=8946.d17c0cb6.iframe.bundle.js.map
