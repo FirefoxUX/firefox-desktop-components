@@ -1513,7 +1513,7 @@ module.exports = __webpack_require__.p + "smartwindow-panel-list.b58c074d30bcc90
 /***/ 49766:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-action-result.94ce2c9305657ab7537e.css";
+module.exports = __webpack_require__.p + "ai-action-result.199da988d33ddba41bc8.css";
 
 /***/ }),
 
@@ -1560,6 +1560,8 @@ __webpack_require__.r(__webpack_exports__);
  * @attribute {object} summaryL10nArgs - Arguments for the summary localization
  * @attribute {boolean} canUndo - Whether the undo button should be shown
  * @attribute {boolean} isExpanded - Whether the detail section is visible
+ * @attribute {boolean} isLoading - Whether the action is still in progress, which
+ *  gives the header label an animated gradient treatment
  * @property {Array} rows - List of stacked dot rows each shaped:
  *  {
  *    label?: string,           // Plain text label
@@ -1600,6 +1602,11 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       type: Boolean,
       attribute: "is-expanded",
       reflect: true
+    },
+    isLoading: {
+      type: Boolean,
+      attribute: "is-loading",
+      reflect: true
     }
   };
   constructor() {
@@ -1613,6 +1620,124 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     this.summaryL10nArgs = null;
     this.canUndo = false;
     this.isExpanded = false;
+    this.isLoading = false;
+  }
+
+  // One shimmer sweep, matching the CSS `actionLogShimmer` duration.
+  static SHIMMER_CYCLE_MS = 2000;
+  // Fallback for finishing the sweep if the running animation can't be found
+  // (e.g. reduced motion, where it isn't animating) — one cycle plus a buffer.
+  static SWEEP_MAX_MS = 2200;
+  #sweepTimer = null;
+  #sweepAnim = null;
+  #awaitingSweep = false;
+  #loadingLabelSnapshot = null;
+  willUpdate(changed) {
+    if (this.isLoading) {
+      // Snapshot the loading label so it keeps shimmering until the sweep ends.
+      this.#loadingLabelSnapshot = {
+        labelL10nId: this.labelL10nId,
+        labelL10nArgs: this.labelL10nArgs,
+        label: this.label
+      };
+      this.#awaitingSweep = false;
+      this.#cancelSweepAnim();
+      this.removeAttribute("settling");
+      this.#clearSweepTimer();
+    } else if (changed.has("isLoading") && changed.get("isLoading") && this.#loadingLabelSnapshot) {
+      // Loading finished: let the shimmer finish its current sweep across the
+      // label (see #finishCurrentSweep in updated) before swapping to the
+      // completed text. The timer is a fallback if the running animation can't
+      // be found.
+      this.#awaitingSweep = true;
+      this.#clearSweepTimer();
+      this.#sweepTimer = setTimeout(() => {
+        this.#sweepTimer = null;
+        this.#finishSweep();
+      }, AIActionResult.SWEEP_MAX_MS);
+    }
+    // Drive the shimmer treatment while loading or finishing the last sweep.
+    // Clear the settle state together with the shimmer so the infinite CSS loop
+    // can't re-apply for a frame (which would flash a restarted sweep).
+    const shimmering = this.isLoading || this.#awaitingSweep;
+    this.toggleAttribute("shimmering", shimmering);
+    if (!shimmering) {
+      this.removeAttribute("settling");
+      this.#cancelSweepAnim();
+    }
+  }
+  updated() {
+    if (this.#awaitingSweep && !this.#sweepAnim) {
+      this.#finishCurrentSweep();
+    }
+  }
+
+  // Run one final sweep from the shimmer's current position to the end and hold
+  // there, then swap to the completed label. The [settling] state stops the
+  // infinite CSS loop (so it can't reset to the start mid-swap and cut the sweep
+  // short), while a scripted animation — which the CSS can't override — drives
+  // the finish continuously from wherever the loop currently is.
+  #finishCurrentSweep() {
+    const label = this.renderRoot?.querySelector(".action-result-label");
+    const loop = label?.getAnimations?.().find(a => a.animationName === "actionLogShimmer");
+    if (!label || !loop) {
+      // Nothing is animating (e.g. reduced motion) — swap right away.
+      this.#finishSweep();
+      return;
+    }
+    const cycle = AIActionResult.SHIMMER_CYCLE_MS;
+    const elapsed = (Number(loop.currentTime) || 0) % cycle;
+    // Match the CSS ease-in-out so the handoff from the loop has no visible jump.
+    const linear = elapsed / cycle;
+    const eased = linear < 0.5 ? 2 * linear * linear : 1 - Math.pow(-2 * linear + 2, 2) / 2;
+    // The loop sweeps background-position-x from 100% to -100% over one cycle.
+    const currentX = 100 - 200 * eased;
+    // The gradient repeats every 200%, so the highlight sits at the right edge
+    // of the label (its end) at multiples of 200% and at the left edge at odd
+    // multiples of 100%. Continue the sweep to the next right-edge position so it
+    // reads as reaching the end of the label instead of snapping back to the
+    // left. Scale the duration to the remaining travel so the speed is steady.
+    const PERIOD = 200;
+    const targetX = Math.floor(currentX / PERIOD) * PERIOD;
+    const travel = currentX - targetX;
+    this.setAttribute("settling", "");
+    this.#sweepAnim = label.animate([{
+      backgroundPositionX: `${currentX}%`
+    }, {
+      backgroundPositionX: `${targetX}%`
+    }], {
+      duration: Math.min(1000, Math.max(300, travel / PERIOD * cycle)),
+      easing: "ease-out",
+      fill: "forwards"
+    });
+    this.#sweepAnim.finished.then(() => this.#finishSweep()).catch(() => this.#finishSweep());
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#clearSweepTimer();
+    this.#cancelSweepAnim();
+  }
+  #clearSweepTimer() {
+    if (this.#sweepTimer) {
+      clearTimeout(this.#sweepTimer);
+      this.#sweepTimer = null;
+    }
+  }
+  #cancelSweepAnim() {
+    if (this.#sweepAnim) {
+      this.#sweepAnim.cancel();
+      this.#sweepAnim = null;
+    }
+  }
+  #finishSweep() {
+    if (this.#awaitingSweep) {
+      // Leave [settling] and the holding animation in place until willUpdate
+      // drops the shimmer, so the end frame holds until the completed label
+      // renders. willUpdate then clears both.
+      this.#awaitingSweep = false;
+      this.#clearSweepTimer();
+      this.requestUpdate();
+    }
   }
   #handleUndo() {
     this.dispatchEvent(new CustomEvent("action-result-undo", {
@@ -1631,6 +1756,14 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     }));
   }
   render() {
+    // While loading or finishing the last sweep, keep showing the shimmering
+    // label; only swap to the completed text once the sweep ends.
+    const shimmering = this.isLoading || this.#awaitingSweep;
+    const label = shimmering && this.#loadingLabelSnapshot ? this.#loadingLabelSnapshot : {
+      labelL10nId: this.labelL10nId,
+      labelL10nArgs: this.labelL10nArgs,
+      label: this.label
+    };
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -1643,58 +1776,59 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           aria-expanded=${this.isExpanded}
           @click=${this.#handleToggle}
         >
-          <span class="action-result-indicator" aria-hidden="true"></span>
           <span
             class="action-result-label"
-            data-l10n-id=${this.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-            data-l10n-args=${this.labelL10nArgs ? JSON.stringify(this.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            data-l10n-id=${label.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            data-l10n-args=${label.labelL10nArgs ? JSON.stringify(label.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
           >
-            ${!this.labelL10nId ? this.label : ""}
+            ${!label.labelL10nId ? label.label : ""}
           </span>
         </button>
-        ${this.isExpanded ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-              <div class="action-result-expanded">
-                ${this.rows.map(row => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-                    <div class="action-result-expanded-row">
-                      <div class="action-result-expanded-row-header">
-                        <span
-                          class="action-result-dot"
-                          aria-hidden="true"
-                        ></span>
-                        <span
-                          class="action-result-expanded-row-label"
-                          data-l10n-id=${row.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-                          data-l10n-args=${row.labelL10nArgs ? JSON.stringify(row.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-                        >
-                          ${!row.labelL10nId ? row.label : ""}
-                        </span>
-                      </div>
-                      ${row.items?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-                            <website-chip-container
-                              class="action-result-chips"
-                              .websites=${row.items}
-                            ></website-chip-container>
-                          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-                    </div>
-                  `)}
-              </div>
-            ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-        ${this.summary || this.summaryL10nId ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
-              class="action-result-summary"
-              data-l10n-id=${this.summaryL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-              data-l10n-args=${this.summaryL10nArgs ? JSON.stringify(this.summaryL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-            >
-              ${!this.summaryL10nId ? this.summary : ""}
-            </p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-        ${this.canUndo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-              <moz-button
-                class="action-result-undo"
-                @click=${this.#handleUndo}
-                data-l10n-id="smartwindow-nl-undo-button"
-                type="ghost"
-              ></moz-button>
-            ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${this.#renderDetails()}
       </div>
+    `;
+  }
+  #renderDetails() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      ${this.isExpanded ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <div class="action-result-expanded">
+              ${this.rows.map(row => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+                  <div class="action-result-expanded-row">
+                    <div class="action-result-expanded-row-header">
+                      <span class="action-result-dot" aria-hidden="true"></span>
+                      <span
+                        class="action-result-expanded-row-label"
+                        data-l10n-id=${row.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                        data-l10n-args=${row.labelL10nArgs ? JSON.stringify(row.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                      >
+                        ${!row.labelL10nId ? row.label : ""}
+                      </span>
+                    </div>
+                    ${row.items?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+                          <website-chip-container
+                            class="action-result-chips"
+                            .websites=${row.items}
+                          ></website-chip-container>
+                        ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                  </div>
+                `)}
+            </div>
+          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.summary || this.summaryL10nId ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+            class="action-result-summary"
+            data-l10n-id=${this.summaryL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            data-l10n-args=${this.summaryL10nArgs ? JSON.stringify(this.summaryL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+          >
+            ${!this.summaryL10nId ? this.summary : ""}
+          </p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.canUndo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <moz-button
+              class="action-result-undo"
+              @click=${this.#handleUndo}
+              data-l10n-id="smartwindow-nl-undo-button"
+              type="ghost"
+            ></moz-button>
+          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
     `;
   }
 }
@@ -2654,4 +2788,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.06482a21.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.c89970ae.iframe.bundle.js.map

@@ -5384,6 +5384,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         .labelL10nId=${summary?.l10nId}
         .labelL10nArgs=${summary?.l10nArgs}
         .rows=${this.#buildGroupedActionLogRows(toolMsgs)}
+        .isLoading=${!isComplete}
         .isExpanded=${this.#actionResultExpandState.get(key) ?? false}
         @action-result-toggle=${e => this.#actionResultExpandState.set(key, !!e.detail?.isExpanded)}
       ></ai-action-result>
@@ -5641,8 +5642,12 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       mode="followup"
     ></smartwindow-prompts>`;
   }
-  #renderLoader() {
-    if (!this.assistantIsLoading) {
+  #renderLoader(suppress) {
+    // The spinner is suppressed while an action log is processing (its animated
+    // label already communicates progress) and once the reply is streaming (its
+    // text is already visible). It only shows while waiting with nothing else on
+    // screen yet.
+    if (!this.assistantIsLoading || suppress) {
       return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<chat-assistant-loader
@@ -5743,9 +5748,12 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       });
     }
 
-    // Commit anything still pending at end of loop. The in-flight turn is
-    // complete once assistantIsLoading set false
-    appendPendingAssistantTurn(!this.assistantIsLoading);
+    // Commit anything still pending at end of loop. The action log is finished
+    // once the turn's reply starts streaming (its tools are done by then) or the
+    // whole turn completes, so it doesn't keep shimmering through response
+    // generation.
+    const replyStarted = !!pendingAssistantMessage?.body;
+    appendPendingAssistantTurn(!this.assistantIsLoading || replyStarted);
     return items;
   }
 
@@ -5758,8 +5766,8 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   #buildGroupedActionLogRows(toolMsgs) {
     return toolMsgs.map(msg => msg.row).filter(Boolean);
   }
-  #renderMessages() {
-    return this.#buildTurnRenderItems().map((item, i) => {
+  #renderMessages(items) {
+    return items.map((item, i) => {
       const {
         type,
         msgs,
@@ -5775,6 +5783,13 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     });
   }
   render() {
+    const renderItems = this.#buildTurnRenderItems();
+    const actionLogInProgress = renderItems.some(item => item.type === "action-log" && item.isComplete === false);
+    // Once the reply is streaming, its text is already visible, so the spinner
+    // isn't needed (and shouldn't reappear now that the action log completes as
+    // soon as the reply starts).
+    const lastItem = renderItems.at(-1);
+    const replyStreaming = lastItem?.type === "message" && lastItem.msg?.role === "assistant" && !!lastItem.msg?.body;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -5782,8 +5797,10 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       />
       <div class="chat-content-wrapper" tabindex="-1">
         <div class="chat-inner-wrapper">
-          ${this.#renderMessages()} ${this.#renderFollowUpSuggestions()}
-          ${this.#renderLoader()} ${this.#renderError()}
+          ${this.#renderMessages(renderItems)}
+          ${this.#renderFollowUpSuggestions()}
+          ${this.#renderLoader(actionLogInProgress || replyStreaming)}
+          ${this.#renderError()}
         </div>
       </div>
       <kit-mention variant="sidebar"></kit-mention>
@@ -6921,7 +6938,7 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.5ad38ff5afb18a673fac.css";
+module.exports = __webpack_require__.p + "ai-chat-content.fa1d8ec9ba579b70010d.css";
 
 /***/ }),
 
@@ -7464,4 +7481,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.12267013.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.b451a6fc.iframe.bundle.js.map
