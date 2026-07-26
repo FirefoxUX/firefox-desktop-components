@@ -15,6 +15,9 @@ __webpack_require__.r(__webpack_exports__);
 const {
   XPCOMUtils
 } = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
+const {
+  AppConstants
+} = ChromeUtils.importESModule("resource://gre/modules/AppConstants.sys.mjs");
 const lazy = XPCOMUtils.declareLazy({
   // eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
   getThemesList: "moz-src:///browser/themes/ThemesList.sys.mjs"
@@ -112,10 +115,11 @@ class ThemePickerDirectController {
     } else {
       this.host.appearance = "device";
     }
+    this.host.showNativeThemeOption = AppConstants.platform === "linux";
   }
 }
 
 /***/ })
 
 }]);
-//# sourceMappingURL=6973.b6f18cc8.iframe.bundle.js.map
+//# sourceMappingURL=6973.26002962.iframe.bundle.js.map

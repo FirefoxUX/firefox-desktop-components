@@ -71,6 +71,7 @@ class ThemePickerRemoteController {
         this.host.activeThemeId = event.detail.activeThemeId;
         this.host.nativeTheme = event.detail.nativeTheme;
         this.host.appearance = event.detail.appearance;
+        this.host.showNativeThemeOption = event.detail.showNativeThemeOption;
         break;
       case "ThemePickerThemeUpdated":
         this.host.activeThemeId = event.detail.activeThemeId;
@@ -114,4 +115,4 @@ class ThemePickerRemoteController {
 /***/ })
 
 }]);
-//# sourceMappingURL=2149.1fb73dcc.iframe.bundle.js.map
+//# sourceMappingURL=2149.f07c98de.iframe.bundle.js.map

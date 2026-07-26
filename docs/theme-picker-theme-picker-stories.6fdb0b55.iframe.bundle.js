@@ -33,14 +33,20 @@ __webpack_require__.r(__webpack_exports__);
 });
 const Template = ({
   layout,
-  showLabels
+  showLabels,
+  showNativeThemeOption
 }) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <theme-picker layout=${layout} .showLabels=${showLabels}></theme-picker>
+  <theme-picker
+    layout=${layout}
+    .showLabels=${showLabels}
+    .showNativeThemeOption=${showNativeThemeOption}
+  ></theme-picker>
 `;
 const Default = Template.bind({});
 Default.args = {
   layout: "full",
-  showLabels: true
+  showLabels: true,
+  showNativeThemeOption: true
 };
 const Compact = Template.bind({});
 Compact.args = {
@@ -335,6 +341,7 @@ class ThemePickerRemoteController {
         this.host.activeThemeId = event.detail.activeThemeId;
         this.host.nativeTheme = event.detail.nativeTheme;
         this.host.appearance = event.detail.appearance;
+        this.host.showNativeThemeOption = event.detail.showNativeThemeOption;
         break;
       case "ThemePickerThemeUpdated":
         this.host.activeThemeId = event.detail.activeThemeId;
@@ -480,6 +487,8 @@ const DEFAULT_THEME_ID = "default-theme@mozilla.org";
  * @property {boolean} showLabels
  *   Whether to show visible text labels outside the theme swatches. When false,
  *   aria-labels are provided for accessibility.
+ * @property {boolean} showNativeThemeOption
+ *   Whether to show the native theme checkbox. Only applies on Linux.
  * @fires themechange - Fired when appearance, theme, or nativeTheme changes.
  * Detail contains {property, value}
  */
@@ -502,6 +511,9 @@ class ThemePicker extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     },
     showLabels: {
       type: Boolean
+    },
+    showNativeThemeOption: {
+      type: Boolean
     }
   };
   static queries = {
@@ -517,6 +529,7 @@ class ThemePicker extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     this.showLabels = true;
     this.controller = ThemePicker.createController(this);
     this.layout = "full";
+    this.showNativeThemeOption = false;
   }
 
   /**
@@ -613,7 +626,7 @@ class ThemePicker extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
     </moz-segmented-control>`;
   }
   defaultThemeTemplate() {
-    if (this.layout == "compact") {
+    if (this.layout == "compact" || !this.showNativeThemeOption) {
       return "";
     }
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-checkbox
@@ -654,4 +667,4 @@ customElements.define("theme-picker", ThemePicker);
 /***/ })
 
 }]);
-//# sourceMappingURL=theme-picker-theme-picker-stories.396b6223.iframe.bundle.js.map
+//# sourceMappingURL=theme-picker-theme-picker-stories.6fdb0b55.iframe.bundle.js.map
