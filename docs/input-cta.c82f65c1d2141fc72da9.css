@@ -48,7 +48,7 @@ moz-button.input-cta {
     --button-text-color-ghost-selected: var(--button-text-color-selected);
   }
 
-  @media (max-width: 250px) {
+  @container smartbar-controls (max-width: 380px) {
     --button-padding: var(--space-small);
 
     &:dir(rtl) {
@@ -82,7 +82,7 @@ moz-button.input-cta {
   }
 }
 
-@media (max-width: 250px) {
+@container smartbar-controls (max-width: 380px) {
   :host([action="chat"]) moz-button.input-cta::part(button) {
     background-image: url("chrome://browser/content/aiwindow/assets/ask-icon.svg");
   }
@@ -249,9 +249,11 @@ panel-item {
       }
 
       &.input-cta::part(button) {
-        @media (not (forced-colors)) and (max-width: 250px) {
-          /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
-          fill: var(--button-text-color-primary);
+        @media not (forced-colors) {
+          @container smartbar-controls (max-width: 380px) {
+            /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+            fill: var(--button-text-color-primary);
+          }
         }
       }
     }

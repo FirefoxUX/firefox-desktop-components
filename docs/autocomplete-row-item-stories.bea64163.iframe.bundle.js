@@ -923,6 +923,10 @@ class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_I
     selected: {
       type: Boolean,
       reflect: true
+    },
+    subfocused: {
+      type: Boolean,
+      reflect: true
     }
   };
   #openActionsMenu(anchor, actions) {
@@ -956,23 +960,39 @@ class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_I
         return "chrome://global/skin/icons/settings.svg";
     }
   }
+  activateSecondaryAction() {
+    const {
+      action,
+      actions
+    } = this.actions.secondary;
+    if (action) {
+      action();
+    } else if (actions) {
+      const button = this.shadowRoot.querySelector("moz-button.secondary-action");
+      this.#openActionsMenu(button, actions);
+    }
+  }
   renderSecondaryActionButton() {
     const {
       type,
       action,
-      actions
+      actions,
+      label
     } = this.actions.secondary;
     const stopMouseEvents = e => e.stopPropagation();
+    const onMouseDown = e => {
+      e.stopPropagation();
+      this.activateSecondaryAction();
+    };
 
     // We're expecting a single action
     if (action) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
-        @mousedown=${e => {
-        e.stopPropagation();
-        action();
-      }}
+        id="secondary-action-button"
+        @mousedown=${onMouseDown}
         @mouseup=${stopMouseEvents}
         type="icon ghost"
+        aria-label=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(label)}
         .iconSrc=${this.getSecondaryActionItemIcon(type)}
         class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
         "secondary-action": true,
@@ -984,12 +1004,11 @@ class AutocompleteRowItem extends chrome_global_content_lit_utils_mjs__WEBPACK_I
     // We're expecting multiple actions for this item
     if (actions) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
-        @mousedown=${e => {
-        e.stopPropagation();
-        this.#openActionsMenu(e.currentTarget, actions);
-      }}
+        id="secondary-action-button"
+        @mousedown=${onMouseDown}
         @mouseup=${stopMouseEvents}
         type="icon ghost"
+        aria-label=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(label)}
         .iconSrc=${this.getSecondaryActionItemIcon(type)}
         class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
         "secondary-action": true,
@@ -1115,9 +1134,9 @@ WithSingleSecondaryAction.args = {
 /***/ 83676:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "autocomplete-row-item.cde008befdb528fe56bc.css";
+module.exports = __webpack_require__.p + "autocomplete-row-item.761b96ec98746f812b37.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=autocomplete-row-item-stories.a5bff7f1.iframe.bundle.js.map
+//# sourceMappingURL=autocomplete-row-item-stories.bea64163.iframe.bundle.js.map

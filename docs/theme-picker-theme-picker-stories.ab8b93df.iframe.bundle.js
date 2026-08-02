@@ -1,5 +1,66 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[694,2149,8946],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[694,2149,7132,8946],{
+
+/***/ 14439:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Compact: () => (/* binding */ Compact),
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   WithoutVisibleLabels: () => (/* binding */ WithoutVisibleLabels),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _theme_picker_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(88946);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "UI Widgets/Theme Picker",
+  component: "theme-picker",
+  argTypes: {
+    layout: {
+      options: ["full", "compact"],
+      control: {
+        type: "select"
+      }
+    }
+  }
+});
+const Template = ({
+  layout,
+  showLabels,
+  showNativeThemeOption
+}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <theme-picker
+    layout=${layout}
+    .showLabels=${showLabels}
+    .showNativeThemeOption=${showNativeThemeOption}
+  ></theme-picker>
+`;
+const Default = Template.bind({});
+Default.args = {
+  layout: "full",
+  showLabels: true,
+  showNativeThemeOption: true
+};
+const Compact = Template.bind({});
+Compact.args = {
+  ...Default.args,
+  showLabels: false,
+  layout: "compact"
+};
+const WithoutVisibleLabels = Template.bind({});
+WithoutVisibleLabels.args = {
+  ...Default.args,
+  showLabels: false
+};
+
+/***/ }),
 
 /***/ 50694:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -326,7 +387,7 @@ class ThemePickerRemoteController {
 /***/ 65404:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "theme-picker.b1b5b111e5368ce5741a.css";
+module.exports = __webpack_require__.p + "theme-picker.44a10fc5ed016c06a751.css";
 
 /***/ }),
 
@@ -606,4 +667,4 @@ customElements.define("theme-picker", ThemePicker);
 /***/ })
 
 }]);
-//# sourceMappingURL=8946.44f3a7a8.iframe.bundle.js.map
+//# sourceMappingURL=theme-picker-theme-picker-stories.ab8b93df.iframe.bundle.js.map
