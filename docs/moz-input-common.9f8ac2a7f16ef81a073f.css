@@ -231,7 +231,8 @@
 
   input[type="checkbox"] {
     &:checked {
-      background: url("chrome://global/content/elements/moz-checkbox-icon.svg") no-repeat center center / var(--icon-size-xsmall) var(--icon-size-xsmall);
+      background: url("chrome://global/content/elements/moz-checkbox-icon.svg") no-repeat center / var(--checkbox-size) var(--checkbox-size);
+      background-origin: border-box;
       background-color: var(--checkbox-background-color-checked);
       -moz-context-properties: stroke;
       stroke: light-dark(white, black);
