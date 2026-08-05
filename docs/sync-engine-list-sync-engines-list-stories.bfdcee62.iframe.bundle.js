@@ -1535,6 +1535,9 @@ const {
   SCOPE_APP_SYNC
 } = ChromeUtils.importESModule("resource://gre/modules/FxAccountsCommon.sys.mjs");
 const XPCOMUtils = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs").XPCOMUtils;
+const {
+  Referrals
+} = ChromeUtils.importESModule("resource:///modules/referrals/Referrals.sys.mjs");
 const lazy = XPCOMUtils.declareLazy({
   BackupService: "resource:///modules/backup/BackupService.sys.mjs",
   Weave: "resource://services-sync/main.sys.mjs",
@@ -2304,6 +2307,17 @@ chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.P
     return bs.archiveEnabledStatus.enabled || bs.restoreEnabledStatus.enabled;
   }
 });
+
+// Referrals section
+chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.Preferences.addSetting({
+  id: "referrals-link",
+  setup() {
+    Referrals.getReferralCode();
+  },
+  visible() {
+    return Referrals.isEnabled;
+  }
+});
 let accountsEnabled = Services.prefs.getBoolPref("identity.fxaccounts.enabled");
 chrome_browser_content_preferences_config_SettingGroupManager_mjs__WEBPACK_IMPORTED_MODULE_1__.SettingGroupManager.registerGroups({
   defaultBrowserSync: window.createDefaultBrowserConfig({
@@ -2557,6 +2571,19 @@ chrome_browser_content_preferences_config_SettingGroupManager_mjs__WEBPACK_IMPOR
     items: [{
       id: "backupSettings",
       control: "backup-settings"
+    }]
+  },
+  referrals: {
+    l10nId: "referrals-section-header",
+    headingLevel: 2,
+    hidden: !Referrals.isEnabled,
+    items: [{
+      id: "referrals-link",
+      control: "moz-box-link",
+      l10nId: "referrals-link",
+      controlAttrs: {
+        href: "about:referrals"
+      }
     }]
   }
 });
@@ -2980,4 +3007,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.b8cbe7bf.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.bfdcee62.iframe.bundle.js.map
