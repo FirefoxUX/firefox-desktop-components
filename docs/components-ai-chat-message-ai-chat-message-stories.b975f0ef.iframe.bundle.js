@@ -12681,6 +12681,10 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     message: {
       type: String
     },
+    messageL10n: {
+      type: Object,
+      attribute: false
+    },
     messageId: {
       type: String,
       reflect: true,
@@ -13220,13 +13224,17 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
 
   /**
-   * Render the assistant message by parsing parsing the markdown and then manually
-   * unfurl any unseen links. This function is memoized based on the message contents
-   * and seen links Set to guard against unneccessary re-renders.
+   * Render the assistant message. Localized messages render from their l10n id
+   * via Fluent dom overlay otherwise the markdown is parsed and unseen links
+   * are unfurled. The markdown path is memoized on the message contents and
+   * seen links Set to guard against unnecessary re-renders.
    *
-   * @returns {HTMLElement}
+   * @returns {HTMLElement|import("chrome://global/content/vendor/lit.all.mjs").TemplateResult}
    */
   getAssistantMessage() {
+    if (this.messageL10n?.id) {
+      return this.#renderL10nMessage();
+    }
     if (this.message == this.#lastMessage && !this.#unfurledUrlsNeedUpdating) {
       // The message is the same and the seen URLs haven't changed.
       return this.#lastMessageElement;
@@ -13275,6 +13283,29 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.parseUserMarkdown(this.message, messageElement);
     return messageElement;
   }
+
+  /**
+   * Render a localized assistant message via Fluent dom overlay. The message
+   * text and any embedded '<a data-l10n-name>' link text come from the l10n id.
+   * The link's href is set here.
+   *
+   * @returns {import("chrome://global/content/vendor/lit.all.mjs").TemplateResult}
+   */
+  #renderL10nMessage() {
+    const {
+      id,
+      args,
+      link
+    } = this.messageL10n;
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="message-assistant">
+      <span
+        data-l10n-id=${id}
+        data-l10n-args=${args ? JSON.stringify(args) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      >
+        ${link ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a data-l10n-name=${link.l10nName} href=${link.href}></a>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      </span>
+    </div>`;
+  }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
@@ -13293,4 +13324,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.e634eace.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.b975f0ef.iframe.bundle.js.map

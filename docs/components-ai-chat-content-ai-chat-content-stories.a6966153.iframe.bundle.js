@@ -5506,7 +5506,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     });
   }
   #isAIResponseValid(content, toolUIData) {
-    return typeof content?.body === "string" && content.body || !!toolUIData;
+    return typeof content?.body === "string" && content.body || !!content?.l10nId || !!toolUIData;
   }
 
   /**
@@ -5548,6 +5548,11 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       convId,
       messageId,
       body: content.body,
+      messageL10n: content.l10nId ? {
+        id: content.l10nId,
+        args: content.l10nArgs,
+        link: content.link
+      } : null,
       appliedMemories: memoriesApplied ?? [],
       showCallout: showMemoriesCallout ?? false,
       isLastChunk,
@@ -6030,6 +6035,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
         ${msg.role === "assistant" && isRetryComponent ? this.#renderToolUI(msg) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
         <ai-chat-message
           .message=${msg.body}
+          .messageL10n=${msg.messageL10n}
           .role=${msg.role}
           .messageId=${msg.messageId}
           .complete=${msg.role === "assistant" && !!msg.isLastChunk}
@@ -8114,4 +8120,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.3ee8832a.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.a6966153.iframe.bundle.js.map

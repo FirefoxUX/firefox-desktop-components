@@ -1,137 +1,10 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[4806,6284,8400,9240,9572],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[583,6284,9240,9572],{
 
 /***/ 2246:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-promo.febe6b1106953d83a9c2.css";
-
-/***/ }),
-
-/***/ 18400:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozSupportLink),
-/* harmony export */   formatUTMParams: () => (/* binding */ formatUTMParams)
-/* harmony export */ });
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozSupportLink.ftl");
-
-/**
- * An extension of the anchor element that helps create links to Mozilla's
- * support documentation. This should be used for SUMO links only - other "Learn
- * more" links can use the regular anchor element.
- *
- * @tagname moz-support-link
- * @attribute {string} support-page - Short-hand string from SUMO to the specific support page.
- * @attribute {string} utm-content - UTM parameter for a URL, if it is an AMO URL.
- * @attribute {string} data-l10n-id - Fluent ID used to generate the text content.
- */
-class MozSupportLink extends HTMLAnchorElement {
-  static SUPPORT_URL = "https://www.mozilla.org/";
-  static get observedAttributes() {
-    return ["support-page", "utm-content"];
-  }
-
-  /**
-   * Handles setting up the SUPPORT_URL preference getter.
-   * Without this, the tests for this component may not behave
-   * as expected.
-   *
-   * @memberof MozSupportLink
-   */
-  #register() {
-    if (window.document.nodePrincipal?.isSystemPrincipal) {
-      ChromeUtils.defineESModuleGetters(MozSupportLink, {
-        BrowserUtils: "resource://gre/modules/BrowserUtils.sys.mjs"
-      });
-
-      // eslint-disable-next-line no-shadow
-      let {
-        XPCOMUtils
-      } = window.XPCOMUtils ? window : ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
-      XPCOMUtils.defineLazyPreferenceGetter(MozSupportLink, "SUPPORT_URL", "app.support.baseURL", "", null, val => Services.urlFormatter.formatURL(val));
-    } else if (!window.IS_STORYBOOK) {
-      MozSupportLink.SUPPORT_URL = window.RPMGetFormatURLPref("app.support.baseURL");
-    }
-  }
-  connectedCallback() {
-    this.#register();
-    this.#setHref();
-    this.setAttribute("target", "_blank");
-    this.addEventListener("click", this);
-    if (!this.getAttribute("data-l10n-id") && !this.getAttribute("data-l10n-name") && !this.childElementCount) {
-      document.l10n.setAttributes(this, "moz-support-link-text");
-    }
-    document.l10n.translateFragment(this);
-  }
-  disconnectedCallback() {
-    this.removeEventListener("click", this);
-  }
-  get supportPage() {
-    return this.getAttribute("support-page");
-  }
-  set supportPage(val) {
-    this.setAttribute("support-page", val);
-  }
-  handleEvent(e) {
-    if (e.type == "click") {
-      if (window.openTrustedLinkIn) {
-        let where = MozSupportLink.BrowserUtils.whereToOpenLink(e, false, true);
-        if (where == "current") {
-          where = "tab";
-        }
-        e.preventDefault();
-        openTrustedLinkIn(this.href, where);
-      }
-    }
-  }
-  attributeChangedCallback(attrName) {
-    if (attrName === "support-page" || attrName === "utm-content") {
-      this.#setHref();
-    }
-  }
-  #setHref() {
-    let supportPage = this.getAttribute("support-page") ?? "";
-    let base = MozSupportLink.SUPPORT_URL + supportPage;
-    this.href = this.hasAttribute("utm-content") ? formatUTMParams(this.getAttribute("utm-content"), base) : base;
-  }
-}
-customElements.define("moz-support-link", MozSupportLink, {
-  extends: "a"
-});
-
-/**
- * Adds UTM parameters to a given URL, if it is an AMO URL.
- *
- * @param {string} contentAttribute
- *        Identifies the part of the UI with which the link is associated.
- * @param {string} url
- * @returns {string}
- *          The url with UTM parameters if it is an AMO URL.
- *          Otherwise the url in unmodified form.
- */
-function formatUTMParams(contentAttribute, url) {
-  if (!contentAttribute) {
-    return url;
-  }
-  let parsedUrl = new URL(url);
-  let domain = `.${parsedUrl.hostname}`;
-  if (!domain.endsWith(".mozilla.org") &&
-  // For testing: addons-dev.allizom.org and addons.allizom.org
-  !domain.endsWith(".allizom.org")) {
-    return url;
-  }
-  parsedUrl.searchParams.set("utm_source", "firefox-browser");
-  parsedUrl.searchParams.set("utm_medium", "firefox-browser");
-  parsedUrl.searchParams.set("utm_content", contentAttribute);
-  return parsedUrl.href;
-}
+module.exports = __webpack_require__.p + "moz-promo.789f8f5f6ad5c3910ed3.css";
 
 /***/ }),
 
@@ -433,40 +306,140 @@ module.exports = __webpack_require__.p + "moz-button.184482c392892427a574.css";
 
 /***/ }),
 
-/***/ 60589:
+/***/ 72562:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   ImageAtCenter: () => (/* binding */ ImageAtCenter),
-/* harmony export */   ImageAtEnd: () => (/* binding */ ImageAtEnd),
-/* harmony export */   ImageAtStart: () => (/* binding */ ImageAtStart),
-/* harmony export */   SlottedAction: () => (/* binding */ SlottedAction),
-/* harmony export */   SlottedSupportLink: () => (/* binding */ SlottedSupportLink),
-/* harmony export */   Vibrant: () => (/* binding */ Vibrant),
-/* harmony export */   WithHeading: () => (/* binding */ WithHeading),
-/* harmony export */   WithLargeImage: () => (/* binding */ WithLargeImage),
-/* harmony export */   WithPaddedImage: () => (/* binding */ WithPaddedImage),
-/* harmony export */   WithWrappedMessage: () => (/* binding */ WithWrappedMessage),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   SmartwindowPromo: () => (/* binding */ SmartwindowPromo)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_promo_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(89572);
-/* harmony import */ var _moz_button_moz_button_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(79240);
-/* harmony import */ var _moz_support_link_moz_support_link_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(18400);
+/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_promo_smartwindow_promo_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(84846);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_promo_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(89572);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
+// eslint-disable-next-line import/no-unassigned-import
+
+const SMARTWINDOW_PROMO_EVENTS = window.IS_STORYBOOK ? Object.freeze({
+  PRIMARY: "SmartWindowPromo:PrimaryAction",
+  CLOSE: "SmartWindowPromo:Close",
+  IMPRESSION: "SmartWindowPromo:Impression"
+}) : ChromeUtils.importESModule("resource:///modules/asrouter/SmartWindowNewTabPromo.sys.mjs").SMARTWINDOW_PROMO_EVENTS;
+
+/**
+ * Renders an asrouter-driven promotional message inside the AI window.
+ * Receives a resolved message via the `message` property and dispatches
+ * `SmartWindowPromo:PrimaryAction` / `SmartWindowPromo:Close` /
+ * `SmartWindowPromo:Impression` events.
+ *
+ * @property {object|null} message - Resolved promo content
+ */
+class SmartwindowPromo extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    message: {
+      type: Object
+    }
+  };
+  #impressionFired = false;
+  #onVisibilityChange = () => this.#maybeFireImpression();
+  constructor() {
+    super();
+    this.message = null;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    if (!this.#maybeFireImpression()) {
+      this.ownerDocument.addEventListener("visibilitychange", this.#onVisibilityChange);
+    }
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.ownerDocument.removeEventListener("visibilitychange", this.#onVisibilityChange);
+  }
+  #maybeFireImpression() {
+    if (this.#impressionFired || this.ownerDocument.visibilityState !== "visible") {
+      return this.#impressionFired;
+    }
+    this.#impressionFired = true;
+    this.ownerDocument.removeEventListener("visibilitychange", this.#onVisibilityChange);
+    this.#dispatch(SMARTWINDOW_PROMO_EVENTS.IMPRESSION);
+    return true;
+  }
+  #dispatch(type) {
+    this.dispatchEvent(new CustomEvent(type, {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  #handlePrimary = () => this.#dispatch(SMARTWINDOW_PROMO_EVENTS.PRIMARY);
+  #handleClose = () => this.#dispatch(SMARTWINDOW_PROMO_EVENTS.CLOSE);
+  render() {
+    const content = this.message ?? {};
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_smartwindow_promo_smartwindow_promo_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <moz-promo
+        type=${content.type ?? "vibrant"}
+        heading=${content.heading ?? ""}
+        message=${content.message ?? ""}
+        imagesrc=${content.imageSrc ?? ""}
+        imagealignment=${content.imageAlignment ?? "start"}
+        imagewidth=${content.imageWidth ?? "small"}
+        imagedisplay=${content.imageDisplay ?? "padded"}
+      >
+        ${content.secondaryActionText ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+              slot="actions"
+              type="ghost"
+              @click=${this.#handleClose}
+            >
+              ${content.secondaryActionText}
+            </moz-button>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${content.primaryActionText ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+              slot="actions"
+              type="primary"
+              @click=${this.#handlePrimary}
+            >
+              ${content.primaryActionText}
+            </moz-button>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      </moz-promo>
+    `;
+  }
+}
+customElements.define("smartwindow-promo", SmartwindowPromo);
+
+/***/ }),
+
+/***/ 76103:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   DefaultType: () => (/* binding */ DefaultType),
+/* harmony export */   LongCopy: () => (/* binding */ LongCopy),
+/* harmony export */   NoImage: () => (/* binding */ NoImage),
+/* harmony export */   PrimaryActionOnly: () => (/* binding */ PrimaryActionOnly),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_promo_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(72562);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
-const fluentStrings = ["moz-promo-message", "moz-promo-message-heading", "moz-promo-message-heading-long"];
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Promo",
-  component: "moz-promo",
+  title: "Domain-specific UI Widgets/AI Window/Smartwindow Promo",
+  component: "smartwindow-promo",
   argTypes: {
     type: {
       options: ["default", "vibrant"],
@@ -474,32 +447,16 @@ const fluentStrings = ["moz-promo-message", "moz-promo-message-heading", "moz-pr
         type: "select"
       }
     },
-    l10nId: {
-      options: fluentStrings,
+    imageAlignment: {
+      options: ["start", "end", "center"],
       control: {
         type: "select"
-      }
-    },
-    heading: {
-      table: {
-        disable: true
-      }
-    },
-    message: {
-      table: {
-        disable: true
       }
     },
     imageWidth: {
       options: ["small", "large"],
       control: {
         type: "radio"
-      }
-    },
-    imageAlignment: {
-      options: ["start", "end", "center"],
-      control: {
-        type: "select"
       }
     },
     imageDisplay: {
@@ -511,112 +468,81 @@ const fluentStrings = ["moz-promo-message", "moz-promo-message-heading", "moz-pr
   },
   parameters: {
     status: "in-development",
-    fluent: `
-moz-promo-message =
-  .message = Information about a new feature to check out
-moz-promo-message-heading =
-  .heading = Check out this new feature
-  .message = Information about a new feature to check out
-moz-promo-message-heading-long =
-  .heading = A longer version of the heading to check for text wrapping, neat!
-  .message = A much longer message to check text wrapping within the promotional element. A much longer message to check text wrapping within the promotional element.
-    `
+    docs: {
+      description: {
+        component: "An asrouter-driven promotional card rendered inside the AI window. Receives resolved content (heading, message, image, action labels) via the `message` property and dispatches `SmartWindowPromo:PrimaryAction`, `SmartWindowPromo:Close`, and `SmartWindowPromo:Impression` events."
+      }
+    }
   }
 });
 const Template = ({
   type,
   heading,
   message,
-  l10nId,
   imageSrc,
   imageAlignment,
   imageWidth,
   imageDisplay,
-  hasActionButton,
-  hasSupportLink
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div style="width: 500px">
-    <moz-promo
-      type=${type}
-      heading=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(heading)}
-      message=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(message)}
-      data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(l10nId)}
-      imageSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageSrc)}
-      imageAlignment=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageAlignment)}
-      imageWidth=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageWidth)}
-      imageDisplay=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(imageDisplay)}
-    >
-      ${hasActionButton ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <moz-button slot="actions">Actions button</moz-button>` : ""}
-      ${hasSupportLink ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <a is="moz-support-link" slot="support-link" href="#"></a>` : ""}
-    </moz-promo>
+  primaryActionText,
+  secondaryActionText
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div style="width: 360px; padding: 16px;">
+    <smartwindow-promo
+      .message=${{
+  type,
+  heading,
+  message,
+  imageSrc,
+  imageAlignment,
+  imageWidth,
+  imageDisplay,
+  primaryActionText,
+  secondaryActionText
+}}
+      @SmartWindowPromo:PrimaryAction=${() =>
+// eslint-disable-next-line no-console
+console.log("SmartWindowPromo:PrimaryAction")}
+      @SmartWindowPromo:Close=${() =>
+// eslint-disable-next-line no-console
+console.log("SmartWindowPromo:Close")}
+      @SmartWindowPromo:Impression=${() =>
+// eslint-disable-next-line no-console
+console.log("SmartWindowPromo:Impression")}
+    ></smartwindow-promo>
   </div>
 `;
 const Default = Template.bind({});
 Default.args = {
-  type: "default",
-  l10nId: "moz-promo-message",
-  hasActionButton: false,
-  hasSupportLink: false
-};
-const Vibrant = Template.bind({});
-Vibrant.args = {
-  ...Default.args,
-  type: "vibrant"
-};
-const WithHeading = Template.bind({});
-WithHeading.args = {
-  ...Vibrant.args,
-  l10nId: "moz-promo-message-heading"
-};
-const WithWrappedMessage = Template.bind({});
-WithWrappedMessage.args = {
-  ...Vibrant.args,
-  l10nId: "moz-promo-message-heading-long"
-};
-const WithPaddedImage = Template.bind({});
-WithPaddedImage.args = {
-  ...Default.args,
-  imageSrc: "chrome://global/skin/illustrations/kit-happy.svg",
+  type: "vibrant",
+  heading: "Make Smart Window your default?",
+  message: "Firefox will open in Smart Window every time.",
+  imageSrc: "chrome://browser/content/aiwindow/assets/smart-window-promo-default.svg",
   imageAlignment: "start",
-  imageSize: "large",
+  imageWidth: "small",
   imageDisplay: "padded",
-  l10nId: "moz-promo-message-heading-long"
+  primaryActionText: "Set as default",
+  secondaryActionText: "Not now"
 };
-const WithLargeImage = Template.bind({});
-WithLargeImage.args = {
+const PrimaryActionOnly = Template.bind({});
+PrimaryActionOnly.args = {
   ...Default.args,
-  imageSrc: "chrome://global/skin/illustrations/kit-happy.svg",
-  imageAlignment: "start",
-  imageWidth: "large",
-  imageDisplay: "cover",
-  l10nId: "moz-promo-message-heading-long"
+  secondaryActionText: ""
 };
-const ImageAtStart = Template.bind({});
-ImageAtStart.args = {
+const NoImage = Template.bind({});
+NoImage.args = {
   ...Default.args,
-  imageSrc: "chrome://global/skin/illustrations/kit-happy.svg",
-  imageAlignment: "start"
+  imageSrc: ""
 };
-const ImageAtEnd = Template.bind({});
-ImageAtEnd.args = {
-  ...ImageAtStart.args,
-  imageAlignment: "end"
-};
-const ImageAtCenter = Template.bind({});
-ImageAtCenter.args = {
-  ...ImageAtStart.args,
-  imageSrc: "chrome://global/skin/illustrations/kit-happy.svg",
-  imageAlignment: "center"
-};
-const SlottedAction = Template.bind({});
-SlottedAction.args = {
+const DefaultType = Template.bind({});
+DefaultType.args = {
   ...Default.args,
-  hasActionButton: true
+  type: "default"
 };
-const SlottedSupportLink = Template.bind({});
-SlottedSupportLink.args = {
+const LongCopy = Template.bind({});
+LongCopy.args = {
   ...Default.args,
-  hasSupportLink: true
+  heading: "A longer heading to verify wrapping inside the promo card",
+  message: "A much longer message to confirm wrapping and spacing within the promo card across different image sizes and alignments."
 };
 
 /***/ }),
@@ -1055,6 +981,13 @@ customElements.define("moz-button", MozButton);
 
 /***/ }),
 
+/***/ 84846:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "smartwindow-promo.a85d4d735eae34d7b60c.css";
+
+/***/ }),
+
 /***/ 89572:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -1065,6 +998,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var toolkit_content_widgets_moz_promo_moz_promo_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(2246);
 /* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
 /* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1072,6 +1006,10 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+
+// eslint-disable-next-line import/no-unassigned-import
+
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozPromo.ftl");
 
 /**
  * A promotional callout element.
@@ -1086,12 +1024,16 @@ __webpack_require__.r(__webpack_exports__);
  * @property {string} imageAlignment - How the image should be aligned. Can be "start", "end", "center".
  * @property {string} imageWidth - How big the image is sized. Can be "default", "small" or "large".
  * @property {string} imageDisplay - Whether the image touches the edge of the promo or has a little bit of padding around it. Can be "cover" or "padded".
+ * @property {boolean} dismissable - Whether the promo can be dismissed.
+ * @fires promo:user-dismissed
+ *  Custom event indicating that the promo was dismissed by the user.
  */
 class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static queries = {
     actionsSlot: "slot[name=actions]",
     supportLinkSlot: "slot[name=support-link]",
-    actionsSupportWrapper: ".actions-and-support-link-wrapper"
+    actionsSupportWrapper: ".actions-and-support-link-wrapper",
+    closeButton: "moz-button.close"
   };
   static properties = {
     type: {
@@ -1121,6 +1063,10 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     imageDisplay: {
       type: String,
       reflect: true
+    },
+    dismissable: {
+      type: Boolean,
+      reflect: true
     }
   };
   constructor() {
@@ -1129,6 +1075,7 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     this.imageAlignment = "start";
     this.imageWidth = "small";
     this.imageDisplay = "padded";
+    this.dismissable = false;
   }
   handleSlotChange() {
     let hasActions = this.actionsSlot.assignedNodes().length;
@@ -1145,6 +1092,20 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
     if (this.imageSrc) {
       return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
         <div class="image-container"><img src=${this.imageSrc} alt="" /></div>
+      `;
+    }
+    return "";
+  }
+  closeButtonTemplate() {
+    if (this.dismissable) {
+      return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <moz-button
+          class="close"
+          type="icon ghost"
+          iconsrc="chrome://global/skin/icons/close.svg"
+          data-l10n-id="moz-promo-close-button"
+          @click=${this.dismiss}
+        ></moz-button>
       `;
     }
     return "";
@@ -1170,7 +1131,21 @@ class MozPromo extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement
           </p>
         </div>
         ${!imageStartAligned ? this.imageTemplate() : ""}
+        ${this.closeButtonTemplate()}
       </div>`;
+  }
+  dismiss() {
+    let event = new CustomEvent("promo:user-dismissed", {
+      bubbles: true,
+      cancelable: true
+    });
+    this.dispatchEvent(event);
+    if (!event.defaultPrevented) {
+      this.close();
+    }
+  }
+  close() {
+    this.remove();
   }
 }
 customElements.define("moz-promo", MozPromo);
@@ -1178,4 +1153,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-promo-moz-promo-stories.b1a599a4.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-promo-smartwindow-promo-stories.7004c9ef.iframe.bundle.js.map
