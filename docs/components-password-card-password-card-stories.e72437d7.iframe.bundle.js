@@ -272,8 +272,8 @@ class PasswordCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
   /**
    * Hardcoded heights of the password card component.
    */
-  static DEFAULT_PASSWORD_CARD_HEIGHT = 217 + 13; // 13px top + bottom margin
-  static WITH_ALERT_PASSWORD_CARD_HEIGHT = 268 + 13; // alert adds 51px
+  static DEFAULT_PASSWORD_CARD_HEIGHT = 215 + 13; // 13px top + bottom margin
+  static WITH_ALERT_PASSWORD_CARD_HEIGHT = 266 + 13; // alert adds 51px
 
   static properties = {
     origin: {
@@ -683,9 +683,9 @@ module.exports = __webpack_require__.p + "login-line.2b7b8528c5d44b3e81c6.css";
 /***/ 91362:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "password-card.a595ac5e192fde619386.css";
+module.exports = __webpack_require__.p + "password-card.dade9ec9f3398573928b.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-password-card-password-card-stories.32b4d257.iframe.bundle.js.map
+//# sourceMappingURL=components-password-card-password-card-stories.e72437d7.iframe.bundle.js.map
