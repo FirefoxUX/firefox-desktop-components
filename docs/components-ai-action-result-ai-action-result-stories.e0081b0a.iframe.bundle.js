@@ -1831,7 +1831,7 @@ module.exports = __webpack_require__.p + "ai-website-chip.7967f398a94dae999098.c
 /***/ 45042:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-panel-list.82dd09564a2a1a92a03d.css";
+module.exports = __webpack_require__.p + "smartwindow-panel-list.c445c992372913db3719.css";
 
 /***/ }),
 
@@ -2230,8 +2230,8 @@ __webpack_require__.r(__webpack_exports__);
  * This component is agnostic to the data it displays - consumers control
  * all logic including filtering, truncation, and special item handling.
  *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string}} ListItem
- * @typedef {{items: ListItem[], headerL10nId?: string}} ItemGroup
+ * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string}} ListItem
+ * @typedef {{items: ListItem[], headerL10nId?: string, header?: string}} ItemGroup
  * @property {ItemGroup[]} groups - Grouped list items to display
  * @property {string} placeholderL10nId - Fluent ID for empty state message
  * @property {object} anchor - Positioning anchor {left, top, width, height}
@@ -2271,12 +2271,19 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   get #hasCustomItems() {
     const itemsHost = this.#panelList ?? this;
-    return [...itemsHost.children].some(element => element.localName !== "panel-item");
+    return [...itemsHost.children].some(element => element.localName !== "panel-item" && !element.classList.contains("panel-item-container"));
+  }
+  get #isCommandMode() {
+    return this.getAttribute("data-triggered-by") === "inline-command";
   }
   firstUpdated() {
     this.#panelList = this.shadowRoot.querySelector("panel-list");
     this.#panelList.addEventListener("shown", () => {
-      if (this.sidebarMode) {
+      // The command palette sizes/positions to the smartbar and
+      // should recompute as soon as it opens
+      if (this.#isCommandMode) {
+        this.#reposition();
+      } else if (this.sidebarMode) {
         this.#clampToViewport();
       }
     });
@@ -2325,6 +2332,14 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       } else {
         topOffset = anchorRect.bottom;
       }
+      // Command mode spans the full width of its anchor (the smartbar) and
+      // left-aligns to it
+      if (this.#isCommandMode) {
+        panelEl.style.width = `${anchorRect.width}px`;
+        panelEl.style.left = `${anchorRect.left + window.scrollX}px`;
+      } else {
+        panelEl.style.width = "";
+      }
       panelEl.style.top = `${topOffset + window.scrollY}px`;
       this.#clampToViewport();
     });
@@ -2353,7 +2368,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.#panelList.toggle(triggeringEvent, this.#anchorElement);
   }
   handlePanelClick(e) {
-    const panelItem = e.target.closest("panel-item");
+    const panelItem = e.target.closest("panel-item") ?? e.target.closest(".panel-item-container")?.querySelector("panel-item");
     if (panelItem && !panelItem.classList.contains("panel-section-header")) {
       const event = new CustomEvent("item-selected", {
         detail: {
@@ -2386,7 +2401,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     return !this.groups.length || this.groups.every(g => !g.items?.length);
   }
   #renderAnchor() {
-    if (!this.anchor) {
+    if (!this.anchor || this.anchor instanceof Element) {
       return null;
     }
     const rect = this.getBoundingClientRect();
@@ -2416,6 +2431,15 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       data-l10n-id=${headerL10nId}
     ></panel-item>`;
   }
+  #renderPlainHeader(header) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="presentation"
+      class="panel-section-header"
+    >
+      ${header}
+    </panel-item>`;
+  }
   #computeItemStyles(item) {
     const styles = {};
     if (item.icon) {
@@ -2424,22 +2448,41 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     return styles;
   }
   #renderItem(item) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+    const hasDescription = !!item.description;
+    const panelItem = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
       .itemId=${item.id}
       .itemLabel=${item.label}
-      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.icon ? "true" : undefined)}
+      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(!hasDescription && item.icon ? "true" : undefined)}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(this.#computeItemStyles(item))}
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(hasDescription ? {} : this.#computeItemStyles(item))}
     >
       ${item.l10nId ? "" : item.label}
     </panel-item>`;
+    if (!hasDescription) {
+      return panelItem;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="panel-item-container">
+      ${item.icon ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="panel-item-icon" aria-hidden="true">
+            <img class="panel-item-icon-image" src=${item.icon} alt="" />
+          </span>` : ""}
+      <div class="panel-item-text">
+        ${panelItem}
+        <div class="panel-item-description">${item.description}</div>
+      </div>
+    </div>`;
   }
   #renderGroup(group) {
     if (!group.items?.length) {
       return null;
     }
+    let header = null;
+    if (group.headerL10nId) {
+      header = this.#renderGroupHeader(group.headerL10nId);
+    } else if (group.header) {
+      header = this.#renderPlainHeader(group.header);
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${group.headerL10nId ? this.#renderGroupHeader(group.headerL10nId) : null}
+      ${header}
       ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
     `;
   }
@@ -3206,4 +3249,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.b20bde25.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.e0081b0a.iframe.bundle.js.map

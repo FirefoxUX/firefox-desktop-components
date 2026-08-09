@@ -1,225 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[9,6284,7752,9240],{
-
-/***/ 5136:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "website-chip-container.2dc0db9a8b938372c127.css";
-
-/***/ }),
-
-/***/ 6266:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AIWebsiteChip: () => (/* binding */ AIWebsiteChip)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_ai_website_chip_ai_website_chip_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(39894);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-/**
- * A website chip component for tagging and displaying websites.
- *
- * Two types:
- * - in-line: Supports empty state with "@" symbol + "Tag a tab or site" placeholder
- *   - default: favicon + text
- *   - hover: favicon + text (identical to default)
- *   - empty: "@" symbol + "Tag a tab or site" text
- * - context-chip: No empty state support
- *   - default: favicon + text
- *   - hover (removable): remove button + text
- *   - hover (non-removable): favicon + text (identical to default)
- *
- * @property {string} type - Type of chip: "in-line" or "context-chip"
- * @property {"default" | "small"} size - Chip size
- * @property {string} label - The text content of the chip
- * @property {string} iconSrc - Favicon or icon URL
- * @property {string} href - URL for the link (used with context-chip type)
- * @property {boolean} removable - Whether the chip shows a remove button on hover (default false)
- * @property {string} itemRole - ARIA role for the inner element
- */
-class AIWebsiteChip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  // Forward focus to the inner element for keyboard navigation.
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
-  static properties = {
-    type: {
-      type: String,
-      reflect: true
-    },
-    size: {
-      type: String,
-      reflect: true
-    },
-    label: {
-      type: String
-    },
-    iconSrc: {
-      type: String
-    },
-    href: {
-      type: String
-    },
-    removable: {
-      type: Boolean
-    },
-    itemRole: {
-      type: String
-    }
-  };
-  #parentHost = null;
-  constructor() {
-    super();
-    this.type = "in-line";
-    this.size = "default";
-    this.label = "";
-    this.iconSrc = "";
-    this.href = "";
-    this.removable = false;
-    this.itemRole = "";
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    this.#parentHost = this.getRootNode()?.host;
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    // Dispatch only when the parent is still connected: Chip was removed by
-    // the user and not due to the parent unmounting.
-    if (this.#parentHost?.isConnected) {
-      this.#parentHost.dispatchEvent(new CustomEvent("ai-website-chip:disconnected", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          label: this.label,
-          type: this.type
-        }
-      }));
-    }
-    this.#parentHost = null;
-  }
-  get #isEmpty() {
-    return this.type === "in-line" && !this.label;
-  }
-  get #isRemovable() {
-    return this.removable;
-  }
-  #handleClick() {
-    this.dispatchEvent(new CustomEvent("ai-website-chip:click", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        label: this.label
-      }
-    }));
-  }
-  #handleRemove(e) {
-    e.stopPropagation();
-    e.preventDefault();
-    this.dispatchEvent(new CustomEvent("ai-website-chip:remove", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        label: this.label
-      }
-    }));
-  }
-  #handleAnchorClick(e) {
-    if (!this.href) {
-      return;
-    }
-    e.preventDefault();
-    const hasModifier = e.shiftKey || e.metaKey || e.ctrlKey || e.altKey || e.button !== 0;
-    this.dispatchEvent(new CustomEvent("AIChatContent:OpenLink", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        url: this.href,
-        preferSwitchToTab: !hasModifier,
-        shiftKey: e.shiftKey,
-        metaKey: e.metaKey,
-        ctrlKey: e.ctrlKey,
-        altKey: e.altKey,
-        button: e.button
-      }
-    }));
-  }
-  render() {
-    const isEmpty = this.#isEmpty;
-    const isRemovable = this.#isRemovable;
-    let iconTemplate;
-    if (isEmpty) {
-      iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="chip-at">@</span>`;
-    } else {
-      iconTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img
-        class="chip-icon"
-        src=${this.iconSrc || "chrome://global/skin/icons/defaultFavicon.svg"}
-        @error=${e => {
-        e.target.src = "chrome://global/skin/icons/defaultFavicon.svg";
-      }}
-        alt=""
-      />`;
-    }
-    const removeButton = isRemovable ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<button
-          class="chip-remove"
-          @click=${this.#handleRemove}
-          data-l10n-id="aiwindow-website-chip-remove-button"
-        >
-          <img
-            class="chip-remove-icon"
-            src="chrome://global/skin/icons/close.svg"
-            alt=""
-          />
-        </button>` : null;
-    const labelTemplate = isEmpty ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
-          class="chip-label"
-          data-l10n-id="aiwindow-website-chip-placeholder"
-        ></span>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="chip-label">${this.label}</span>`;
-    const chipContent = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${iconTemplate} ${removeButton} ${labelTemplate}
-    `;
-    const chipElement = this.href ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
-          class="chip"
-          part="chip"
-          role=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.itemRole || undefined)}
-          ?data-removable=${isRemovable}
-          href=${this.href}
-          @click=${this.#handleAnchorClick}
-        >
-          ${chipContent}
-        </a>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<button
-          class="chip"
-          part="chip"
-          role=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.itemRole || undefined)}
-          ?data-empty=${isEmpty}
-          ?data-removable=${isRemovable}
-          @click=${this.#handleClick}
-        >
-          ${chipContent}
-        </button>`;
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_ai_website_chip_ai_website_chip_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${chipElement}
-    `;
-  }
-}
-customElements.define("ai-website-chip", AIWebsiteChip);
-
-/***/ }),
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[271,2928,6284,7752,9240],{
 
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -228,193 +8,95 @@ module.exports = __webpack_require__.p + "panel-item.b8a3a645ed7a75455f31.css";
 
 /***/ }),
 
-/***/ 15314:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "ai-grouped-chip-container.993bc6275ac4262f1259.css";
-
-/***/ }),
-
-/***/ 15768:
+/***/ 14731:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SmartwindowOverflowRowMixin: () => (/* binding */ SmartwindowOverflowRowMixin)
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   WithCustomModel: () => (/* binding */ WithCustomModel),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(37752);
+/* harmony import */ var chrome_browser_content_aiwindow_components_input_model_select_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(89638);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/**
- * Renders and collapses overflowing items matching the defined selectors.
- *
- * @param {typeof import("chrome://global/content/lit-utils.mjs").MozLitElement} BaseElement
- * @returns {typeof BaseElement}
- */
-const SmartwindowOverflowRowMixin = BaseElement => class extends BaseElement {
-  static properties = {
-    visibleCount: {
-      type: Number,
-      state: true
-    }
-  };
-  #resizeObserver = null;
-  #lastWidth = null;
-  #measureRaf = 0;
-  constructor() {
-    super();
-    this.visibleCount = Infinity;
-  }
 
-  /**
-   * @returns {string} Selector for the flex row.
-   */
-  get overflowContainerSelector() {
-    return ".smartwindow-overflow-row";
-  }
+// eslint-disable-next-line import/no-unassigned-import
 
-  /**
-   * @returns {string} Selector for the items.
-   */
-  get overflowItemSelector() {
-    return ":scope > [role='listitem']";
-  }
 
-  /**
-   * @returns {?string} Selector for the “+n more” button.
-   */
-  get overflowTriggerSelector() {
-    return ".overflow-more";
+const AVAILABLE_MODELS = {
+  1: {
+    model: "gemini-2.5-flash-lite",
+    ownerName: "Google",
+    labelId: "fast"
+  },
+  2: {
+    model: "qwen3-235b-a22b-instruct-2507-maas",
+    ownerName: "Alibaba",
+    labelId: "allpurpose"
+  },
+  3: {
+    model: "gpt-oss-120b",
+    ownerName: "OpenAI",
+    labelId: "personal"
   }
-
-  /**
-   * @returns {number} Cap applied on top of what fits.
-   */
-  get maxInlineItems() {
-    return Infinity;
-  }
-
-  /**
-   * @returns {?number} Fixed inline count skips measurement.
-   */
-  get inlineItemCount() {
-    return null;
-  }
-
-  /**
-   * @returns {boolean} Whether the inline count comes from measuring.
-   */
-  get isWidthAware() {
-    return !Number.isFinite(this.inlineItemCount);
-  }
-
-  /**
-   * @returns {Array} The overflowing items.
-   */
-  get overflowItems() {
-    return [];
-  }
-
-  /**
-   * Whether a width-aware measure is scheduled. Exposed for tests to await.
-   *
-   * @returns {boolean}
-   */
-  get isMeasuring() {
-    return !!this.#measureRaf;
-  }
-  connectedCallback() {
-    super.connectedCallback();
-    if (this.hasUpdated) {
-      this.syncOverflowMode();
-    }
-  }
-  disconnectedCallback() {
-    super.disconnectedCallback();
-    this.#stopMeasuring();
-  }
-  updated(changed) {
-    /* Getters are consumer-defined and measuring is a no-op for an unchanged
-       count. Run on every render to ensure we don’t measure a stale tree. */
-    super.updated(changed);
-    this.syncOverflowMode();
-  }
-
-  /* Apply the current overflow mode. */
-  syncOverflowMode() {
-    if (this.isWidthAware) {
-      this.#observeWidth();
-      this.scheduleOverflowMeasure();
-      return;
-    }
-    this.#stopMeasuring();
-    this.#setVisibleCount(Math.max(0, this.inlineItemCount));
-  }
-
-  /* Measure next frame so layout has settled. */
-  scheduleOverflowMeasure() {
-    if (this.#measureRaf || !this.isWidthAware) {
-      return;
-    }
-    this.#measureRaf = requestAnimationFrame(() => {
-      this.#measureRaf = 0;
-      this.#measureOverflow();
-    });
-  }
-  #observeWidth() {
-    this.#resizeObserver ??= new ResizeObserver(entries => {
-      const inlineSize = entries[0]?.contentBoxSize?.[0]?.inlineSize;
-      if (inlineSize == null || inlineSize === this.#lastWidth) {
-        return;
+};
+const AVAILABLE_MODELS_WITH_CUSTOM = {
+  0: {
+    model: "custom-model",
+    ownerName: "",
+    labelId: "custom"
+  },
+  ...AVAILABLE_MODELS
+};
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/AI Window/Input Model Select",
+  component: "input-model-select",
+  parameters: {
+    fluent: `
+aiwindow-input-model-select-button-label-fast = Fast
+aiwindow-input-model-select-button-label-allpurpose = Flexible
+aiwindow-input-model-select-button-label-personal = Personal
+aiwindow-input-model-select-button-label-custom = Custom
+aiwindow-input-model-select-menu-item-description = { $ownerName } { $model }
+aiwindow-input-model-select-menu-item-description-custom = Use your own LLM
+aiwindow-input-model-select-settings-link = Model settings
+aiwindow-input-model-select-default-badge =
+    .label = Default
+    .title = The selected default model
+    `
+  },
+  argTypes: {
+    selectedModelId: {
+      options: Object.values(AVAILABLE_MODELS_WITH_CUSTOM).map(m => m.model),
+      control: {
+        type: "select"
       }
-      this.#lastWidth = inlineSize;
-      this.scheduleOverflowMeasure();
-    });
-    this.#resizeObserver.observe(this);
-  }
-  #stopMeasuring() {
-    this.#resizeObserver?.disconnect();
-    this.#resizeObserver = null;
-    this.#lastWidth = null;
-    cancelAnimationFrame(this.#measureRaf);
-    this.#measureRaf = 0;
-  }
-  #setVisibleCount(count) {
-    if (this.visibleCount !== count) {
-      this.visibleCount = count;
     }
   }
-  #measureOverflow() {
-    const container = this.renderRoot?.querySelector(this.overflowContainerSelector);
-    const items = this.overflowItems;
-    if (!container || !items.length) {
-      return;
-    }
-    const children = [...container.querySelectorAll(this.overflowItemSelector)];
-    // A stale render would measure the wrong nodes.
-    if (children.length !== items.length) {
-      return;
-    }
-    const columnGap = parseFloat(getComputedStyle(container).columnGap) || 0;
-    const cumulativeItemWidths = [0];
-    for (const child of children) {
-      cumulativeItemWidths.push(cumulativeItemWidths.at(-1) + child.getBoundingClientRect().width + columnGap);
-    }
-
-    // The trigger is only rendered if the row overflows.
-    if (children.length <= this.maxInlineItems && cumulativeItemWidths.at(-1) - columnGap <= container.clientWidth) {
-      this.#setVisibleCount(children.length);
-      return;
-    }
-    const trigger = this.overflowTriggerSelector ? container.querySelector(this.overflowTriggerSelector) : null;
-    const triggerWidth = trigger?.getBoundingClientRect().width ?? 0;
-    let visibleCount = Math.min(children.length, this.maxInlineItems);
-    while (visibleCount && cumulativeItemWidths[visibleCount] + triggerWidth > container.clientWidth) {
-      visibleCount--;
-    }
-    this.#setVisibleCount(visibleCount);
-  }
+});
+const Template = ({
+  availableModels,
+  selectedModelId
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <input-model-select
+    .availableModels=${availableModels}
+    .selectedModelId=${selectedModelId}
+  ></input-model-select>
+`;
+const Default = Template.bind({});
+Default.args = {
+  availableModels: AVAILABLE_MODELS,
+  selectedModelId: "gemini-2.5-flash-lite"
+};
+const WithCustomModel = Template.bind({});
+WithCustomModel.args = {
+  availableModels: AVAILABLE_MODELS_WITH_CUSTOM,
+  selectedModelId: "custom-model"
 };
 
 /***/ }),
@@ -721,6 +403,94 @@ module.exports = __webpack_require__.p + "panel-list.8c017ce5f1bd100e68ad.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-button.f67d7f67c6092f201516.css";
+
+/***/ }),
+
+/***/ 32928:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ MozBadge)
+/* harmony export */ });
+/* harmony import */ var toolkit_content_widgets_moz_badge_moz_badge_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(61138);
+/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+window.MozXULElement?.insertFTLIfNeeded("toolkit/global/mozBadge.ftl");
+
+/**
+ @typedef {"default" | "beta" | "new"} MozBadgeType Types of badges for moz-badge.*
+
+ /**
+ * A simple badge element that can be used to indicate status or convey simple messages
+ *
+ * @tagname moz-badge
+ * @property {string} label - Text to display on the badge, by default inferred from type
+ * @property {string} iconSrc - The src for an optional icon shown next to the label
+ * @property {string} title - The title of the badge, appears as a tooltip on hover
+ * @property {MozBadgeType} type - The type of badge (e.g., "new")
+ */
+class MozBadge extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String,
+      fluent: true
+    },
+    iconSrc: {
+      type: String
+    },
+    title: {
+      type: String,
+      fluent: true,
+      mapped: true
+    },
+    type: {
+      type: String,
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.label = "";
+    /**
+     * @type {MozBadgeType}
+     */
+    this.type = "default";
+  }
+  get labelL10nId() {
+    if (this.type == "beta") {
+      return "moz-badge-beta2";
+    }
+    if (this.type == "new") {
+      return "moz-badge-new2";
+    }
+    return undefined;
+  }
+  render() {
+    return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${toolkit_content_widgets_moz_badge_moz_badge_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="moz-badge" title=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.title)}>
+        ${this.iconSrc ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<img class="moz-badge-icon" src=${this.iconSrc} role="presentation"></img>` : ""}
+        <span
+          class="moz-badge-label"
+          data-l10n-id=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(this.label ? null : this.labelL10nId)}
+          >${this.label}</span
+        >
+      </div>
+    `;
+  }
+}
+customElements.define("moz-badge", MozBadge);
 
 /***/ }),
 
@@ -1592,744 +1362,17 @@ customElements.define("panel-item", PanelItem);
 
 /***/ }),
 
-/***/ 39092:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   WebsiteChipContainer: () => (/* binding */ WebsiteChipContainer)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5136);
-/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57822);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15768);
-/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6266);
-/* harmony import */ var chrome_browser_content_aiwindow_components_ai_grouped_chip_container_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(63022);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(79240);
-/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(55362);
-
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/** @typedef {import("chrome://browser/content/urlbar/SmartbarInput.mjs").ContextWebsite} ContextWebsite */
-
-/**
- * Container for rendering website chips
- */
-class WebsiteChipContainer extends (0,chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__.SmartwindowOverflowRowMixin)(chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement) {
-  static properties = {
-    websites: {
-      type: Array
-    },
-    chipType: {
-      type: String
-    },
-    removable: {
-      type: Boolean
-    },
-    shouldGroupChips: {
-      type: Boolean
-    },
-    // true if we want 3 or more chips to display as ai-grouped-chip-container
-    autoOverflow: {
-      type: Boolean
-    },
-    visibleChipCount: {
-      type: Number
-    },
-    chipSize: {
-      type: String,
-      attribute: "chip-size",
-      reflect: true
-    },
-    isPanelOpen: {
-      type: Boolean,
-      state: true
-    }
-  };
-  constructor() {
-    super();
-    /** @type {ContextWebsite[]} */
-    this.websites = [];
-    this.chipType = "context-chip";
-    this.removable = false;
-    this.shouldGroupChips = false;
-    this.autoOverflow = false;
-    this.visibleChipCount = null;
-    this.chipSize = "default";
-    this.isPanelOpen = false;
-  }
-  get overflowContainerSelector() {
-    return ".chip-container-scroller";
-  }
-  get inlineItemCount() {
-    return this.visibleChipCount;
-  }
-  get overflowItems() {
-    return this.#isAutoOverflowing ? this.websites : [];
-  }
-  get #isGrouped() {
-    return this.shouldGroupChips && this.websites.length > 2;
-  }
-  get #isAutoOverflowing() {
-    return this.autoOverflow && !this.#isGrouped;
-  }
-  #panel() {
-    return this.renderRoot.querySelector("smartwindow-panel-list");
-  }
-  #onToggleClick(event) {
-    const panel = this.#panel();
-    if (panel) {
-      panel.anchor = event.currentTarget;
-      panel.toggle(event);
-    }
-  }
-  #onOverflowItemSelected(event) {
-    const url = event.detail?.id;
-    this.#panel()?.hide();
-    if (!url) {
-      return;
-    }
-    this.dispatchEvent(new CustomEvent("AIChatContent:OpenLink", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        url,
-        preferSwitchToTab: true
-      }
-    }));
-  }
-  #onRemoveWebsite(website, event) {
-    event.stopPropagation();
-    this.dispatchEvent(new CustomEvent("ai-website-chip:remove", {
-      bubbles: true,
-      composed: true,
-      detail: {
-        url: website.url,
-        label: website.label
-      }
-    }));
-  }
-  #renderStackedChips(website) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<ai-website-chip
-      .type=${this.chipType}
-      .size=${this.chipSize}
-      .label=${website.label}
-      .href=${website.url}
-      .iconSrc=${website.iconSrc ?? ""}
-      .removable=${this.removable}
-      @ai-website-chip:remove=${e => this.#onRemoveWebsite(website, e)}
-    ></ai-website-chip>`;
-  }
-  #renderGroupedChips(chips) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<ai-grouped-chip-container
-      .chips=${chips}
-    ></ai-grouped-chip-container>`;
-  }
-  #renderChip(website) {
-    return website.historyDeleted ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="chip-history-deleted">
-          <img
-            class="chip-history-deleted-icon"
-            src="chrome://global/skin/icons/defaultFavicon.svg"
-            alt=""
-          />
-          <span data-l10n-id="aiwindow-website-chip-history-deleted"></span>
-        </div>` : this.#renderStackedChips(website);
-  }
-  #renderSmartwindowOverflowRow() {
-    const visibleCount = Math.min(this.visibleCount, this.websites.length);
-    const overflow = this.websites.slice(visibleCount);
-    const hasOverflow = !!overflow.length;
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div
-      class="chip-container-scroller smartwindow-overflow-row"
-      role="list"
-    >
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.repeat)(this.websites, website => website, (website, index) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<span role="listitem" ?data-overflow=${index >= visibleCount}
-            >${this.#renderChip(website)}</span
-          >`)}
-      <moz-button
-        class="overflow-more"
-        type="ghost"
-        ?data-overflow=${!hasOverflow}
-        .ariaHasPopup=${"menu"}
-        .ariaExpanded=${String(this.isPanelOpen)}
-        data-l10n-id="smartwindow-assistant-citations-more-label"
-        data-l10n-args=${JSON.stringify({
-      count: overflow.length
-    })}
-        @click=${this.#onToggleClick}
-      ></moz-button>
-      ${hasOverflow ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<smartwindow-panel-list
-            .groups=${[{
-      items: overflow.map(website => ({
-        id: website.url,
-        label: website.label,
-        icon: website.iconSrc
-      }))
-    }]}
-            @shown=${() => this.isPanelOpen = true}
-            @hidden=${() => this.isPanelOpen = false}
-            @item-selected=${this.#onOverflowItemSelected}
-          ></smartwindow-panel-list>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.nothing}
-    </div>`;
-  }
-  #renderScrollerRow() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="chip-container-scroller" role="list">
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.repeat)(this.websites, website => website, website => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<span role="listitem">${this.#renderChip(website)}</span>`)}
-    </div>`;
-  }
-  #renderChips() {
-    if (this.#isGrouped) {
-      return this.#renderGroupedChips(this.websites);
-    }
-    return this.#isAutoOverflowing ? this.#renderSmartwindowOverflowRow() : this.#renderScrollerRow();
-  }
-  render() {
-    if (!this.websites.length) {
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.nothing;
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__}"
-      />
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div class="chip-container">${this.#renderChips()}</div>
-    `;
-  }
-}
-customElements.define("website-chip-container", WebsiteChipContainer);
-
-/***/ }),
-
-/***/ 39894:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "ai-website-chip.7967f398a94dae999098.css";
-
-/***/ }),
-
 /***/ 45042:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-panel-list.82dd09564a2a1a92a03d.css";
+module.exports = __webpack_require__.p + "smartwindow-panel-list.c445c992372913db3719.css";
 
 /***/ }),
 
-/***/ 52253:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AutoWidthOverflow: () => (/* binding */ AutoWidthOverflow),
-/* harmony export */   CountBasedGrouping: () => (/* binding */ CountBasedGrouping),
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   NoOverflow: () => (/* binding */ NoOverflow),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39092);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Website Chip Container",
-  component: "website-chip-container",
-  parameters: {
-    fluent: `
-smartwindow-assistant-citations-more-label = +{ $count } more
-    `
-  },
-  // Constrained container to simulate a chat bubble.
-  decorators: [(story, context) => context.parameters.frame === false ? story() : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-            <div
-              style="
-                display: inline-block;
-                ${context.parameters.frameWidth ? `width: ${context.parameters.frameWidth};` : ""}
-                padding: 16px;
-                box-sizing: border-box;
-                border: 1px dashed #ccc;
-              "
-            >
-              ${story()}
-            </div>
-          `]
-});
-const makeWebsites = count => Array.from({
-  length: count
-}, (_, index) => ({
-  url: `https://example.com/${index + 1}`,
-  label: `Example Site ${index + 1}`,
-  iconSrc: "chrome://branding/content/icon16.png"
-}));
-const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .chipType=${"context-chip"}
-    .websites=${makeWebsites(3)}
-    .removable=${true}
-  ></website-chip-container>
-`;
-const AutoWidthOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div
-    style="
-      resize: horizontal;
-      overflow: auto;
-      inline-size: 500px;
-      min-inline-size: 160px;
-      max-inline-size: 100%;
-      padding: 16px;
-      box-sizing: border-box;
-      border: 1px dashed #ccc;
-    "
-  >
-    <website-chip-container
-      .websites=${makeWebsites(6)}
-      .autoOverflow=${true}
-    ></website-chip-container>
-  </div>
-`;
-// This story has its own decorator frame
-AutoWidthOverflow.parameters = {
-  frame: false
-};
-const NoOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .websites=${makeWebsites(2)}
-    .autoOverflow=${true}
-  ></website-chip-container>
-`;
-const CountBasedGrouping = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .websites=${makeWebsites(6)}
-    .shouldGroupChips=${true}
-  ></website-chip-container>
-`;
-
-/***/ }),
-
-/***/ 55362:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   SmartwindowPanelList: () => (/* binding */ SmartwindowPanelList)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(45042);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(37752);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/**
- * A generic panel list component for displaying grouped items in a popup.
- *
- * This component is agnostic to the data it displays - consumers control
- * all logic including filtering, truncation, and special item handling.
- *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string}} ListItem
- * @typedef {{items: ListItem[], headerL10nId?: string}} ItemGroup
- * @property {ItemGroup[]} groups - Grouped list items to display
- * @property {string} placeholderL10nId - Fluent ID for empty state message
- * @property {object} anchor - Positioning anchor {left, top, width, height}
- */
-class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static shadowRootOptions = {
-    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement.shadowRootOptions,
-    delegatesFocus: true
-  };
-  static properties = {
-    groups: {
-      type: Array
-    },
-    anchor: {
-      type: Object
-    },
-    placeholderL10nId: {
-      type: String
-    },
-    alwaysOpen: {
-      type: Boolean
-    },
-    sidebarMode: {
-      type: Boolean,
-      reflect: true
-    }
-  };
-  #panelList = null;
-  #anchorElement = null;
-  constructor() {
-    super();
-    this.groups = [];
-    this.anchor = null;
-    this.placeholderL10nId = "";
-    this.alwaysOpen = false;
-    this.sidebarMode = false;
-  }
-  get #hasCustomItems() {
-    const itemsHost = this.#panelList ?? this;
-    return [...itemsHost.children].some(element => element.localName !== "panel-item");
-  }
-  firstUpdated() {
-    this.#panelList = this.shadowRoot.querySelector("panel-list");
-    this.#panelList.addEventListener("shown", () => {
-      if (this.sidebarMode) {
-        this.#clampToViewport();
-      }
-    });
-    // Consumers may pass their own items as child elements.
-    this.#maybeMoveChildrenIntoPanel();
-    if (this.alwaysOpen) {
-      this.show();
-    }
-  }
-  #maybeMoveChildrenIntoPanel() {
-    const custom = Array.from(this.children);
-    if (!custom.length) {
-      return;
-    }
-    this.#panelList.append(...custom);
-  }
-  #clampToViewport() {
-    const panelEl = this.#panelList;
-    const viewportWidth = window.innerWidth;
-    const viewportHeight = window.innerHeight;
-    const panelRect = panelEl.getBoundingClientRect();
-    const margin = parseFloat(getComputedStyle(panelEl).marginInlineStart) || 0;
-    const effectiveWidth = Math.min(panelRect.width, viewportWidth - 2 * margin);
-    const effectiveHeight = Math.min(panelRect.height, viewportHeight);
-    let x = parseFloat(panelEl.style.left) || 0;
-    let y = parseFloat(panelEl.style.top) || 0;
-    x = Math.max(0, Math.min(x, viewportWidth - effectiveWidth - 2 * margin));
-    y = Math.max(0, Math.min(y, viewportHeight - effectiveHeight));
-    panelEl.style.left = `${x}px`;
-    panelEl.style.top = `${y}px`;
-  }
-  #reposition() {
-    requestAnimationFrame(() => {
-      const anchorElement = this.#anchorElement;
-      if (!anchorElement || !this.#panelList?.open) {
-        return;
-      }
-      const panelEl = this.#panelList;
-      const anchorRect = anchorElement.getBoundingClientRect();
-      const panelHeight = panelEl.scrollHeight;
-      const valign = panelEl.getAttribute("valign");
-      const VIEWPORT_PANEL_MIN_MARGIN = 10;
-      let topOffset;
-      if (valign === "top") {
-        topOffset = Math.max(anchorRect.top - panelHeight, VIEWPORT_PANEL_MIN_MARGIN);
-      } else {
-        topOffset = anchorRect.bottom;
-      }
-      panelEl.style.top = `${topOffset + window.scrollY}px`;
-      this.#clampToViewport();
-    });
-  }
-  updated(changedProperties) {
-    super.updated(changedProperties);
-    if (changedProperties.has("anchor")) {
-      // If anchor is an element use it directly,
-      // otherwise we can use the positioned span.
-      this.#anchorElement = this.anchor instanceof Element ? this.anchor : this.renderRoot.querySelector(".smartwindow-panel-list-anchor");
-    }
-    if (this.#panelList?.open && (changedProperties.has("anchor") || changedProperties.has("groups"))) {
-      this.#reposition();
-    }
-  }
-  async show(triggeringEvent = null) {
-    await this.updateComplete;
-    this.#panelList.show(triggeringEvent, this.#anchorElement);
-  }
-  async hide() {
-    await this.updateComplete;
-    this.#panelList.hide();
-  }
-  async toggle(triggeringEvent = null) {
-    await this.updateComplete;
-    this.#panelList.toggle(triggeringEvent, this.#anchorElement);
-  }
-  handlePanelClick(e) {
-    const panelItem = e.target.closest("panel-item");
-    if (panelItem && !panelItem.classList.contains("panel-section-header")) {
-      const event = new CustomEvent("item-selected", {
-        detail: {
-          id: panelItem.itemId,
-          label: panelItem.itemLabel || panelItem.textContent.trim(),
-          icon: panelItem.itemIcon
-        },
-        bubbles: true,
-        composed: true,
-        cancelable: true
-      });
-      this.dispatchEvent(event);
-    }
-  }
-  handleKeyDown(e) {
-    this.dispatchEvent(new CustomEvent("panel-keydown", {
-      detail: {
-        originalEvent: e
-      },
-      bubbles: true,
-      composed: true
-    }));
-  }
-
-  // -------------------------
-  // Render helpers
-  // -------------------------
-
-  #isEmpty() {
-    return !this.groups.length || this.groups.every(g => !g.items?.length);
-  }
-  #renderAnchor() {
-    if (!this.anchor) {
-      return null;
-    }
-    const rect = this.getBoundingClientRect();
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
-      class="smartwindow-panel-list-anchor"
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)({
-      "--anchor-left": `${this.anchor.left - rect.left}px`,
-      "--anchor-top": `${this.anchor.top - rect.top}px`,
-      "--anchor-width": `${this.anchor.width}px`,
-      "--anchor-height": `${this.anchor.height}px`
-    })}
-    ></span>`;
-  }
-  #renderEmptyState() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      disabled
-      role="presentation"
-      class="panel-section-header"
-      data-l10n-id=${this.placeholderL10nId}
-    ></panel-item>`;
-  }
-  #renderGroupHeader(headerL10nId) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      disabled
-      role="presentation"
-      class="panel-section-header"
-      data-l10n-id=${headerL10nId}
-    ></panel-item>`;
-  }
-  #computeItemStyles(item) {
-    const styles = {};
-    if (item.icon) {
-      styles["--panel-item-icon-url"] = `url(${item.icon})`;
-    }
-    return styles;
-  }
-  #renderItem(item) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
-      .itemId=${item.id}
-      .itemLabel=${item.label}
-      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.icon ? "true" : undefined)}
-      data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(this.#computeItemStyles(item))}
-    >
-      ${item.l10nId ? "" : item.label}
-    </panel-item>`;
-  }
-  #renderGroup(group) {
-    if (!group.items?.length) {
-      return null;
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${group.headerL10nId ? this.#renderGroupHeader(group.headerL10nId) : null}
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
-    `;
-  }
-  #renderGroups() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(this.groups, (_group, index) => index, group => this.#renderGroup(group));
-  }
-  #renderContent() {
-    // Custom items were moved into `panel-list`.
-    if (this.#hasCustomItems) {
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
-    }
-    return this.#isEmpty() ? this.#renderEmptyState() : this.#renderGroups();
-  }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.#renderAnchor()}
-      <panel-list
-        @click=${this.handlePanelClick}
-        @keydown=${this.handleKeyDown}
-      >
-        ${this.#renderContent()}
-      </panel-list>
-    `;
-  }
-}
-customElements.define("smartwindow-panel-list", SmartwindowPanelList);
-
-/***/ }),
-
-/***/ 57822:
+/***/ 61138:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-overflow-row.7a554b3715d4ee8975b6.css";
-
-/***/ }),
-
-/***/ 63022:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AIGroupedChipContainer: () => (/* binding */ AIGroupedChipContainer)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_ai_grouped_chip_container_ai_grouped_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15314);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55362);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/**
- * Container for rendering 3 or more grouped chips inside the chat content
- */
-class AIGroupedChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
-  static properties = {
-    chips: {
-      type: Array
-    },
-    isPanelOpen: {
-      type: Boolean,
-      state: true
-    }
-  };
-  constructor() {
-    super();
-    this.chips = [];
-    this.isPanelOpen = false;
-  }
-
-  // Keep this mousedown from reaching panel-list's document-level light-dismiss
-  // listener, so the panel stays open until the click handler runs toggle().
-  // Otherwise mousedown closes it and the click reopens it.
-  #onTriggerMousedown(event) {
-    event.stopPropagation();
-  }
-  #toggleGroupedPanel(event) {
-    const panel = this.shadowRoot.querySelector("smartwindow-panel-list");
-    panel.anchor = event.currentTarget;
-    panel.toggle();
-  }
-  #closeGroupedPanel() {
-    this.shadowRoot.querySelector("smartwindow-panel-list")?.hide();
-  }
-  #onItemSelected(event) {
-    const url = event.detail?.id;
-    if (url) {
-      this.dispatchEvent(new CustomEvent("AIChatContent:OpenLink", {
-        bubbles: true,
-        composed: true,
-        detail: {
-          url,
-          preferSwitchToTab: true
-        }
-      }));
-    }
-    this.#closeGroupedPanel();
-  }
-  render() {
-    const chipsGroups = [{
-      items: this.chips.map(w => ({
-        id: w.url,
-        label: w.label,
-        icon: w.iconSrc
-      }))
-    }];
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_ai_grouped_chip_container_ai_grouped_chip_container_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <button
-        class="grouped-chips"
-        id="grouped-chips-trigger"
-        aria-haspopup="menu"
-        aria-expanded=${this.isPanelOpen}
-        ?data-is-smartwindow-panel-open=${this.isPanelOpen}
-        @mousedown=${e => this.#onTriggerMousedown(e)}
-        @click=${e => this.#toggleGroupedPanel(e)}
-      >
-        <span class="grouped-chips__favicon-group">
-          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.chips, (chip, index) => `${chip.url}-${index}`, chip => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<img
-                class="grouped-chips__favicon"
-                src=${chip.iconSrc || "chrome://global/skin/icons/defaultFavicon.svg"}
-                alt=""
-                @error=${e => {
-      e.target.src = "chrome://global/skin/icons/defaultFavicon.svg";
-    }}
-              />`)}
-        </span>
-        <span
-          class="grouped-chips__label"
-          data-l10n-id="smart-window-context-chips-tag-count"
-          data-l10n-args=${JSON.stringify({
-      tags: this.chips.length
-    })}
-        ></span>
-        <img
-          class="grouped-chips__arrow-icon"
-          src="chrome://global/skin/icons/arrow-down-12.svg"
-          alt=""
-        />
-      </button>
-      <smartwindow-panel-list
-        .groups=${chipsGroups}
-        @shown=${() => this.isPanelOpen = true}
-        @hidden=${() => this.isPanelOpen = false}
-        @item-selected=${e => this.#onItemSelected(e)}
-      ></smartwindow-panel-list>
-    `;
-  }
-}
-customElements.define("ai-grouped-chip-container", AIGroupedChipContainer);
+module.exports = __webpack_require__.p + "moz-badge.39a25051922e42f55e5e.css";
 
 /***/ }),
 
@@ -2337,6 +1380,13 @@ customElements.define("ai-grouped-chip-container", AIGroupedChipContainer);
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
+
+/***/ }),
+
+/***/ 76406:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "input-model-select.4f371cebd0f3a343e259.css";
 
 /***/ }),
 
@@ -2765,7 +1815,280 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
 }
 customElements.define("moz-button", MozButton);
 
+/***/ }),
+
+/***/ 89638:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   InputModelSelect: () => (/* binding */ InputModelSelect)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_input_model_select_input_model_select_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(76406);
+/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(45042);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(79240);
+/* harmony import */ var chrome_global_content_elements_panel_list_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(37752);
+/* harmony import */ var chrome_global_content_elements_moz_badge_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(32928);
+
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const {
+  XPCOMUtils
+} = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs");
+
+// TODO Bug 2053495: remove with mistral release pref
+const MISTRAL_RELEASE_PREF = "browser.smartwindow.mistralRelease";
+const {
+  getModelDisplayOrder
+} = window.IS_STORYBOOK ?
+// TODO Bug 2053495: ensure TypeError doesn't occur in Storybook once pref gating has been removed
+{
+  getModelDisplayOrder: () => ["1", "2", "3"]
+} : ChromeUtils.importESModule("moz-src:///browser/components/aiwindow/models/Utils.sys.mjs");
+
+// TODO Bug 2053495: remove with mistral release pref — delete
+// MODEL_ICONS and make MODEL_ICONS_V2 the only set.
+// Icon URL and l10n ID inlined as full URLs so they stay greppable
+
+const MODEL_ICONS = {
+  0: "chrome://browser/content/aiwindow/assets/model-choice-0.svg",
+  1: "chrome://browser/content/aiwindow/assets/model-choice-1.svg",
+  2: "chrome://browser/content/aiwindow/assets/model-choice-2.svg",
+  3: "chrome://browser/content/aiwindow/assets/model-choice-3.svg"
+};
+const MODEL_ICONS_V2 = {
+  0: "chrome://browser/content/aiwindow/assets/model-choice-0.svg",
+  1: "chrome://browser/content/aiwindow/assets/model-choice-gemini.svg",
+  2: "chrome://browser/content/aiwindow/assets/model-choice-qwen.svg",
+  3: "chrome://browser/content/aiwindow/assets/model-choice-mistral.svg"
+};
+const BUTTON_LABEL_L10N_IDS = {
+  0: "aiwindow-input-model-select-button-label-custom",
+  1: "aiwindow-input-model-select-button-label-fast",
+  2: "aiwindow-input-model-select-button-label-allpurpose",
+  3: "aiwindow-input-model-select-button-label-personal"
+};
+
+/**
+ * A model select that shows the current model choice and lets users change
+ * their selection before smartbar prompt submission.
+ *
+ * @property {string} selectedModelId - The current selected model ID
+ * @property {{[key: string]: {model: string, ownerName: string, labelId: string}}} availableModels - Map of model choice IDs to model data
+ */
+class InputModelSelect extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  static shadowRootOptions = {
+    ...chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement.shadowRootOptions,
+    delegatesFocus: true
+  };
+  static properties = {
+    selectedModelId: {
+      type: String,
+      reflect: true
+    },
+    defaultModelChoiceId: {
+      type: String
+    },
+    availableModels: {
+      type: Object
+    },
+    panelOpen: {
+      type: Boolean,
+      state: true
+    },
+    sidebarMode: {
+      type: Boolean,
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.selectedModelId = "";
+    this.defaultModelChoiceId = null;
+    this.availableModels = null;
+    this.panelOpen = false;
+    this.sidebarMode = false;
+    this._menuId = `models-menu-${crypto.randomUUID()}`;
+    // TODO Bug 2053495: remove with mistral release pref. Caches the pref and
+    // re-renders the whole component when it changes (e.g. Nimbus enrollment
+    // mid-session), so labels, order, and icons all update in place.
+    XPCOMUtils.defineLazyPreferenceGetter(this, "mistralRelease", MISTRAL_RELEASE_PREF, false, () => this.requestUpdate());
+    // defineLazyPreferenceGetter registers its pref observer on first read, so
+    // touch the value here to arm the onUpdate callback above.
+    void this.mistralRelease;
+  }
+  get #caretIcon() {
+    return this.panelOpen ? "chrome://global/skin/icons/arrow-up-12.svg" : "chrome://global/skin/icons/arrow-down-12.svg";
+  }
+  #onPanelShown = () => {
+    this.panelOpen = true;
+  };
+  #onPanelHidden = () => {
+    this.panelOpen = false;
+  };
+  get #modelsList() {
+    if (!this.availableModels) {
+      return [];
+    }
+    const order = getModelDisplayOrder();
+    const rank = index => {
+      // Custom (choice "0") always leads the list.
+      if (index === "0") {
+        return -1;
+      }
+      const position = order.indexOf(index);
+      // IDs not in the order list sort to the end.
+      return position === -1 ? order.length : position;
+    };
+    return Object.entries(this.availableModels).map(([index, availableModel]) => ({
+      ...availableModel,
+      index
+    })).sort((a, b) => rank(a.index) - rank(b.index));
+  }
+  get #selectedModel() {
+    return this.#modelsList.find(m => m.model === this.selectedModelId);
+  }
+  #setModelId(modelId) {
+    const selectedModel = this.#modelsList.find(m => m.model === modelId);
+    if (!selectedModel) {
+      console.error(`Could not find model ID: [${modelId}]`);
+      return;
+    }
+    if (modelId !== this.selectedModelId) {
+      this.selectedModelId = modelId;
+      this.dispatchEvent(new CustomEvent("aiwindow-input-model-select:model-change", {
+        detail: {
+          modelId,
+          modelChoiceId: selectedModel.index
+        },
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  #openSmartwindowSettings() {
+    this.dispatchEvent(new CustomEvent("aiwindow-input-model-select:open-settings", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  #getButtonLabelL10nId(choiceId) {
+    return BUTTON_LABEL_L10N_IDS[choiceId];
+  }
+  #getDescriptionL10nId(choiceId) {
+    if (choiceId === "0") {
+      return "aiwindow-input-model-select-menu-item-description-custom";
+    }
+    if (this.mistralRelease) {
+      return BUTTON_LABEL_L10N_IDS[choiceId];
+    }
+    return "aiwindow-input-model-select-menu-item-description";
+  }
+  #iconSrc(index) {
+    return (this.mistralRelease ? MODEL_ICONS_V2 : MODEL_ICONS)[index];
+  }
+  render() {
+    if (!this.#modelsList.length || !this.#selectedModel) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)``;
+    }
+    const panelListTemplate = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<panel-list
+      id=${this._menuId}
+      mistral-release=${this.mistralRelease}
+      @shown=${this.#onPanelShown}
+      @hidden=${this.#onPanelHidden}
+    >
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.#modelsList, item => item.index, item => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+          <button
+            class="model-item"
+            role="menuitem"
+            @click=${() => this.#setModelId(item.model)}
+          >
+            <span class="model-item-avatar">
+              <img
+                class="model-item-icon${item.index === "0" ? " model-item-icon--custom" : ""}"
+                src=${this.#iconSrc(item.index)}
+                alt=${this.mistralRelease ? item.shortName : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+            /></span>
+            <span class="model-item-content">
+              <span class="model-item-header">
+                ${this.mistralRelease && item.shortName ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<span class="model-item-label"
+                      >${item.shortName}</span
+                    >` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<span
+                      class="model-item-label"
+                      data-l10n-id=${this.#getButtonLabelL10nId(item.index)}
+                    ></span>`}
+                ${item.index === this.defaultModelChoiceId ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-badge
+                      type="new"
+                      data-l10n-id="aiwindow-input-model-select-default-badge"
+                    ></moz-badge>` : ""}
+              </span>
+              ${this.mistralRelease ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<span
+                    class="model-item-details"
+                    data-l10n-id=${this.#getButtonLabelL10nId(item.index)}
+                  ></span>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<span
+                    class="model-item-details"
+                    data-l10n-id=${this.#getDescriptionL10nId(item.index)}
+                    data-l10n-args=${JSON.stringify({
+      model: item.model,
+      ownerName: item.ownerName
+    })}
+                  ></span>`}
+            </span>
+            ${item.model === this.selectedModelId ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<img
+                  class="model-item-check"
+                  src="chrome://global/skin/icons/check.svg"
+                  alt=""
+                />` : ""}
+          </button>
+        `)}
+      <hr />
+      <panel-item
+        action="open-smartwindow-settings"
+        role="link"
+        data-l10n-id="aiwindow-input-model-select-settings-link"
+        @click=${this.#openSmartwindowSettings}
+      >
+      </panel-item>
+    </panel-list>`;
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_smartwindow_panel_list_smartwindow_panel_list_css__WEBPACK_IMPORTED_MODULE_1__}"
+      />
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_input_model_select_input_model_select_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <moz-button
+        type="default"
+        class="input-model-select-button"
+        .menuId=${this._menuId}
+        data-l10n-id=${this.mistralRelease && this.#selectedModel.brandName ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing : this.#getButtonLabelL10nId(this.#selectedModel.index)}
+        label=${this.mistralRelease && this.#selectedModel.brandName ? this.#selectedModel.brandName : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+        .iconSrc=${this.#caretIcon}
+        iconPosition="end"
+      >
+      </moz-button>
+      ${panelListTemplate}
+    `;
+  }
+}
+customElements.define("input-model-select", InputModelSelect);
+
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.d514eab7.iframe.bundle.js.map
+//# sourceMappingURL=components-input-model-select-input-model-select-stories.ea57f3ed.iframe.bundle.js.map

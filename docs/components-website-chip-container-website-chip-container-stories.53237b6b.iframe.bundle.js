@@ -1,5 +1,12 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[5639,6284,7752,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[9,6284,7752,9240],{
+
+/***/ 5136:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "website-chip-container.2dc0db9a8b938372c127.css";
+
+/***/ }),
 
 /***/ 6266:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -214,78 +221,17 @@ customElements.define("ai-website-chip", AIWebsiteChip);
 
 /***/ }),
 
-/***/ 6797:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   FiveSources: () => (/* binding */ FiveSources),
-/* harmony export */   OneSource: () => (/* binding */ OneSource),
-/* harmony export */   ThreeSources: () => (/* binding */ ThreeSources),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_chat_assistant_citations_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(95396);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Chat Assistant Citations",
-  component: "chat-assistant-citations",
-  parameters: {
-    fluent: `
-smartwindow-assistant-citations-more-label = +{ $count } more
-    `
-  }
-});
-const Template = ({
-  citations
-}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<chat-assistant-citations
-    .citations=${citations}
-  ></chat-assistant-citations>`;
-const OneSource = Template.bind({});
-OneSource.args = {
-  citations: [{
-    url: "https://www.mozilla.org/"
-  }]
-};
-const ThreeSources = Template.bind({});
-ThreeSources.args = {
-  citations: [{
-    url: "https://www.mozilla.org/"
-  }, {
-    url: "https://developer.mozilla.org/en-US/docs/Web",
-    title: "Web technology for developers | MDN"
-  }, {
-    url: "https://www.test.com/"
-  }]
-};
-const FiveSources = Template.bind({});
-FiveSources.args = {
-  citations: [{
-    url: "https://www.mozilla.org/"
-  }, {
-    url: "https://developer.mozilla.org/en-US/docs/Web",
-    title: "Web technology for developers | MDN"
-  }, {
-    url: "https://www.test.com/"
-  }, {
-    url: "https://support.mozilla.org/"
-  }, {
-    url: "https://blog.mozilla.org/"
-  }]
-};
-
-/***/ }),
-
 /***/ 9583:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "panel-item.b8a3a645ed7a75455f31.css";
+
+/***/ }),
+
+/***/ 15314:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "ai-grouped-chip-container.993bc6275ac4262f1259.css";
 
 /***/ }),
 
@@ -1646,6 +1592,235 @@ customElements.define("panel-item", PanelItem);
 
 /***/ }),
 
+/***/ 39092:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   WebsiteChipContainer: () => (/* binding */ WebsiteChipContainer)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(5136);
+/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57822);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15768);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(6266);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_grouped_chip_container_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(63022);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(79240);
+/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(55362);
+
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/** @typedef {import("chrome://browser/content/urlbar/SmartbarInput.mjs").ContextWebsite} ContextWebsite */
+
+/**
+ * Container for rendering website chips
+ */
+class WebsiteChipContainer extends (0,chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__.SmartwindowOverflowRowMixin)(chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement) {
+  static properties = {
+    websites: {
+      type: Array
+    },
+    chipType: {
+      type: String
+    },
+    removable: {
+      type: Boolean
+    },
+    shouldGroupChips: {
+      type: Boolean
+    },
+    // true if we want 3 or more chips to display as ai-grouped-chip-container
+    autoOverflow: {
+      type: Boolean
+    },
+    visibleChipCount: {
+      type: Number
+    },
+    chipSize: {
+      type: String,
+      attribute: "chip-size",
+      reflect: true
+    },
+    isPanelOpen: {
+      type: Boolean,
+      state: true
+    }
+  };
+  constructor() {
+    super();
+    /** @type {ContextWebsite[]} */
+    this.websites = [];
+    this.chipType = "context-chip";
+    this.removable = false;
+    this.shouldGroupChips = false;
+    this.autoOverflow = false;
+    this.visibleChipCount = null;
+    this.chipSize = "default";
+    this.isPanelOpen = false;
+  }
+  get overflowContainerSelector() {
+    return ".chip-container-scroller";
+  }
+  get inlineItemCount() {
+    return this.visibleChipCount;
+  }
+  get overflowItems() {
+    return this.#isAutoOverflowing ? this.websites : [];
+  }
+  get #isGrouped() {
+    return this.shouldGroupChips && this.websites.length > 2;
+  }
+  get #isAutoOverflowing() {
+    return this.autoOverflow && !this.#isGrouped;
+  }
+  #panel() {
+    return this.renderRoot.querySelector("smartwindow-panel-list");
+  }
+  #onToggleClick(event) {
+    const panel = this.#panel();
+    if (panel) {
+      panel.anchor = event.currentTarget;
+      panel.toggle(event);
+    }
+  }
+  #onOverflowItemSelected(event) {
+    const url = event.detail?.id;
+    this.#panel()?.hide();
+    if (!url) {
+      return;
+    }
+    this.dispatchEvent(new CustomEvent("AIChatContent:OpenLink", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        url,
+        preferSwitchToTab: true
+      }
+    }));
+  }
+  #onRemoveWebsite(website, event) {
+    event.stopPropagation();
+    this.dispatchEvent(new CustomEvent("ai-website-chip:remove", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        url: website.url,
+        label: website.label
+      }
+    }));
+  }
+  #renderStackedChips(website) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<ai-website-chip
+      .type=${this.chipType}
+      .size=${this.chipSize}
+      .label=${website.label}
+      .href=${website.url}
+      .iconSrc=${website.iconSrc ?? ""}
+      .removable=${this.removable}
+      @ai-website-chip:remove=${e => this.#onRemoveWebsite(website, e)}
+    ></ai-website-chip>`;
+  }
+  #renderGroupedChips(chips) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<ai-grouped-chip-container
+      .chips=${chips}
+    ></ai-grouped-chip-container>`;
+  }
+  #renderChip(website) {
+    return website.historyDeleted ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="chip-history-deleted">
+          <img
+            class="chip-history-deleted-icon"
+            src="chrome://global/skin/icons/defaultFavicon.svg"
+            alt=""
+          />
+          <span data-l10n-id="aiwindow-website-chip-history-deleted"></span>
+        </div>` : this.#renderStackedChips(website);
+  }
+  #renderSmartwindowOverflowRow() {
+    const visibleCount = Math.min(this.visibleCount, this.websites.length);
+    const overflow = this.websites.slice(visibleCount);
+    const hasOverflow = !!overflow.length;
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div
+      class="chip-container-scroller smartwindow-overflow-row"
+      role="list"
+    >
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.repeat)(this.websites, website => website, (website, index) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<span role="listitem" ?data-overflow=${index >= visibleCount}
+            >${this.#renderChip(website)}</span
+          >`)}
+      <moz-button
+        class="overflow-more"
+        type="ghost"
+        ?data-overflow=${!hasOverflow}
+        .ariaHasPopup=${"menu"}
+        .ariaExpanded=${String(this.isPanelOpen)}
+        data-l10n-id="smartwindow-assistant-citations-more-label"
+        data-l10n-args=${JSON.stringify({
+      count: overflow.length
+    })}
+        @click=${this.#onToggleClick}
+      ></moz-button>
+      ${hasOverflow ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<smartwindow-panel-list
+            .groups=${[{
+      items: overflow.map(website => ({
+        id: website.url,
+        label: website.label,
+        icon: website.iconSrc
+      }))
+    }]}
+            @shown=${() => this.isPanelOpen = true}
+            @hidden=${() => this.isPanelOpen = false}
+            @item-selected=${this.#onOverflowItemSelected}
+          ></smartwindow-panel-list>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.nothing}
+    </div>`;
+  }
+  #renderScrollerRow() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<div class="chip-container-scroller" role="list">
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.repeat)(this.websites, website => website, website => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`<span role="listitem">${this.#renderChip(website)}</span>`)}
+    </div>`;
+  }
+  #renderChips() {
+    if (this.#isGrouped) {
+      return this.#renderGroupedChips(this.websites);
+    }
+    return this.#isAutoOverflowing ? this.#renderSmartwindowOverflowRow() : this.#renderScrollerRow();
+  }
+  render() {
+    if (!this.websites.length) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.nothing;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_3__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__}"
+      />
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_website_chip_container_website_chip_container_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="chip-container">${this.#renderChips()}</div>
+    `;
+  }
+}
+customElements.define("website-chip-container", WebsiteChipContainer);
+
+/***/ }),
+
 /***/ 39894:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -1656,14 +1831,101 @@ module.exports = __webpack_require__.p + "ai-website-chip.7967f398a94dae999098.c
 /***/ 45042:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-panel-list.82dd09564a2a1a92a03d.css";
+module.exports = __webpack_require__.p + "smartwindow-panel-list.c445c992372913db3719.css";
 
 /***/ }),
 
-/***/ 46616:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 52253:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "chat-assistant-citations.efc0361faf6050baa784.css";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AutoWidthOverflow: () => (/* binding */ AutoWidthOverflow),
+/* harmony export */   CountBasedGrouping: () => (/* binding */ CountBasedGrouping),
+/* harmony export */   Default: () => (/* binding */ Default),
+/* harmony export */   NoOverflow: () => (/* binding */ NoOverflow),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39092);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/AI Window/Website Chip Container",
+  component: "website-chip-container",
+  parameters: {
+    fluent: `
+smartwindow-assistant-citations-more-label = +{ $count } more
+    `
+  },
+  // Constrained container to simulate a chat bubble.
+  decorators: [(story, context) => context.parameters.frame === false ? story() : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+            <div
+              style="
+                display: inline-block;
+                ${context.parameters.frameWidth ? `width: ${context.parameters.frameWidth};` : ""}
+                padding: 16px;
+                box-sizing: border-box;
+                border: 1px dashed #ccc;
+              "
+            >
+              ${story()}
+            </div>
+          `]
+});
+const makeWebsites = count => Array.from({
+  length: count
+}, (_, index) => ({
+  url: `https://example.com/${index + 1}`,
+  label: `Example Site ${index + 1}`,
+  iconSrc: "chrome://branding/content/icon16.png"
+}));
+const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <website-chip-container
+    .chipType=${"context-chip"}
+    .websites=${makeWebsites(3)}
+    .removable=${true}
+  ></website-chip-container>
+`;
+const AutoWidthOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div
+    style="
+      resize: horizontal;
+      overflow: auto;
+      inline-size: 500px;
+      min-inline-size: 160px;
+      max-inline-size: 100%;
+      padding: 16px;
+      box-sizing: border-box;
+      border: 1px dashed #ccc;
+    "
+  >
+    <website-chip-container
+      .websites=${makeWebsites(6)}
+      .autoOverflow=${true}
+    ></website-chip-container>
+  </div>
+`;
+// This story has its own decorator frame
+AutoWidthOverflow.parameters = {
+  frame: false
+};
+const NoOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <website-chip-container
+    .websites=${makeWebsites(2)}
+    .autoOverflow=${true}
+  ></website-chip-container>
+`;
+const CountBasedGrouping = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <website-chip-container
+    .websites=${makeWebsites(6)}
+    .shouldGroupChips=${true}
+  ></website-chip-container>
+`;
 
 /***/ }),
 
@@ -1694,8 +1956,8 @@ __webpack_require__.r(__webpack_exports__);
  * This component is agnostic to the data it displays - consumers control
  * all logic including filtering, truncation, and special item handling.
  *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string}} ListItem
- * @typedef {{items: ListItem[], headerL10nId?: string}} ItemGroup
+ * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string}} ListItem
+ * @typedef {{items: ListItem[], headerL10nId?: string, header?: string}} ItemGroup
  * @property {ItemGroup[]} groups - Grouped list items to display
  * @property {string} placeholderL10nId - Fluent ID for empty state message
  * @property {object} anchor - Positioning anchor {left, top, width, height}
@@ -1735,12 +1997,19 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
   get #hasCustomItems() {
     const itemsHost = this.#panelList ?? this;
-    return [...itemsHost.children].some(element => element.localName !== "panel-item");
+    return [...itemsHost.children].some(element => element.localName !== "panel-item" && !element.classList.contains("panel-item-container"));
+  }
+  get #isCommandMode() {
+    return this.getAttribute("data-triggered-by") === "inline-command";
   }
   firstUpdated() {
     this.#panelList = this.shadowRoot.querySelector("panel-list");
     this.#panelList.addEventListener("shown", () => {
-      if (this.sidebarMode) {
+      // The command palette sizes/positions to the smartbar and
+      // should recompute as soon as it opens
+      if (this.#isCommandMode) {
+        this.#reposition();
+      } else if (this.sidebarMode) {
         this.#clampToViewport();
       }
     });
@@ -1789,6 +2058,14 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       } else {
         topOffset = anchorRect.bottom;
       }
+      // Command mode spans the full width of its anchor (the smartbar) and
+      // left-aligns to it
+      if (this.#isCommandMode) {
+        panelEl.style.width = `${anchorRect.width}px`;
+        panelEl.style.left = `${anchorRect.left + window.scrollX}px`;
+      } else {
+        panelEl.style.width = "";
+      }
       panelEl.style.top = `${topOffset + window.scrollY}px`;
       this.#clampToViewport();
     });
@@ -1817,7 +2094,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.#panelList.toggle(triggeringEvent, this.#anchorElement);
   }
   handlePanelClick(e) {
-    const panelItem = e.target.closest("panel-item");
+    const panelItem = e.target.closest("panel-item") ?? e.target.closest(".panel-item-container")?.querySelector("panel-item");
     if (panelItem && !panelItem.classList.contains("panel-section-header")) {
       const event = new CustomEvent("item-selected", {
         detail: {
@@ -1850,7 +2127,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     return !this.groups.length || this.groups.every(g => !g.items?.length);
   }
   #renderAnchor() {
-    if (!this.anchor) {
+    if (!this.anchor || this.anchor instanceof Element) {
       return null;
     }
     const rect = this.getBoundingClientRect();
@@ -1880,6 +2157,15 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
       data-l10n-id=${headerL10nId}
     ></panel-item>`;
   }
+  #renderPlainHeader(header) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="presentation"
+      class="panel-section-header"
+    >
+      ${header}
+    </panel-item>`;
+  }
   #computeItemStyles(item) {
     const styles = {};
     if (item.icon) {
@@ -1888,22 +2174,41 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     return styles;
   }
   #renderItem(item) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+    const hasDescription = !!item.description;
+    const panelItem = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
       .itemId=${item.id}
       .itemLabel=${item.label}
-      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.icon ? "true" : undefined)}
+      icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(!hasDescription && item.icon ? "true" : undefined)}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
-      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(this.#computeItemStyles(item))}
+      style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(hasDescription ? {} : this.#computeItemStyles(item))}
     >
       ${item.l10nId ? "" : item.label}
     </panel-item>`;
+    if (!hasDescription) {
+      return panelItem;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="panel-item-container">
+      ${item.icon ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="panel-item-icon" aria-hidden="true">
+            <img class="panel-item-icon-image" src=${item.icon} alt="" />
+          </span>` : ""}
+      <div class="panel-item-text">
+        ${panelItem}
+        <div class="panel-item-description">${item.description}</div>
+      </div>
+    </div>`;
   }
   #renderGroup(group) {
     if (!group.items?.length) {
       return null;
     }
+    let header = null;
+    if (group.headerL10nId) {
+      header = this.#renderGroupHeader(group.headerL10nId);
+    } else if (group.header) {
+      header = this.#renderPlainHeader(group.header);
+    }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      ${group.headerL10nId ? this.#renderGroupHeader(group.headerL10nId) : null}
+      ${header}
       ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
     `;
   }
@@ -1941,6 +2246,133 @@ customElements.define("smartwindow-panel-list", SmartwindowPanelList);
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "smartwindow-overflow-row.7a554b3715d4ee8975b6.css";
+
+/***/ }),
+
+/***/ 63022:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AIGroupedChipContainer: () => (/* binding */ AIGroupedChipContainer)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_grouped_chip_container_ai_grouped_chip_container_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(15314);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(55362);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * Container for rendering 3 or more grouped chips inside the chat content
+ */
+class AIGroupedChipContainer extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
+  static properties = {
+    chips: {
+      type: Array
+    },
+    isPanelOpen: {
+      type: Boolean,
+      state: true
+    }
+  };
+  constructor() {
+    super();
+    this.chips = [];
+    this.isPanelOpen = false;
+  }
+
+  // Keep this mousedown from reaching panel-list's document-level light-dismiss
+  // listener, so the panel stays open until the click handler runs toggle().
+  // Otherwise mousedown closes it and the click reopens it.
+  #onTriggerMousedown(event) {
+    event.stopPropagation();
+  }
+  #toggleGroupedPanel(event) {
+    const panel = this.shadowRoot.querySelector("smartwindow-panel-list");
+    panel.anchor = event.currentTarget;
+    panel.toggle();
+  }
+  #closeGroupedPanel() {
+    this.shadowRoot.querySelector("smartwindow-panel-list")?.hide();
+  }
+  #onItemSelected(event) {
+    const url = event.detail?.id;
+    if (url) {
+      this.dispatchEvent(new CustomEvent("AIChatContent:OpenLink", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          url,
+          preferSwitchToTab: true
+        }
+      }));
+    }
+    this.#closeGroupedPanel();
+  }
+  render() {
+    const chipsGroups = [{
+      items: this.chips.map(w => ({
+        id: w.url,
+        label: w.label,
+        icon: w.iconSrc
+      }))
+    }];
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_grouped_chip_container_ai_grouped_chip_container_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <button
+        class="grouped-chips"
+        id="grouped-chips-trigger"
+        aria-haspopup="menu"
+        aria-expanded=${this.isPanelOpen}
+        ?data-is-smartwindow-panel-open=${this.isPanelOpen}
+        @mousedown=${e => this.#onTriggerMousedown(e)}
+        @click=${e => this.#toggleGroupedPanel(e)}
+      >
+        <span class="grouped-chips__favicon-group">
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(this.chips, (chip, index) => `${chip.url}-${index}`, chip => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<img
+                class="grouped-chips__favicon"
+                src=${chip.iconSrc || "chrome://global/skin/icons/defaultFavicon.svg"}
+                alt=""
+                @error=${e => {
+      e.target.src = "chrome://global/skin/icons/defaultFavicon.svg";
+    }}
+              />`)}
+        </span>
+        <span
+          class="grouped-chips__label"
+          data-l10n-id="smart-window-context-chips-tag-count"
+          data-l10n-args=${JSON.stringify({
+      tags: this.chips.length
+    })}
+        ></span>
+        <img
+          class="grouped-chips__arrow-icon"
+          src="chrome://global/skin/icons/arrow-down-12.svg"
+          alt=""
+        />
+      </button>
+      <smartwindow-panel-list
+        .groups=${chipsGroups}
+        @shown=${() => this.isPanelOpen = true}
+        @hidden=${() => this.isPanelOpen = false}
+        @item-selected=${e => this.#onItemSelected(e)}
+      ></smartwindow-panel-list>
+    `;
+  }
+}
+customElements.define("ai-grouped-chip-container", AIGroupedChipContainer);
 
 /***/ }),
 
@@ -2376,181 +2808,7 @@ class MozButton extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElemen
 }
 customElements.define("moz-button", MozButton);
 
-/***/ }),
-
-/***/ 95396:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   ChatAssistantCitations: () => (/* binding */ ChatAssistantCitations)
-/* harmony export */ });
-/* harmony import */ var browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_citations_chat_assistant_citations_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(46616);
-/* harmony import */ var browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57822);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
-/* harmony import */ var chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(15768);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(79240);
-/* harmony import */ var chrome_browser_content_aiwindow_components_ai_website_chip_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(6266);
-/* harmony import */ var chrome_browser_content_aiwindow_components_smartwindow_panel_list_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(55362);
-
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-// eslint-disable-next-line import/no-unassigned-import
-
-
-/**
- * A citation source.
- *
- * @typedef {object} Citation
- * @property {string} url - Source URL
- * @property {string} [title] - Display title
- * @property {string} [faviconUrl] - Favicon URL
- * @property {boolean} [hasFavicon] - Whether we already have a favicon stored for this URL
- */
-
-/**
- * Renders citation pills for an assistant chat message.
- *
- * @property {Citation[]} citations - The sources to display.
- */
-class ChatAssistantCitations extends (0,chrome_browser_content_aiwindow_components_SmartwindowOverflowRow_mjs__WEBPACK_IMPORTED_MODULE_4__.SmartwindowOverflowRowMixin)(chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement) {
-  static properties = {
-    citations: {
-      type: Array,
-      attribute: false
-    },
-    isPanelOpen: {
-      type: Boolean,
-      state: true
-    }
-  };
-  constructor() {
-    super();
-    this.citations = [];
-    this.isPanelOpen = false;
-  }
-
-  /**
-   * @returns {string} Selector for the citations row.
-   */
-  get overflowContainerSelector() {
-    return ".citations";
-  }
-
-  /**
-   * @returns {string} Selector for the “+n more” button.
-   */
-  get overflowTriggerSelector() {
-    return ".citations-more";
-  }
-
-  /**
-   * @returns {Citation[]} The items the row measures against.
-   */
-  get overflowItems() {
-    return this.citations ?? [];
-  }
-  #panel() {
-    return this.shadowRoot.querySelector("smartwindow-panel-list");
-  }
-  #onToggleClick(event) {
-    const panel = this.#panel();
-    if (panel) {
-      panel.anchor = event.currentTarget;
-      panel.toggle(event);
-    }
-  }
-  #onPanelOpenLink() {
-    this.#panel()?.hide();
-  }
-  #label(citation) {
-    return citation.title || (URL.parse(citation.url)?.hostname ?? citation.url);
-  }
-  #titleText(citation) {
-    return citation.title || citation.url;
-  }
-  #icon(citation) {
-    if (citation.faviconUrl) {
-      return citation.faviconUrl;
-    }
-    return citation.hasFavicon ? `page-icon:${citation.url}` : "chrome://global/skin/icons/defaultFavicon.svg";
-  }
-  #renderPill(citation, {
-    itemRole,
-    showTitle
-  } = {}) {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<ai-website-chip
-      type="context-chip"
-      size="small"
-      role=${itemRole ? "presentation" : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
-      .itemRole=${itemRole ?? ""}
-      title=${showTitle ? this.#titleText(citation) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
-      .label=${this.#label(citation)}
-      .href=${citation.url}
-      .iconSrc=${this.#icon(citation)}
-    ></ai-website-chip>`;
-  }
-  render() {
-    if (!this.citations?.length) {
-      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
-    }
-    const visibleCount = Math.min(this.visibleCount, this.citations.length);
-    const citationsOverflow = this.citations.slice(visibleCount);
-    const hasOverflow = !!citationsOverflow.length;
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_smartwindow_overflow_row_smartwindow_overflow_row_css__WEBPACK_IMPORTED_MODULE_1__}"
-      />
-      <link
-        rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_ai_chat_content_chat_assistant_citations_chat_assistant_citations_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <div class="citations smartwindow-overflow-row" role="list">
-        ${this.citations.map((citation, index) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<span role="listitem" ?data-overflow=${index >= visibleCount}
-              >${this.#renderPill(citation, {
-      showTitle: true
-    })}</span
-            >`)}
-        <moz-button
-          class="citations-more"
-          type="ghost"
-          ?data-overflow=${!hasOverflow}
-          .ariaHasPopup=${"menu"}
-          .ariaExpanded=${String(this.isPanelOpen)}
-          data-l10n-id="smartwindow-assistant-citations-more-label"
-          data-l10n-args=${JSON.stringify({
-      count: citationsOverflow.length
-    })}
-          @click=${this.#onToggleClick}
-        ></moz-button>
-        ${hasOverflow ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<smartwindow-panel-list
-              @shown=${() => this.isPanelOpen = true}
-              @hidden=${() => this.isPanelOpen = false}
-              @AIChatContent:OpenLink=${this.#onPanelOpenLink}
-            >
-              ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.repeat)(citationsOverflow, citation => citation.url, citation => this.#renderPill(citation, {
-      itemRole: "menuitem"
-    }))}
-            </smartwindow-panel-list>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
-      </div>
-    `;
-  }
-}
-customElements.define("chat-assistant-citations", ChatAssistantCitations);
-
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-chat-assistant-citations-chat-assistant-citations-stories.71ddfa63.iframe.bundle.js.map
+//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.53237b6b.iframe.bundle.js.map
