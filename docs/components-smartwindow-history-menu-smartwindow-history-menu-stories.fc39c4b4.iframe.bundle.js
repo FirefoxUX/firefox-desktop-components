@@ -316,7 +316,7 @@ module.exports = __webpack_require__.p + "moz-button.f67d7f67c6092f201516.css";
 /***/ 30532:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-history-menu.b042be05cd02bb9ecbb0.css";
+module.exports = __webpack_require__.p + "smartwindow-history-menu.28f7e0a811772a4e6942.css";
 
 /***/ }),
 
@@ -1946,4 +1946,4 @@ customElements.define("smartwindow-history-menu", SmartwindowHistoryMenu);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-history-menu-smartwindow-history-menu-stories.e5cbe978.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-history-menu-smartwindow-history-menu-stories.fc39c4b4.iframe.bundle.js.map

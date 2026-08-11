@@ -18,6 +18,26 @@ moz-button.fullpage-action-button::part(button) {
   font-weight: var(--font-weight);
 }
 
+/* Non-nova has no top scrim, so these ghost buttons carry their own background. */
+@media (not -moz-pref("browser.nova.enabled")) and (not (forced-colors)) {
+  moz-button.fullpage-action-button {
+    --button-background-color-ghost: var(--smartwindow-ghost-button-background);
+    --button-background-color-ghost-hover: var(--smartwindow-ghost-button-background-hover);
+    --button-background-color-ghost-active: var(--smartwindow-ghost-button-background-active);
+    /* Hold the hover fill while the menu is open. */
+    --button-background-color-ghost-selected: var(--button-background-color-ghost-hover);
+    --button-text-color-ghost: var(--smartwindow-ghost-button-text);
+    --button-icon-fill: currentColor;
+  }
+}
+
+/* Non-nova: round the fullpage action buttons into pills. */
+@media (not -moz-pref("browser.nova.enabled")) {
+  moz-button.fullpage-action-button {
+    --button-border-radius: var(--border-radius-circle);
+  }
+}
+
 /* 4px gap between a trigger button and its opened menu. panel-list reflects
    valign to say whether it opened below (bottom) or above (top) the anchor. */
 panel-list.history-menu[valign="bottom"] {
@@ -30,17 +50,18 @@ panel-list.history-menu[valign="top"] {
 
 @media -moz-pref("browser.nova.enabled") and (not (forced-colors)) {
   moz-button.fullpage-action-button {
-    /* Design icon/color/accent/primary/desaturated: #584a7d / #9687c0. Keep the
-       text/icon this color across states; only the ghost background changes. */
+    /* Resting icon/label use the muted accent (#584a7d / #9687c0); on
+       hover/active/selected they brighten to button/text/color (#fcfbff in
+       dark). The icon tracks the label via currentColor. */
     --button-text-color-ghost: var(--icon-color-accent-primary-desaturated);
-    --button-text-color-ghost-hover: var(--button-text-color-ghost);
-    --button-text-color-ghost-active: var(--button-text-color-ghost);
-    /* Keep the accent text/icon while the button's menu is open (selected). */
-    --button-text-color-ghost-selected: var(--button-text-color-ghost);
-    --button-icon-fill: var(--icon-color-accent-primary-desaturated);
-    /* Design button/background/color/ghost/hover: #584a7d @16% light,
-       #b89cff @24% dark. Not a shared token, so define it once locally and
-       reuse for the pressed and menu-open (selected) states. */
+    --button-text-color-ghost-hover: var(--button-text-color);
+    --button-text-color-ghost-active: var(--button-text-color);
+    --button-text-color-ghost-selected: var(--button-text-color);
+    --button-icon-fill: currentColor;
+    /* No resting fill (transparent ghost; the top scrim provides legibility).
+       Design button/background/color/ghost/hover: #584a7d @16% light, #b89cff
+       @24% dark. Not a shared token, so define it once locally and reuse for
+       the pressed and menu-open (selected) states. */
     --fullpage-ghost-bg: light-dark(
       color-mix(in srgb, var(--color-violet-desaturated-60) 16%, transparent),
       color-mix(in srgb, var(--color-violet-30) 24%, transparent)
@@ -56,10 +77,12 @@ moz-button.history-menu-button {
   --button-border-radius: var(--border-radius-circle);
 
   @media not (forced-colors) {
-    --button-background-color-ghost: light-dark(var(--color-white), var(--color-black-alpha-30));
-    --button-background-color-ghost-hover: light-dark(var(--color-violet-20), color-mix(in srgb, currentColor 11%, transparent));
-    --button-background-color-ghost-active: light-dark(var(--color-violet-30), color-mix(in srgb, currentColor 17%, transparent));
-    --button-text-color-ghost: light-dark(var(--color-violet-90), var(--color-violet-0));
+    --button-background-color-ghost: var(--smartwindow-ghost-button-background);
+    --button-background-color-ghost-hover: var(--smartwindow-ghost-button-background-hover);
+    --button-background-color-ghost-active: var(--smartwindow-ghost-button-background-active);
+    /* Hold the hover fill while the menu is open. */
+    --button-background-color-ghost-selected: var(--button-background-color-ghost-hover);
+    --button-text-color-ghost: var(--smartwindow-ghost-button-text);
 
     @media -moz-pref("browser.nova.enabled") {
       --button-icon-fill: light-dark(var(--color-violet-desaturated-60), var(--color-violet-desaturated-40));

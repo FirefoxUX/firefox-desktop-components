@@ -5655,10 +5655,18 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     }));
   }
 
+  // ai-window sends its mode (sidebar/fullpage) over the actor once the content
+  // is ready; reflect it as an attribute so styles can key off it.
+  #handleSetMode(event) {
+    const mode = event.detail?.mode;
+    if (mode) {
+      this.setAttribute("mode", mode);
+    }
+  }
+
   /**
    * Initialize event listeners for AI chat content events
    */
-
   #initEventListeners() {
     this.addEventListener("aiChatContentActor:message", this.messageEvent.bind(this));
     this.addEventListener("aiChatContentActor:truncate", this.truncateEvent.bind(this));
@@ -5666,6 +5674,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.addEventListener("aiChatContentActor:seen-urls", this.#handleSeenUrls.bind(this));
     this.addEventListener("aiChatContentActor:set-generating", this.#handleSetGenerating.bind(this));
     this.addEventListener("aiChatContentActor:assets-ready", this.#handleAssetsReady.bind(this));
+    this.addEventListener("aiChatContentActor:set-mode", this.#handleSetMode.bind(this));
     this.addEventListener("aiChatError:retry-message", this.retryUserMessageAfterError.bind(this));
     this.addEventListener("SmartWindowPrompt:prompt-selected", this.#onFollowUpSelected.bind(this));
     this.addEventListener("aiChatError:new-chat", this.openNewChatAfterError.bind(this));
@@ -7022,6 +7031,8 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
           ${this.#renderError()}
         </div>
       </div>
+      <div class="fullpage-top-blur"></div>
+      <div class="fullpage-top-scrim"></div>
       <kit-mention variant="sidebar"></kit-mention>
       <div
         class="assistant-response-announcer"
@@ -8348,7 +8359,7 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ 91062:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "ai-chat-content.06cf54fd3e10c08cd261.css";
+module.exports = __webpack_require__.p + "ai-chat-content.063b9e874e6a23116bc1.css";
 
 /***/ }),
 
@@ -9065,4 +9076,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.bd8ec3d9.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.42383f28.iframe.bundle.js.map
