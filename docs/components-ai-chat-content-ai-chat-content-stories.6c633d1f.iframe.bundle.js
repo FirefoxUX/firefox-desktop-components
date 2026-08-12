@@ -2436,7 +2436,7 @@ customElements.define("moz-checkbox", MozCheckbox);
 /***/ 32984:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "agent-monitor-item.07987b5838d9a7047e94.css";
+module.exports = __webpack_require__.p + "agent-monitor-item.cf4bf29ff3b277e08a95.css";
 
 /***/ }),
 
@@ -4080,6 +4080,58 @@ module.exports = __webpack_require__.p + "smartwindow-overflow-row.7a554b3715d4e
 
 /***/ }),
 
+/***/ 58132:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   MonitorIcon: () => (/* binding */ MonitorIcon)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_monitors_display_monitors_display_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(63232);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * Small badge showing the monitor watch icon in a violet square.
+ *
+ * @property {"large"|"small"} size - Icon size. "large" (default) or "small"
+ *   (about 5px smaller). Reflected so CSS can target it via :host([size]).
+ */
+class MonitorIcon extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    size: {
+      type: String,
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.size = "large";
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_monitors_display_monitors_display_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+
+      <div class="icon-container" aria-hidden="true">
+        <span class="icon"></span>
+      </div>
+    `;
+  }
+}
+customElements.define("monitor-icon", MonitorIcon);
+
+/***/ }),
+
 /***/ 58210:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
@@ -4703,6 +4755,13 @@ class AIGroupedChipContainer extends chrome_global_content_lit_utils_mjs__WEBPAC
   }
 }
 customElements.define("ai-grouped-chip-container", AIGroupedChipContainer);
+
+/***/ }),
+
+/***/ 63232:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "monitors-display.8ba453ff7103c0e4ac90.css";
 
 /***/ }),
 
@@ -7520,12 +7579,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var chrome_global_content_elements_moz_textarea_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(27912);
 /* harmony import */ var chrome_global_content_elements_moz_select_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(62776);
 /* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(79240);
+/* harmony import */ var chrome_browser_content_aiwindow_components_monitor_icon_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(58132);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
+
+// eslint-disable-next-line import/no-unassigned-import
 
 // eslint-disable-next-line import/no-unassigned-import
 
@@ -7922,7 +7984,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
         <moz-textarea
           class="monitor-condition-input"
           data-l10n-id="ai-tasks-alert-alert"
-          data-l10n-attrs="placeholder,label"
+          data-l10n-attrs="placeholder,label,description"
           .value=${this.alertDescription}
           @input=${this.#onConditionInput}
           @change=${this.#onConditionInput}
@@ -7945,7 +8007,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
             <moz-input-url
               class="form-input page-url-input ${this.pendingUrlError ? "error" : ""}"
               data-l10n-id="ai-tasks-alert-pages"
-              data-l10n-attrs="placeholder,label,description"
+              data-l10n-attrs="placeholder,label"
               data-l10n-args=${JSON.stringify({
       maxPages: MAX_WATCH_URLS
     })}
@@ -8073,6 +8135,9 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
           </div>`;
     })}
       </div>
+      <div class="history-note">
+        <p data-l10n-id="ai-tasks-alert-change-history-description"></p>
+      </div>
     `;
   }
   #onFrequencyChange(event) {
@@ -8192,16 +8257,19 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     const agent = this.agent ?? {};
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <div class="monitor-card">
-        <h2
-          class="monitor-card-state-title"
-          data-l10n-id="ai-tasks-alert-modal-title"
-        ></h2>
+        <div class="title-container">
+          <monitor-icon size="small"></monitor-icon>
+          <h2
+            class="monitor-card-state-title"
+            data-l10n-id="ai-tasks-alert-modal-title"
+          ></h2>
+        </div>
         <div class="monitor-card-head">
           <div class="monitor-name-field">
             <moz-input-text
               class="monitor-name-input"
               data-l10n-id="ai-tasks-alert-name"
-              data-l10n-attrs="placeholder,label"
+              data-l10n-attrs="label"
               .value=${this.#monitorName}
               @change=${this.#onNameInput}
             ></moz-input-text>
@@ -9076,4 +9144,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.42383f28.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.6c633d1f.iframe.bundle.js.map

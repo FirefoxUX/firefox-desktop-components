@@ -673,20 +673,6 @@ html|dialog,
   user-select: none;
 }
 
-.fxaPairDeviceIcon {
-  background-image: url("chrome://browser/content/logos/fxa-logo.svg");
-  background-position: center center;
-  background-repeat: no-repeat;
-  position: relative;
-  height: 80px;
-  padding-top: 42px;
-  margin-top: -40px;
-}
-
-.fxaPairDeviceIcon .dialogClose {
-  margin-top: 10px;
-}
-
 .dialogClose {
   margin-inline: 0 var(--space-xsmall);
 }

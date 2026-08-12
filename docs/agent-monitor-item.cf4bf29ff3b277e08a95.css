@@ -32,6 +32,12 @@
   margin-bottom: 0;
 }
 
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+}
+
 .monitor-card-title {
   flex: 1;
   min-width: 0;
@@ -349,6 +355,12 @@ hr.rule {
   flex-direction: column;
 }
 
+.history-note {
+  font-size: var(--font-size-small);
+  color: var(--text-color-deemphasized);
+  border-top: 1px solid var(--border-color-deemphasized);
+}
+
 .history-item {
   display: grid;
   grid-template-columns: minmax(200px, 30%) minmax(80px, 15%) 1fr;
@@ -439,4 +451,8 @@ hr.rule {
 
 .condition-badge.met {
   color: var(--icon-color-success);
+}
+
+.monitor-condition-input {
+  --input-text-min-height: 90px;
 }

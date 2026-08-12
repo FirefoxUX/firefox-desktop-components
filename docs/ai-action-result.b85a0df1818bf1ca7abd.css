@@ -135,11 +135,6 @@
   animation: actionLogShimmer 2s ease-in-out infinite;
 }
 
-/* No expand affordance while the label is shimmering. */
-:host([shimmering]) .action-result-header::after {
-  display: none;
-}
-
 /* Once the sweep ends, ease the completed label in. */
 :host(:not([shimmering])) .action-result-label {
   animation: actionResultFadeIn 150ms ease-out;
