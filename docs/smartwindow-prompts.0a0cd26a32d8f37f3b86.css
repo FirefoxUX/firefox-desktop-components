@@ -32,6 +32,10 @@
   justify-content: start;
 }
 
+/* Also declared on the container so the skeleton placeholder (a plain
+ * span) can inherit these tokens without needing the .sw-prompt-button
+ * class, which tests use to mean "a real, clickable prompt". */
+.sw-prompts-container,
 .sw-prompt-button {
   --button-background-color: light-dark(var(--color-violet-0), var(--color-gray-80));
   --button-background-color-active: light-dark(color-mix(in srgb, var(--color-violet-50) 25%, transparent), color-mix(in srgb, white 15%, transparent));
@@ -82,6 +86,52 @@
   display: inline-flex;
   font-size: var(--font-size-small);
   justify-content: center;
+}
+
+/* A non-interactive placeholder pill shown while a starter's real
+ * content is still loading. */
+.sw-prompt-skeleton {
+  align-items: center;
+  background-color: var(--button-background-color);
+  border-radius: var(--button-border-radius);
+  display: inline-flex;
+  font-size: var(--button-font-size);
+  /* Reserve vertical space matching a real pill's text line. */
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  min-height: 1lh;
+  padding: var(--button-padding);
+}
+
+.sw-prompt-skeleton-text {
+  --sw-prompt-skeleton-fill-color: color-mix(in srgb, var(--button-text-color) 30%, transparent);
+
+  background-color: var(--sw-prompt-skeleton-fill-color);
+  border-radius: var(--border-radius-circle);
+  height: var(--size-item-xsmall);
+  overflow: hidden;
+  position: relative;
+  width: 6em;
+}
+
+.sw-prompt-skeleton-text::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, transparent 30%, color-mix(in srgb, var(--button-text-color) 55%, transparent) 50%, transparent 70%);
+  transform: translateX(-100%);
+  animation: sw-prompt-skeleton-shimmer 1.6s ease-in-out infinite;
+}
+
+@keyframes sw-prompt-skeleton-shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-prompt-skeleton-text::after {
+    animation: none;
+  }
 }
 
 /* stylelint-disable stylelint-plugin-mozilla/use-design-tokens, stylelint-plugin-mozilla/no-base-design-tokens */
@@ -182,6 +232,10 @@
     }
   }
 
+  /* Custom properties are also declared on the container (not just
+   * .sw-prompt-button) so the skeleton placeholder pill can inherit them -
+   * see the base (non-Nova) declaration above for why. */
+  .sw-prompts-container,
   .sw-prompt-button {
     /* Note: Listing the Nova value of these tokens as a backup for consistency because some tokens do not currently exist, ex: "color-neutral" */
     --prompt-button-background-dark-color: var(--color-gray-70, #26272f);
@@ -200,7 +254,9 @@
     --button-text-color: var(--smartwindow-text-color-accent-primary);
     --button-text-color-hover: var(--smartwindow-text-color-accent-primary);
     --button-text-color-active: var(--smartwindow-text-color-accent-primary);
+  }
 
+  .sw-prompt-button {
     --focus-outline-offset: var(--dimension-2);
 
     outline: none;
@@ -225,7 +281,7 @@
       linear-gradient(#fff 0 0);
     mask-composite: exclude;
     pointer-events: none;
-    transition: all ease-out 500ms;
+    transition: all ease-out 200ms;
   }
 
   .sw-prompt-button::part(button)::before {
@@ -243,15 +299,15 @@
   }
 
   .sw-prompt-button.has-interacted:not(:hover, :focus, :active)::part(button)::after {
-    animation: hover-focus-fade-out 500ms ease-out forwards;
+    animation: hover-focus-fade-out 200ms ease-out forwards;
   }
 
   .sw-prompt-button:is(:hover, :focus)::part(button)::after {
-    animation: hover-focus-fade-in 500ms ease-in forwards;
+    animation: hover-focus-fade-in 200ms ease-in forwards;
   }
 
   .sw-prompt-button:active::part(button)::after {
-    animation: active-fade-in 500ms ease-in forwards;
+    animation: active-fade-in 200ms ease-in forwards;
     background-image: linear-gradient(400deg, var(--sw-prompt-gradient-violet) 40%, var(--sw-prompt-gradient-pink) 100%);
   }
 
@@ -259,19 +315,13 @@
     cursor: pointer;
   }
 
-  /* Styles below apply only to the `resume` pill variant. :has()
-   * avoids a dedicated class since only these pills render a favicon
-   * cluster. Fill and text colors match the regular pill; only the ring,
-   * shimmer, and favicon cluster differ. */
+  /* Styles below apply only to the `resume` pill variant. :has() avoids a
+   * dedicated class since only these pills render a favicon cluster. The
+   * border/hover treatment is otherwise identical to a regular pill;
+   * only the favicon cluster differs. */
   /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
   .sw-prompt-button:has(.sw-prompt-favicons) {
     --sw-prompt-fill-color: var(--prompt-button-background-color);
-    /* RGB triplets (rather than full colors) since they're reused with
-     * different alpha values for the ring, box-shadow, and shimmer. */
-    --sw-prompt-ring-violet-rgb: 138, 99, 255;
-    --sw-prompt-ring-pink-rgb: 227, 91, 168;
-    --sw-prompt-ring-orange-rgb: 255, 180, 92;
-    --sw-prompt-shimmer-violet-rgb: 212, 193, 255;
   }
 
   .sw-prompt-favicon,
@@ -293,72 +343,5 @@
     object-fit: contain;
     -moz-context-properties: fill;
     fill: var(--icon-color);
-  }
-
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-  .sw-prompt-button:has(.sw-prompt-favicons)::part(button) {
-    border: 1px solid transparent;
-    overflow: hidden;
-    background:
-      linear-gradient(var(--sw-prompt-fill-color), var(--sw-prompt-fill-color)) padding-box,
-      linear-gradient(
-          100deg,
-          rgba(var(--sw-prompt-ring-violet-rgb), 0.55),
-          rgba(var(--sw-prompt-ring-pink-rgb), 0.55) 60%,
-          rgba(var(--sw-prompt-ring-orange-rgb), 0.55)
-        )
-        border-box;
-    box-shadow: 0 3px 12px -2px rgba(var(--sw-prompt-ring-violet-rgb), 0.35);
-  }
-
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-  .sw-prompt-button:has(.sw-prompt-favicons):is(:hover, :focus, :active)::part(button) {
-    background:
-      linear-gradient(var(--sw-prompt-fill-color), var(--sw-prompt-fill-color)) padding-box,
-      linear-gradient(100deg, rgba(var(--sw-prompt-ring-violet-rgb), 1), rgba(var(--sw-prompt-ring-pink-rgb), 1) 60%, rgba(var(--sw-prompt-ring-orange-rgb), 1))
-        border-box;
-  }
-
-  /* Disables the shared hover-reveal gradient above; this ring is always on. */
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-  .sw-prompt-button:has(.sw-prompt-favicons)::part(button)::after {
-    content: none;
-  }
-
-  /* Reuses ::before for a one-shot hover shimmer instead of the shared fade. */
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-  .sw-prompt-button:has(.sw-prompt-favicons)::part(button)::before {
-    content: "";
-    inset: 0;
-    mask: none;
-    padding: 0;
-    transition: none;
-    background: linear-gradient(
-      110deg,
-      transparent 25%,
-      rgba(var(--sw-prompt-shimmer-violet-rgb), 0.25) 45%,
-      rgba(var(--sw-prompt-ring-orange-rgb), 0.18) 55%,
-      transparent 75%
-    );
-    transform: translateX(-100%);
-    opacity: 1;
-  }
-
-  /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-  .sw-prompt-button:has(.sw-prompt-favicons):hover::part(button)::before {
-    animation: sw-prompt-favicon-shimmer 0.9s cubic-bezier(0.4, 0, 0.3, 1) 1 forwards;
-  }
-
-  @keyframes sw-prompt-favicon-shimmer {
-    to {
-      transform: translateX(100%);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    /* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
-    .sw-prompt-button:has(.sw-prompt-favicons):hover::part(button)::before {
-      animation: none;
-    }
   }
 }

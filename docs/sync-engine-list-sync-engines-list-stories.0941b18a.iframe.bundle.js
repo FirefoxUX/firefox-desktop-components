@@ -2316,6 +2316,9 @@ chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.P
   },
   visible() {
     return Referrals.isEnabled;
+  },
+  onUserClick: () => {
+    Referrals.openReferralsTab(window);
   }
 });
 let accountsEnabled = Services.prefs.getBoolPref("identity.fxaccounts.enabled");
@@ -2579,11 +2582,8 @@ chrome_browser_content_preferences_config_SettingGroupManager_mjs__WEBPACK_IMPOR
     hidden: !Referrals.isEnabled,
     items: [{
       id: "referrals-link",
-      control: "moz-box-link",
-      l10nId: "referrals-link",
-      controlAttrs: {
-        href: "about:referrals"
-      }
+      control: "moz-box-button",
+      l10nId: "referrals-link"
     }]
   }
 });
@@ -3007,4 +3007,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.726fdba5.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.0941b18a.iframe.bundle.js.map

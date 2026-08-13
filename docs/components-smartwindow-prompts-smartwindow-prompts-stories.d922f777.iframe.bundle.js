@@ -30,7 +30,7 @@ const MAX_VISIBLE_FAVICONS = 3;
  * A component for displaying conversation starter prompts.
  * Renders a list of prompt buttons that can be clicked to start a conversation.
  *
- * @property {Array<{text: string, type: string, previewIcons?: Array<{iconSrc: string}>}>} prompts - Array of prompt objects to display
+ * @property {Array<{text: string, type: string, previewIcons?: Array<{iconSrc: string}>, memory?: object, content?: object}>} prompts - Array of prompt objects to display
  */
 class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
@@ -48,11 +48,21 @@ class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
     this.mode = "fullpage";
   }
   #promptSelected(swPrompt) {
+    const {
+      text,
+      type
+    } = swPrompt;
+    const detail = type === "resume" ? {
+      text,
+      type,
+      memory: swPrompt.memory,
+      content: swPrompt.content
+    } : {
+      text,
+      type
+    };
     const event = new CustomEvent("SmartWindowPrompt:prompt-selected", {
-      detail: {
-        text: swPrompt.text,
-        type: swPrompt.type
-      },
+      detail,
       bubbles: true,
       composed: true
     });
@@ -94,6 +104,18 @@ class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       </span>
     `;
   }
+
+  /**
+   * Renders a non-interactive placeholder pill shown in a starter slot
+   * while its real content is still loading.
+   */
+  #renderSkeletonPrompt() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <span class="sw-prompt-skeleton" aria-hidden="true">
+        <span class="sw-prompt-skeleton-text"></span>
+      </span>
+    `;
+  }
   render() {
     if (!this.prompts.length) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)``;
@@ -105,17 +127,17 @@ class SmartWindowPrompts extends chrome_global_content_lit_utils_mjs__WEBPACK_IM
       />
       <!-- TODO : TODO a11y translations? -->
       <div class="sw-prompts-container" role="group">
-        ${this.prompts.map(swPrompt => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-            <moz-button
-              class="sw-prompt-button"
-              @click=${() => this.#promptSelected(swPrompt)}
-              @mouseenter=${this.#hasInteracted}
-              @focusin=${this.#hasInteracted}
-              aria-label=${swPrompt.text}
-            >
-              ${this.#renderFavicons(swPrompt.previewIcons)}${swPrompt.text}
-            </moz-button>
-          `)}
+        ${this.prompts.map(swPrompt => swPrompt.type === "skeleton" ? this.#renderSkeletonPrompt() : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+                <moz-button
+                  class="sw-prompt-button"
+                  @click=${() => this.#promptSelected(swPrompt)}
+                  @mouseenter=${this.#hasInteracted}
+                  @focusin=${this.#hasInteracted}
+                  aria-label=${swPrompt.text}
+                >
+                  ${this.#renderFavicons(swPrompt.previewIcons)}${swPrompt.text}
+                </moz-button>
+              `)}
       </div>
     `;
   }
@@ -127,7 +149,7 @@ customElements.define("smartwindow-prompts", SmartWindowPrompts);
 /***/ 24718:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-prompts.b5efcde3f68dd10a39a8.css";
+module.exports = __webpack_require__.p + "smartwindow-prompts.0a0cd26a32d8f37f3b86.css";
 
 /***/ }),
 
@@ -960,4 +982,4 @@ FullpageWithFavicons.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-prompts-smartwindow-prompts-stories.f9922dbe.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-prompts-smartwindow-prompts-stories.d922f777.iframe.bundle.js.map

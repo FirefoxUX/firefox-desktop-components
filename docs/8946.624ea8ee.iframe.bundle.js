@@ -555,12 +555,9 @@ class ThemePicker extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
       return "";
     }
     const icons = {
-      // eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
-      light: "chrome://browser/skin/weather/sunny.svg",
-      // eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
-      dark: "chrome://browser/skin/weather/night-clear.svg",
-      // eslint-disable-next-line mozilla/no-browser-refs-in-toolkit
-      device: "chrome://browser/skin/device-desktop.svg"
+      light: "chrome://global/skin/icons/sun.svg",
+      dark: "chrome://global/skin/icons/moon.svg",
+      device: "chrome://global/skin/icons/local-host.svg"
     };
     return (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-segmented-control
       .value=${this.appearance}
@@ -625,4 +622,4 @@ customElements.define("theme-picker", ThemePicker);
 /***/ })
 
 }]);
-//# sourceMappingURL=8946.5a01054d.iframe.bundle.js.map
+//# sourceMappingURL=8946.624ea8ee.iframe.bundle.js.map
