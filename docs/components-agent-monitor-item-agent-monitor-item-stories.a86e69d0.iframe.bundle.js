@@ -1695,6 +1695,9 @@ const SCHEDULE_ICON = "chrome://browser/skin/calendar-24.svg";
 const TIME_ICON = "chrome://browser/skin/history-20.svg";
 const MAX_WATCH_URLS = 5;
 
+// How long to coalesce typing before mirroring the form to the host
+const DRAFT_PERSIST_DELAY_MS = 250;
+
 // Check times offered by the create card in 30-minute increments
 const TIME_OPTIONS = Array.from({
   length: 48
@@ -1759,6 +1762,7 @@ const WEEKDAYS = [{
  *  - agent-monitor-item:toggle       detail: { expanded }
  *  - agent-monitor-item:edit-toggle  detail: { editing }
  *  - agent-monitor-item:submit       detail: { mode, id, monitorName, condition, watchUrls, schedule }
+ *  - agent-monitor-item:draft-change detail: { draft: MonitorDraft|null }
  *  - agent-monitor-item:cancel
  *  - agent-monitor-item:delete       detail: { id }
  *  - agent-monitor-item:pause        detail: { id, paused }
@@ -1781,6 +1785,18 @@ const WEEKDAYS = [{
  *    history?: Array<{ when: string, oldValue?: string, newValue?: string,
  *                      note?: string, flag?: string, low?: boolean }>,
  *  }
+ * @property {?MonitorDraft} draft - In-progress form state to restore over the
+ *  values seeded from 'agent'. The card only renders it, the host owns it:
+ *  every edit is mirrored back out via 'agent-monitor-item:draft-change' so an
+ *  unsubmitted form survives the card being torn down and rebuilt.
+ *  {
+ *    editing?: boolean,        // reopen the edit form the draft belongs to
+ *    monitorName?: string,
+ *    condition?: string,
+ *    watchUrls?: string[],
+ *    pendingUrl?: string,
+ *    schedule?: { frequency: string, time: string, weekday: number },
+ *  }
  * @property {"display"|"create"} mode - Which card layout to render
  * @property {boolean} expanded - Whether the display card is expanded
  * @property {boolean} editing - Whether the editable condition field is shown
@@ -1789,6 +1805,9 @@ const WEEKDAYS = [{
 class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
     agent: {
+      type: Object
+    },
+    draft: {
       type: Object
     },
     mode: {
@@ -1838,6 +1857,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   constructor() {
     super();
     this.agent = {};
+    this.draft = null;
     this.mode = "display";
     this.expanded = false;
     this.editing = false;
@@ -1852,39 +1872,147 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.#draftName = null;
   }
   #draftName;
+  #draftPersistTimer = null;
   willUpdate(changed) {
     if (changed.has("agent")) {
-      this.#draftName = null;
-      const {
-        watchUrls,
-        url,
-        condition,
-        expanded
-      } = this.agent ?? {};
-      let seededUrls = [];
-      if (watchUrls?.length) {
-        seededUrls = watchUrls;
-      } else if (url) {
-        seededUrls = [url];
-      }
-      this.pageUrls = seededUrls.filter(u => u?.trim().length);
-      this.alertDescription = condition ?? "";
-      this.pendingUrl = "";
-      this.pendingUrlError = "";
+      this.#seedFromAgent();
+    }
+    if (changed.has("agent") || changed.has("draft")) {
+      this.#applyDraft();
+    }
+  }
+  disconnectedCallback() {
+    if (this.#draftPersistTimer) {
+      this.#flushDraft();
+    }
+    super.disconnectedCallback();
+  }
+  #seedFromAgent() {
+    this.#draftName = null;
+    const {
+      watchUrls,
+      url,
+      condition,
+      expanded
+    } = this.agent ?? {};
+    let seededUrls = [];
+    if (watchUrls?.length) {
+      seededUrls = watchUrls;
+    } else if (url) {
+      seededUrls = [url];
+    }
+    this.pageUrls = seededUrls.filter(u => u?.trim().length);
+    this.alertDescription = condition ?? "";
+    this.pendingUrl = "";
+    this.pendingUrlError = "";
 
-      // If the agent data includes an expanded state, apply it
-      if (expanded !== undefined) {
-        this.expanded = expanded;
-      }
+    // If the agent data includes an expanded state, apply it
+    if (expanded !== undefined) {
+      this.expanded = expanded;
+    }
 
-      // Seed the schedule fields from an existing monitor so edit mode reflects
-      // its current scheduled
-      const schedule = this.agent?.schedule;
-      if (schedule) {
-        this.checkFrequency = schedule.frequency ?? this.checkFrequency;
-        this.scheduleTime = schedule.time ?? this.scheduleTime;
-        this.scheduleWeekday = schedule.weekday ? Number(schedule.weekday) : this.scheduleWeekday;
+    // Seed the schedule fields from an existing monitor so edit mode reflects
+    // its current scheduled
+    const schedule = this.agent?.schedule;
+    if (schedule) {
+      this.checkFrequency = schedule.frequency ?? this.checkFrequency;
+      this.scheduleTime = schedule.time ?? this.scheduleTime;
+      this.scheduleWeekday = schedule.weekday ? Number(schedule.weekday) : this.scheduleWeekday;
+    }
+  }
+
+  /**
+   * Restores an unsubmitted form over the values seeded from 'agent'.
+   */
+  #applyDraft() {
+    if (!this.draft) {
+      return;
+    }
+    const {
+      editing,
+      monitorName,
+      condition,
+      watchUrls,
+      pendingUrl,
+      schedule
+    } = this.draft;
+
+    // A draft only outlives the card while an edit is unsubmitted, so reopen
+    // the form the user was in the middle of. The edit affordances live in the
+    // expanded body, so the card has to come back expanded to show them.
+    if (editing) {
+      this.editing = true;
+      this.expanded = true;
+    }
+    if (monitorName !== undefined) {
+      this.#draftName = monitorName;
+    }
+    if (condition !== undefined) {
+      this.alertDescription = condition;
+    }
+    if (watchUrls) {
+      this.pageUrls = [...watchUrls];
+    }
+    if (pendingUrl !== undefined) {
+      this.pendingUrl = pendingUrl;
+    }
+    if (schedule?.frequency) {
+      this.checkFrequency = schedule.frequency;
+    }
+    if (schedule?.time) {
+      this.scheduleTime = schedule.time;
+    }
+    if (schedule?.weekday !== undefined) {
+      this.scheduleWeekday = Number(schedule.weekday);
+    }
+  }
+
+  /**
+   * Mirrors the in-progress form out to the host.
+   *
+   * @param {object} [options]
+   * @param {boolean} [options.debounce] - Coalesce rapid edits, for typing
+   */
+  #persistDraft({
+    debounce = false
+  } = {}) {
+    if (this.mode !== "create" && !this.editing) {
+      return;
+    }
+    this.#clearDraftTimer();
+    if (!debounce) {
+      this.#flushDraft();
+      return;
+    }
+    this.#draftPersistTimer = setTimeout(() => this.#flushDraft(), DRAFT_PERSIST_DELAY_MS);
+  }
+  #flushDraft() {
+    this.#clearDraftTimer();
+    this.#dispatch("agent-monitor-item:draft-change", {
+      draft: {
+        editing: this.editing,
+        monitorName: this.#monitorName,
+        condition: this.alertDescription,
+        watchUrls: [...this.pageUrls],
+        pendingUrl: this.pendingUrl,
+        schedule: {
+          frequency: this.checkFrequency,
+          time: this.scheduleTime,
+          weekday: this.scheduleWeekday
+        }
       }
+    });
+  }
+  #discardDraft() {
+    this.#clearDraftTimer();
+    this.#dispatch("agent-monitor-item:draft-change", {
+      draft: null
+    });
+  }
+  #clearDraftTimer() {
+    if (this.#draftPersistTimer) {
+      clearTimeout(this.#draftPersistTimer);
+      this.#draftPersistTimer = null;
     }
   }
   #dispatch(type, detail) {
@@ -1904,6 +2032,10 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   #onNameInput(event) {
     this.#draftName = event.target.value;
+    // Typing coalesces, a change (blur) flushes right away
+    this.#persistDraft({
+      debounce: event.type === "input"
+    });
   }
   #onCardClick(e) {
     if (e.target.closest("button, moz-button")) {
@@ -1919,15 +2051,26 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   #onEditToggle() {
     this.editing = !this.editing;
+    // Opening the form is itself worth remembering, so an edit session that
+    // hasn't been typed in yet survives too. Leaving discards the edit.
+    if (this.editing) {
+      this.#persistDraft();
+    } else {
+      this.#discardDraft();
+    }
     this.#dispatch("agent-monitor-item:edit-toggle", {
       editing: this.editing
     });
   }
   #onConditionInput(event) {
     this.alertDescription = event.target.value;
+    this.#persistDraft({
+      debounce: event.type === "input"
+    });
   }
   #onPresetClick(preset) {
     this.alertDescription = preset;
+    this.#persistDraft();
   }
 
   // TODO: Bug 2054529 - share this URL validation with about:tools' create form
@@ -1991,9 +2134,11 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.pageUrls = [...this.pageUrls, url];
     this.pendingUrl = "";
     this.pendingUrlError = "";
+    this.#persistDraft();
   }
   #removeUrl(url) {
     this.pageUrls = this.pageUrls.filter(u => u !== url);
+    this.#persistDraft();
   }
   #displayUrl(url) {
     try {
@@ -2005,6 +2150,9 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   #onPendingUrlInput(event) {
     this.pendingUrl = event.target.value;
     this.#validatePendingUrl();
+    this.#persistDraft({
+      debounce: true
+    });
   }
   #onPendingUrlKeydown(event) {
     if (event.key !== "Enter") {
@@ -2013,10 +2161,19 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     event.preventDefault();
     this.#addUrl();
   }
+  #onCancel() {
+    // Cancelling drops the whole card, and with it the draft the host holds,
+    // so this only has to stop a coalesced edit from landing after that
+    this.#clearDraftTimer();
+    this.#dispatch("agent-monitor-item:cancel", {});
+  }
   #onSubmit() {
     if (!this.#isFormValid) {
       return;
     }
+    // The host drops the draft as it commits the form, so make sure a coalesced
+    // edit can't land after that and resurrect it
+    this.#clearDraftTimer();
     const isCreateMode = this.mode === "create";
     this.#dispatch("agent-monitor-item:submit", {
       mode: this.mode,
@@ -2230,12 +2387,15 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   #onFrequencyChange(event) {
     this.checkFrequency = event.target.value;
+    this.#persistDraft();
   }
   #onScheduleTimeChange(event) {
     this.scheduleTime = event.target.value;
+    this.#persistDraft();
   }
   #onWeekdayChange(event) {
     this.scheduleWeekday = Number(event.target.value);
+    this.#persistDraft();
   }
   #renderScheduleSummary() {
     const schedule = this.agent?.schedule;
@@ -2359,6 +2519,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
               data-l10n-id="ai-tasks-alert-name"
               data-l10n-attrs="label"
               .value=${this.#monitorName}
+              @input=${this.#onNameInput}
               @change=${this.#onNameInput}
             ></moz-input-text>
           </div>
@@ -2373,10 +2534,11 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
         <div class="monitor-card-actions">
           <span class="spacer"></span>
           <moz-button
+            id="cancel-create-button"
             type="default"
             data-l10n-id="ai-tasks-alert-cancel-button"
             data-l10n-attrs="label"
-            @click=${() => this.#dispatch("agent-monitor-item:cancel", {})}
+            @click=${this.#onCancel}
           ></moz-button>
           <moz-button
             type="primary"
@@ -2444,6 +2606,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
 
         <div class="monitor-card-actions">
           ${!this.editing ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+                  id="edit-button"
                   type="default"
                   @click=${this.#onEditToggle}
                   data-l10n-id="ai-tasks-alert-edit-button"
@@ -2472,6 +2635,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
 
           <span class="spacer"></span>
           ${this.editing ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <moz-button
+                  id="cancel-edit-button"
                   type="secondary"
                   @click=${this.#onEditToggle}
                   data-l10n-id="ai-tasks-alert-cancel-button"
@@ -2513,4 +2677,4 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.ca1b74cb.iframe.bundle.js.map
+//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.a86e69d0.iframe.bundle.js.map

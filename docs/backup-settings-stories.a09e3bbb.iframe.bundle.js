@@ -1,10 +1,139 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[2524,6284,6296,7216,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4469,6284,6296,9240],{
 
 /***/ 3952:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "turn-on-scheduled-backups.29de146e1b2e26b33855.css";
+
+/***/ }),
+
+/***/ 7150:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ DisableBackupEncryption)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42346);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26296);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const ERROR_L10N_ID = "backup-error-retry";
+
+/**
+ * The widget for disabling password protection if the backup is already
+ * encrypted.
+ */
+class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    // managed by BackupUIChild
+    disableEncryptionErrorCode: {
+      type: Number
+    }
+  };
+  static get queries() {
+    return {
+      cancelButtonEl: "#backup-disable-encryption-cancel-button",
+      confirmButtonEl: "#backup-disable-encryption-confirm-button",
+      errorEl: "#disable-backup-encryption-error"
+    };
+  }
+  constructor() {
+    super();
+    this.disableEncryptionErrorCode = 0;
+  }
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+    this.reset();
+  }
+  reset() {
+    this.disableEncryptionErrorCode = 0;
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
+      bubbles: true
+    }));
+  }
+  errorTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="disable-backup-encryption-error"
+        type="error"
+        .messageL10nId=${ERROR_L10N_ID}
+      ></moz-message-bar>
+    `;
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="backup-disable-encryption-wrapper"
+        aria-labelledby="backup-disable-encryption-header"
+        aria-describedby="backup-disable-encryption-description"
+      >
+        <h1
+          id="backup-disable-encryption-header"
+          class="heading-medium"
+          data-l10n-id="disable-backup-encryption-header"
+        ></h1>
+        <main id="backup-disable-encryption-content">
+          <div id="backup-disable-encryption-description">
+            <span
+              id="backup-disable-encryption-description-span"
+              data-l10n-id="disable-backup-encryption-description2"
+            >
+            </span>
+            <a
+              id="backup-disable-encryption-learn-more-link"
+              is="moz-support-link"
+              support-page="firefox-backup"
+              data-l10n-id="disable-backup-encryption-support-link"
+              utm-content="remove-password"
+            ></a>
+          </div>
+          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
+        </main>
+
+        <moz-button-group id="backup-disable-encryption-button-group">
+          <moz-button
+            id="backup-disable-encryption-cancel-button"
+            @click=${this.close}
+            data-l10n-id="disable-backup-encryption-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="backup-disable-encryption-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id="disable-backup-encryption-confirm-button"
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("disable-backup-encryption", DisableBackupEncryption);
 
 /***/ }),
 
@@ -136,6 +265,598 @@ class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_
   }
 }
 customElements.define("password-rules-tooltip", PasswordRulesTooltip);
+
+/***/ }),
+
+/***/ 8650:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ TurnOffScheduledBackups)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_turn_off_scheduled_backups_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(95380);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * The widget for showing available options when users want to turn off
+ * scheduled backups.
+ */
+class TurnOffScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    // Identifier of the message, surface, or code path that hosted this
+    // widget. Forwarded to BackupService.setScheduledBackups so that
+    // browser.backup.scheduler_toggle_source can attribute the disable.
+    source: {
+      type: String,
+      reflect: true,
+      attribute: "source"
+    }
+  };
+  static get queries() {
+    return {
+      cancelButtonEl: "#backup-turn-off-scheduled-cancel-button",
+      confirmButtonEl: "#backup-turn-off-scheduled-confirm-button"
+    };
+  }
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:DisableScheduledBackups", {
+      bubbles: true,
+      detail: {
+        source: this.source
+      }
+    }));
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="backup-turn-off-scheduled-wrapper"
+        aria-labelledby="backup-turn-off-scheduled-header"
+        aria-describedby="backup-turn-off-scheduled-description"
+      >
+        <h1
+          id="backup-turn-off-scheduled-header"
+          class="heading-medium"
+          data-l10n-id="turn-off-scheduled-backups-header"
+        ></h1>
+        <main id="backup-turn-off-scheduled-content">
+          <div id="backup-turn-off-scheduled-description">
+            <span
+              id="backup-turn-off-scheduled-description-span"
+              data-l10n-id="turn-off-scheduled-backups-description"
+            ></span>
+            <a
+              id="backup-turn-off-scheduled-learn-more-link"
+              is="moz-support-link"
+              support-page="firefox-backup"
+              data-l10n-id="turn-off-scheduled-backups-support-link"
+              utm-content="turn-off-backup"
+            ></a>
+          </div>
+        </main>
+
+        <moz-button-group id="backup-turn-off-scheduled-button-group">
+          <moz-button
+            id="backup-turn-off-scheduled-cancel-button"
+            @click=${this.close}
+            data-l10n-id="turn-off-scheduled-backups-cancel-button"
+          ></moz-button>
+          <moz-button
+            id="backup-turn-off-scheduled-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id="turn-off-scheduled-backups-confirm-button"
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_turn_off_scheduled_backups_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("turn-off-scheduled-backups", TurnOffScheduledBackups);
+
+/***/ }),
+
+/***/ 9437:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ BackupSettings)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_backup_settings_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(93297);
+/* harmony import */ var browser_themes_shared_preferences_preferences_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(20703);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
+/* harmony import */ var chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(78821);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29307);
+/* harmony import */ var chrome_browser_content_backup_turn_on_scheduled_backups_mjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(12224);
+/* harmony import */ var chrome_browser_content_backup_turn_off_scheduled_backups_mjs__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(8650);
+/* harmony import */ var chrome_browser_content_backup_restore_from_backup_mjs__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(48847);
+/* harmony import */ var chrome_browser_content_backup_enable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(36609);
+/* harmony import */ var chrome_browser_content_backup_disable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(7150);
+
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * The widget for managing the BackupService that is embedded within the main
+ * document of about:settings / about:preferences.
+ */
+class BackupSettings extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
+  inProgressTimeout = null;
+  showInProgress = false;
+
+  // Decides how long the progress message bar persists for
+  MESSAGE_BAR_BUFFER = 3000;
+  static properties = {
+    backupServiceState: {
+      type: Object
+    },
+    _enableEncryptionTypeAttr: {
+      type: String
+    }
+  };
+  static get queries() {
+    return {
+      scheduledBackupsButtonEl: "#backup-toggle-scheduled-button",
+      archiveSectionEl: "#scheduled-backups",
+      restoreSectionEl: "#backup-toggle-restore-button",
+      triggerBackupButtonEl: "#backup-trigger-button",
+      changePasswordButtonEl: "#backup-change-password-button",
+      disableBackupEncryptionEl: "disable-backup-encryption",
+      disableBackupEncryptionDialogEl: "#disable-backup-encryption-dialog",
+      enableBackupEncryptionEl: "enable-backup-encryption",
+      enableBackupEncryptionDialogEl: "#enable-backup-encryption-dialog",
+      turnOnScheduledBackupsDialogEl: "#turn-on-scheduled-backups-dialog",
+      turnOnScheduledBackupsEl: "turn-on-scheduled-backups",
+      turnOffScheduledBackupsEl: "turn-off-scheduled-backups",
+      turnOffScheduledBackupsDialogEl: "#turn-off-scheduled-backups-dialog",
+      restoreFromBackupEl: "restore-from-backup",
+      restoreFromBackupButtonEl: "#backup-toggle-restore-button",
+      restoreFromBackupDialogEl: "#restore-from-backup-dialog",
+      sensitiveDataCheckboxInputEl: "#backup-sensitive-data-checkbox-input",
+      passwordControlsEl: "#sensitive-data",
+      lastBackupFileNameEl: "#last-backup-filename",
+      lastBackupDateEl: "#last-backup-date",
+      backupLocationShowButtonEl: "#backup-location-show",
+      backupErrorBarEl: "#create-backup-error",
+      backupInProgressMessageBarEl: "#backup-in-progress-message"
+    };
+  }
+  get dialogs() {
+    return [this.disableBackupEncryptionDialogEl, this.enableBackupEncryptionDialogEl, this.turnOnScheduledBackupsDialogEl, this.turnOffScheduledBackupsDialogEl, this.restoreFromBackupDialogEl];
+  }
+
+  /**
+   * Creates a BackupPreferences instance and sets the initial default
+   * state.
+   */
+  constructor() {
+    super();
+    this.backupServiceState = {
+      backupDirPath: "",
+      backupFileToRestore: null,
+      backupFileInfo: null,
+      defaultParent: {
+        fileName: "",
+        path: "",
+        iconURL: ""
+      },
+      encryptionEnabled: false,
+      scheduledBackupsEnabled: false,
+      lastBackupDate: null,
+      lastBackupFileName: "",
+      supportBaseLink: "",
+      backupInProgress: false,
+      recoveryInProgress: false,
+      recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.NONE,
+      backupErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.NONE,
+      archiveEnabledStatus: false,
+      restoreEnabledStatus: false
+    };
+    this._enableEncryptionTypeAttr = "";
+  }
+
+  /**
+   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
+   * DOM, which registers with BackupUIChild for BackupService state updates.
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
+      bubbles: true
+    }));
+    this.addEventListener("dialogCancel", this);
+    this.addEventListener("restoreFromBackupConfirm", this);
+    this.addEventListener("restoreFromBackupChooseFile", this);
+    this.addEventListener("BackupUI:RestoreDialogReady", this);
+  }
+  handleErrorBarDismiss = () => {
+    // Reset the pref and reactive state; Lit will re-render without the bar.
+    this.dispatchEvent(new CustomEvent("BackupUI:ErrorBarDismissed", {
+      bubbles: true
+    }));
+  };
+  handleEvent(event) {
+    switch (event.type) {
+      case "dialogCancel":
+        for (let dialog of this.dialogs) {
+          dialog?.close();
+        }
+        break;
+      case "restoreFromBackupConfirm":
+        this.dispatchEvent(new CustomEvent("BackupUI:RestoreFromBackupFile", {
+          bubbles: true,
+          composed: true,
+          detail: {
+            backupPassword: event.detail.backupPassword,
+            source: "preferences"
+          }
+        }));
+        break;
+      case "restoreFromBackupChooseFile":
+        this.dispatchEvent(new CustomEvent("BackupUI:RestoreFromBackupChooseFile", {
+          bubbles: true,
+          composed: true
+        }));
+        break;
+      case "BackupUI:RestoreDialogReady":
+        if (this.restoreFromBackupDialogEl) {
+          this.restoreFromBackupDialogEl.showModal();
+        }
+        break;
+    }
+  }
+  handleBackupTrigger() {
+    this.dispatchEvent(new CustomEvent("BackupUI:TriggerCreateBackup", {
+      bubbles: true
+    }));
+  }
+  handleShowScheduledBackups() {
+    if (!this.backupServiceState.scheduledBackupsEnabled && this.turnOnScheduledBackupsDialogEl) {
+      this.turnOnScheduledBackupsDialogEl.showModal();
+    } else if (this.backupServiceState.scheduledBackupsEnabled && this.turnOffScheduledBackupsDialogEl) {
+      this.turnOffScheduledBackupsDialogEl.showModal();
+    }
+  }
+  async handleToggleBackupEncryption(event) {
+    if (event.target.slot) {
+      return;
+    }
+    event.stopPropagation();
+    event.preventDefault();
+
+    // User is trying to uncheck the checkbox, meaning encryption is already
+    // enabled and should be disabled.
+    let toggledToDisable = event.target.checked && this.backupServiceState.encryptionEnabled;
+    if (toggledToDisable && this.disableBackupEncryptionDialogEl) {
+      this.disableBackupEncryptionDialogEl.showModal();
+    } else {
+      this._enableEncryptionTypeAttr = "set-password";
+      await this.updateComplete;
+      this.enableBackupEncryptionDialogEl.showModal();
+    }
+  }
+  async handleChangePassword() {
+    if (this.enableBackupEncryptionDialogEl) {
+      this._enableEncryptionTypeAttr = "change-password";
+      await this.updateComplete;
+      this.enableBackupEncryptionDialogEl.showModal();
+    }
+  }
+  turnOnScheduledBackupsDialogTemplate() {
+    let {
+      fileName,
+      path,
+      iconURL
+    } = this.backupServiceState.defaultParent;
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog
+      id="turn-on-scheduled-backups-dialog"
+      class="backup-dialog"
+      @close=${this.handleTurnOnScheduledBackupsDialogClose}
+    >
+      <turn-on-scheduled-backups
+        source="preferences"
+        defaultlabel=${fileName}
+        defaultpath=${path}
+        defaulticonurl=${iconURL}
+        .supportBaseLink=${this.backupServiceState.supportBaseLink}
+      ></turn-on-scheduled-backups>
+    </dialog>`;
+  }
+  turnOffScheduledBackupsDialogTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog id="turn-off-scheduled-backups-dialog">
+      <turn-off-scheduled-backups
+        source="preferences"
+      ></turn-off-scheduled-backups>
+    </dialog>`;
+  }
+  restoreFromBackupDialogTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog id="restore-from-backup-dialog">
+      <restore-from-backup></restore-from-backup>
+    </dialog>`;
+  }
+  restoreFromBackupTemplate() {
+    let restoreL10nID = this.backupServiceState.scheduledBackupsEnabled ? "settings-data-backup-restore-scheduled-on" : "settings-data-backup-restore-scheduled-off";
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-box-button
+        id="backup-toggle-restore-button"
+        @click=${this.handleShowRestoreDialog}
+        data-l10n-id=${restoreL10nID}
+      ></moz-box-button>
+      ${this.restoreFromBackupDialogTemplate()}`;
+  }
+  handleShowRestoreDialog() {
+    if (this.restoreFromBackupDialogEl) {
+      this.dispatchEvent(new CustomEvent("BackupUI:PrepareRestoreDialog", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          source: "preferences"
+        }
+      }));
+      this.restoreFromBackupDialogEl.showModal();
+    }
+  }
+  handleLocationPickerClick(e) {
+    // Let clicks on the "show" button through.
+    let showButton = this.shadowRoot?.querySelector("#backup-location-show");
+    if (showButton && e.composedPath().includes(showButton)) {
+      return;
+    }
+
+    // Override the built-in moz-input-folder file picker with our own in the
+    // parent process to avoid propogating the picked path between actors.
+    e.stopPropagation();
+    this.handleEditBackupLocation();
+  }
+  handleShowBackupLocation() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowBackupLocation", {
+      bubbles: true
+    }));
+  }
+  handleEditBackupLocation() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
+      bubbles: true,
+      detail: {
+        win: window.browsingContext,
+        alsoDeleteLastBackup: true
+      }
+    }));
+  }
+  handleTurnOnScheduledBackupsDialogClose() {
+    this.turnOnScheduledBackupsEl.reset();
+  }
+  handleEnableBackupEncryptionDialogClose() {
+    this.enableBackupEncryptionEl.reset();
+  }
+  enableBackupEncryptionDialogTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog
+      id="enable-backup-encryption-dialog"
+      class="backup-dialog"
+      @close=${this.handleEnableBackupEncryptionDialogClose}
+    >
+      <enable-backup-encryption
+        type=${this._enableEncryptionTypeAttr}
+        .supportBaseLink=${this.backupServiceState.supportBaseLink}
+      ></enable-backup-encryption>
+    </dialog>`;
+  }
+  disableBackupEncryptionDialogTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<dialog id="disable-backup-encryption-dialog">
+      <disable-backup-encryption></disable-backup-encryption>
+    </dialog>`;
+  }
+  lastBackupInfoTemplate() {
+    // The lastBackupDate is stored in preferences, which only accepts
+    // 32-bit signed values, so we automatically divide it by 1000 before
+    // storing it. We need to re-multiply it by 1000 to get Fluent to render
+    // the right time.
+    let backupDateArgs = {
+      date: this.backupServiceState.lastBackupDate * 1000
+    };
+    let backupFileNameArgs = {
+      fileName: this.backupServiceState.lastBackupFileName
+    };
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <div id="last-backup-info" slot="description">
+        <div
+          id="last-backup-date"
+          data-l10n-id="settings-data-backup-last-backup-date"
+          data-l10n-args=${JSON.stringify(backupDateArgs)}
+        ></div>
+        <div
+          id="last-backup-filename"
+          data-l10n-id="settings-data-backup-last-backup-filename"
+          data-l10n-args=${JSON.stringify(backupFileNameArgs)}
+        ></div>
+      </div>
+    `;
+  }
+  backupLocationTemplate() {
+    let {
+      backupDirPath
+    } = this.backupServiceState;
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <moz-input-folder
+        id="last-backup-location"
+        data-l10n-id="settings-data-backup-last-backup-location2"
+        .value=${backupDirPath}
+        @click=${{
+      handleEvent: e => this.handleLocationPickerClick(e),
+      capture: true
+    }}
+      >
+        <moz-button
+          id="backup-location-show"
+          @click=${this.handleShowBackupLocation}
+          data-l10n-id="settings-data-backup-last-backup-location-show-in-folder"
+          slot="actions"
+        ></moz-button>
+      </moz-input-folder>
+    `;
+  }
+  sensitiveDataTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <moz-fieldset data-l10n-id="settings-sensitive-data" id="sensitive-data">
+        <moz-checkbox
+          id="backup-sensitive-data-checkbox-input"
+          data-l10n-id="settings-data-toggle-encryption-label2"
+          @click=${{
+      handleEvent: e => this.handleToggleBackupEncryption(e),
+      capture: true
+    }}
+          .checked=${this.backupServiceState.encryptionEnabled}
+        >
+          <a
+            slot="support-link"
+            is="moz-support-link"
+            support-page="firefox-backup"
+            data-l10n-id="settings-data-toggle-encryption-support-link"
+            utm-content="encryption"
+          ></a>
+          <moz-box-button
+            id="backup-change-password-button"
+            @click=${this.handleChangePassword}
+            data-l10n-id="settings-data-change-password2"
+            slot="nested"
+          ></moz-box-button>
+        </moz-checkbox>
+      </moz-fieldset>
+    `;
+  }
+  inProgressMessageBarTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <moz-message-bar
+        type="info"
+        id="backup-in-progress-message"
+        data-l10n-id="settings-data-backup-in-progress-message"
+      ></moz-message-bar>
+    `;
+  }
+  errorBarTemplate() {
+    const l10nId = (0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.backupServiceState.backupErrorCode);
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <moz-message-bar
+        type="error"
+        id="create-backup-error"
+        dismissable
+        data-l10n-id=${l10nId}
+        @message-bar:user-dismissed=${this.handleErrorBarDismiss}
+      >
+        <a
+          id="create-backup-error-learn-more-link"
+          slot="support-link"
+          is="moz-support-link"
+          support-page="firefox-backup"
+          data-l10n-id="settings-data-toggle-encryption-support-link"
+          utm-content="backup-error"
+        ></a>
+      </moz-message-bar>
+    `;
+  }
+  render() {
+    let scheduledBackupsEnabledState = this.backupServiceState.scheduledBackupsEnabled;
+    let scheduledBackupsEnabledL10nID = scheduledBackupsEnabledState ? "settings-data-backup-scheduled-backups-on2" : "settings-data-backup-scheduled-backups-off2";
+    let backupToggleL10nID = scheduledBackupsEnabledState ? "settings-data-backup-toggle-off2" : "settings-data-backup-toggle-on2";
+    let scheduledBackupsIcon = scheduledBackupsEnabledState ? "chrome://global/skin/icons/check-filled.svg" : "chrome://global/skin/icons/warning.svg";
+    if (this.backupServiceState.backupInProgress) {
+      if (!this.showInProgress) {
+        this.showInProgress = true;
+        // Keep the in progress message bar visible for at least 3 seconds
+        clearTimeout(this.inProgressTimeout);
+        this.inProgressTimeout = setTimeout(() => {
+          this.showInProgress = false;
+          this.requestUpdate();
+        }, this.MESSAGE_BAR_BUFFER);
+      }
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<link
+        rel="stylesheet"
+        href="${browser_themes_shared_preferences_preferences_css__WEBPACK_IMPORTED_MODULE_1__}"
+      />
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_backup_settings_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.backupServiceState.backupErrorCode ? this.errorBarTemplate() : null}
+      ${this.showInProgress ? this.inProgressMessageBarTemplate() : null}
+      ${this.turnOnScheduledBackupsDialogTemplate()}
+      ${this.turnOffScheduledBackupsDialogTemplate()}
+      ${this.enableBackupEncryptionDialogTemplate()}
+      ${this.disableBackupEncryptionDialogTemplate()}
+      <moz-box-group>
+        ${this.backupServiceState.archiveEnabledStatus ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-box-item
+                id="scheduled-backups"
+                class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.classMap)({
+      "scheduled-backups-enabled": scheduledBackupsEnabledState,
+      "scheduled-backups-disabled": !scheduledBackupsEnabledState
+    })}
+                data-l10n-id=${scheduledBackupsEnabledL10nID}
+                iconsrc=${scheduledBackupsIcon}
+              >
+                ${this.backupServiceState.lastBackupDate ? this.lastBackupInfoTemplate() : null}
+                ${scheduledBackupsEnabledState ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+                      <moz-button
+                        id="backup-trigger-button"
+                        @click=${this.handleBackupTrigger}
+                        data-l10n-id="settings-data-backup-trigger-button"
+                        ?disabled=${this.showInProgress}
+                        slot="actions"
+                      ></moz-button>
+                    ` : null}
+              </moz-box-item>
+              <moz-box-button
+                id="backup-toggle-scheduled-button"
+                @click=${this.handleShowScheduledBackups}
+                data-l10n-id=${backupToggleL10nID}
+              ></moz-box-button>` : null}
+        ${this.backupServiceState.restoreEnabledStatus ? this.restoreFromBackupTemplate() : null}
+      </moz-box-group>
+      ${this.backupServiceState.archiveEnabledStatus && this.backupServiceState.scheduledBackupsEnabled ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`${this.backupLocationTemplate()}${this.sensitiveDataTemplate()}` : null}`;
+  }
+}
+customElements.define("backup-settings", BackupSettings);
 
 /***/ }),
 
@@ -421,22 +1142,16 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
     if (this._showPasswordOptions && this._passwordsMatch) {
       detail.password = this._inputPassValue;
     }
-    if (this.embeddedFxBackupOptIn && this.backupIsEncrypted) {
-      if (!detail.password) {
-        this.dispatchEvent(new CustomEvent("SpotlightOnboardingAdvanceScreens", {
-          bubbles: true
-        }));
-        return;
-      }
-      detail.parentDirPath = this.backupServiceState?.embeddedComponentPersistentData?.path || detail.parentDirPath;
+    if (this.embeddedFxBackupOptIn && this.backupIsEncrypted && !detail.password) {
+      this.dispatchEvent(new CustomEvent("SpotlightOnboardingAdvanceScreens", {
+        bubbles: true
+      }));
+      return;
     }
     this._pendingConfirmDetail = detail;
     this.dispatchEvent(new CustomEvent("BackupUI:ProbeDefaultBackupDir", {
       bubbles: true,
-      composed: true,
-      detail: {
-        parentDirPath: detail.parentDirPath
-      }
+      composed: true
     }));
   }
   handleTogglePasswordOptions() {
@@ -659,6 +1374,20 @@ class TurnOnScheduledBackups extends chrome_global_content_lit_utils_mjs__WEBPAC
   }
 }
 customElements.define("turn-on-scheduled-backups", TurnOnScheduledBackups);
+
+/***/ }),
+
+/***/ 19483:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "restore-from-backup.70bc6a41e7cd4ecf101d.css";
+
+/***/ }),
+
+/***/ 20703:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "preferences.224a8c4d172d77693316.css";
 
 /***/ }),
 
@@ -1398,25 +2127,19 @@ module.exports = __webpack_require__.p + "moz-button.f67d7f67c6092f201516.css";
 
 /***/ }),
 
-/***/ 44170:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-card.e0ed46c3f102c4d631d3.css";
-
-/***/ }),
-
-/***/ 52524:
+/***/ 36609:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ MozCard)
+/* harmony export */   "default": () => (/* binding */ EnableBackupEncryption)
 /* harmony export */ });
-/* harmony import */ var toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(44170);
-/* harmony import */ var toolkit_themes_shared_design_system_src_text_and_typography_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(44311);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
-
+/* harmony import */ var browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(72195);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26296);
+/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55454);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29307);
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -1425,154 +2148,774 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+
 /**
- * Cards contain content and actions about a single subject.
- * There are two card types:
- * The default type where no type attribute is required and the card
- * will have no extra functionality.
+ * Valid attributes for the enable-backup-encryption dialog type.
  *
- * The "accordion" type will initially not show any content. The card
- * will contain an arrow to expand the card so that all of the content
- * is visible. You can use the "expanded" attribute to force the accordion
- * card to show its content on initial render.
- *
- * @property {string} heading - The heading text that will be used for the card.
- * @property {number} headingLevel - Can be used to specify whether the heading is h1-h6 if not a regular span.
- * @property {string} iconSrc - Path to the icon that should be displayed in the card.
- * @property {string} type - (optional) The type of card. No type specified
- *   will be the default card. The other available type is "accordion"
- * @property {string} spacing - (optional) The level of spacing applied to the card. If unspecified,
- *   will use default spacing. The other available option is "compact", which has reduced spacing.
- * @property {boolean} expanded - A flag to indicate whether the card is
- *  expanded or not. Can be used to expand the content section of the
- *  accordion card on initial render.
- * @property {string} role - (optional) Role of the article element in the card.
- * @property {number} summaryTabIndex - (optional) tabindex for the accordion summary.
- * @slot content - The content to show inside of the card.
+ * @see EnableBackupEncryption.type
  */
-class MozCard extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
-  static queries = {
-    detailsEl: "#moz-card-details",
-    headingEl: "#heading",
-    contentEl: "#content",
-    summaryEl: "summary",
-    contentSlotEl: "#content-slot"
-  };
+const VALID_TYPES = Object.freeze({
+  SET_PASSWORD: "set-password",
+  CHANGE_PASSWORD: "change-password"
+});
+const VALID_L10N_IDS = new Map([[VALID_TYPES.SET_PASSWORD, "enable-backup-encryption-header"], [VALID_TYPES.CHANGE_PASSWORD, "change-backup-encryption-header"]]);
+const ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.INVALID_PASSWORD]: "backup-error-password-requirements",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN]: "backup-error-retry"
+});
+
+/**
+ * @param {number} errorCode Error code from backup-constants.mjs
+ * @returns {string} Localization ID for error message
+ */
+function getErrorL10nId(errorCode) {
+  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN];
+}
+
+/**
+ * The widget for enabling password protection if the backup is not yet
+ * encrypted.
+ */
+class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    heading: {
+    // internal state
+    _inputPassValue: {
       type: String,
-      fluent: true
+      state: true
     },
-    headingLevel: {
-      type: Number
+    _passwordsMatch: {
+      type: Boolean,
+      state: true
     },
-    iconSrc: {
+    // passed from parents
+    supportBaseLink: {
       type: String
     },
+    /**
+     * The "type" attribute changes the layout.
+     *
+     * @see VALID_TYPES
+     */
     type: {
       type: String,
       reflect: true
     },
-    spacing: {
-      type: String,
-      reflect: true
-    },
-    expanded: {
-      type: Boolean
-    },
-    role: {
-      type: String,
-      mapped: true
-    },
-    summaryTabIndex: {
+    // managed by BackupUIChild
+    enableEncryptionErrorCode: {
       type: Number
     }
   };
+  static get queries() {
+    return {
+      cancelButtonEl: "#backup-enable-encryption-cancel-button",
+      confirmButtonEl: "#backup-enable-encryption-confirm-button",
+      contentEl: "#backup-enable-encryption-content",
+      textHeaderEl: "#backup-enable-encryption-header",
+      textDescriptionEl: "#backup-enable-encryption-description",
+      passwordInputsEl: "#backup-enable-encryption-password-inputs",
+      errorEl: "#enable-backup-encryption-error"
+    };
+  }
   constructor() {
     super();
-    this.type = "default";
-    this.spacing = "default";
-    this.expanded = false;
-    /* When set to 1-6, it uses h1-h6 around the heading */
-    this.headingLevel = 0;
+    this.supportBaseLink = "";
+    this.type = VALID_TYPES.SET_PASSWORD;
+    this._inputPassValue = "";
+    this._passwordsMatch = false;
+    this.enableEncryptionErrorCode = 0;
   }
-  headingTextTemplate() {
-    const headingLevels = [(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`span`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h1`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h2`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h3`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h4`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h5`, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.literal)`h6`];
-    const tagName = headingLevels[this.headingLevel] || headingLevels[0];
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.staticHtml)`<${tagName} id="heading" title=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.heading)} part="heading">${this.heading}</${tagName}>`;
+  connectedCallback() {
+    super.connectedCallback();
+    // Listening to events from child <password-validation-inputs>
+    this.addEventListener("ValidPasswordsDetected", this);
+    this.addEventListener("InvalidPasswordsDetected", this);
   }
-  headingTemplate() {
-    if (!this.heading) {
-      return "";
+  handleEvent(event) {
+    if (event.type == "ValidPasswordsDetected") {
+      let {
+        password
+      } = event.detail;
+      this._passwordsMatch = true;
+      this._inputPassValue = password;
+    } else if (event.type == "InvalidPasswordsDetected") {
+      this._passwordsMatch = false;
+      this._inputPassValue = "";
     }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-      <div id="heading-wrapper" part="moz-card-heading-wrapper">
-        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(this.type == "accordion", () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="chevron-icon"></div>`)}
-        ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.when)(!!this.iconSrc, () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<img
-              id="heading-icon"
-              src=${this.iconSrc}
-              role="presentation"
-            />`)}
-        ${this.headingTextTemplate()}
-      </div>
-    `;
   }
-  cardTemplate() {
-    if (this.type === "accordion") {
-      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-        <div class="moz-card-wrapper">
-          <div id="cover-image"><slot name="cover-image"></slot></div>
-          <details
-            id="moz-card-details"
-            @toggle=${this.onToggle}
-            ?open=${this.expanded}
-          >
-            <summary part="summary" tabindex=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.summaryTabIndex)}>
-              ${this.headingTemplate()}
-            </summary>
-            <div id="content"><slot id="content-slot"></slot></div>
-          </details>
-        </div>
-      `;
-    }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-      <div id="moz-card-details">
-        <div id="cover-image"><slot name="cover-image"></slot></div>
-        ${this.headingTemplate()}
-        <div id="content" aria-describedby="content">
-          <slot></slot>
-        </div>
-      </div>
-    `;
-  }
-  onToggle() {
-    this.expanded = this.detailsEl.open;
-    this.dispatchEvent(new ToggleEvent("toggle", {
-      newState: this.detailsEl.open ? "open" : "closed",
-      oldState: this.detailsEl.open ? "closed" : "open"
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
     }));
   }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
-      <link
-        rel="stylesheet"
-        href="${toolkit_themes_shared_design_system_src_text_and_typography_css__WEBPACK_IMPORTED_MODULE_1__}"
-      />
-      <link
-        rel="stylesheet"
-        href="${toolkit_content_widgets_moz_card_moz_card_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      <article
-        role=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.role)}
-        class="moz-card"
-        aria-labelledby=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.ifDefined)(this.heading ? "heading" : undefined)}
+  reset() {
+    this._inputPassValue = "";
+    this._passwordsMatch = false;
+    this.passwordInputsEl.reset();
+    this.enableEncryptionErrorCode = 0;
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:EnableEncryption", {
+      bubbles: true,
+      detail: {
+        password: this._inputPassValue
+      }
+    }));
+  }
+  descriptionTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="backup-enable-encryption-description">
+        <span
+          id="backup-enable-encryption-description-span"
+          data-l10n-id="settings-sensitive-data-encryption-description"
+        >
+        </span>
+        <a
+          id="backup-enable-encryption-learn-more-link"
+          is="moz-support-link"
+          support-page="firefox-backup"
+          data-l10n-id="enable-backup-encryption-support-link"
+          utm-content="add-password"
+        ></a>
+      </div>
+    `;
+  }
+  buttonGroupTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-button-group id="backup-enable-encryption-button-group">
+        <moz-button
+          id="backup-enable-encryption-cancel-button"
+          @click=${this.close}
+          data-l10n-id="enable-backup-encryption-cancel-button"
+        ></moz-button>
+        <moz-button
+          id="backup-enable-encryption-confirm-button"
+          @click=${this.handleConfirm}
+          type="primary"
+          data-l10n-id="enable-backup-encryption-confirm-button"
+          ?disabled=${!this._passwordsMatch}
+        ></moz-button>
+      </moz-button-group>
+    `;
+  }
+  errorTemplate() {
+    let messageId = getErrorL10nId(this.enableEncryptionErrorCode);
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="enable-backup-encryption-error"
+        type="error"
+        .messageL10nId=${messageId}
+      ></moz-message-bar>
+    `;
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="backup-enable-encryption-wrapper"
+        aria-labelledby="backup-enable-encryption-header"
+        aria-describedby="backup-enable-encryption-description"
       >
-        ${this.cardTemplate()}
-      </article>
+        <h1
+          id="backup-enable-encryption-header"
+          class="heading-medium"
+          data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(VALID_L10N_IDS.get(this.type))}
+        ></h1>
+        <div id="backup-enable-encryption-content">
+          ${this.type === VALID_TYPES.SET_PASSWORD ? this.descriptionTemplate() : null}
+          <password-validation-inputs
+            id="backup-enable-encryption-password-inputs"
+            .supportBaseLink=${this.supportBaseLink}
+          >
+          </password-validation-inputs>
+
+          ${this.enableEncryptionErrorCode ? this.errorTemplate() : null}
+        </div>
+        ${this.buttonGroupTemplate()}
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
     `;
   }
 }
-customElements.define("moz-card", MozCard);
+customElements.define("enable-backup-encryption", EnableBackupEncryption);
+
+/***/ }),
+
+/***/ 42346:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584db13a46f.css";
+
+/***/ }),
+
+/***/ 48847:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ RestoreFromBackup)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(19483);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(29307);
+/* harmony import */ var chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(78821);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(26296);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * The widget for allowing users to select and restore from a
+ * a backup file.
+ */
+class RestoreFromBackup extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  #placeholderFileIconURL = "chrome://global/skin/icons/page-portrait.svg";
+  /**
+   * When the user clicks the button to choose a backup file to restore, we send
+   * a message to the `BackupService` process asking it to read that file.
+   * When we do this, we set this property to be a promise, which we resolve
+   * when the file reading is complete.
+   */
+  #backupFileReadPromise = null;
+
+  /**
+   * Resolves when BackupUIParent sends state for the first time.
+   */
+  get initializedPromise() {
+    return this.#initializedResolvers.promise;
+  }
+  #initializedResolvers = Promise.withResolvers();
+
+  /**
+   * It's possible if the user selected an invalid backup file that there is a
+   * filename but no info. To prevent that case from repeatedly asking for the
+   * 'missing' info, this tracks the previous filename we asked for.
+   */
+  #lastBackupInfoFilename = null;
+  static properties = {
+    _fileIconURL: {
+      type: String
+    },
+    _restoreType: {
+      type: String
+    },
+    aboutWelcomeEmbedded: {
+      type: Boolean
+    },
+    backupServiceState: {
+      type: Object
+    }
+  };
+  static get queries() {
+    return {
+      filePicker: "#backup-filepicker-input",
+      passwordInput: "#backup-password-input",
+      cancelButtonEl: "#restore-from-backup-cancel-button",
+      confirmButtonEl: "#restore-from-backup-confirm-button",
+      chooseButtonEl: "#backup-filepicker-button",
+      errorMessageEl: "#restore-from-backup-error"
+    };
+  }
+  get isIncorrectPassword() {
+    return this.backupServiceState?.recoveryErrorCode === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNAUTHORIZED;
+  }
+  get isFileError() {
+    const code = this.backupServiceState?.recoveryErrorCode;
+    return code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.CORRUPTED_ARCHIVE || code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNSUPPORTED_BACKUP_VERSION || code === chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.UNSUPPORTED_APPLICATION;
+  }
+  constructor() {
+    super();
+    this._fileIconURL = "";
+    this._restoreType = "add";
+    // Set the default state
+    this.backupServiceState = {
+      backupDirPath: "",
+      backupFileToRestore: null,
+      backupFileInfo: null,
+      defaultParent: {
+        fileName: "",
+        path: "",
+        iconURL: ""
+      },
+      encryptionEnabled: false,
+      scheduledBackupsEnabled: false,
+      selectableProfilesAllowed: false,
+      lastBackupDate: null,
+      lastBackupFileName: "",
+      supportBaseLink: "https://support.mozilla.org/",
+      backupInProgress: false,
+      recoveryInProgress: false,
+      recoveryErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.NONE
+    };
+  }
+
+  /**
+   * Dispatches the BackupUI:InitWidget custom event upon being attached to the
+   * DOM, which registers with BackupUIChild for BackupService state updates.
+   */
+  connectedCallback() {
+    super.connectedCallback();
+    this.dispatchEvent(new CustomEvent("BackupUI:InitWidget", {
+      bubbles: true
+    }));
+
+    // If we have a backup file, but not the associated info, fetch the info
+    this.maybeGetBackupFileInfo();
+    this.addEventListener("BackupUI:SelectNewFilepickerPath", this);
+    this.addEventListener("BackupUI:StateWasUpdated", this);
+  }
+  maybeGetBackupFileInfo() {
+    if (this.backupServiceState?.backupFileToRestore && !this.backupServiceState?.backupFileInfo) {
+      this.getBackupFileInfo();
+    }
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+  }
+  updated(changedProperties) {
+    super.updated(changedProperties);
+    if (changedProperties.has("backupServiceState")) {
+      // If we got a recovery error, recoveryInProgress should be false
+      const inProgress = this.backupServiceState.recoveryInProgress && !this.backupServiceState.recoveryErrorCode;
+      this.dispatchEvent(new CustomEvent("BackupUI:RecoveryProgress", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          recoveryInProgress: inProgress
+        }
+      }));
+
+      // It's possible that backupFileToRestore got updated and we need to
+      // refetch the fileInfo
+      this.maybeGetBackupFileInfo();
+    }
+  }
+  handleEvent(event) {
+    if (event.type == "BackupUI:SelectNewFilepickerPath") {
+      let {
+        iconURL
+      } = event.detail;
+      this._fileIconURL = iconURL;
+
+      // Check the backup info again even if it was the same file.
+      this.#lastBackupInfoFilename = null;
+      this.#backupFileReadPromise = Promise.withResolvers();
+      this.#backupFileReadPromise.promise.then(() => {
+        const payload = {
+          location: this.backupServiceState?.backupFileCoarseLocation,
+          valid: this.backupServiceState?.recoveryErrorCode == chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_3__.ERRORS.NONE
+        };
+        if (payload.valid) {
+          payload.backup_timestamp = new Date(this.backupServiceState?.backupFileInfo?.date || 0).getTime();
+          payload.restore_id = this.backupServiceState?.restoreID;
+          payload.encryption = this.backupServiceState?.backupFileInfo?.isEncrypted;
+          payload.app_name = this.backupServiceState?.backupFileInfo?.appName;
+          payload.version = this.backupServiceState?.backupFileInfo?.appVersion;
+          payload.build_id = this.backupServiceState?.backupFileInfo?.buildID;
+          payload.os_name = this.backupServiceState?.backupFileInfo?.osName;
+          payload.os_version = this.backupServiceState?.backupFileInfo?.osVersion;
+          payload.os_build_number = this.backupServiceState?.backupFileInfo?.osBuildNumber;
+          payload.telemetry_enabled = this.backupServiceState?.backupFileInfo?.healthTelemetryEnabled;
+        }
+        Glean.browserBackup.restoreFileChosen.record(payload);
+        Services.obs.notifyObservers(null, "browser-backup-glean-sent");
+      });
+      this.getBackupFileInfo();
+    } else if (event.type == "BackupUI:StateWasUpdated") {
+      this.#initializedResolvers.resolve();
+      if (this.#backupFileReadPromise) {
+        this.#backupFileReadPromise.resolve();
+        this.#backupFileReadPromise = null;
+      }
+    }
+  }
+  handleRestoreTypeChange(event) {
+    this._restoreType = event.target.value;
+  }
+  handleChooseBackupFile() {
+    this.dispatchEvent(new CustomEvent("BackupUI:ShowFilepicker", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        win: window.browsingContext,
+        filter: "filterHTML",
+        existingBackupPath: this.backupServiceState?.backupFileToRestore
+      }
+    }));
+  }
+  getBackupFileInfo() {
+    let backupFile = this.backupServiceState?.backupFileToRestore;
+    if (!backupFile || this.#lastBackupInfoFilename === backupFile) {
+      return;
+    }
+    this.#lastBackupInfoFilename = backupFile;
+    this.dispatchEvent(new CustomEvent("BackupUI:GetBackupFileInfo", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleCancel() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  handleConfirm() {
+    if (!this.backupServiceState?.backupFileToRestore || this.backupServiceState?.recoveryInProgress) {
+      return;
+    }
+    let backupPassword = this.passwordInput?.value;
+    this.dispatchEvent(new CustomEvent("BackupUI:RestoreFromBackupFile", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        backupPassword,
+        restoreType: this._restoreType,
+        source: this.aboutWelcomeEmbedded ? "onboarding" : "preferences"
+      }
+    }));
+  }
+
+  /**
+   * Constructs a support URL with UTM parameters for use
+   * when embedded in about:welcome
+   *
+   * @param {string} supportPage - The support page slug
+   * @returns {string} The full support URL including UTM params
+   */
+
+  getSupportURLWithUTM(supportPage) {
+    let supportURL = new URL(supportPage, this.backupServiceState.supportBaseLink);
+    supportURL.searchParams.set("utm_medium", "firefox-desktop");
+    supportURL.searchParams.set("utm_source", "npo");
+    supportURL.searchParams.set("utm_campaign", "fx-backup-restore");
+    supportURL.searchParams.set("utm_content", "restore-error");
+    return supportURL.href;
+  }
+  applyContentCustomizations() {
+    if (this.aboutWelcomeEmbedded) {
+      this.style.setProperty("--label-font-weight", "var(--font-weight-semibold)");
+    }
+  }
+  renderBackupFileInfo(backupFileInfo) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+      id="restore-from-backup-backup-found-info"
+      data-l10n-id="backup-file-creation-metadata2"
+      data-l10n-args=${JSON.stringify({
+      profileName: backupFileInfo.profileName ?? "",
+      machineName: backupFileInfo.deviceName ?? "",
+      date: backupFileInfo.date ? new Date(backupFileInfo.date).getTime() : 0
+    })}
+    ></p>`;
+  }
+  renderBackupFileStatus() {
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+    if (recoveryErrorCode && !this.isIncorrectPassword && (this.isFileError || this.aboutWelcomeEmbedded)) {
+      return this.genericFileErrorTemplate();
+    }
+    if (!backupFileInfo) {
+      return null;
+    }
+
+    // Backup file found and no error
+    return this.renderBackupFileInfo(backupFileInfo);
+  }
+  controlsTemplate() {
+    let iconURL = this.#placeholderFileIconURL;
+    if (this.backupServiceState?.backupFileToRestore && !this.aboutWelcomeEmbedded) {
+      iconURL = this._fileIconURL || this.#placeholderFileIconURL;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <fieldset id="backup-restore-controls">
+        ${this.aboutWelcomeEmbedded ? null : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div>
+              <a
+                id="restore-from-backup-support-link"
+                slot="support-link"
+                is="moz-support-link"
+                support-page="firefox-backup"
+                data-l10n-id="restore-from-backup-support-link1"
+              ></a>
+            </div>`}
+        <fieldset id="backup-filepicker-controls">
+          <label
+            id="backup-filepicker-label"
+            class="heading-medium"
+            for="backup-filepicker-input"
+            data-l10n-id="restore-from-backup-filepicker-label"
+          ></label>
+          <div id="backup-filepicker">
+            ${this.inputTemplate(iconURL)}
+            <moz-button
+              id="backup-filepicker-button"
+              @click=${this.handleChooseBackupFile}
+              data-l10n-id="restore-from-backup-file-choose-button"
+              aria-controls="backup-filepicker-input"
+            ></moz-button>
+          </div>
+
+          ${this.renderBackupFileStatus()}
+        </fieldset>
+        <fieldset id="password-entry-controls">
+          ${this.backupServiceState?.backupFileInfo?.isEncrypted ? this.passwordEntryTemplate() : null}
+        </fieldset>
+
+        ${this.backupServiceState?.selectableProfilesAllowed ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <moz-radio-group
+              name="restore-from-backup-type"
+              id="restore-from-backup-type-group"
+              data-l10n-id="restore-from-backup-type-group-label"
+              heading-level="3"
+              @change=${this.handleRestoreTypeChange}
+            >
+              <moz-radio
+                data-l10n-id="restore-from-backup-type-add"
+                value="add"
+                checked
+              ></moz-radio>
+              <moz-radio
+                data-l10n-id="restore-from-backup-type-replace"
+                value="replace"
+              ></moz-radio>
+            </moz-radio-group>` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <moz-message-bar type="info">
+              <span
+                slot="message"
+                data-l10n-id="restore-from-backup-profiles-disabled-message"
+              >
+              </span>
+            </moz-message-bar>`}
+      </fieldset>
+    `;
+  }
+  inputTemplate(iconURL) {
+    const styles = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)({
+      ...(iconURL ? {
+        backgroundImage: `url(${iconURL})`
+      } : {}),
+      fieldSizing: "content",
+      width: "100%"
+    });
+    const backupFileName = this.backupServiceState?.backupFileToRestore || "";
+    const {
+      backupFileInfo,
+      recoveryErrorCode
+    } = this.backupServiceState || {};
+    const hasInlineFileError = recoveryErrorCode && !this.isIncorrectPassword && (this.isFileError || this.aboutWelcomeEmbedded);
+    let describedBy = "";
+    if (hasInlineFileError) {
+      describedBy = "backup-generic-file-error";
+    } else if (!backupFileInfo) {
+      describedBy = "restore-from-backup-no-backup-file-link";
+    } else {
+      describedBy = "restore-from-backup-backup-found-info";
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <textarea
+        id="backup-filepicker-input"
+        rows="1"
+        readonly
+        .value=${backupFileName}
+        style=${styles}
+        aria-invalid=${String(!!hasInlineFileError)}
+        aria-describedby=${describedBy}
+        data-l10n-id="restore-from-backup-filepicker-input"
+      ></textarea>
+    `;
+  }
+  passwordEntryTemplate() {
+    const isInvalid = this.isIncorrectPassword;
+    const describedBy = isInvalid ? "backup-password-error" : "backup-password-description";
+    let passwordStatus;
+    if (isInvalid && this.aboutWelcomeEmbedded) {
+      passwordStatus = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <span
+          id="backup-password-error"
+          class="field-error"
+          data-l10n-id="backup-service-error-incorrect-password"
+        >
+          <a
+            id="backup-incorrect-password-support-link"
+            target="_blank"
+            href=${this.getSupportURLWithUTM("firefox-backup")}
+            data-l10n-name="incorrect-password-support-link"
+            dir="auto"
+            rel="noopener noreferrer"
+          ></a>
+        </span>
+      `;
+    } else if (isInvalid) {
+      passwordStatus = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <span
+          id="backup-password-error"
+          class="field-error"
+          data-l10n-id="backup-service-error-incorrect-password"
+        >
+          <a
+            id="backup-incorrect-password-support-link"
+            slot="support-link"
+            is="moz-support-link"
+            support-page="firefox-backup"
+            data-l10n-name="incorrect-password-support-link"
+            dir="auto"
+          ></a>
+        </span>
+      `;
+    } else {
+      passwordStatus = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<label
+        id="backup-password-description"
+        data-l10n-id="restore-from-backup-password-description"
+      ></label>`;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)` <fieldset id="backup-password">
+      <label id="backup-password-label" for="backup-password-input">
+        <span
+          id="backup-password-span"
+          data-l10n-id="restore-from-backup-password-label"
+        ></span>
+        <input
+          type="password"
+          id="backup-password-input"
+          aria-invalid=${String(isInvalid)}
+          aria-describedby=${describedBy}
+        />
+      </label>
+      ${passwordStatus}
+    </fieldset>`;
+  }
+  contentTemplate() {
+    let buttonL10nId = !this.backupServiceState?.recoveryInProgress ? "restore-from-backup-confirm-button" : "restore-from-backup-restoring-button";
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="restore-from-backup-wrapper"
+        aria-labelledby="restore-from-backup-header"
+        aria-describedby="restore-from-backup-description"
+      >
+        ${this.aboutWelcomeEmbedded ? null : this.headerTemplate()}
+        <main id="restore-from-backup-content">
+          ${!this.aboutWelcomeEmbedded && this.backupServiceState?.recoveryErrorCode ? this.errorTemplate() : null}
+          ${this.controlsTemplate()}
+        </main>
+
+        <moz-button-group id="restore-from-backup-button-group">
+          ${this.aboutWelcomeEmbedded ? null : this.cancelButtonTemplate()}
+          <moz-button
+            id="restore-from-backup-confirm-button"
+            @click=${this.handleConfirm}
+            type="primary"
+            data-l10n-id=${buttonL10nId}
+            ?disabled=${!this.backupServiceState?.backupFileToRestore || !this.backupServiceState?.backupFileInfo || this.backupServiceState?.recoveryInProgress || this.backupServiceState?.selectableProfilesAllowed && !this._restoreType}
+          ></moz-button>
+        </moz-button-group>
+      </div>
+    `;
+  }
+  headerTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <h1
+        id="restore-from-backup-header"
+        class="heading-large"
+        data-l10n-id="restore-from-backup-header"
+      ></h1>
+    `;
+  }
+  cancelButtonTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-button
+        id="restore-from-backup-cancel-button"
+        @click=${this.handleCancel}
+        data-l10n-id="restore-from-backup-cancel-button"
+      ></moz-button>
+    `;
+  }
+  errorTemplate() {
+    // We handle incorrect password errors in the password input
+    // and file errors inline below the file picker
+    if (this.isIncorrectPassword || this.isFileError) {
+      return null;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="restore-from-backup-error"
+        type="error"
+        data-l10n-id=${(0,chrome_browser_content_backup_backup_errors_mjs__WEBPACK_IMPORTED_MODULE_4__.getErrorL10nId)(this.backupServiceState?.recoveryErrorCode)}
+      >
+      </moz-message-bar>
+    `;
+  }
+  genericFileErrorTemplate() {
+    if (this.isIncorrectPassword) {
+      return null;
+    }
+    if (this.aboutWelcomeEmbedded) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+        <span
+          id="backup-generic-file-error"
+          class="field-error"
+          data-l10n-id="backup-file-restore-file-validation-error"
+        >
+          <a
+            id="backup-generic-error-link"
+            target="_blank"
+            href=${this.getSupportURLWithUTM("firefox-backup")}
+            data-l10n-name="restore-problems"
+            dir="auto"
+            rel="noopener noreferrer"
+          ></a>
+        </span>
+      `;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <span
+        id="backup-generic-file-error"
+        class="field-error"
+        data-l10n-id="backup-file-restore-file-validation-error"
+      >
+        <a
+          id="backup-generic-error-link"
+          slot="support-link"
+          is="moz-support-link"
+          support-page="firefox-backup"
+          data-l10n-name="restore-problems"
+          dir="auto"
+        ></a>
+      </span>
+    `;
+  }
+  render() {
+    this.applyContentCustomizations();
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_restore_from_backup_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("restore-from-backup", RestoreFromBackup);
 
 /***/ }),
 
@@ -1826,113 +3169,10 @@ module.exports = __webpack_require__.p + "password-rules-tooltip.996056dd27934bb
 
 /***/ }),
 
-/***/ 73401:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+/***/ 72195:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   CustomLocation: () => (/* binding */ CustomLocation),
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   EmbeddedFx_EncryptedBackup_HideFilePathChooser: () => (/* binding */ EmbeddedFx_EncryptedBackup_HideFilePathChooser),
-/* harmony export */   EmbeddedFx_UnencryptedBackup: () => (/* binding */ EmbeddedFx_UnencryptedBackup),
-/* harmony export */   EnableError: () => (/* binding */ EnableError),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
-/* harmony export */ });
-/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52524);
-/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29307);
-/* harmony import */ var _turn_on_scheduled_backups_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(12224);
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-// eslint-disable-next-line import/no-unresolved
-
-
-
-
-window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
-window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
-const SELECTABLE_ERRORS = {
-  "(none)": 0,
-  ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
-};
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Backup/Turn On Scheduled Backups",
-  component: "turn-on-scheduled-backups",
-  argTypes: {
-    enableBackupErrorCode: {
-      options: Object.keys(SELECTABLE_ERRORS),
-      mapping: SELECTABLE_ERRORS,
-      control: {
-        type: "select"
-      }
-    },
-    hideFilePathChooser: {
-      control: "boolean"
-    },
-    embeddedFxBackupOptIn: {
-      control: "boolean"
-    },
-    isEncryptedBackup: {
-      control: "boolean"
-    }
-  }
-});
-const Template = ({
-  defaultPath,
-  defaultLabel,
-  _newPath,
-  _newLabel,
-  enableBackupErrorCode,
-  hideFilePathChooser,
-  embeddedFxBackupOptIn
-}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <turn-on-scheduled-backups
-    defaultPath=${defaultPath}
-    defaultLabel=${defaultLabel}
-    _newPath=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(_newPath)}
-    _newLabel=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(_newLabel)}
-    .enableBackupErrorCode=${enableBackupErrorCode}
-    ?hide-file-path-chooser=${hideFilePathChooser}
-    ?embedded-fx-backup-opt-in=${embeddedFxBackupOptIn}
-  ></turn-on-scheduled-backups>
-`;
-
-// ---------------------- Default / legacy stories ----------------------
-const Default = Template.bind({});
-Default.args = {
-  defaultPath: "/Some/User/Documents",
-  defaultLabel: "Documents",
-  hideFilePathChooser: false,
-  embeddedFxBackupOptIn: false,
-  enableBackupErrorCode: 0
-};
-const CustomLocation = Template.bind({});
-CustomLocation.args = {
-  ...Default.args,
-  _newPath: "/Some/Test/Custom/Dir",
-  _newLabel: "Dir"
-};
-const EnableError = Template.bind({});
-EnableError.args = {
-  ...CustomLocation.args,
-  enableBackupErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.FILE_SYSTEM_ERROR
-};
-
-// ---------------------- Embedded Fx Backup Opt-In Stories ----------------------
-const EmbeddedFx_UnencryptedBackup = Template.bind({});
-EmbeddedFx_UnencryptedBackup.args = {
-  ...Default.args,
-  embeddedFxBackupOptIn: true,
-  hideFilePathChooser: false // Shows file path chooser, password section hidden via CSS
-};
-const EmbeddedFx_EncryptedBackup_HideFilePathChooser = Template.bind({});
-EmbeddedFx_EncryptedBackup_HideFilePathChooser.args = {
-  ...Default.args,
-  embeddedFxBackupOptIn: true,
-  hideFilePathChooser: true // Hide file path chooser, show password input
-};
+module.exports = __webpack_require__.p + "enable-backup-encryption.8d743fbc875915662a93.css";
 
 /***/ }),
 
@@ -1947,6 +3187,54 @@ module.exports = __webpack_require__.p + "moz-label.af54a5f841ff0af78b0d.css";
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "password-validation-inputs.a98838155f216e76cb6d.css";
+
+/***/ }),
+
+/***/ 78821:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ERROR_L10N_IDS: () => (/* binding */ ERROR_L10N_IDS),
+/* harmony export */   getErrorL10nId: () => (/* binding */ getErrorL10nId)
+/* harmony export */ });
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(29307);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/**
+ * Any recovery error messaging should be defined in Fluent with both
+ * a `heading` attribute and a `message` attribute.
+ */
+const ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNAUTHORIZED]: "backup-service-error-incorrect-password",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.CORRUPTED_ARCHIVE]: "backup-service-error-corrupt-file",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_BACKUP_VERSION]: "backup-service-error-unsupported-version",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNINITIALIZED]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.FILE_SYSTEM_ERROR]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECRYPTION_FAILED]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.RECOVERY_FAILED]: "backup-service-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.INTERNAL_ERROR]: "backup-service-error-went-wrong2",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNSUPPORTED_APPLICATION]: "backup-service-error-unsupported-application",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.DECOMPRESSION_FAILED]: "backup-service-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.PROFILE_CREATION_FAILED]: "backup-service-error-recovery-failed",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.RESOURCE_RECOVERY_FAILED]: "backup-service-error-recovery-failed"
+});
+
+/**
+ * @param {number} errorCode
+ *   Error code from backup-constants.mjs:ERRORS
+ * @returns {string}
+ *   L10N ID for error messaging for the given error code; the L10N
+ *   ID should have both a `heading` and a `message` attribute
+ */
+function getErrorL10nId(errorCode) {
+  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_0__.ERRORS.UNKNOWN];
+}
 
 /***/ }),
 
@@ -2382,7 +3670,117 @@ customElements.define("moz-button", MozButton);
 
 module.exports = __webpack_require__.p + "moz-message-bar.67ec2fc344dfeae164e7.css";
 
+/***/ }),
+
+/***/ 87088:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   EncryptionEnabled: () => (/* binding */ EncryptionEnabled),
+/* harmony export */   ExistingBackup: () => (/* binding */ ExistingBackup),
+/* harmony export */   ScheduledBackupsDisabled: () => (/* binding */ ScheduledBackupsDisabled),
+/* harmony export */   ScheduledBackupsEnabled: () => (/* binding */ ScheduledBackupsEnabled),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var _backup_settings_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(9437);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// eslint-disable-next-line import/no-unresolved
+
+
+window.MozXULElement.insertFTLIfNeeded("browser/backupSettings.ftl");
+window.MozXULElement.insertFTLIfNeeded("branding/brand.ftl");
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/Backup/Backup Settings",
+  component: "backup-settings",
+  argTypes: {}
+});
+const Template = ({
+  backupServiceState
+}) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <backup-settings .backupServiceState=${backupServiceState}></backup-settings>
+`;
+const ScheduledBackupsDisabled = Template.bind({});
+ScheduledBackupsDisabled.args = {
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    defaultParent: {
+      path: "/Some/User/Documents",
+      fileName: "Documents"
+    },
+    scheduledBackupsEnabled: false,
+    backupErrorCode: 0,
+    archiveEnabledStatus: true,
+    restoreEnabledStatus: true
+  }
+};
+const ScheduledBackupsEnabled = Template.bind({});
+ScheduledBackupsEnabled.args = {
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    defaultParent: {
+      path: "/Some/User/Documents",
+      fileName: "Documents"
+    },
+    scheduledBackupsEnabled: true,
+    backupErrorCode: 0,
+    archiveEnabledStatus: true,
+    restoreEnabledStatus: true
+  }
+};
+const ExistingBackup = Template.bind({});
+ExistingBackup.args = {
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    defaultParent: {
+      path: "/Some/User/Documents",
+      fileName: "Documents"
+    },
+    scheduledBackupsEnabled: true,
+    lastBackupDate: 1719625747,
+    lastBackupFileName: "FirefoxBackup_default_123123123.html",
+    backupErrorCode: 0,
+    archiveEnabledStatus: true,
+    restoreEnabledStatus: true
+  }
+};
+const EncryptionEnabled = Template.bind({});
+EncryptionEnabled.args = {
+  backupServiceState: {
+    backupDirPath: "/Some/User/Documents",
+    defaultParent: {
+      path: "/Some/User/Documents",
+      fileName: "Documents"
+    },
+    scheduledBackupsEnabled: true,
+    encryptionEnabled: true,
+    lastBackupDate: 1719625747,
+    lastBackupFileName: "FirefoxBackup_default_123123123.html",
+    backupErrorCode: 0,
+    archiveEnabledStatus: true,
+    restoreEnabledStatus: true
+  }
+};
+
+/***/ }),
+
+/***/ 93297:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "backup-settings.69bc0a9a5e0344802698.css";
+
+/***/ }),
+
+/***/ 95380:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd564377752133c9c4.css";
+
 /***/ })
 
 }]);
-//# sourceMappingURL=turn-on-scheduled-backups-stories.5349f98e.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.a09e3bbb.iframe.bundle.js.map
