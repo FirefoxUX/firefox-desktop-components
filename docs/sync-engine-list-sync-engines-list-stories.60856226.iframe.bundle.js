@@ -1722,7 +1722,7 @@ var SyncHelpers = new class SyncHelpers {
         if (!(await window.FxAccounts.canConnectAccount())) {
           return;
         }
-        const url = await window.FxAccounts.config.promiseConnectAccountURI(this.getEntryPoint());
+        const url = await window.FxAccounts.config.promiseConnectAccountURI("sync", this.getEntryPoint());
         this.replaceTabWithUrl(url);
       }
     } catch (err) {
@@ -1735,7 +1735,7 @@ var SyncHelpers = new class SyncHelpers {
     if (!(await window.FxAccounts.canConnectAccount())) {
       return;
     }
-    const url = await window.FxAccounts.config.promiseConnectAccountURI(this.getEntryPoint());
+    const url = await window.FxAccounts.config.promiseConnectAccountURI("sync", this.getEntryPoint());
     this.replaceTabWithUrl(url);
   }
 
@@ -1748,7 +1748,7 @@ var SyncHelpers = new class SyncHelpers {
    *        different entrypoints to accounts
    */
   async reSignIn(entrypoint) {
-    const url = await window.FxAccounts.config.promiseConnectAccountURI(entrypoint);
+    const url = await window.FxAccounts.config.promiseConnectAccountURI("sync", entrypoint);
     this.replaceTabWithUrl(url);
   }
   async verifyFirefoxAccount() {
@@ -2160,7 +2160,7 @@ chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.P
     return config;
   },
   setup(emitChange) {
-    window.FxAccounts.config.promiseConnectDeviceURI(SyncHelpers.getEntryPoint()).then(connectURI => {
+    window.FxAccounts.config.promiseConnectDeviceURI("sync", SyncHelpers.getEntryPoint()).then(connectURI => {
       SyncHelpers.connectAnotherDeviceHref = connectURI;
       emitChange();
     });
@@ -3007,4 +3007,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.0941b18a.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.60856226.iframe.bundle.js.map
