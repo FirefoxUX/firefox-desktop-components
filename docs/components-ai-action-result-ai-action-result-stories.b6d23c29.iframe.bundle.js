@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[9,6284,7752,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[995,6284,7752,9240],{
 
 /***/ 5136:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
@@ -262,6 +262,7 @@ const SmartwindowOverflowRowMixin = BaseElement => class extends BaseElement {
   #resizeObserver = null;
   #lastWidth = null;
   #measureRaf = 0;
+  #widthChanged = true;
   constructor() {
     super();
     this.visibleCount = Infinity;
@@ -369,6 +370,7 @@ const SmartwindowOverflowRowMixin = BaseElement => class extends BaseElement {
         return;
       }
       this.#lastWidth = inlineSize;
+      this.#widthChanged = true;
       this.scheduleOverflowMeasure();
     });
     this.#resizeObserver.observe(this);
@@ -413,6 +415,11 @@ const SmartwindowOverflowRowMixin = BaseElement => class extends BaseElement {
     while (visibleCount && cumulativeItemWidths[visibleCount] + triggerWidth > container.clientWidth) {
       visibleCount--;
     }
+    // Only reveal more items when the row got wider.
+    if (visibleCount > this.visibleCount && !this.#widthChanged) {
+      return;
+    }
+    this.#widthChanged = false;
     this.#setVisibleCount(visibleCount);
   }
 };
@@ -1843,101 +1850,375 @@ module.exports = __webpack_require__.p + "ai-website-chip.7967f398a94dae999098.c
 /***/ 45042:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-panel-list.c445c992372913db3719.css";
+module.exports = __webpack_require__.p + "smartwindow-panel-list.7f35deb841b05b4eb70c.css";
 
 /***/ }),
 
-/***/ 52253:
+/***/ 49766:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "ai-action-result.b85a0df1818bf1ca7abd.css";
+
+/***/ }),
+
+/***/ 54458:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   AutoWidthOverflow: () => (/* binding */ AutoWidthOverflow),
-/* harmony export */   CountBasedGrouping: () => (/* binding */ CountBasedGrouping),
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   NoOverflow: () => (/* binding */ NoOverflow),
-/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */   AIActionResult: () => (/* binding */ AIActionResult)
 /* harmony export */ });
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(39092);
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_action_result_ai_action_result_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(49766);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
+/* harmony import */ var chrome_browser_content_aiwindow_components_website_chip_container_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(39092);
+
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/AI Window/Website Chip Container",
-  component: "website-chip-container",
-  parameters: {
-    fluent: `
-smartwindow-assistant-citations-more-label = +{ $count } more
-    `
-  },
-  // Constrained container to simulate a chat bubble.
-  decorators: [(story, context) => context.parameters.frame === false ? story() : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-            <div
-              style="
-                display: inline-block;
-                ${context.parameters.frameWidth ? `width: ${context.parameters.frameWidth};` : ""}
-                padding: 16px;
-                box-sizing: border-box;
-                border: 1px dashed #ccc;
-              "
-            >
-              ${story()}
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * Renders the result of a natural language action performed by the assistant
+ * (e.g. "Closed tabs"). Shows the action label, summary, and an undo button
+ * when available. Clicking the header toggles the expanded state, which
+ * reveals a list of stacked rows, each with its own label and optional
+ * affected items (website chips).
+ *
+ * Dispatches a CustomEvent named action-result-undo when the user clicks undo.
+ * The parent is responsible for performing the actual reversal and updating
+ * the action state.
+ *
+ * @attribute {string} label - Header label for plain text (e.g. "Closed tab", "Closed 3 tabs")
+ * @attribute {string} labelL10nId - Fluent localization ID for the header label
+ * @attribute {object} labelL10nArgs - Arguments for the label localization (e.g. { count: 3 })
+ * @property {object} labelLink - Optional { l10nName, href } embedded in
+ *   the header label as a target=_blank link. Requires matching
+ *   <a data-l10n-name> in the l10n message.
+ * @attribute {string} summary - Descriptive text for the action (plain text)
+ * @attribute {string} summaryL10nId - Fluent localization ID for the summary
+ * @attribute {object} summaryL10nArgs - Arguments for the summary localization
+ * @attribute {boolean} canUndo - Whether the undo button should be shown
+ * @attribute {boolean} isExpanded - Whether the detail section is visible
+ * @attribute {boolean} isLoading - Whether the action is still in progress, which
+ *  gives the header label an animated gradient treatment
+ * @property {Array} rows - List of stacked dot rows each shaped:
+ *  {
+ *    label?: string,           // Plain text label
+ *    labelL10nId?: string,     // Fluent localization ID for the row label
+ *    labelL10nArgs?: Object,   // Arguments for the row label localization
+ *    link?: { l10nName: string, href: string },
+ *                              // Optional link, same shape as labelLink
+ *    items?: Array<{ url: string, label: string }>
+ *  }
+ */
+class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    label: {
+      type: String
+    },
+    labelL10nId: {
+      type: String
+    },
+    labelL10nArgs: {
+      type: Object
+    },
+    labelLink: {
+      type: Object
+    },
+    rows: {
+      type: Array
+    },
+    summary: {
+      type: String
+    },
+    summaryL10nId: {
+      type: String
+    },
+    summaryL10nArgs: {
+      type: Object
+    },
+    canUndo: {
+      type: Boolean,
+      attribute: "can-undo",
+      reflect: true
+    },
+    isExpanded: {
+      type: Boolean,
+      attribute: "is-expanded",
+      reflect: true
+    },
+    isLoading: {
+      type: Boolean,
+      attribute: "is-loading",
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.label = "";
+    this.labelL10nId = null;
+    this.labelL10nArgs = null;
+    this.labelLink = null;
+    this.rows = [];
+    this.summary = "";
+    this.summaryL10nId = null;
+    this.summaryL10nArgs = null;
+    this.canUndo = false;
+    this.isExpanded = false;
+    this.isLoading = false;
+  }
+
+  // One shimmer sweep, matching the CSS `actionLogShimmer` duration.
+  static SHIMMER_CYCLE_MS = 2000;
+  // Fallback for finishing the sweep if the running animation can't be found
+  // (e.g. reduced motion, where it isn't animating) — one cycle plus a buffer.
+  static SWEEP_MAX_MS = 2200;
+  #sweepTimer = null;
+  #sweepAnim = null;
+  #awaitingSweep = false;
+  #loadingLabelSnapshot = null;
+  willUpdate(changed) {
+    if (this.isLoading) {
+      // Snapshot the loading label so it keeps shimmering until the sweep ends.
+      this.#loadingLabelSnapshot = {
+        labelL10nId: this.labelL10nId,
+        labelL10nArgs: this.labelL10nArgs,
+        label: this.label,
+        labelLink: this.labelLink
+      };
+      this.#awaitingSweep = false;
+      this.#cancelSweepAnim();
+      this.removeAttribute("settling");
+      this.#clearSweepTimer();
+    } else if (changed.has("isLoading") && changed.get("isLoading") && this.#loadingLabelSnapshot) {
+      // Loading finished: let the shimmer finish its current sweep across the
+      // label (see #finishCurrentSweep in updated) before swapping to the
+      // completed text. The timer is a fallback if the running animation can't
+      // be found.
+      this.#awaitingSweep = true;
+      this.#clearSweepTimer();
+      this.#sweepTimer = setTimeout(() => {
+        this.#sweepTimer = null;
+        this.#finishSweep();
+      }, AIActionResult.SWEEP_MAX_MS);
+    }
+    // Drive the shimmer treatment while loading or finishing the last sweep.
+    // Clear the settle state together with the shimmer so the infinite CSS loop
+    // can't re-apply for a frame (which would flash a restarted sweep).
+    const shimmering = this.isLoading || this.#awaitingSweep;
+    this.toggleAttribute("shimmering", shimmering);
+    if (!shimmering) {
+      this.removeAttribute("settling");
+      this.#cancelSweepAnim();
+    }
+  }
+  updated() {
+    if (this.#awaitingSweep && !this.#sweepAnim) {
+      this.#finishCurrentSweep();
+    }
+  }
+
+  // Run one final sweep from the shimmer's current position to the end and hold
+  // there, then swap to the completed label. The [settling] state stops the
+  // infinite CSS loop (so it can't reset to the start mid-swap and cut the sweep
+  // short), while a scripted animation — which the CSS can't override — drives
+  // the finish continuously from wherever the loop currently is.
+  #finishCurrentSweep() {
+    const label = this.renderRoot?.querySelector(".action-result-label");
+    const loop = label?.getAnimations?.().find(a => a.animationName === "actionLogShimmer");
+    if (!label || !loop) {
+      // Nothing is animating (e.g. reduced motion) — swap right away.
+      this.#finishSweep();
+      return;
+    }
+    const cycle = AIActionResult.SHIMMER_CYCLE_MS;
+    const elapsed = (Number(loop.currentTime) || 0) % cycle;
+    // Match the CSS ease-in-out so the handoff from the loop has no visible jump.
+    const linear = elapsed / cycle;
+    const eased = linear < 0.5 ? 2 * linear * linear : 1 - Math.pow(-2 * linear + 2, 2) / 2;
+    // The loop sweeps background-position-x from 100% to -100% over one cycle.
+    const currentX = 100 - 200 * eased;
+    // The gradient repeats every 200%, so the highlight sits at the right edge
+    // of the label (its end) at multiples of 200% and at the left edge at odd
+    // multiples of 100%. Continue the sweep to the next right-edge position so it
+    // reads as reaching the end of the label instead of snapping back to the
+    // left. Scale the duration to the remaining travel so the speed is steady.
+    const PERIOD = 200;
+    const targetX = Math.floor(currentX / PERIOD) * PERIOD;
+    const travel = currentX - targetX;
+    this.setAttribute("settling", "");
+    this.#sweepAnim = label.animate([{
+      backgroundPositionX: `${currentX}%`
+    }, {
+      backgroundPositionX: `${targetX}%`
+    }], {
+      duration: Math.min(1000, Math.max(300, travel / PERIOD * cycle)),
+      easing: "ease-out",
+      fill: "forwards"
+    });
+    this.#sweepAnim.finished.then(() => this.#finishSweep()).catch(() => this.#finishSweep());
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    // The label link is a plain <a target="_blank"> that the browser opens
+    // natively. It lives inside the header toggle button, so keep its click
+    // from also toggling the card. Delegated in the capture phase because
+    // Fluent DOM overlays replace the anchor node, dropping per-node listeners.
+    this.renderRoot.addEventListener("click", this.#handleLabelLinkClick, true);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    this.#clearSweepTimer();
+    this.#cancelSweepAnim();
+    this.renderRoot.removeEventListener("click", this.#handleLabelLinkClick, true);
+  }
+  #clearSweepTimer() {
+    if (this.#sweepTimer) {
+      clearTimeout(this.#sweepTimer);
+      this.#sweepTimer = null;
+    }
+  }
+  #cancelSweepAnim() {
+    if (this.#sweepAnim) {
+      this.#sweepAnim.cancel();
+      this.#sweepAnim = null;
+    }
+  }
+  #finishSweep() {
+    if (this.#awaitingSweep) {
+      // Leave [settling] and the holding animation in place until willUpdate
+      // drops the shimmer, so the end frame holds until the completed label
+      // renders. willUpdate then clears both.
+      this.#awaitingSweep = false;
+      this.#clearSweepTimer();
+      this.requestUpdate();
+    }
+  }
+  #handleUndo() {
+    this.dispatchEvent(new CustomEvent("action-result-undo", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  #handleLabelLinkClick = event => {
+    const onLabelLink = event.composedPath().some(el => el instanceof HTMLAnchorElement && el.classList.contains("action-result-label-link"));
+    if (onLabelLink) {
+      event.stopPropagation();
+    }
+  };
+  #handleToggle() {
+    this.isExpanded = !this.isExpanded;
+    this.dispatchEvent(new CustomEvent("action-result-toggle", {
+      detail: {
+        isExpanded: this.isExpanded
+      },
+      bubbles: true,
+      composed: true
+    }));
+  }
+  #renderLabelContent(link, l10nId, fallbackLabel) {
+    if (link) {
+      return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+        class="action-result-label-link"
+        data-l10n-name=${link.l10nName}
+        href=${link.href}
+        target="_blank"
+        rel="noopener"
+      ></a>`;
+    }
+    if (l10nId) {
+      return "";
+    }
+    return fallbackLabel;
+  }
+  render() {
+    // While loading or finishing the last sweep, keep showing the shimmering
+    // label; only swap to the completed text once the sweep ends.
+    const shimmering = this.isLoading || this.#awaitingSweep;
+    const label = shimmering && this.#loadingLabelSnapshot ? this.#loadingLabelSnapshot : {
+      labelL10nId: this.labelL10nId,
+      labelL10nArgs: this.labelL10nArgs,
+      label: this.label,
+      labelLink: this.labelLink
+    };
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_action_result_ai_action_result_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="action-result-wrapper">
+        <button
+          type="button"
+          class="action-result-header"
+          aria-expanded=${this.isExpanded}
+          @click=${this.#handleToggle}
+        >
+          <span
+            class="action-result-label"
+            data-l10n-id=${label.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            data-l10n-args=${label.labelL10nArgs ? JSON.stringify(label.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+          >
+            ${this.#renderLabelContent(label.labelLink, label.labelL10nId, label.label)}
+          </span>
+        </button>
+        ${this.#renderDetails()}
+      </div>
+    `;
+  }
+  #renderDetails() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      ${this.isExpanded ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <div class="action-result-expanded">
+              ${this.rows.map(row => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+                  <div class="action-result-expanded-row">
+                    <div class="action-result-expanded-row-header">
+                      <span class="action-result-dot" aria-hidden="true"></span>
+                      <span
+                        class="action-result-expanded-row-label"
+                        data-l10n-id=${row.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                        data-l10n-args=${row.labelL10nArgs ? JSON.stringify(row.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                      >
+                        ${this.#renderLabelContent(row.link, row.labelL10nId, row.label)}
+                      </span>
+                    </div>
+                    ${row.items?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+                          <website-chip-container
+                            class="action-result-chips"
+                            .websites=${row.items}
+                            .autoOverflow=${true}
+                          ></website-chip-container>
+                        ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                  </div>
+                `)}
             </div>
-          `]
-});
-const makeWebsites = count => Array.from({
-  length: count
-}, (_, index) => ({
-  url: `https://example.com/${index + 1}`,
-  label: `Example Site ${index + 1}`,
-  iconSrc: "chrome://branding/content/icon16.png"
-}));
-const Default = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .chipType=${"context-chip"}
-    .websites=${makeWebsites(3)}
-    .removable=${true}
-  ></website-chip-container>
-`;
-const AutoWidthOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <div
-    style="
-      resize: horizontal;
-      overflow: auto;
-      inline-size: 500px;
-      min-inline-size: 160px;
-      max-inline-size: 100%;
-      padding: 16px;
-      box-sizing: border-box;
-      border: 1px dashed #ccc;
-    "
-  >
-    <website-chip-container
-      .websites=${makeWebsites(6)}
-      .autoOverflow=${true}
-    ></website-chip-container>
-  </div>
-`;
-// This story has its own decorator frame
-AutoWidthOverflow.parameters = {
-  frame: false
-};
-const NoOverflow = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .websites=${makeWebsites(2)}
-    .autoOverflow=${true}
-  ></website-chip-container>
-`;
-const CountBasedGrouping = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <website-chip-container
-    .websites=${makeWebsites(6)}
-    .shouldGroupChips=${true}
-  ></website-chip-container>
-`;
+          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.summary || this.summaryL10nId ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+            class="action-result-summary"
+            data-l10n-id=${this.summaryL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            data-l10n-args=${this.summaryL10nArgs ? JSON.stringify(this.summaryL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+          >
+            ${!this.summaryL10nId ? this.summary : ""}
+          </p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.canUndo ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+            <moz-button
+              class="action-result-undo"
+              @click=${this.#handleUndo}
+              data-l10n-id="smartwindow-nl-undo-button"
+              type="ghost"
+            ></moz-button>
+          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+    `;
+  }
+}
+customElements.define("ai-action-result", AIActionResult);
 
 /***/ }),
 
@@ -1968,7 +2249,7 @@ __webpack_require__.r(__webpack_exports__);
  * This component is agnostic to the data it displays - consumers control
  * all logic including filtering, truncation, and special item handling.
  *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string}} ListItem
+ * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string, descriptionL10nId?: string}} ListItem
  * @typedef {{items: ListItem[], headerL10nId?: string, header?: string}} ItemGroup
  * @property {ItemGroup[]} groups - Grouped list items to display
  * @property {string} placeholderL10nId - Fluent ID for empty state message
@@ -1995,6 +2276,9 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     sidebarMode: {
       type: Boolean,
       reflect: true
+    },
+    selectedItemId: {
+      type: String
     }
   };
   #panelList = null;
@@ -2006,6 +2290,44 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.placeholderL10nId = "";
     this.alwaysOpen = false;
     this.sidebarMode = false;
+    this.selectedItemId = null;
+  }
+  willUpdate(changedProperties) {
+    // Reset the active selection to the first item
+    // so there is always a highlighted default.
+    if (changedProperties.has("groups")) {
+      const [first] = this.#selectableItems();
+      const firstId = first?.id ?? null;
+      if (this.selectedItemId !== firstId) {
+        this.selectedItemId = firstId;
+      }
+    }
+  }
+  #selectableItems() {
+    return this.groups.flatMap(group => group.items ?? []);
+  }
+
+  /**
+   * Moves the active selection
+   *
+   * @param {number} delta
+   */
+  moveSelection(delta) {
+    const items = this.#selectableItems();
+    if (!items.length) {
+      return;
+    }
+    const current = items.findIndex(item => item.id === this.selectedItemId);
+    const start = current === -1 ? 0 : current;
+    const next = (start + delta + items.length) % items.length;
+    this.selectedItemId = items[next].id;
+  }
+
+  /**
+   * @returns {object|null} The currently selected item
+   */
+  getSelectedItem() {
+    return this.#selectableItems().find(item => item.id === this.selectedItemId) ?? null;
   }
   get #hasCustomItems() {
     const itemsHost = this.#panelList ?? this;
@@ -2185,12 +2507,13 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return styles;
   }
-  #renderItem(item) {
-    const hasDescription = !!item.description;
+  #renderItem(item, isSelected = false) {
+    const hasDescription = !!item.description || !!item.descriptionL10nId;
     const panelItem = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
       .itemId=${item.id}
-      .itemLabel=${item.label}
+      .itemLabel=${item.label ?? ""}
       icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(!hasDescription && item.icon ? "true" : undefined)}
+      class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(isSelected && !hasDescription ? "selected" : undefined)}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
       style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(hasDescription ? {} : this.#computeItemStyles(item))}
     >
@@ -2199,13 +2522,23 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     if (!hasDescription) {
       return panelItem;
     }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="panel-item-container">
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div
+      class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "panel-item-container": true,
+      selected: isSelected
+    })}
+    >
       ${item.icon ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="panel-item-icon" aria-hidden="true">
             <img class="panel-item-icon-image" src=${item.icon} alt="" />
           </span>` : ""}
       <div class="panel-item-text">
         ${panelItem}
-        <div class="panel-item-description">${item.description}</div>
+        <div
+          class="panel-item-description"
+          data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.descriptionL10nId)}
+        >
+          ${item.descriptionL10nId ? "" : item.description}
+        </div>
       </div>
     </div>`;
   }
@@ -2221,7 +2554,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${header}
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item, this.#isCommandMode && item.id === this.selectedItemId))}
     `;
   }
   #renderGroups() {
@@ -2234,6 +2567,17 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return this.#isEmpty() ? this.#renderEmptyState() : this.#renderGroups();
   }
+  #renderCommandFooter() {
+    if (!this.#isCommandMode || this.#hasCustomItems || this.#isEmpty()) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="note"
+      class="panel-section-header panel-command-footer"
+      data-l10n-id="smartbar-command-coming-soon"
+    ></panel-item>`;
+  }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
@@ -2245,7 +2589,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
         @click=${this.handlePanelClick}
         @keydown=${this.handleKeyDown}
       >
-        ${this.#renderContent()}
+        ${this.#renderContent()} ${this.#renderCommandFooter()}
       </panel-list>
     `;
   }
@@ -2258,6 +2602,170 @@ customElements.define("smartwindow-panel-list", SmartwindowPanelList);
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "smartwindow-overflow-row.7a554b3715d4ee8975b6.css";
+
+/***/ }),
+
+/***/ 59295:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   Collapsed: () => (/* binding */ Collapsed),
+/* harmony export */   Expanded: () => (/* binding */ Expanded),
+/* harmony export */   ExpandedAfterUndo: () => (/* binding */ ExpandedAfterUndo),
+/* harmony export */   ExpandedBulk: () => (/* binding */ ExpandedBulk),
+/* harmony export */   ExpandedBulkAfterUndo: () => (/* binding */ ExpandedBulkAfterUndo),
+/* harmony export */   ExpandedWithOverflowingChips: () => (/* binding */ ExpandedWithOverflowingChips),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_ai_action_result_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(54458);
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  title: "Domain-specific UI Widgets/AI Window/AI Action Result",
+  component: "ai-action-result",
+  parameters: {
+    fluent: `
+smartwindow-nl-undo-button =
+    .label = Undo
+smartwindow-assistant-citations-more-label = +{ $count } more
+  `
+  },
+  argTypes: {
+    label: {
+      control: "text"
+    },
+    summary: {
+      control: "text"
+    },
+    canUndo: {
+      control: "boolean"
+    },
+    isExpanded: {
+      control: "boolean"
+    },
+    rows: {
+      control: "object"
+    }
+  }
+});
+const makeWebsites = count => Array.from({
+  length: count
+}, (_, index) => ({
+  url: `https://example.com/${index + 1}`,
+  label: `Example Site ${index + 1}`
+}));
+const Template = ({
+  label,
+  summary,
+  canUndo,
+  isExpanded,
+  rows
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <ai-action-result
+    label=${label}
+    summary=${summary}
+    ?can-undo=${canUndo}
+    ?is-expanded=${isExpanded}
+    .rows=${rows}
+  ></ai-action-result>
+`;
+const Collapsed = Template.bind({});
+Collapsed.args = {
+  label: "Closed tab",
+  summary: "Closed open tabs.",
+  canUndo: true,
+  isExpanded: false,
+  rows: [{
+    label: "Closed tab",
+    items: makeWebsites(1)
+  }]
+};
+const Expanded = Template.bind({});
+Expanded.args = {
+  label: "Closed tab",
+  summary: "Closed open tabs.",
+  canUndo: true,
+  isExpanded: true,
+  rows: [{
+    label: "Closed tab",
+    items: makeWebsites(1)
+  }]
+};
+const ExpandedBulk = Template.bind({});
+ExpandedBulk.args = {
+  label: "Closed 3 tabs",
+  summary: "Closed open tabs.",
+  canUndo: true,
+  isExpanded: true,
+  rows: [{
+    label: "Closed tabs",
+    items: makeWebsites(3)
+  }]
+};
+const ExpandedAfterUndo = Template.bind({});
+ExpandedAfterUndo.args = {
+  label: "Closed tab",
+  summary: "Closed open tabs.",
+  canUndo: false,
+  isExpanded: true,
+  rows: [{
+    label: "Closed tab",
+    items: makeWebsites(1)
+  }, {
+    label: "Undo – reopened tab",
+    items: []
+  }]
+};
+const ResizableTemplate = ({
+  label,
+  summary,
+  canUndo,
+  isExpanded,
+  rows
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div
+    style="resize: horizontal; overflow: auto; inline-size: 560px; min-inline-size: 200px; max-inline-size: 100%; border: 1px dashed #ccc; padding: 8px;"
+  >
+    <ai-action-result
+      label=${label}
+      summary=${summary}
+      ?can-undo=${canUndo}
+      ?is-expanded=${isExpanded}
+      .rows=${rows}
+    ></ai-action-result>
+  </div>
+`;
+const ExpandedWithOverflowingChips = ResizableTemplate.bind({});
+ExpandedWithOverflowingChips.args = {
+  label: "Closed 6 tabs",
+  summary: "Closed open tabs.",
+  canUndo: true,
+  isExpanded: true,
+  rows: [{
+    label: "Closed tabs",
+    items: makeWebsites(6)
+  }]
+};
+const ExpandedBulkAfterUndo = Template.bind({});
+ExpandedBulkAfterUndo.args = {
+  label: "Closed 3 tabs",
+  summary: "Closed open tabs.",
+  canUndo: false,
+  isExpanded: true,
+  rows: [{
+    label: "Closed tabs",
+    items: makeWebsites(3)
+  }, {
+    label: "Restored tabs",
+    items: []
+  }]
+};
 
 /***/ }),
 
@@ -2823,4 +3331,4 @@ customElements.define("moz-button", MozButton);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-website-chip-container-website-chip-container-stories.2b2d66fb.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.b6d23c29.iframe.bundle.js.map

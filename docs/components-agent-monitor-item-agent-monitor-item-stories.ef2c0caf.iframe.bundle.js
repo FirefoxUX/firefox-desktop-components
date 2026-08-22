@@ -1002,7 +1002,7 @@ customElements.define("moz-option", MozOption);
 /***/ 63232:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "monitors-display.8ba453ff7103c0e4ac90.css";
+module.exports = __webpack_require__.p + "monitors-display.63e9cadaaaa482c82702.css";
 
 /***/ }),
 
@@ -2686,4 +2686,4 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.be78d36a.iframe.bundle.js.map
+//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.ef2c0caf.iframe.bundle.js.map

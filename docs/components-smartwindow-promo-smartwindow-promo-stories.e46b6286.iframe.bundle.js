@@ -336,6 +336,7 @@ __webpack_require__.r(__webpack_exports__);
 const SMARTWINDOW_PROMO_EVENTS = window.IS_STORYBOOK ? Object.freeze({
   PRIMARY: "SmartWindowPromo:PrimaryAction",
   CLOSE: "SmartWindowPromo:Close",
+  DISMISS: "SmartWindowPromo:Dismiss",
   IMPRESSION: "SmartWindowPromo:Impression"
 }) : ChromeUtils.importESModule("resource:///modules/asrouter/SmartWindowNewTabPromo.sys.mjs").SMARTWINDOW_PROMO_EVENTS;
 
@@ -343,6 +344,7 @@ const SMARTWINDOW_PROMO_EVENTS = window.IS_STORYBOOK ? Object.freeze({
  * Renders an asrouter-driven promotional message inside the AI window.
  * Receives a resolved message via the `message` property and dispatches
  * `SmartWindowPromo:PrimaryAction` / `SmartWindowPromo:Close` /
+ * `SmartWindowPromo:Dismiss` (moz-promo's built-in close button) /
  * `SmartWindowPromo:Impression` events.
  *
  * @property {object|null} message - Resolved promo content
@@ -386,8 +388,14 @@ class SmartwindowPromo extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   #handlePrimary = () => this.#dispatch(SMARTWINDOW_PROMO_EVENTS.PRIMARY);
   #handleClose = () => this.#dispatch(SMARTWINDOW_PROMO_EVENTS.CLOSE);
+  #handleDismiss = event => {
+    // moz-promo removes itself on dismiss by default.
+    event.preventDefault();
+    this.#dispatch(SMARTWINDOW_PROMO_EVENTS.DISMISS);
+  };
   render() {
     const content = this.message ?? {};
+    const dismissable = content.dismissable ?? false;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
         rel="stylesheet"
@@ -401,6 +409,8 @@ class SmartwindowPromo extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
         imagealignment=${content.imageAlignment ?? "start"}
         imagewidth=${content.imageWidth ?? "small"}
         imagedisplay=${content.imageDisplay ?? "padded"}
+        ?dismissable=${dismissable}
+        @promo:user-dismissed=${this.#handleDismiss}
       >
         ${content.secondaryActionText ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
               slot="actions"
@@ -432,6 +442,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   Default: () => (/* binding */ Default),
 /* harmony export */   DefaultType: () => (/* binding */ DefaultType),
 /* harmony export */   LongCopy: () => (/* binding */ LongCopy),
+/* harmony export */   NoDismissButton: () => (/* binding */ NoDismissButton),
 /* harmony export */   NoImage: () => (/* binding */ NoImage),
 /* harmony export */   PrimaryActionOnly: () => (/* binding */ PrimaryActionOnly),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -471,6 +482,11 @@ __webpack_require__.r(__webpack_exports__);
       control: {
         type: "radio"
       }
+    },
+    dismissable: {
+      control: {
+        type: "boolean"
+      }
     }
   },
   parameters: {
@@ -491,7 +507,8 @@ const Template = ({
   imageWidth,
   imageDisplay,
   primaryActionText,
-  secondaryActionText
+  secondaryActionText,
+  dismissable
 }) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
   <div style="width: 360px; padding: 16px;">
     <smartwindow-promo
@@ -504,7 +521,8 @@ const Template = ({
   imageWidth,
   imageDisplay,
   primaryActionText,
-  secondaryActionText
+  secondaryActionText,
+  dismissable
 }}
       @SmartWindowPromo:PrimaryAction=${() =>
 // eslint-disable-next-line no-console
@@ -512,6 +530,9 @@ console.log("SmartWindowPromo:PrimaryAction")}
       @SmartWindowPromo:Close=${() =>
 // eslint-disable-next-line no-console
 console.log("SmartWindowPromo:Close")}
+      @SmartWindowPromo:Dismiss=${() =>
+// eslint-disable-next-line no-console
+console.log("SmartWindowPromo:Dismiss")}
       @SmartWindowPromo:Impression=${() =>
 // eslint-disable-next-line no-console
 console.log("SmartWindowPromo:Impression")}
@@ -528,12 +549,18 @@ Default.args = {
   imageWidth: "small",
   imageDisplay: "padded",
   primaryActionText: "Set as default",
-  secondaryActionText: "Not now"
+  secondaryActionText: "Not now",
+  dismissable: true
 };
 const PrimaryActionOnly = Template.bind({});
 PrimaryActionOnly.args = {
   ...Default.args,
   secondaryActionText: ""
+};
+const NoDismissButton = Template.bind({});
+NoDismissButton.args = {
+  ...Default.args,
+  dismissable: false
 };
 const NoImage = Template.bind({});
 NoImage.args = {
@@ -1160,4 +1187,4 @@ customElements.define("moz-promo", MozPromo);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-promo-smartwindow-promo-stories.19541ee4.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-promo-smartwindow-promo-stories.e46b6286.iframe.bundle.js.map

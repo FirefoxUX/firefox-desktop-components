@@ -891,7 +891,7 @@ customElements.define("panel-item", PanelItem);
 /***/ 45042:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "smartwindow-panel-list.c445c992372913db3719.css";
+module.exports = __webpack_require__.p + "smartwindow-panel-list.7f35deb841b05b4eb70c.css";
 
 /***/ }),
 
@@ -922,7 +922,7 @@ __webpack_require__.r(__webpack_exports__);
  * This component is agnostic to the data it displays - consumers control
  * all logic including filtering, truncation, and special item handling.
  *
- * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string}} ListItem
+ * @typedef {{id: string, label: string, icon?: string, l10nId?: string, description?: string, descriptionL10nId?: string}} ListItem
  * @typedef {{items: ListItem[], headerL10nId?: string, header?: string}} ItemGroup
  * @property {ItemGroup[]} groups - Grouped list items to display
  * @property {string} placeholderL10nId - Fluent ID for empty state message
@@ -949,6 +949,9 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     sidebarMode: {
       type: Boolean,
       reflect: true
+    },
+    selectedItemId: {
+      type: String
     }
   };
   #panelList = null;
@@ -960,6 +963,44 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     this.placeholderL10nId = "";
     this.alwaysOpen = false;
     this.sidebarMode = false;
+    this.selectedItemId = null;
+  }
+  willUpdate(changedProperties) {
+    // Reset the active selection to the first item
+    // so there is always a highlighted default.
+    if (changedProperties.has("groups")) {
+      const [first] = this.#selectableItems();
+      const firstId = first?.id ?? null;
+      if (this.selectedItemId !== firstId) {
+        this.selectedItemId = firstId;
+      }
+    }
+  }
+  #selectableItems() {
+    return this.groups.flatMap(group => group.items ?? []);
+  }
+
+  /**
+   * Moves the active selection
+   *
+   * @param {number} delta
+   */
+  moveSelection(delta) {
+    const items = this.#selectableItems();
+    if (!items.length) {
+      return;
+    }
+    const current = items.findIndex(item => item.id === this.selectedItemId);
+    const start = current === -1 ? 0 : current;
+    const next = (start + delta + items.length) % items.length;
+    this.selectedItemId = items[next].id;
+  }
+
+  /**
+   * @returns {object|null} The currently selected item
+   */
+  getSelectedItem() {
+    return this.#selectableItems().find(item => item.id === this.selectedItemId) ?? null;
   }
   get #hasCustomItems() {
     const itemsHost = this.#panelList ?? this;
@@ -1139,12 +1180,13 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return styles;
   }
-  #renderItem(item) {
-    const hasDescription = !!item.description;
+  #renderItem(item, isSelected = false) {
+    const hasDescription = !!item.description || !!item.descriptionL10nId;
     const panelItem = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
       .itemId=${item.id}
-      .itemLabel=${item.label}
+      .itemLabel=${item.label ?? ""}
       icon=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(!hasDescription && item.icon ? "true" : undefined)}
+      class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(isSelected && !hasDescription ? "selected" : undefined)}
       data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.l10nId)}
       style=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.styleMap)(hasDescription ? {} : this.#computeItemStyles(item))}
     >
@@ -1153,13 +1195,23 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     if (!hasDescription) {
       return panelItem;
     }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="panel-item-container">
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div
+      class=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.classMap)({
+      "panel-item-container": true,
+      selected: isSelected
+    })}
+    >
       ${item.icon ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span class="panel-item-icon" aria-hidden="true">
             <img class="panel-item-icon-image" src=${item.icon} alt="" />
           </span>` : ""}
       <div class="panel-item-text">
         ${panelItem}
-        <div class="panel-item-description">${item.description}</div>
+        <div
+          class="panel-item-description"
+          data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(item.descriptionL10nId)}
+        >
+          ${item.descriptionL10nId ? "" : item.description}
+        </div>
       </div>
     </div>`;
   }
@@ -1175,7 +1227,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       ${header}
-      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item))}
+      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(group.items, item => item.id, item => this.#renderItem(item, this.#isCommandMode && item.id === this.selectedItemId))}
     `;
   }
   #renderGroups() {
@@ -1188,6 +1240,17 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
     }
     return this.#isEmpty() ? this.#renderEmptyState() : this.#renderGroups();
   }
+  #renderCommandFooter() {
+    if (!this.#isCommandMode || this.#hasCustomItems || this.#isEmpty()) {
+      return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
+    }
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<panel-item
+      disabled
+      role="note"
+      class="panel-section-header panel-command-footer"
+      data-l10n-id="smartbar-command-coming-soon"
+    ></panel-item>`;
+  }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <link
@@ -1199,7 +1262,7 @@ class SmartwindowPanelList extends chrome_global_content_lit_utils_mjs__WEBPACK_
         @click=${this.handlePanelClick}
         @keydown=${this.handleKeyDown}
       >
-        ${this.#renderContent()}
+        ${this.#renderContent()} ${this.#renderCommandFooter()}
       </panel-list>
     `;
   }
@@ -1363,4 +1426,4 @@ MultipleGroups.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.a6631821.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-panel-list-smartwindow-panel-list-stories.3cf8ab06.iframe.bundle.js.map

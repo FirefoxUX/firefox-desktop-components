@@ -3614,36 +3614,36 @@ const tokensTable = {
   }, {
     value: {
       light: "var(--color-gray-55)",
-      dark: "var(--color-gray-0)",
-      default: "light-dark(var(--color-gray-55), var(--color-gray-0))"
+      dark: "var(--color-gray-40)",
+      default: "light-dark(var(--color-gray-55), var(--color-gray-40))"
     },
     name: "--tab-group-gray"
   }, {
     value: {
       light: "var(--color-white)",
-      dark: "var(--color-gray-65)",
-      default: "light-dark(var(--color-white), var(--color-gray-65))"
+      dark: "var(--color-gray-90)",
+      default: "light-dark(var(--color-white), var(--color-gray-90))"
     },
     name: "--tab-group-gray-text"
   }, {
     value: {
       dark: "var(--color-white)",
-      light: "var(--color-gray-65)",
-      default: "light-dark(var(--color-gray-65), var(--color-white))"
+      light: "var(--color-gray-90)",
+      default: "light-dark(var(--color-gray-90), var(--color-white))"
     },
     name: "--tab-group-gray-text-invert"
   }, {
     value: {
       light: "var(--color-gray-65)",
-      dark: "var(--color-gray-10)",
-      default: "light-dark(var(--color-gray-65), var(--color-gray-10))"
+      dark: "var(--color-gray-50)",
+      default: "light-dark(var(--color-gray-65), var(--color-gray-50))"
     },
     name: "--tab-group-gray-hover"
   }, {
     value: {
-      light: "var(--color-gray-0)",
+      light: "var(--color-gray-40)",
       dark: "var(--color-gray-55)",
-      default: "light-dark(var(--color-gray-0), var(--color-gray-55))"
+      default: "light-dark(var(--color-gray-40), var(--color-gray-55))"
     },
     name: "--tab-group-gray-invert"
   }, {
@@ -5944,28 +5944,28 @@ const variableLookupTable = {
   },
   "tab-group-gray": {
     light: "var(--color-gray-55)",
-    dark: "var(--color-gray-0)",
-    default: "light-dark(var(--color-gray-55), var(--color-gray-0))"
+    dark: "var(--color-gray-40)",
+    default: "light-dark(var(--color-gray-55), var(--color-gray-40))"
   },
   "tab-group-gray-text": {
     light: "var(--color-white)",
-    dark: "var(--color-gray-65)",
-    default: "light-dark(var(--color-white), var(--color-gray-65))"
+    dark: "var(--color-gray-90)",
+    default: "light-dark(var(--color-white), var(--color-gray-90))"
   },
   "tab-group-gray-text-invert": {
     dark: "var(--color-white)",
-    light: "var(--color-gray-65)",
-    default: "light-dark(var(--color-gray-65), var(--color-white))"
+    light: "var(--color-gray-90)",
+    default: "light-dark(var(--color-gray-90), var(--color-white))"
   },
   "tab-group-gray-hover": {
     light: "var(--color-gray-65)",
-    dark: "var(--color-gray-10)",
-    default: "light-dark(var(--color-gray-65), var(--color-gray-10))"
+    dark: "var(--color-gray-50)",
+    default: "light-dark(var(--color-gray-65), var(--color-gray-50))"
   },
   "tab-group-gray-invert": {
-    light: "var(--color-gray-0)",
+    light: "var(--color-gray-40)",
     dark: "var(--color-gray-55)",
-    default: "light-dark(var(--color-gray-0), var(--color-gray-55))"
+    default: "light-dark(var(--color-gray-40), var(--color-gray-55))"
   },
   "tabs-navbar-separator-color": "ThreeDShadow",
   "tabs-navbar-separator-style": {
@@ -6584,4 +6584,4 @@ module.exports = __webpack_require__.p + "tokens-table.e288c078a012cd609c4c.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.e2bd401e.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.d4745120.iframe.bundle.js.map
