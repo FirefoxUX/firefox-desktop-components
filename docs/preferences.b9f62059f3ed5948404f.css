@@ -1665,6 +1665,10 @@ setting-pane[onsearchpane] {
   --box-label-font-weight: var(--font-weight-heading);
 }
 
+#containers-list {
+  --box-group-max-height: 525px;
+}
+
 .containers-identity-item {
   --box-icon-start-fill: var(--identity-icon-color);
   --box-icon-size: var(--icon-size-xlarge);
