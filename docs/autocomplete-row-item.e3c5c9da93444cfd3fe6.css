@@ -55,6 +55,7 @@
 .secondary-action {
   visibility: hidden;
   margin-inline-start: auto;
+  --button-background-color-ghost-hover: var(--button-background-color-active);
 
   &.selected {
     visibility: visible;

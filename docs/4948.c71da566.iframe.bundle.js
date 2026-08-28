@@ -1,0 +1,11 @@
+"use strict";
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[4948],{
+
+/***/ 44948:
+/***/ ((module) => {
+
+module.exports = "# This Source Code Form is subject to the terms of the Mozilla Public\n# License, v. 2.0. If a copy of the MPL was not distributed with this\n# file, You can obtain one at http://mozilla.org/MPL/2.0/.\n\n## The share panel, opened from the share button in the address bar.\n\n# Address bar button that opens the share panel.\nurlbar-share-button =\n  .tooltiptext = Share this page\n  .aria-label = Share this page\n\nshare-panel-heading = Share Page\n\nshare-panel-copy-link =\n  .label = Copy Link\n# Confirmation hint shown near the share button after the user copies the\n# current page URL from the share panel.\nconfirmation-hint-link-copied = Link copied\n\n# Share with Windows/Mac means to pass a given link to the native OS sharing\n# system so that a given link can be shared with native apps\nshare-panel-os-share-2 =\n  .label = { PLATFORM() ->\n    [windows] Share with Windows…\n    [macos] Share with Mac…\n    *[other] Share with…\n  }\n\nshare-panel-mail =\n  .label = Send Email\nshare-panel-screenshot =\n  .label = Take a Screenshot\nshare-panel-qr-code-2 =\n  .label = Create QR Code\n\n# This string is shown when the user has more than 1 device signed in to their account.\n# Clicking this will bring them to a subview where all of their devices are listed.\nshare-panel-send-to-device =\n  .label = Send to Device\n# This string is shown when the user has no other devices signed in to their account.\n# Clicking this will bring them to a place where they can connect other devices.\nshare-panel-send-to-mobile =\n  .label = Send to Mobile\n\nshare-panel-device-subview =\n  .title = All Devices\n\n# Shown below the device list in the share panel's device subview. Clicking it\n# opens the flow to connect another device to the user's account.\nshare-panel-connect-device-2 =\n  .label = Add a Device\n# Shown below the device list in the share panel's device subview. Clicking it\n# opens a support article about devices missing from the list.\nshare-panel-missing-device =\n  .label = Don’t See Your Device?\n";
+
+/***/ })
+
+}]);
