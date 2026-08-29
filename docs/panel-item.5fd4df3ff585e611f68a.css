@@ -1,0 +1,109 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+@import url("chrome://global/content/elements/panel-item.tokens.css");
+
+:host(:not([hidden])) {
+  display: flex;
+  align-items: center;
+}
+
+::slotted(a) {
+  margin-inline-end: var(--space-medium);
+}
+
+button {
+  background-color: transparent;
+  color: inherit;
+  background-position: var(--panel-menuitem-padding-inline) center;
+  background-repeat: no-repeat;
+  background-size: var(--icon-size);
+  border: none;
+  border-radius: var(--panel-item-button-border-radius);
+  margin: var(--panel-item-button-margin);
+  position: relative;
+  display: flex;
+  font: inherit;
+  padding: var(--panel-item-button-padding);
+  padding-inline-start: calc(var(--panel-item-button-padding-inline-start) + var(--panel-item-button-padding-inline-start-offset));
+  text-align: start;
+  width: 100%;
+  -moz-context-properties: fill;
+  fill: currentColor;
+  overflow: hidden;
+
+  &:dir(rtl),
+  &:-moz-locale-dir(rtl) {
+    background-position-x: right var(--panel-menuitem-padding-inline);
+  }
+
+  &:enabled:hover {
+    background-color: var(--button-background-color-menu-hover);
+    color: var(--button-text-color-menu-hover);
+  }
+
+  &:enabled:hover:active {
+    background-color: var(--button-background-color-menu-active);
+    color: var(--button-text-color-menu-active);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+    outline-offset: var(--focus-outline-inset);
+  }
+
+  &:disabled {
+    opacity: var(--button-opacity-disabled);
+    background-color: var(--button-background-color-menu-disabled);
+    color: var(--button-text-color-menu-disabled);
+  }
+
+  :host([type="checkbox"][checked]) & {
+    background-image: url("chrome://global/skin/icons/check.svg");
+  }
+
+  > moz-badge {
+    flex: 0;
+    display: inline-flex;
+    margin-inline-start: var(--space-small);
+  }
+}
+
+::part(label) {
+  flex: 1;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+:host([badged]) button::after {
+  --panel-item-badge-size: 5px;
+  --panel-item-badge-background-color: var(--color-accent-primary);
+
+  content: "";
+  display: block;
+  /* The size of the dot is in between dimension token sizes. */
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  width: var(--panel-item-badge-size);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  height: var(--panel-item-badge-size);
+  border-radius: var(--border-radius-circle);
+  background-color: var(--panel-item-badge-background-color);
+  position: absolute;
+  inset-block-start: var(--panel-item-badge-inset-block-start);
+  inset-inline-start: var(--panel-item-badge-inset-inline-start);
+}
+
+.submenu-icon {
+  background-image: url("chrome://global/skin/icons/arrow-right.svg");
+  background-position: center center;
+  background-repeat: no-repeat;
+  fill: currentColor;
+  width: var(--size-item-small);
+  height: var(--size-item-small);
+  margin-inline-start: var(--space-small);
+
+  &:dir(rtl) {
+    background-image: url("chrome://global/skin/icons/arrow-left.svg");
+  }
+}
