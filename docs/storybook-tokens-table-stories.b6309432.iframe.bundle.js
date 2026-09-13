@@ -1388,8 +1388,30 @@ const tokensTable = {
     value: "var(--border-radius-medium)",
     name: "--message-bar-border-radius"
   }, {
-    value: "var(--border-radius-circle)",
+    value: {
+      default: "var(--border-radius-circle)"
+    },
     name: "--message-bar-icon-container-border-radius"
+  }, {
+    value: {
+      default: "var(--message-bar-icon-container-border-radius)"
+    },
+    name: "--message-bar-icon-container-border-radius-start-start"
+  }, {
+    value: {
+      default: "var(--message-bar-icon-container-border-radius)"
+    },
+    name: "--message-bar-icon-container-border-radius-start-end"
+  }, {
+    value: {
+      default: "var(--message-bar-icon-container-border-radius)"
+    },
+    name: "--message-bar-icon-container-border-radius-end-start"
+  }, {
+    value: {
+      default: "var(--message-bar-icon-container-border-radius)"
+    },
+    name: "--message-bar-icon-container-border-radius-end-end"
   }, {
     value: "var(--button-border-radius)",
     name: "--page-nav-button-border-radius"
@@ -2444,16 +2466,10 @@ const tokensTable = {
     value: "var(--space-small)",
     name: "--checkbox-margin-inline"
   }, {
-    value: "4px",
-    name: "--info-bar-margin-block-start"
-  }, {
     value: {
       default: "4px"
     },
-    name: "--info-bar-margin-block-end"
-  }, {
-    value: "4px",
-    name: "--info-bar-margin-inline"
+    name: "--info-bar-margin"
   }, {
     value: "var(--space-medium)",
     name: "--input-folder-gap"
@@ -2557,10 +2573,22 @@ const tokensTable = {
     value: "var(--space-small)",
     name: "--message-bar-actions-gap"
   }, {
+    value: {
+      default: "0px"
+    },
+    name: "--message-bar-close-margin-inline-end"
+  }, {
+    value: {
+      default: "0px"
+    },
+    name: "--message-bar-close-margin-block-start"
+  }, {
     value: "var(--space-small)",
     name: "--message-bar-container-gap"
   }, {
-    value: "var(--space-small)",
+    value: {
+      default: "var(--space-small)"
+    },
     name: "--message-bar-container-padding-block"
   }, {
     value: {
@@ -2570,6 +2598,16 @@ const tokensTable = {
   }, {
     value: "var(--space-small) var(--space-medium)",
     name: "--message-bar-content-gap"
+  }, {
+    value: {
+      default: "0"
+    },
+    name: "--message-bar-content-padding-block"
+  }, {
+    value: {
+      default: "0"
+    },
+    name: "--message-bar-content-padding-inline"
   }, {
     value: {
       default: "var(--space-small)"
@@ -2590,6 +2628,11 @@ const tokensTable = {
       default: "0px"
     },
     name: "--message-bar-icon-container-padding-offset"
+  }, {
+    value: {
+      default: "var(--message-bar-icon-container-padding)"
+    },
+    name: "--message-bar-icon-container-padding-block-start"
   }, {
     value: "var(--space-xsmall)",
     name: "--message-bar-message-margin-inline-end"
@@ -3002,6 +3045,9 @@ const tokensTable = {
     name: "--card-header-text-color-active"
   }, {
     value: {
+      brand: {
+        default: "var(--text-color)"
+      },
       nativeTheme: "FieldText",
       platform: {
         default: "FieldText",
@@ -3408,6 +3454,11 @@ const tokensTable = {
   }, {
     value: "center",
     name: "--card-cover-image-object-position-default"
+  }, {
+    value: {
+      default: "center"
+    },
+    name: "--message-bar-icon-container-align-items"
   }, {
     value: {
       light: "var(--color-blue-50)",
@@ -4982,11 +5033,9 @@ const variableLookupTable = {
       }
     }
   },
-  "info-bar-margin-block-start": "4px",
-  "info-bar-margin-block-end": {
+  "info-bar-margin": {
     default: "4px"
   },
-  "info-bar-margin-inline": "4px",
   "input-border-color": "var(--border-color-interactive)",
   "input-folder-gap": "var(--space-medium)",
   "input-height": "var(--size-item-small)",
@@ -5007,6 +5056,9 @@ const variableLookupTable = {
   "input-text-border-color-disabled": "var(--border-color-interactive-disabled)",
   "input-text-border-radius": "var(--border-radius-medium)",
   "input-text-color": {
+    brand: {
+      default: "var(--text-color)"
+    },
     nativeTheme: "FieldText",
     platform: {
       default: "FieldText",
@@ -5593,23 +5645,54 @@ const variableLookupTable = {
   },
   "message-bar-border-radius": "var(--border-radius-medium)",
   "message-bar-border-width": "var(--border-width)",
+  "message-bar-close-margin-inline-end": {
+    default: "0px"
+  },
+  "message-bar-close-margin-block-start": {
+    default: "0px"
+  },
   "message-bar-container-gap": "var(--space-small)",
   "message-bar-container-min-height": "var(--size-item-large)",
-  "message-bar-container-padding-block": "var(--space-small)",
+  "message-bar-container-padding-block": {
+    default: "var(--space-small)"
+  },
   "message-bar-container-padding-inline": {
     default: "var(--space-medium) var(--space-small)"
   },
   "message-bar-content-gap": "var(--space-small) var(--space-medium)",
+  "message-bar-content-padding-block": {
+    default: "0"
+  },
+  "message-bar-content-padding-inline": {
+    default: "0"
+  },
   "message-bar-icon-background-color": "var(--background-color-information)",
   "message-bar-icon-background-color-warning": "var(--background-color-warning)",
   "message-bar-icon-background-color-success": "var(--background-color-success)",
   "message-bar-icon-background-color-critical": "var(--background-color-critical)",
   "message-bar-icon-color": "var(--icon-color-information)",
+  "message-bar-icon-container-align-items": {
+    default: "center"
+  },
   "message-bar-icon-container-border": {
     default: "none"
   },
   "message-bar-icon-container-border-color": "transparent",
-  "message-bar-icon-container-border-radius": "var(--border-radius-circle)",
+  "message-bar-icon-container-border-radius": {
+    default: "var(--border-radius-circle)"
+  },
+  "message-bar-icon-container-border-radius-start-start": {
+    default: "var(--message-bar-icon-container-border-radius)"
+  },
+  "message-bar-icon-container-border-radius-start-end": {
+    default: "var(--message-bar-icon-container-border-radius)"
+  },
+  "message-bar-icon-container-border-radius-end-start": {
+    default: "var(--message-bar-icon-container-border-radius)"
+  },
+  "message-bar-icon-container-border-radius-end-end": {
+    default: "var(--message-bar-icon-container-border-radius)"
+  },
   "message-bar-icon-container-height": {
     default: "min-content"
   },
@@ -5624,6 +5707,9 @@ const variableLookupTable = {
   },
   "message-bar-icon-container-padding-offset": {
     default: "0px"
+  },
+  "message-bar-icon-container-padding-block-start": {
+    default: "var(--message-bar-icon-container-padding)"
   },
   "message-bar-icon-size": "var(--icon-size)",
   "message-bar-message-margin-inline-end": "var(--space-xsmall)",
@@ -6796,4 +6882,4 @@ module.exports = __webpack_require__.p + "tokens-table.134463fd69b8bf5dec02.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.c0fa4bbd.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.b6309432.iframe.bundle.js.map

@@ -1,19 +1,151 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[2524,4786,6284,6296,9240],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[201,2524,6284,6296,9240],{
 
-/***/ 67:
+/***/ 8356:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   DisableError: () => (/* binding */ DisableError),
+/* harmony export */   "default": () => (/* binding */ PasswordRulesTooltip)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_password_rules_tooltip_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62782);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+/**
+ * The widget for enabling password protection if the backup is not yet
+ * encrypted.
+ */
+class PasswordRulesTooltip extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    hasEmail: {
+      type: Boolean
+    },
+    tooShort: {
+      type: Boolean
+    },
+    open: {
+      type: Boolean
+    }
+  };
+  static get queries() {
+    return {
+      passwordRulesEl: "#password-rules-wrapper"
+    };
+  }
+  constructor() {
+    super();
+    this.hasEmail = false;
+    this.tooShort = false;
+    this._onResize = null;
+  }
+  _debounce(fn, delay) {
+    let timeout;
+    return (...args) => {
+      clearTimeout(timeout);
+      timeout = setTimeout(() => fn(...args), delay);
+    };
+  }
+  _handleResize() {
+    if (this.open) {
+      this.positionPopover();
+    }
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this._onResize = this._debounce(() => this._handleResize(), 200);
+    window.addEventListener("resize", this._onResize);
+  }
+  disconnectedCallback() {
+    super.disconnectedCallback();
+    if (this._onResize) {
+      window.removeEventListener("resize", this._onResize);
+    }
+  }
+  show() {
+    this.passwordRulesEl.showPopover();
+    this.positionPopover();
+  }
+  hide() {
+    this.passwordRulesEl.hidePopover();
+  }
+  positionPopover() {
+    const anchorRect = this.getBoundingClientRect();
+    const popover = this.passwordRulesEl;
+    const isWideViewport = window.innerWidth >= 1200;
+    const isRTL = document.dir === "rtl";
+
+    // Calculate top position
+    const topPos = isWideViewport ? anchorRect.top + anchorRect.height / 2 : anchorRect.bottom;
+    popover.style.top = `${topPos}px`;
+    popover.style.right = isRTL ? "auto" : "inherit";
+    popover.style.left = isRTL ? "inherit" : "auto";
+  }
+  _onBeforeToggle(e) {
+    this.open = e.newState == "open";
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_password_rules_tooltip_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div
+        id="password-rules-wrapper"
+        role="tooltip"
+        aria-describedby="password-rules-header"
+        popover="manual"
+        @beforetoggle=${this._onBeforeToggle}
+      >
+        <h2
+          id="password-rules-header"
+          data-l10n-id="password-rules-header"
+        ></h2>
+        <ul>
+          <li class=${this.tooShort && "warning"}>
+            <span
+              data-l10n-id="password-rules-length-description"
+              class="rule-description"
+              aria-labelledby="password-rules-header"
+            ></span>
+          </li>
+          <li class=${this.hasEmail && "warning"}>
+            <span
+              data-l10n-id="password-rules-email-description"
+              class="rule-description"
+              aria-labelledby="password-rules-header"
+            ></span>
+          </li>
+        </ul>
+      </div>
+    `;
+  }
+}
+customElements.define("password-rules-tooltip", PasswordRulesTooltip);
+
+/***/ }),
+
+/***/ 12468:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   ChangePassword: () => (/* binding */ ChangePassword),
+/* harmony export */   SetPassword: () => (/* binding */ SetPassword),
+/* harmony export */   SetPasswordError: () => (/* binding */ SetPasswordError),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 /* harmony import */ var lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_elements_moz_card_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(52524);
 /* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(29307);
-/* harmony import */ var _disable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(7150);
+/* harmony import */ var _enable_backup_encryption_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(36609);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
@@ -30,10 +162,16 @@ const SELECTABLE_ERRORS = {
   ...chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "Domain-specific UI Widgets/Backup/Disable Encryption",
-  component: "disable-backup-encryption",
+  title: "Domain-specific UI Widgets/Backup/Enable Encryption",
+  component: "enable-backup-encryption",
   argTypes: {
-    disableEncryptionErrorCode: {
+    type: {
+      control: {
+        type: "select"
+      },
+      options: ["set-password", "change-password"]
+    },
+    enableEncryptionErrorCode: {
       options: Object.keys(SELECTABLE_ERRORS),
       mapping: SELECTABLE_ERRORS,
       control: {
@@ -43,148 +181,29 @@ const SELECTABLE_ERRORS = {
   }
 });
 const Template = ({
-  disableEncryptionErrorCode
+  type,
+  enableEncryptionErrorCode
 }) => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <moz-card style="width: 23.94rem;">
-    <disable-backup-encryption
-      .disableEncryptionErrorCode=${disableEncryptionErrorCode}
-    ></disable-backup-encryption>
+  <moz-card style="width: 23.94rem; position: relative;">
+    <enable-backup-encryption
+      type=${type}
+      .enableEncryptionErrorCode=${enableEncryptionErrorCode}
+    ></enable-backup-encryption>
   </moz-card>
 `;
-const Default = Template.bind({});
-const DisableError = Template.bind({});
-DisableError.args = {
-  disableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.UNKNOWN
+const SetPassword = Template.bind({});
+SetPassword.args = {
+  type: "set-password"
 };
-
-/***/ }),
-
-/***/ 7150:
-/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
-
-__webpack_require__.r(__webpack_exports__);
-/* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   "default": () => (/* binding */ DisableBackupEncryption)
-/* harmony export */ });
-/* harmony import */ var browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42346);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26296);
-
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-
-
-
-// eslint-disable-next-line import/no-unassigned-import
-
-const ERROR_L10N_ID = "backup-error-retry";
-
-/**
- * The widget for disabling password protection if the backup is already
- * encrypted.
- */
-class DisableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
-  static properties = {
-    // managed by BackupUIChild
-    disableEncryptionErrorCode: {
-      type: Number
-    }
-  };
-  static get queries() {
-    return {
-      cancelButtonEl: "#backup-disable-encryption-cancel-button",
-      confirmButtonEl: "#backup-disable-encryption-confirm-button",
-      errorEl: "#disable-backup-encryption-error"
-    };
-  }
-  constructor() {
-    super();
-    this.disableEncryptionErrorCode = 0;
-  }
-  close() {
-    this.dispatchEvent(new CustomEvent("dialogCancel", {
-      bubbles: true,
-      composed: true
-    }));
-    this.reset();
-  }
-  reset() {
-    this.disableEncryptionErrorCode = 0;
-  }
-  handleConfirm() {
-    this.dispatchEvent(new CustomEvent("BackupUI:DisableEncryption", {
-      bubbles: true
-    }));
-  }
-  errorTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <moz-message-bar
-        id="disable-backup-encryption-error"
-        type="error"
-        .messageL10nId=${ERROR_L10N_ID}
-      ></moz-message-bar>
-    `;
-  }
-  contentTemplate() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <div
-        id="backup-disable-encryption-wrapper"
-        aria-labelledby="backup-disable-encryption-header"
-        aria-describedby="backup-disable-encryption-description"
-      >
-        <h2
-          id="backup-disable-encryption-header"
-          class="heading-medium"
-          data-l10n-id="disable-backup-encryption-header"
-        ></h2>
-        <main id="backup-disable-encryption-content">
-          <div id="backup-disable-encryption-description">
-            <span
-              id="backup-disable-encryption-description-span"
-              data-l10n-id="disable-backup-encryption-description2"
-            >
-            </span>
-            <a
-              id="backup-disable-encryption-learn-more-link"
-              is="moz-support-link"
-              support-page="firefox-backup"
-              data-l10n-id="disable-backup-encryption-support-link"
-              utm-content="remove-password"
-            ></a>
-          </div>
-          ${this.disableEncryptionErrorCode ? this.errorTemplate() : null}
-        </main>
-
-        <moz-button-group id="backup-disable-encryption-button-group">
-          <moz-button
-            id="backup-disable-encryption-cancel-button"
-            @click=${this.close}
-            data-l10n-id="disable-backup-encryption-cancel-button"
-          ></moz-button>
-          <moz-button
-            id="backup-disable-encryption-confirm-button"
-            @click=${this.handleConfirm}
-            type="primary"
-            data-l10n-id="disable-backup-encryption-confirm-button"
-          ></moz-button>
-        </moz-button-group>
-      </div>
-    `;
-  }
-  render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-      <link
-        rel="stylesheet"
-        href="${browser_components_backup_content_disable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
-      />
-      ${this.contentTemplate()}
-    `;
-  }
-}
-customElements.define("disable-backup-encryption", DisableBackupEncryption);
+const ChangePassword = Template.bind({});
+ChangePassword.args = {
+  type: "change-password"
+};
+const SetPasswordError = Template.bind({});
+SetPasswordError.args = {
+  type: "set-password",
+  enableEncryptionErrorCode: chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_2__.ERRORS.INVALID_PASSWORD
+};
 
 /***/ }),
 
@@ -951,10 +970,229 @@ module.exports = __webpack_require__.p + "moz-button.e874513288adb958d186.css";
 
 /***/ }),
 
-/***/ 42346:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+/***/ 36609:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "disable-backup-encryption.ab465ac83584db13a46f.css";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ EnableBackupEncryption)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(72195);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_message_bar_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(26296);
+/* harmony import */ var chrome_browser_content_backup_password_validation_inputs_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(55454);
+/* harmony import */ var chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(29307);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+
+/**
+ * Valid attributes for the enable-backup-encryption dialog type.
+ *
+ * @see EnableBackupEncryption.type
+ */
+const VALID_TYPES = Object.freeze({
+  SET_PASSWORD: "set-password",
+  CHANGE_PASSWORD: "change-password"
+});
+const VALID_L10N_IDS = new Map([[VALID_TYPES.SET_PASSWORD, "enable-backup-encryption-header"], [VALID_TYPES.CHANGE_PASSWORD, "change-backup-encryption-header"]]);
+const ERROR_L10N_IDS = Object.freeze({
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.INVALID_PASSWORD]: "backup-error-password-requirements",
+  [chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN]: "backup-error-retry"
+});
+
+/**
+ * @param {number} errorCode Error code from backup-constants.mjs
+ * @returns {string} Localization ID for error message
+ */
+function getErrorL10nId(errorCode) {
+  return ERROR_L10N_IDS[errorCode] ?? ERROR_L10N_IDS[chrome_browser_content_backup_backup_constants_mjs__WEBPACK_IMPORTED_MODULE_5__.ERRORS.UNKNOWN];
+}
+
+/**
+ * The widget for enabling password protection if the backup is not yet
+ * encrypted.
+ */
+class EnableBackupEncryption extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    // internal state
+    _inputPassValue: {
+      type: String,
+      state: true
+    },
+    _passwordsMatch: {
+      type: Boolean,
+      state: true
+    },
+    // passed from parents
+    supportBaseLink: {
+      type: String
+    },
+    /**
+     * The "type" attribute changes the layout.
+     *
+     * @see VALID_TYPES
+     */
+    type: {
+      type: String,
+      reflect: true
+    },
+    // managed by BackupUIChild
+    enableEncryptionErrorCode: {
+      type: Number
+    }
+  };
+  static get queries() {
+    return {
+      cancelButtonEl: "#backup-enable-encryption-cancel-button",
+      confirmButtonEl: "#backup-enable-encryption-confirm-button",
+      contentEl: "#backup-enable-encryption-content",
+      textHeaderEl: "#backup-enable-encryption-header",
+      textDescriptionEl: "#backup-enable-encryption-description",
+      passwordInputsEl: "#backup-enable-encryption-password-inputs",
+      errorEl: "#enable-backup-encryption-error"
+    };
+  }
+  constructor() {
+    super();
+    this.supportBaseLink = "";
+    this.type = VALID_TYPES.SET_PASSWORD;
+    this._inputPassValue = "";
+    this._passwordsMatch = false;
+    this.enableEncryptionErrorCode = 0;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    // Listening to events from child <password-validation-inputs>
+    this.addEventListener("ValidPasswordsDetected", this);
+    this.addEventListener("InvalidPasswordsDetected", this);
+  }
+  handleEvent(event) {
+    if (event.type == "ValidPasswordsDetected") {
+      let {
+        password
+      } = event.detail;
+      this._passwordsMatch = true;
+      this._inputPassValue = password;
+    } else if (event.type == "InvalidPasswordsDetected") {
+      this._passwordsMatch = false;
+      this._inputPassValue = "";
+    }
+  }
+  close() {
+    this.dispatchEvent(new CustomEvent("dialogCancel", {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  reset() {
+    this._inputPassValue = "";
+    this._passwordsMatch = false;
+    this.passwordInputsEl.reset();
+    this.enableEncryptionErrorCode = 0;
+  }
+  handleConfirm() {
+    this.dispatchEvent(new CustomEvent("BackupUI:EnableEncryption", {
+      bubbles: true,
+      detail: {
+        password: this._inputPassValue
+      }
+    }));
+  }
+  descriptionTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="backup-enable-encryption-description">
+        <span
+          id="backup-enable-encryption-description-span"
+          data-l10n-id="settings-sensitive-data-encryption-description"
+        >
+        </span>
+        <a
+          id="backup-enable-encryption-learn-more-link"
+          is="moz-support-link"
+          support-page="firefox-backup"
+          data-l10n-id="enable-backup-encryption-support-link"
+          utm-content="add-password"
+        ></a>
+      </div>
+    `;
+  }
+  buttonGroupTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-button-group id="backup-enable-encryption-button-group">
+        <moz-button
+          id="backup-enable-encryption-cancel-button"
+          @click=${this.close}
+          data-l10n-id="enable-backup-encryption-cancel-button"
+        ></moz-button>
+        <moz-button
+          id="backup-enable-encryption-confirm-button"
+          @click=${this.handleConfirm}
+          type="primary"
+          data-l10n-id="enable-backup-encryption-confirm-button"
+          ?disabled=${!this._passwordsMatch}
+        ></moz-button>
+      </moz-button-group>
+    `;
+  }
+  errorTemplate() {
+    let messageId = getErrorL10nId(this.enableEncryptionErrorCode);
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <moz-message-bar
+        id="enable-backup-encryption-error"
+        type="error"
+        .messageL10nId=${messageId}
+      ></moz-message-bar>
+    `;
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div
+        id="backup-enable-encryption-wrapper"
+        aria-labelledby="backup-enable-encryption-header"
+        aria-describedby="backup-enable-encryption-description"
+      >
+        <h2
+          id="backup-enable-encryption-header"
+          class="heading-medium"
+          data-l10n-id=${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.ifDefined)(VALID_L10N_IDS.get(this.type))}
+        ></h2>
+        <div id="backup-enable-encryption-content">
+          ${this.type === VALID_TYPES.SET_PASSWORD ? this.descriptionTemplate() : null}
+          <password-validation-inputs
+            id="backup-enable-encryption-password-inputs"
+            .supportBaseLink=${this.supportBaseLink}
+          >
+          </password-validation-inputs>
+
+          ${this.enableEncryptionErrorCode ? this.errorTemplate() : null}
+        </div>
+        ${this.buttonGroupTemplate()}
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_enable_backup_encryption_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("enable-backup-encryption", EnableBackupEncryption);
 
 /***/ }),
 
@@ -1136,10 +1374,274 @@ customElements.define("moz-card", MozCard);
 
 /***/ }),
 
+/***/ 55454:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (/* binding */ PasswordValidationInputs)
+/* harmony export */ });
+/* harmony import */ var browser_components_backup_content_password_validation_inputs_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(78312);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_browser_content_backup_password_rules_tooltip_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(8356);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+
+/**
+ * The widget for enabling password protection if the backup is not yet
+ * encrypted.
+ */
+class PasswordValidationInputs extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    _hasEmail: {
+      type: Boolean,
+      state: true
+    },
+    _passwordsMatch: {
+      type: Boolean,
+      state: true
+    },
+    _passwordsValid: {
+      type: Boolean,
+      state: true
+    },
+    _tooShort: {
+      type: Boolean,
+      state: true
+    },
+    createPasswordLabelL10nId: {
+      type: String,
+      reflect: true,
+      attribute: "create-password-label-l10n-id"
+    },
+    embeddedFxBackupOptIn: {
+      type: Boolean,
+      reflect: true,
+      attribute: "embedded-fx-backup-opt-in"
+    }
+  };
+  static get queries() {
+    return {
+      formEl: "#password-inputs-form",
+      inputNewPasswordEl: "#new-password-input",
+      inputRepeatPasswordEl: "#repeat-password-input",
+      passwordRulesEl: "#password-rules",
+      repeatPasswordErrorEl: "#repeat-password-error"
+    };
+  }
+  constructor() {
+    super();
+    this._tooShort = true;
+    this._hasEmail = false;
+    this._passwordsMatch = false;
+    this._passwordsValid = false;
+  }
+  connectedCallback() {
+    super.connectedCallback();
+    this._onKeydown = e => {
+      if (e.key === "Escape" && this.passwordRulesEl.open) {
+        this.passwordRulesEl.hide();
+        e.stopPropagation();
+        e.preventDefault();
+      }
+    };
+    document.addEventListener("keydown", this._onKeydown, true);
+  }
+  disconnectedCallback() {
+    document.removeEventListener("keydown", this._onKeydown, true);
+    super.disconnectedCallback();
+  }
+  setInputValidity(input, isValid, describedById = null) {
+    input.setAttribute("aria-invalid", isValid ? "false" : "true");
+    if (describedById) {
+      input.setAttribute("aria-describedby", describedById);
+    } else {
+      input.removeAttribute("aria-describedby");
+    }
+  }
+  reset() {
+    this.formEl?.reset();
+    if (this.inputNewPasswordEl) {
+      this.inputNewPasswordEl.revealPassword = false;
+      this.setInputValidity(this.inputNewPasswordEl, true);
+    }
+    if (this.inputRepeatPasswordEl) {
+      this.inputRepeatPasswordEl.revealPassword = false;
+      this.setInputValidity(this.inputRepeatPasswordEl, true);
+    }
+    this._hasEmail = false;
+    this._tooShort = true;
+    this._passwordsMatch = false;
+    this._passwordsValid = false;
+    this.passwordRulesEl.hide();
+  }
+  handleFocusNewPassword() {
+    this.passwordRulesEl.show();
+  }
+  handleBlurNewPassword(event) {
+    if (event.target.checkValidity()) {
+      this.passwordRulesEl.hide();
+    }
+  }
+  handleChangeNewPassword() {
+    this.updatePasswordValidity();
+  }
+  handleChangeRepeatPassword() {
+    this.updatePasswordValidity();
+  }
+  updatePasswordValidity() {
+    const emailRegex = /^[\w!#$%&'*+/=?^`{|}~.-]+@[A-Z0-9-]+\.[A-Z0-9.-]+$/i;
+    const l10n = new Localization(["browser/backupSettings.ftl"], true);
+    this._hasEmail = emailRegex.test(this.inputNewPasswordEl.value);
+    if (this._hasEmail) {
+      const invalid_password_email_l10n_message = l10n.formatValueSync("password-validity-has-email");
+      this.inputNewPasswordEl.setCustomValidity(invalid_password_email_l10n_message);
+    } else {
+      this.inputNewPasswordEl.setCustomValidity("");
+    }
+    const newPassValidity = this.inputNewPasswordEl.validity;
+    this._tooShort = newPassValidity?.valueMissing || newPassValidity?.tooShort;
+    const newInvalid = !newPassValidity?.valid;
+    this.setInputValidity(this.inputNewPasswordEl, !newInvalid, "password-rules-tooltip");
+    this._passwordsMatch = this.inputNewPasswordEl.value == this.inputRepeatPasswordEl.value;
+    if (!this._passwordsMatch) {
+      this.inputRepeatPasswordEl.setCustomValidity(l10n.formatValueSync("password-validity-do-not-match"));
+      this.setInputValidity(this.inputRepeatPasswordEl, false, "repeat-password-error");
+      document.l10n.setAttributes(this.repeatPasswordErrorEl, "password-validity-do-not-match");
+    } else {
+      this.inputRepeatPasswordEl.setCustomValidity("");
+      this.setInputValidity(this.inputRepeatPasswordEl, true);
+    }
+    const repeatPassValidity = this.inputRepeatPasswordEl.validity;
+    this._passwordsValid = newPassValidity?.valid && repeatPassValidity?.valid && this._passwordsMatch;
+  }
+
+  /**
+   * Dispatches a custom event whenever validity changes.
+   *
+   * @param {Map<string, any>} changedProperties a Map of recently changed properties and their new values
+   */
+  updated(changedProperties) {
+    if (!changedProperties.has("_passwordsValid")) {
+      return;
+    }
+    if (this._passwordsValid) {
+      this.dispatchEvent(new CustomEvent("ValidPasswordsDetected", {
+        bubbles: true,
+        composed: true,
+        detail: {
+          password: this.inputNewPasswordEl.value
+        }
+      }));
+    } else {
+      this.dispatchEvent(new CustomEvent("InvalidPasswordsDetected", {
+        bubbles: true,
+        composed: true
+      }));
+    }
+  }
+  contentTemplate() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <div id="password-inputs-wrapper">
+        <form id="password-inputs-form">
+          <!--TODO: (bug 1909983) change first input field label for the "change-password" dialog-->
+          <label id="new-password-label" for="new-password-input">
+            <div id="new-password-label-wrapper-span-input">
+              <span
+                id="new-password-span"
+                data-l10n-id=${this.createPasswordLabelL10nId || "enable-backup-encryption-create-password-label"}
+              ></span>
+              <input
+                type="password"
+                id="new-password-input"
+                minlength="8"
+                required
+                aria-describedby="password-rules"
+                @input=${this.handleChangeNewPassword}
+                @blur=${this.handleBlurNewPassword}
+                @mouseenter=${this.handleFocusNewPassword}
+                @focus=${this.handleFocusNewPassword}
+              />
+              <!--TODO: (bug 1909984) improve how we read out the first input field for screen readers-->
+            </div>
+          </label>
+          <!--TODO: (bug 1909984) look into how the tooltip vs dialog behaves when pressing the ESC key-->
+          <password-rules-tooltip
+            id="password-rules"
+            role="tooltip"
+            .hasEmail=${this._hasEmail}
+            .tooShort=${this._tooShort}
+            ?embedded-fx-backup-opt-in=${this.embeddedFxBackupOptIn}
+          ></password-rules-tooltip>
+          <label id="repeat-password-label" for="repeat-password-input">
+            <span
+              id="repeat-password-span"
+              data-l10n-id="enable-backup-encryption-repeat-password-label"
+            ></span>
+            <input
+              type="password"
+              id="repeat-password-input"
+              required
+              @input=${this.handleChangeRepeatPassword}
+            />
+            <span
+              id="repeat-password-error"
+              role="alert"
+              class="field-error"
+            ></span>
+          </label>
+        </form>
+      </div>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_backup_content_password_validation_inputs_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      ${this.contentTemplate()}
+    `;
+  }
+}
+customElements.define("password-validation-inputs", PasswordValidationInputs);
+
+/***/ }),
+
+/***/ 62782:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "password-rules-tooltip.996056dd27934bb5b6c2.css";
+
+/***/ }),
+
+/***/ 72195:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "enable-backup-encryption.8d743fbc875915662a93.css";
+
+/***/ }),
+
 /***/ 76150:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 module.exports = __webpack_require__.p + "moz-label.a79e0f1105ef6aa39e17.css";
+
+/***/ }),
+
+/***/ 78312:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "password-validation-inputs.a98838155f216e76cb6d.css";
 
 /***/ }),
 
@@ -1580,9 +2082,9 @@ customElements.define("moz-button", MozButton);
 /***/ 83506:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.56a2074dfd96eb535ddf.css";
+module.exports = __webpack_require__.p + "moz-message-bar.80c5698d4bfe6fd0ea50.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=disable-backup-encryption-stories.25fe1ed3.iframe.bundle.js.map
+//# sourceMappingURL=enable-backup-encryption-stories.04864c1f.iframe.bundle.js.map

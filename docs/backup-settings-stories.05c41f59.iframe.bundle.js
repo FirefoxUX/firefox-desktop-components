@@ -1387,7 +1387,7 @@ module.exports = __webpack_require__.p + "restore-from-backup.86b33439461e23bbee
 /***/ 20703:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "preferences.c7e9d09abdab34351b10.css";
+module.exports = __webpack_require__.p + "preferences.bcc99e2ef8703937d5ce.css";
 
 /***/ }),
 
@@ -3701,7 +3701,7 @@ customElements.define("moz-button", MozButton);
 /***/ 83506:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-message-bar.56a2074dfd96eb535ddf.css";
+module.exports = __webpack_require__.p + "moz-message-bar.80c5698d4bfe6fd0ea50.css";
 
 /***/ }),
 
@@ -3816,4 +3816,4 @@ module.exports = __webpack_require__.p + "turn-off-scheduled-backups.f6dd5643777
 /***/ })
 
 }]);
-//# sourceMappingURL=backup-settings-stories.3c6ca85b.iframe.bundle.js.map
+//# sourceMappingURL=backup-settings-stories.05c41f59.iframe.bundle.js.map
