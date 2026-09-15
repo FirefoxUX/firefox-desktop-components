@@ -1,0 +1,90 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* Declared on :host, not on .grouped-chips, so a consumer can retheme the
+   trigger from outside the shadow root. A custom property declared on an inner
+   element would shadow any inherited override; on :host the outer tree wins. */
+:host {
+  /* sets a custom margin between the grouped-chips button and the panel list */
+  --smartwindow-panel-list-valign-bottom-margin-block-start: var(--space-xsmall);
+  --ai-grouped-chip-container-padding: var(--space-medium);
+  --ai-grouped-chip-container-border-radius: var(--border-radius-large);
+  --ai-grouped-chip-container-border-end-end-radius: var(--border-radius-small);
+  --ai-grouped-chip-container-bg-color: light-dark(var(--color-violet-20), var(--color-violet-70));
+
+  /* Bug 2033070: remove nova media queries */
+  @media -moz-pref("browser.nova.enabled") {
+    --ai-grouped-chip-container-border-end-end-radius: var(--border-radius-xsmall);
+    --ai-grouped-chip-container-bg-color: light-dark(var(--color-violet-desaturated-10), var(--color-violet-desaturated-60));
+  }
+}
+
+.grouped-chips {
+  border: var(--border-width) solid var(--border-color-transparent);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  border-radius: var(--ai-grouped-chip-container-border-radius);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  border-end-end-radius: var(--ai-grouped-chip-container-border-end-end-radius);
+  cursor: pointer;
+  display: flex;
+  gap: var(--space-xsmall);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  padding: var(--ai-grouped-chip-container-padding);
+
+  @media not (prefers-reduced-motion) {
+    transition: gap 0.3s ease-in-out;
+  }
+
+  @media not forced-colors {
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    background-color: var(--ai-grouped-chip-container-bg-color);
+  }
+}
+
+.grouped-chips__label {
+  color: var(--text-color);
+  font-size: var(--font-size-small);
+  margin-inline-start: var(--space-xsmall);
+}
+
+.grouped-chips__favicon-group {
+  display: flex;
+
+  @media not (prefers-reduced-motion) {
+    transition: gap 0.3s ease-in-out;
+  }
+
+  .grouped-chips:hover &,
+  .grouped-chips:focus-visible &,
+  .grouped-chips[data-is-smartwindow-panel-open] & {
+    gap: var(--space-xxsmall);
+  }
+}
+
+.grouped-chips__favicon {
+  border-radius: var(--border-radius-xsmall);
+  height: var(--size-item-small);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  margin-inline-end: calc(-1 * var(--space-xxsmall));
+  width: var(--size-item-small);
+
+  @media not (prefers-reduced-motion) {
+    transition: margin-inline-end 0.3s ease-in-out;
+  }
+
+  .grouped-chips:hover &,
+  .grouped-chips:focus-visible &,
+  .grouped-chips[data-is-smartwindow-panel-open] & {
+    margin-inline-end: 0;
+  }
+}
+
+.grouped-chips__arrow-icon {
+  fill: var(--icon-color);
+  -moz-context-properties: fill;
+
+  .grouped-chips[data-is-smartwindow-panel-open] & {
+    transform: rotate(180deg);
+  }
+}
