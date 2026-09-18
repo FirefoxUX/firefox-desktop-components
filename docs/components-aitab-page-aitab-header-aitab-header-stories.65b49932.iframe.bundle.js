@@ -162,13 +162,6 @@ module.exports = function (item) {
 
 /***/ }),
 
-/***/ 22652:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "aitab-shared.2954142392e72187f1a2.css";
-
-/***/ }),
-
 /***/ 26284:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -2009,6 +2002,13 @@ customElements.define("smartwindow-panel-list", SmartwindowPanelList);
 
 /***/ }),
 
+/***/ 58676:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "aitab-base.734e68e043e6dace8d64.css";
+
+/***/ }),
+
 /***/ 59709:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
@@ -2033,6 +2033,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/AI Window/AI Tab Header",
   component: "aitab-header",
+  // The type scale queries a container that aitab-page normally provides.
+  // Without it the headings stay at their narrow sizes at every width.
+  decorators: [story => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div style="container: aitab-page / inline-size;">${story()}</div>`],
   argTypes: {
     createdAt: {
       control: {
@@ -2149,7 +2152,7 @@ HeadingOnly.args = {
 /***/ 62206:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "aitab-page-actions.90080171c784e8bca5f9.css";
+module.exports = __webpack_require__.p + "aitab-page-actions.5939184d432aecde8b43.css";
 
 /***/ }),
 
@@ -2293,7 +2296,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AITabHeader: () => (/* binding */ AITabHeader)
 /* harmony export */ });
 /* harmony import */ var browser_components_aiwindow_ui_components_aitab_page_aitab_header_aitab_header_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(95102);
-/* harmony import */ var browser_components_aiwindow_ui_components_aitab_page_aitab_shared_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(22652);
+/* harmony import */ var browser_components_aiwindow_ui_components_aitab_page_aitab_base_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(58676);
 /* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
 /* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
 /* harmony import */ var chrome_browser_content_aiwindow_components_ai_grouped_chip_container_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(63022);
@@ -2382,7 +2385,7 @@ class AITabHeader extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <link
         rel="stylesheet"
-        href="${browser_components_aiwindow_ui_components_aitab_page_aitab_shared_css__WEBPACK_IMPORTED_MODULE_1__}"
+        href="${browser_components_aiwindow_ui_components_aitab_page_aitab_base_css__WEBPACK_IMPORTED_MODULE_1__}"
       />
       <link
         rel="stylesheet"
@@ -2879,9 +2882,9 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 /***/ 95102:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "aitab-header.88230f27cf07737b8ad8.css";
+module.exports = __webpack_require__.p + "aitab-header.649a1c5ba9696c2abf5e.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-aitab-page-aitab-header-aitab-header-stories.c7977a16.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-page-aitab-header-aitab-header-stories.65b49932.iframe.bundle.js.map

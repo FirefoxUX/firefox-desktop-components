@@ -2441,6 +2441,7 @@ chrome_browser_content_preferences_config_SettingGroupManager_mjs__WEBPACK_IMPOR
     headingLevel: 2,
     iconSrc: "chrome://browser/skin/sync.svg",
     hidden: !accountsEnabled,
+    subcategory: "sync",
     items: [{
       id: "syncNoFxaSignIn",
       l10nId: "sync-signedout-account-signin-4",
@@ -3015,4 +3016,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.955ba66f.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.6f97c8d9.iframe.bundle.js.map

@@ -235,7 +235,7 @@ const VALID_FORM_REVIEW_GENERATION_ERRORS = Object.freeze([FORM_REVIEW_ERRORS.GE
 /**
  * Input types supported by Smart Form Fill
  */
-const SUPPORTED_INPUT_TYPES = ["text", "email", "tel", "number", "search", "month"];
+const SUPPORTED_INPUT_TYPES = ["text", "email", "tel", "number", "month"];
 
 /***/ }),
 
@@ -385,4 +385,4 @@ customElements.define("ai-sff-tab-selector", AiSffTabSelector);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-sff-tab-selector-ai-sff-tab-selector-stories.abdde53c.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-sff-tab-selector-ai-sff-tab-selector-stories.581b0147.iframe.bundle.js.map

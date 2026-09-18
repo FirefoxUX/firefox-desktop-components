@@ -1042,10 +1042,6 @@ menulist[indicator="true"] > menupopup menuitem[indicator="true"]:not([image]) >
   padding-inline-start: 13px;
 }
 
-#warning-message > .message-bar-description {
-  width: 32em;
-}
-
 #warning-message {
   margin-top: 8px;
 }

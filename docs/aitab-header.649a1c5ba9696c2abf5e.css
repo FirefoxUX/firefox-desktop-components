@@ -2,13 +2,27 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-/* Typography for the eyebrow, title and subhead comes from aitab-shared.css,
-   which is linked first so these rules win on equal specificity. */
-
 :host {
-  --aitab-hero-fill: light-dark(var(--color-violet-10), var(--color-violet-desaturated-90, var(--color-violet-90)));
-  --aitab-hero-bloom: light-dark(var(--color-white), var(--color-violet-50));
+  /* Light mode follows the Smart Window theme's own hero gradient; see
+     --lwt-additional-images in aiwindow-theme.css. Dark uses a dimmer violet
+     than the design's ellipse because the design blurs that ellipse, which
+     both spreads the colour and dilutes it, and a gradient does neither. */
+  --aitab-hero-fill: light-dark(var(--color-violet-20), var(--color-violet-desaturated-90));
+  --aitab-hero-bloom: light-dark(var(--color-red-0), var(--color-violet-60));
+  /* How far the bloom stays solid before it starts fading, so the centre
+     reads as a colour rather than a single point. */
+  --aitab-hero-bloom-hold: 30%;
+  --aitab-hero-center: 50% 90%;
+  --aitab-hero-bloom-height: 140%;
+  --aitab-hero-bloom-width: 220%;
+
   --aitab-hero-radius: 128px;
+
+  @media (prefers-color-scheme: dark) {
+    --aitab-hero-bloom-hold: 0%;
+    --aitab-hero-center: 50% 140%;
+    --aitab-hero-bloom-width: 90%;
+  }
 }
 
 .aitab-header {
@@ -35,7 +49,12 @@
   }
 
   @media not (forced-colors) {
-    background-image: radial-gradient(ellipse 82% 169% at 50% 154%, var(--aitab-hero-bloom), var(--aitab-hero-fill) 100%);
+    background-image: radial-gradient(
+      ellipse var(--aitab-hero-bloom-width) var(--aitab-hero-bloom-height) at var(--aitab-hero-center),
+      var(--aitab-hero-bloom) 0%,
+      var(--aitab-hero-bloom) var(--aitab-hero-bloom-hold),
+      var(--aitab-hero-fill) 100%
+    );
   }
 }
 
@@ -55,6 +74,10 @@ aitab-page-actions {
     /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
     max-width: 934px;
   }
+}
+
+.aitab-title-subtext {
+  opacity: var(--opacity-deemphasized);
 }
 
 ai-grouped-chip-container {

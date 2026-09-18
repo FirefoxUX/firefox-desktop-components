@@ -1061,7 +1061,7 @@ const VALID_FORM_REVIEW_GENERATION_ERRORS = Object.freeze([FORM_REVIEW_ERRORS.GE
 /**
  * Input types supported by Smart Form Fill
  */
-const SUPPORTED_INPUT_TYPES = ["text", "email", "tel", "number", "search", "month"];
+const SUPPORTED_INPUT_TYPES = ["text", "email", "tel", "number", "month"];
 
 /***/ }),
 
@@ -2091,4 +2091,4 @@ module.exports = __webpack_require__.p + "ai-sff-form-review.7a40ad7fa41b9a2133a
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-sff-form-review-ai-sff-form-review-stories.b9953ba4.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-sff-form-review-ai-sff-form-review-stories.c51eda42.iframe.bundle.js.map

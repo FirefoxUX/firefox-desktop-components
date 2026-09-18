@@ -1,5 +1,130 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1490,6284,9240,9417],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[3361,6284,9240,9417],{
+
+/***/ 4108:
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   AITabPageActions: () => (/* binding */ AITabPageActions)
+/* harmony export */ });
+/* harmony import */ var browser_components_aiwindow_ui_components_aitab_page_aitab_page_actions_aitab_page_actions_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(62206);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
+
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+
+
+// eslint-disable-next-line import/no-unassigned-import
+
+const REFRESH_EVENT = "aitab-page-actions:refresh";
+const DELETE_EVENT = "aitab-page-actions:delete";
+
+/**
+ * Page-level controls for a generated AI Tab page: re-fetch the sources the
+ * page was built from, or delete the page.
+ *
+ * Owns the confirmation step for delete but performs neither action itself;
+ * it reports intent and the host decides what to do.
+ *
+ * Fires `aitab-page-actions:refresh` and, once confirmed,
+ * `aitab-page-actions:delete`. Both bubble and cross shadow boundaries.
+ *
+ * @property {boolean} refreshing - Whether a refresh is in flight. While set,
+ *   the refresh button is disabled and reports its progress.
+ */
+class AITabPageActions extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+  static properties = {
+    refreshing: {
+      type: Boolean,
+      reflect: true
+    }
+  };
+  constructor() {
+    super();
+    this.refreshing = false;
+  }
+  get #dialog() {
+    return this.renderRoot.querySelector("dialog");
+  }
+  #emit(type) {
+    this.dispatchEvent(new CustomEvent(type, {
+      bubbles: true,
+      composed: true
+    }));
+  }
+  #onRefresh() {
+    if (this.refreshing) {
+      return;
+    }
+    this.#emit(REFRESH_EVENT);
+  }
+  #onDeleteRequested() {
+    this.#dialog?.showModal();
+  }
+  #onConfirmDelete() {
+    this.#dialog?.close();
+    this.#emit(DELETE_EVENT);
+  }
+  #renderDeleteDialog() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <dialog class="aitab-delete-dialog">
+        <div class="aitab-delete-dialog-content">
+          <h2 data-l10n-id="aitab-page-delete-dialog-title"></h2>
+          <p data-l10n-id="aitab-page-delete-dialog-message"></p>
+          <div class="aitab-delete-dialog-buttons">
+            <moz-button
+              class="aitab-delete-confirm"
+              type="destructive"
+              data-l10n-id="aitab-page-delete-dialog-confirm"
+              @click=${() => this.#onConfirmDelete()}
+            ></moz-button>
+            <moz-button
+              class="aitab-delete-cancel"
+              autofocus
+              data-l10n-id="aitab-page-delete-dialog-cancel"
+              @click=${() => this.#dialog?.close()}
+            ></moz-button>
+          </div>
+        </div>
+      </dialog>
+    `;
+  }
+  render() {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_aitab_page_aitab_page_actions_aitab_page_actions_css__WEBPACK_IMPORTED_MODULE_0__}"
+      />
+      <div class="aitab-page-actions">
+        <moz-button
+          class="aitab-action-refresh"
+          size="default"
+          iconSrc="chrome://global/skin/icons/reload.svg"
+          ?disabled=${this.refreshing}
+          data-l10n-id=${this.refreshing ? "aitab-page-refreshing-sources" : "aitab-page-refresh-sources"}
+          @click=${() => this.#onRefresh()}
+        ></moz-button>
+        <moz-button
+          class="aitab-action-delete"
+          type="icon"
+          size="default"
+          iconSrc="chrome://global/skin/icons/delete.svg"
+          data-l10n-id="aitab-page-delete"
+          @click=${() => this.#onDeleteRequested()}
+        ></moz-button>
+      </div>
+      ${this.#renderDeleteDialog()}
+    `;
+  }
+}
+customElements.define("aitab-page-actions", AITabPageActions);
+
+/***/ }),
 
 /***/ 15515:
 /***/ ((module) => {
@@ -421,242 +546,64 @@ module.exports = __webpack_require__.p + "moz-button.e874513288adb958d186.css";
 
 /***/ }),
 
-/***/ 39697:
+/***/ 33605:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
-/* harmony export */   Badged: () => (/* binding */ Badged),
 /* harmony export */   Default: () => (/* binding */ Default),
-/* harmony export */   DefaultLarge: () => (/* binding */ DefaultLarge),
-/* harmony export */   DefaultSmall: () => (/* binding */ DefaultSmall),
-/* harmony export */   Destructive: () => (/* binding */ Destructive),
-/* harmony export */   Disabled: () => (/* binding */ Disabled),
-/* harmony export */   Icon: () => (/* binding */ Icon),
-/* harmony export */   IconGhost: () => (/* binding */ IconGhost),
-/* harmony export */   IconLarge: () => (/* binding */ IconLarge),
-/* harmony export */   IconPositionEnd: () => (/* binding */ IconPositionEnd),
-/* harmony export */   IconSmall: () => (/* binding */ IconSmall),
-/* harmony export */   IconText: () => (/* binding */ IconText),
-/* harmony export */   MenuButton: () => (/* binding */ MenuButton),
-/* harmony export */   MenuItem: () => (/* binding */ MenuItem),
-/* harmony export */   Muted: () => (/* binding */ Muted),
-/* harmony export */   Primary: () => (/* binding */ Primary),
-/* harmony export */   SplitButton: () => (/* binding */ SplitButton),
-/* harmony export */   Toolbar: () => (/* binding */ Toolbar),
-/* harmony export */   WithAccesskey: () => (/* binding */ WithAccesskey),
+/* harmony export */   Refreshing: () => (/* binding */ Refreshing),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var _vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
-/* harmony import */ var _moz_button_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(79240);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(616);
+/* harmony import */ var chrome_browser_content_aiwindow_components_aitab_page_actions_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(4108);
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 
+// eslint-disable-next-line import/no-unassigned-import
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  title: "UI Widgets/Button",
-  component: "moz-button",
+  title: "Domain-specific UI Widgets/AI Window/AI Tab Page Actions",
+  component: "aitab-page-actions",
   argTypes: {
-    l10nId: {
-      options: ["moz-button-labelled", "moz-button-titled", "moz-button-aria-labelled"],
+    refreshing: {
       control: {
-        type: "select"
-      }
-    },
-    size: {
-      options: ["default", "small", "large"],
-      control: {
-        type: "radio"
-      }
-    },
-    type: {
-      options: ["default", "primary", "destructive", "muted", "toolbar", "menuitem", "icon", "icon ghost", "split"],
-      control: {
-        type: "select"
-      }
-    },
-    iconPosition: {
-      options: ["start", "end"],
-      control: {
-        type: "select"
+        type: "boolean"
       }
     }
   },
   parameters: {
-    actions: {
-      handles: ["click"]
-    },
-    status: "stable",
     fluent: `
-moz-button-labelled =
-  .label = Button
-moz-button-primary = Primary
-moz-button-destructive = Destructive
-moz-button-muted = Muted
-moz-button-menuitem = Menu Item
-moz-button-titled =
-  .title = View logins
-moz-button-aria-labelled =
-  .aria-label = View logins
-`
+aitab-page-refresh-sources =
+    .label = Refresh sources
+aitab-page-refreshing-sources =
+    .label = Refreshing sources
+aitab-page-delete =
+    .aria-label = Delete page
+    .title = Delete page
+aitab-page-delete-dialog-title = Delete this [AI Tab]?
+aitab-page-delete-dialog-message = This generated page will be removed. The sources it was built from aren't affected.
+aitab-page-delete-dialog-cancel =
+    .label = Cancel
+aitab-page-delete-dialog-confirm =
+    .label = Delete
+    `
   }
 });
 const Template = ({
-  type,
-  size,
-  l10nId,
-  iconSrc,
-  disabled,
-  accesskey,
-  clickHandler,
-  showOuterPadding,
-  attention,
-  iconPosition,
-  menuId
-}) => (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
-  <style>
-    .show-outer-padding {
-      --button-outer-padding-inline: var(--space-medium);
-      --button-outer-padding-block: var(--space-medium);
-    }
-  </style>
-  <moz-button
-    @click=${clickHandler}
-    data-l10n-id=${l10nId}
-    data-l10n-attrs="label"
-    type=${type}
-    size=${size}
-    ?disabled=${disabled}
-    iconSrc=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconSrc)}
-    accesskey=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(accesskey)}
-    ?attention=${attention}
-    iconPosition=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(iconPosition)}
-    menuId=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(menuId)}
-    class=${(0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.classMap)({
-  "show-outer-padding": showOuterPadding
-})}
-  ></moz-button>
-  ${menuId ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)` <panel-list id="panel-list">
-        <panel-item>Item One</panel-item>
-        <panel-item>Item Two</panel-item>
-        <panel-item>Item Three</panel-item>
-      </panel-list>` : ""}
+  refreshing
+}) => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <aitab-page-actions ?refreshing=${refreshing}></aitab-page-actions>
 `;
 const Default = Template.bind({});
 Default.args = {
-  type: "default",
-  size: "default",
-  l10nId: "moz-button-labelled",
-  iconSrc: "",
-  disabled: false,
-  showOuterPadding: false,
-  attention: false,
-  iconPosition: "start"
+  refreshing: false
 };
-const DefaultSmall = Template.bind({});
-DefaultSmall.args = {
-  ...Default.args,
-  size: "small"
-};
-const DefaultLarge = Template.bind({});
-DefaultLarge.args = {
-  ...Default.args,
-  size: "large"
-};
-const Disabled = Template.bind({});
-Disabled.args = {
-  ...Default.args,
-  disabled: true
-};
-const Primary = Template.bind({});
-Primary.args = {
-  ...Default.args,
-  type: "primary",
-  l10nId: "moz-button-primary"
-};
-const Destructive = Template.bind({});
-Destructive.args = {
-  ...Default.args,
-  type: "destructive",
-  l10nId: "moz-button-destructive"
-};
-const MenuItem = Template.bind({});
-MenuItem.args = {
-  ...Default.args,
-  type: "menuitem",
-  l10nId: "moz-button-menuitem",
-  size: "small"
-};
-const Muted = Template.bind({});
-Muted.args = {
-  ...Default.args,
-  type: "muted",
-  l10nId: "moz-button-muted"
-};
-const Icon = Template.bind({});
-Icon.args = {
-  ...Default.args,
-  iconSrc: "chrome://global/skin/icons/more.svg",
-  l10nId: "moz-button-titled"
-};
-const IconSmall = Template.bind({});
-IconSmall.args = {
-  ...Icon.args,
-  size: "small"
-};
-const IconLarge = Template.bind({});
-IconLarge.args = {
-  ...Icon.args,
-  size: "large"
-};
-const IconGhost = Template.bind({});
-IconGhost.args = {
-  ...Icon.args,
-  type: "ghost"
-};
-const IconText = Template.bind({});
-IconText.args = {
-  ...Default.args,
-  iconSrc: "chrome://global/skin/icons/edit-copy.svg",
-  l10nId: "moz-button-labelled"
-};
-const IconPositionEnd = Template.bind({});
-IconPositionEnd.args = {
-  ...IconText.args,
-  iconPosition: "end"
-};
-const WithAccesskey = Template.bind({});
-WithAccesskey.args = {
-  ...Default.args,
-  accesskey: "t",
-  clickHandler: () => alert("Activating the accesskey clicks the button")
-};
-const Toolbar = Template.bind({});
-Toolbar.args = {
-  ...Default.args,
-  type: "toolbar",
-  showOuterPadding: true
-};
-const Badged = Template.bind({});
-Badged.args = {
-  ...Icon.args,
-  type: "icon",
-  attention: true
-};
-const MenuButton = Template.bind({});
-MenuButton.args = {
-  ...Icon.args,
-  type: "icon",
-  l10nId: "moz-button-more-options",
-  menuId: "panel-list"
-};
-const SplitButton = Template.bind({});
-SplitButton.args = {
-  ...Default.args,
-  type: "split",
-  menuId: "panel-list"
+const Refreshing = Template.bind({});
+Refreshing.args = {
+  refreshing: true
 };
 
 /***/ }),
@@ -709,6 +656,13 @@ const StylesMixin = (klass, ...styles) => class StylesMixinKlass extends klass {
     this.#setStyles();
   }
 };
+
+/***/ }),
+
+/***/ 62206:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "aitab-page-actions.5939184d432aecde8b43.css";
 
 /***/ }),
 
@@ -1184,4 +1138,4 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-button-moz-button-stories.e87b697d.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-page-aitab-page-actions-aitab-page-actions-stories.ac74ae97.iframe.bundle.js.map
