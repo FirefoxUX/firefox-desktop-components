@@ -4,7 +4,7 @@
 /***/ 9802:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "asrouter-newtab-message.e8e6c18d458b89f22bcc.css";
+module.exports = __webpack_require__.p + "asrouter-newtab-message.5dff59014ecf162bd427.css";
 
 /***/ }),
 
@@ -18,6 +18,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   DismissOnSecondaryButton: () => (/* binding */ DismissOnSecondaryButton),
 /* harmony export */   NoImage: () => (/* binding */ NoImage),
 /* harmony export */   WithSecondaryButton: () => (/* binding */ WithSecondaryButton),
+/* harmony export */   WithoutButtons: () => (/* binding */ WithoutButtons),
 /* harmony export */   WithoutDismissButton: () => (/* binding */ WithoutDismissButton),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
@@ -147,6 +148,16 @@ BlockOnSecondaryButton.args = {
           }
         }
       }
+    }
+  }
+};
+const WithoutButtons = Template.bind({});
+WithoutButtons.args = {
+  messageData: {
+    ...BASE_MESSAGE,
+    content: {
+      ...BASE_MESSAGE.content,
+      primaryButton: undefined
     }
   }
 };
@@ -1533,4 +1544,4 @@ customElements.define("asrouter-newtab-message", ASRouterNewTabMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.a1baa337.iframe.bundle.js.map
+//# sourceMappingURL=components-asrouter-newtab-message-asrouter-newtab-message-stories.2f12535d.iframe.bundle.js.map

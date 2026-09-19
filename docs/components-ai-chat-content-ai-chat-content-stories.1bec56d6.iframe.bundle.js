@@ -1241,7 +1241,8 @@ __webpack_require__.r(__webpack_exports__);
 
 /**
  * User-facing copy for a failed monitor run, keyed by the errorCode a history
- * entry carries.
+ * entry carries, plus the code for a create or resume refused at the active
+ * monitor limit.
  *
  * The keys mirror MONITOR_ERROR_CODES in Monitor.sys.mjs. They are repeated as
  * plain strings rather than imported because this module is loaded into the
@@ -1258,7 +1259,8 @@ const MONITOR_ERROR_L10N_IDS = Object.freeze({
   interrupted: "ai-tasks-alert-history-error-interrupted",
   model_error: "ai-tasks-alert-history-error-model",
   prompt_load_error: "ai-tasks-alert-history-error-prompt-load",
-  unknown_error: "ai-tasks-alert-history-error-unknown"
+  unknown_error: "ai-tasks-alert-history-error-unknown",
+  active_limit_reached: "ai-tasks-alert-error-active-limit"
 });
 const DEFAULT_MONITOR_ERROR_L10N_ID = MONITOR_ERROR_L10N_IDS.unknown_error;
 
@@ -8746,76 +8748,69 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.#persistDraft();
   }
 
-  // TODO: Bug 2054529 - share this URL validation with about:tools' create form
-  // Returns an { id } Fluent descriptor for the error, or null when valid.
-  #validateUrl(url) {
+  // Normalize a user-entered address to a watchable http(s) URL. A value with
+  // no scheme (e.g. "cnn.com") is watched over https so the user doesn't have
+  // to type it. Returns the normalized URL as entered.
+  #normalizeUrl(url) {
     const value = url.trim();
     if (!value) {
-      return {
-        valid: true,
-        error: null
-      };
+      return "";
     }
-    const invalidUrl = {
-      valid: false,
-      error: {
-        id: "ai-tasks-alert-error-invalid-url"
-      }
-    };
-    const missingScheme = {
-      valid: false,
-      error: {
-        id: "ai-tasks-alert-error-url-scheme"
-      }
-    };
-
-    // If the user supplied an HTTP(S) scheme, validate the URL as-is.
-    if (/^https?:\/\//i.test(value)) {
-      try {
-        const parsed = new URL(value);
-        if (parsed.protocol === "http:" || parsed.protocol === "https:") {
-          return {
-            valid: true,
-            error: null
-          };
-        }
-      } catch {}
-      return invalidUrl;
-    }
-
-    // Reject explicit non-HTTP schemes such as ftp:, file:, mailto:, etc.
-    // Host and port values like "localhost:3000" or "example.com:8080" are
-    // excluded because they are likely web addresses missing their scheme.
-    const hasExplicitScheme = /^[a-z][a-z\d+.-]*:/i.test(value);
-    const looksLikeHostWithPort = /^(?:\[[^\]]+\]|[^/?#:]+):\d+(?:[/?#]|$)/.test(value);
-    if (hasExplicitScheme && !looksLikeHostWithPort) {
-      return invalidUrl;
-    }
-
-    // If adding HTTPS produces a valid web URL, the only thing missing from
-    // the user's input was the scheme.
+    const candidate = value.includes("://") ? value : `https://${value}`;
     try {
-      const parsed = new URL(`https://${value}`);
-      if (parsed.hostname) {
-        return missingScheme;
+      const {
+        protocol,
+        hostname
+      } = new URL(candidate);
+      if ((protocol === "http:" || protocol === "https:") && hostname) {
+        return new URL(candidate).href;
       }
     } catch {}
-    return invalidUrl;
+    return "";
+  }
+
+  // Whether two watch URLs point at the same page, comparing canonical forms so
+  // "cnn.com", "CNN.com" and "https://cnn.com/" count as one.
+  #isSameUrl(a, b) {
+    try {
+      return new URL(a).href === new URL(b).href;
+    } catch {
+      return a === b;
+    }
+  }
+
+  // Returns the { id } Fluent error descriptor and the url to store.
+  #validateAndNormalizeURL(url) {
+    const normalized = this.#normalizeUrl(url);
+    if (!normalized) {
+      return {
+        valid: false,
+        error: {
+          id: "ai-tasks-alert-error-invalid-url"
+        },
+        normalized: ""
+      };
+    }
+    return {
+      valid: true,
+      error: null,
+      normalized
+    };
   }
   #addUrl() {
-    const url = this.pendingUrl.trim();
-    if (!url) {
+    if (!this.pendingUrl.trim()) {
       return;
     }
     const {
       valid,
-      error
-    } = this.#validateUrl(url);
+      error,
+      normalized
+    } = this.#validateAndNormalizeURL(this.pendingUrl);
     if (!valid) {
       this.pendingUrlError = error;
       return;
     }
-    if (this.pageUrls.includes(url)) {
+    if (this.pageUrls.some(existing => this.#isSameUrl(existing, normalized))) {
       this.pendingUrlError = {
         id: "ai-tasks-alert-error-duplicate-url"
       };
@@ -8830,7 +8825,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       };
       return;
     }
-    this.pageUrls = [...this.pageUrls, url];
+    this.pageUrls = [...this.pageUrls, normalized];
     this.pendingUrl = "";
     this.pendingUrlError = null;
     this.#clearFieldError("pages");
@@ -10144,4 +10139,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.1f15e29d.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.1bec56d6.iframe.bundle.js.map

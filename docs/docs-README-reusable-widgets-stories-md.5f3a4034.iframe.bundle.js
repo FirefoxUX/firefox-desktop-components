@@ -366,7 +366,7 @@ function _createMdxContent(props) {
       }), " issue"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
       children: ["Unfortunately for now ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
-        href: "https://searchfox.org/firefox-main/source/browser/base/content/test/static/browser_all_files_referenced.js",
+        href: "https://searchfox.org/firefox-main/source/browser/base/content/test/browser-static/browser_all_files_referenced.js",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "the\nbrowser_all_files_referenced.js test"
@@ -568,4 +568,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-reusable-widgets-stories-md.2c95872b.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-reusable-widgets-stories-md.5f3a4034.iframe.bundle.js.map
