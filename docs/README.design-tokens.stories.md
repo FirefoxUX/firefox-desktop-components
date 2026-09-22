@@ -202,7 +202,7 @@ We need to be able to change our token values to support both the `prefers-contr
 ```
 results in the following CSS:
 
-```css
+```scss
 /* tokens-shared.css */
 
 :root,
@@ -291,7 +291,7 @@ We use `platform` and `brand` keys in our JSON to indicate when a token has a su
 ```
 communicates that `--text-color` should have the value `currentColor` in `tokens-platform.css` for chrome surfaces, and the value `light-dark(var(--color-gray-100), var(--color-gray-0))` in `tokens-brand.css` for in-content pages. The resulting CSS spans multiple files:
 
-```css
+```scss
 /* tokens-platform.css */
 :root,
 :host(.anonymous-content-host) {
@@ -302,7 +302,7 @@ communicates that `--text-color` should have the value `currentColor` in `tokens
 }
 ```
 
-```css
+```scss
 /* tokens-brand.css */
 :root,
 :host(.anonymous-content-host) {
@@ -336,7 +336,7 @@ This snippet will use the light/dark value in-content but it will also use it in
 
 The "browser theme" values end up in the `tokens-browser-theme` layer, which needs a narrower selector than the other layers and so gets its own top-level rule:
 
-```css
+```scss
 /* tokens-platform.css */
 :root:is([theme-in-app], :not([lwtheme])),
 :host(.anonymous-content-host) {
@@ -389,7 +389,7 @@ The high contrast overrides are emitted into cascade layers. A single `@layer` s
 
 When you run `./mach buildtokens`, the CSS output will include the new tokens under a media query using the `pref` that you defined. For example:
 
-```css
+```scss
 :root,
 :host(.anonymous-content-host) {
   @media -moz-pref("browser.nova.enabled") {

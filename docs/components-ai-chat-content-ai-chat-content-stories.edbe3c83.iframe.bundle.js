@@ -6199,6 +6199,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   };
   #lastScrollReq = null;
   #overflowObserver = null;
+  #overflowRafId = null;
   #scrollHandler = null;
   #jumpClickHandler = null;
   #scrollRafId = null;
@@ -6265,6 +6266,10 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     super.disconnectedCallback();
     this.#overflowObserver?.disconnect();
     this.#overflowObserver = null;
+    if (this.#overflowRafId) {
+      cancelAnimationFrame(this.#overflowRafId);
+      this.#overflowRafId = null;
+    }
     this.#teardownScrollListener();
     this.#removeClientErrorListeners?.();
     this.#removeClientErrorListeners = null;
@@ -6377,27 +6382,68 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     this.addEventListener("thumbs-down", event => {
       this.#dispatchAction("thumbs-down", event.detail);
     });
+    this.addEventListener("shown", this.#onPanelShown);
+  }
+
+  // panel-list positions itself against the viewport and is unaware of the
+  // chrome chat header. If it opens into the header area, it can be covered and
+  // intercept header clicks, so shift it below the header.
+  #onPanelShown = event => {
+    const panel = event.composedPath()[0];
+    if (panel?.localName !== "panel-list") {
+      return;
+    }
+    const bounds = panel.getBoundingClientRect();
+    const overlap = this.#topSpacing() - bounds.top;
+    if (overlap <= 0) {
+      return;
+    }
+    panel.style.top = `${(parseFloat(panel.style.top) || 0) + overlap}px`;
+    const height = panel.getAttribute("valign") === "top" ? bounds.height - overlap : window.innerHeight - (bounds.top + overlap);
+    panel.style.maxHeight = `${Math.max(0, height)}px`;
+  };
+
+  // How much of the viewport's top edge the floating chat header covers, read
+  // off the space the chat list already reserves for it.
+  #topSpacing() {
+    const innerWrapper = this.shadowRoot?.querySelector(".chat-inner-wrapper");
+    if (!innerWrapper) {
+      return 0;
+    }
+    return parseFloat(getComputedStyle(innerWrapper).paddingBlockStart) || 0;
   }
   #initOverflowObserver() {
     this.#overflowObserver = new ResizeObserver(() => {
-      const wrapper = this.shadowRoot.querySelector(".chat-content-wrapper");
-      const innerWrapper = this.shadowRoot.querySelector(".chat-inner-wrapper");
-      if (!wrapper || !innerWrapper) {
+      // The wrapper resizes on every streamed chunk, and reading
+      // scrollHeight/clientHeight below forces a synchronous reflow. Coalesce
+      // to one read per frame.
+      if (this.#overflowRafId) {
         return;
       }
-      const hasContent = innerWrapper.children.length;
-      // Use a 10px threshold to avoid false positives from layout differences
-      const thresholdPadding = 10;
-      wrapper.toggleAttribute("overflowing", hasContent && wrapper.scrollHeight > wrapper.clientHeight + thresholdPadding);
-
-      // Recompute the jump-to-bottom button after content resizes (e.g.
-      // switching to an empty/short conversation) since no scroll event
-      // fires in that case and the button would otherwise stay visible.
-      this.#updateJumpButtonState();
+      this.#overflowRafId = requestAnimationFrame(() => {
+        this.#overflowRafId = null;
+        this.#updateOverflowState();
+      });
     });
     this.updateComplete.then(() => {
       this.#overflowObserver.observe(this.shadowRoot.querySelector(".chat-inner-wrapper"));
     });
+  }
+  #updateOverflowState() {
+    const wrapper = this.shadowRoot.querySelector(".chat-content-wrapper");
+    const innerWrapper = this.shadowRoot.querySelector(".chat-inner-wrapper");
+    if (!wrapper || !innerWrapper) {
+      return;
+    }
+    const hasContent = innerWrapper.children.length;
+    // Use a 10px threshold to avoid false positives from layout differences
+    const thresholdPadding = 10;
+    wrapper.toggleAttribute("overflowing", hasContent && wrapper.scrollHeight > wrapper.clientHeight + thresholdPadding);
+
+    // Recompute the jump-to-bottom button after content resizes (e.g.
+    // switching to an empty/short conversation) since no scroll event
+    // fires in that case and the button would otherwise stay visible.
+    this.#updateJumpButtonState();
   }
   get #wrapper() {
     return this.shadowRoot?.querySelector(".chat-content-wrapper");
@@ -7638,7 +7684,7 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     return toolMsgs.map(msg => msg.row).filter(Boolean);
   }
   #renderMessages(items) {
-    return items.map((item, i) => {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.repeat)(items, (item, i) => this.#renderItemKey(item, i), (item, i) => {
       const {
         type,
         msgs,
@@ -7652,6 +7698,16 @@ class AIChatContent extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       const chips = this.#getVisibleChips(msg, contextPageUrl);
       return this.#renderMessage(msg, chips);
     });
+  }
+  #renderItemKey(item, i) {
+    if (item.type === "action-log") {
+      const first = item.msgs?.[0];
+      return `action-log:${first?.toolCallId ?? first?.messageId ?? i}`;
+    }
+    const {
+      msg
+    } = item;
+    return `message:${msg?.convId ?? ""}:${msg?.ordinal ?? i}`;
   }
   render() {
     const renderItems = this.#buildTurnRenderItems();
@@ -10139,4 +10195,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.1bec56d6.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.edbe3c83.iframe.bundle.js.map

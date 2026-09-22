@@ -11503,7 +11503,8 @@ function Ga() {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   CHAT_WRAPPER_ELEMENTS: () => (/* binding */ CHAT_WRAPPER_ELEMENTS),
-/* harmony export */   parseMarkdown: () => (/* binding */ parseMarkdown)
+/* harmony export */   parseMarkdown: () => (/* binding */ parseMarkdown),
+/* harmony export */   parseMarkdownBlocks: () => (/* binding */ parseMarkdownBlocks)
 /* harmony export */ });
 /* harmony import */ var chrome_browser_content_multilineeditor_prosemirror_bundle_mjs__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(1920);
 /* This Source Code Form is subject to the terms of the Mozilla Public
@@ -11577,6 +11578,38 @@ md.renderer.rules.link_close = (tokens, index, options, _env, renderer) => {
  */
 function parseMarkdown(markdown) {
   return md.render(markdown);
+}
+
+/**
+ * Parse markdown into an ordered list of top-level blocks, each
+ * rendered to its own HTML string. Joining every block's html is identical
+ * to parseMarkdown(markdown); splitting this way lets a streamed reply re-render
+ * only the blocks that changed.
+ *
+ * @param {string} markdown - The markdown string to parse
+ * @returns {Array<{html: string}>} One entry per top-level block, in order
+ */
+function parseMarkdownBlocks(markdown) {
+  const env = {};
+  const tokens = md.parse(markdown, env);
+  const blocks = [];
+  let start = 0;
+  while (start < tokens.length) {
+    let end = start + 1;
+    if (tokens[start].nesting === 1) {
+      // Walk to the matching close: the nesting counts sum back to zero there.
+      let depth = 1;
+      while (end < tokens.length && depth > 0) {
+        depth += tokens[end].nesting;
+        end++;
+      }
+    }
+    blocks.push({
+      html: md.renderer.render(tokens.slice(start, end), md.options, env)
+    });
+    start = end;
+  }
+  return blocks;
 }
 
 /***/ }),
@@ -12492,14 +12525,9 @@ __webpack_require__.r(__webpack_exports__);
  * A custom element for rendering markdown tables in chat messages.
  *
  * @property {Array<number>} lineRange - [startLine, endLine] from the source markdown
- * @property {string} messageId - The ID of the parent message
  */
 class AIChatTable extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
-    messageId: {
-      type: String,
-      attribute: "message-id"
-    },
     lineRange: {
       type: Array,
       attribute: "data-line-range"
@@ -12554,12 +12582,23 @@ class AIChatTable extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     }
     this.isOverflowing = container.scrollWidth - container.clientWidth > 1;
   }
+
+  /**
+   * The parent message's id. The containing <ai-chat-message> reflects it to
+   * data-message-id on its host, so read it from there instead of having the
+   * message push it onto every table.
+   *
+   * @returns {string|null}
+   */
+  get #messageId() {
+    return this.getRootNode()?.host?.dataset.messageId ?? null;
+  }
   #handleCopyTable() {
     this.dispatchEvent(new CustomEvent("copy-table", {
       bubbles: true,
       composed: true,
       detail: {
-        messageId: this.messageId,
+        messageId: this.#messageId,
         lineRange: this.lineRange
       }
     }));
@@ -12571,7 +12610,7 @@ class AIChatTable extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
         href="${browser_components_aiwindow_ui_components_ai_chat_table_ai_chat_table_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <div class="table-wrapper">
-        ${this.messageId && this.lineRange ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+        ${this.#messageId && this.lineRange ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
               data-l10n-id="aiwindow-copy-table"
               data-l10n-attrs="tooltiptext,aria-label"
               class="table-copy-button"
@@ -12644,7 +12683,8 @@ const HISTORY_GRID_PAGE_SIZE = 12;
  */
 class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   #lastMessage = null;
-  #lastMessageElement = "";
+  #lastMessageElement = null;
+  #blockHtml = [];
 
   /**
    * Track if link unfurling needs to re-run, as it needs to manually manipulate
@@ -13225,12 +13265,6 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
       (0,chrome_browser_content_aiwindow_modules_ClientErrorTelemetry_mjs__WEBPACK_IMPORTED_MODULE_4__.dispatchClientError)(this, error, "markdown");
       throw error;
     }
-    // Pass messageId to table elements for copy functionality.
-    if (this.messageId) {
-      for (const table of element.querySelectorAll("ai-chat-table")) {
-        table.setAttribute("message-id", this.messageId);
-      }
-    }
   }
 
   /**
@@ -13245,6 +13279,61 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
   }
 
   /**
+   * Render one top-level block's HTML into a single sanitized element.
+   * markdown-it renders each block to exactly one element, which we return.
+   *
+   * @param {string} blockHtml
+   * @returns {Element|null}
+   */
+  #renderBlockElement(blockHtml) {
+    const scratch = this.ownerDocument.createElement("div");
+    try {
+      scratch.setHTML(blockHtml, {
+        sanitizer: AIChatMessage.#chatMessageSanitizer
+      });
+    } catch (error) {
+      (0,chrome_browser_content_aiwindow_modules_ClientErrorTelemetry_mjs__WEBPACK_IMPORTED_MODULE_4__.dispatchClientError)(this, error, "markdown");
+      throw error;
+    }
+    return scratch.firstElementChild;
+  }
+
+  /**
+   * Reconcile the container's children against freshly parsed block HTML. Blocks
+   * whose HTML is unchanged keep their existing DOM untouched (so finished
+   * tables and their observers are never rebuilt); only changed or new blocks
+   * are re-rendered, and trailing removed blocks are dropped.
+   *
+   * @param {Element} container
+   * @param {Array<string>} newHtml - One HTML string per top-level block.
+   * @returns {number} How many blocks were (re)rendered this pass.
+   */
+  #reconcileBlocks(container, newHtml) {
+    const oldHtml = this.#blockHtml;
+    let rebuilt = 0;
+    for (let i = 0; i < newHtml.length; i++) {
+      if (container.children[i] && oldHtml[i] === newHtml[i]) {
+        continue;
+      }
+      const node = this.#renderBlockElement(newHtml[i]);
+      if (!node) {
+        continue;
+      }
+      rebuilt++;
+      if (container.children[i]) {
+        container.replaceChild(node, container.children[i]);
+      } else {
+        container.append(node);
+      }
+    }
+    while (container.children.length > newHtml.length) {
+      container.lastElementChild.remove();
+    }
+    this.#blockHtml = newHtml;
+    return rebuilt;
+  }
+
+  /**
    * Render the assistant message. Localized messages render from their l10n id
    * via Fluent dom overlay otherwise the markdown is parsed and unseen links
    * are unfurled. The markdown path is memoized on the message contents and
@@ -13256,34 +13345,60 @@ class AIChatMessage extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTE
     if (this.messageL10n?.id) {
       return this.#renderL10nMessage();
     }
+
+    // Reuse one persistent container across chunks so finished DOM
+    // (and its custom elements) is never torn down; we refill it in place.
+    if (!this.#lastMessageElement) {
+      this.#lastMessageElement = this.ownerDocument.createElement("div");
+      this.#lastMessageElement.className = "message-" + this.role;
+    }
+    const messageElement = this.#lastMessageElement;
     if (this.message == this.#lastMessage && !this.#unfurledUrlsNeedUpdating) {
       // The message is the same and the seen URLs haven't changed.
       return this.#lastMessageElement;
     }
-    let messageElement = this.ownerDocument.createElement("div");
-    messageElement.className = "message-" + this.role;
     if (!this.message) {
       // There is no message to show. Use an empty message element.
+      messageElement.replaceChildren();
+      messageElement.classList.remove("with-history");
+      this.#blockHtml = [];
       this.#lastMessage = this.message;
-      this.#lastMessageElement = messageElement;
       return messageElement;
     }
 
-    // Parse the message into markdown, and unfurl any unseen links.
-    this.#parseMarkdown(this.message, messageElement);
+    // seenUrls/history/completion changes can alter an already-rendered block
+    // (e.g. a now-seen link must stop being unfurled), so force a full reconcile.
+    if (this.#unfurledUrlsNeedUpdating) {
+      this.#blockHtml = [];
+    }
+
+    // Time the render so its per-chunk cost shows up in the Firefox Profiler.
+    // This runs in the content process, so use the User Timing API rather than
+    // ChromeUtils markers (which are parent-process only).
+    const renderStart = performance.now();
+    const blockHtml = (0,chrome_browser_content_aiwindow_modules_ChatMarkdownParser_mjs__WEBPACK_IMPORTED_MODULE_3__.parseMarkdownBlocks)(this.message).map(block => block.html);
+    const rebuiltCount = this.#reconcileBlocks(messageElement, blockHtml);
 
     // When the conversation has history results, hide lists by default so a
     // list that will become a grid never flashes as raw bullets;
     // #replaceHistoryResults reveals non-history lists (and converts matches).
     if (this.historyResults?.size) {
       messageElement.classList.add("with-history");
+    } else {
+      messageElement.classList.remove("with-history");
     }
     this.#replaceHistoryResults(messageElement);
     this.#unfurlUnseenLinks(messageElement);
+    performance.measure("SmartWindow chat render", {
+      start: renderStart,
+      detail: {
+        rebuilt: rebuiltCount,
+        total: blockHtml.length
+      }
+    });
 
     // Track the properties for memoization.
     this.#lastMessage = this.message;
-    this.#lastMessageElement = messageElement;
     this.#unfurledUrlsNeedUpdating = false;
     return messageElement;
   }
@@ -13345,4 +13460,4 @@ customElements.define("ai-chat-message", AIChatMessage);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.b0cc60a7.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-message-ai-chat-message-stories.1053e81d.iframe.bundle.js.map

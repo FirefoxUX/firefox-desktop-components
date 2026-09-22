@@ -502,7 +502,7 @@ function _createMdxContent(props) {
       children: "results in the following CSS:"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-css",
+        className: "language-scss",
         children: "/* tokens-shared.css */\n\n:root,\n:host(.anonymous-content-host) {\n  @layer tokens-prefers-contrast {\n    @media (prefers-contrast) {\n      /** Border **/\n      --border-color-interactive: var(--text-color);\n    }\n  }\n\n  @layer tokens-forced-colors {\n    @media (forced-colors) {\n      /** Border **/\n      --border-color-interactive: ButtonText;\n    }\n  }\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
@@ -615,12 +615,12 @@ function _createMdxContent(props) {
       }), " for in-content pages. The resulting CSS spans multiple files:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-css",
+        className: "language-scss",
         children: "/* tokens-platform.css */\n:root,\n:host(.anonymous-content-host) {\n  @layer tokens-foundation {\n    /** Text **/\n    --text-color: currentColor;\n  }\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-css",
+        className: "language-scss",
         children: "/* tokens-brand.css */\n:root,\n:host(.anonymous-content-host) {\n  @layer tokens-foundation {\n    /** Text **/\n    --text-color: light-dark(var(--color-gray-100), var(--color-gray-0));\n  }\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h4, {
@@ -667,7 +667,7 @@ function _createMdxContent(props) {
       }), " layer, which needs a narrower selector than the other layers and so gets its own top-level rule:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-css",
+        className: "language-scss",
         children: "/* tokens-platform.css */\n:root:is([theme-in-app], :not([lwtheme])),\n:host(.anonymous-content-host) {\n  @layer tokens-browser-theme {\n    @media not ((forced-colors) or (-moz-native-theme)) {\n      /** Color **/\n      --color-accent-primary: light-dark(var(--color-blue-60), var(--color-cyan-30));\n    }\n  }\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
@@ -780,7 +780,7 @@ function _createMdxContent(props) {
       }), " that you defined. For example:"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-        className: "language-css",
+        className: "language-scss",
         children: ":root,\n:host(.anonymous-content-host) {\n  @media -moz-pref(\"browser.nova.enabled\") {\n    @layer tokens-foundation-nova {\n      /* Your token overrides */\n    }\n  }\n}\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
@@ -890,4 +890,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-design-tokens-stories-md.40c5b141.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-design-tokens-stories-md.ee612c9f.iframe.bundle.js.map
