@@ -2596,6 +2596,10 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
       composed: true
     }));
   }
+
+  // Fluent replaces the label's children (including Lit's part markers) when
+  // it overlays a linked message, so callers key the label on whether it has
+  // a link to get a fresh element rather than patching the translated one.
   #renderLabelContent(link, l10nId, fallbackLabel) {
     if (link) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
@@ -2633,13 +2637,13 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
           aria-expanded=${this.isExpanded}
           @click=${this.#handleToggle}
         >
-          <span
-            class="action-result-label"
-            data-l10n-id=${label.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-            data-l10n-args=${label.labelL10nArgs ? JSON.stringify(label.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-          >
-            ${this.#renderLabelContent(label.labelLink, label.labelL10nId, label.label)}
-          </span>
+          ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.keyed)(!!label.labelLink, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
+              class="action-result-label"
+              data-l10n-id=${label.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+              data-l10n-args=${label.labelL10nArgs ? JSON.stringify(label.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+            >
+              ${this.#renderLabelContent(label.labelLink, label.labelL10nId, label.label)}
+            </span>`)}
         </button>
         ${this.#renderDetails()}
       </div>
@@ -2653,13 +2657,13 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
                   <div class="action-result-expanded-row">
                     <div class="action-result-expanded-row-header">
                       <span class="action-result-dot" aria-hidden="true"></span>
-                      <span
-                        class="action-result-expanded-row-label"
-                        data-l10n-id=${row.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-                        data-l10n-args=${row.labelL10nArgs ? JSON.stringify(row.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
-                      >
-                        ${this.#renderLabelContent(row.link, row.labelL10nId, row.label)}
-                      </span>
+                      ${(0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.keyed)(!!row.link, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<span
+                          class="action-result-expanded-row-label"
+                          data-l10n-id=${row.labelL10nId || chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                          data-l10n-args=${row.labelL10nArgs ? JSON.stringify(row.labelL10nArgs) : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+                        >
+                          ${this.#renderLabelContent(row.link, row.labelL10nId, row.label)}
+                        </span>`)}
                     </div>
                     ${row.items?.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
                           <website-chip-container
@@ -3851,4 +3855,4 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.f804b102.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.fa7f767d.iframe.bundle.js.map

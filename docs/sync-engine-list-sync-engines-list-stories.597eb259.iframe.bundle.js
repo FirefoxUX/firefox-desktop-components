@@ -1548,7 +1548,7 @@ const {
 const XPCOMUtils = ChromeUtils.importESModule("resource://gre/modules/XPCOMUtils.sys.mjs").XPCOMUtils;
 const {
   Referrals
-} = ChromeUtils.importESModule("resource:///modules/referrals/Referrals.sys.mjs");
+} = ChromeUtils.importESModule("moz-src:///browser/components/referrals/Referrals.sys.mjs");
 const lazy = XPCOMUtils.declareLazy({
   BackupService: "moz-src:///browser/components/backup/BackupService.sys.mjs",
   Weave: "resource://services-sync/main.sys.mjs",
@@ -3016,4 +3016,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.229a4300.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.597eb259.iframe.bundle.js.map
