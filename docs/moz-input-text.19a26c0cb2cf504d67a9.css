@@ -1,0 +1,56 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#input {
+  width: 100%;
+  max-width: var(--input-text-max-width, none);
+  min-height: var(--input-min-height);
+  padding-inline: var(--space-medium);
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  box-sizing: border-box;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+
+  @media (-moz-platform: macos) {
+    /* TODO(emilio, bug 1815264): The default macOS system font size is too
+     * small. Ensure some sane minimum. */
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    font-size: max(1em, 12px);
+  }
+
+  :host([invalid]) & {
+    border-color: var(--border-color-error);
+    accent-color: var(--border-color-error);
+  }
+
+  &:disabled {
+    border-color: var(--input-border-color-disabled);
+    background-color: var(--input-background-color-disabled);
+    color: var(--input-text-color-disabled);
+    opacity: var(--input-opacity-disabled);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+  }
+
+  &.with-icon {
+    padding-inline-start: calc(2 * var(--space-medium) + var(--input-icon-size));
+    background-repeat: no-repeat;
+    background-size: var(--input-icon-size);
+    background-position: var(--space-medium) center;
+    background-image: var(--input-background-icon);
+    -moz-context-properties: fill;
+    fill: var(--icon-color);
+
+    &:dir(rtl) {
+      background-position: center right var(--space-medium);
+    }
+  }
+
+  &::placeholder {
+    text-overflow: ellipsis;
+  }
+}
