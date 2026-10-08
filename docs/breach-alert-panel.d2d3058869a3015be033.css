@@ -1,0 +1,84 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.container {
+  padding-block: var(--space-small);
+  padding-inline: var(--space-large);
+  display: flex;
+  flex-direction: column;
+
+  &[hidden] {
+    display: none;
+  }
+
+  @media not -moz-pref("browser.nova.enabled") {
+    --card-background-color: var(--background-color-warning);
+  }
+
+  @media -moz-pref("browser.nova.enabled") {
+    --card-border: var(--border-width) solid var(--border-color);
+  }
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+  align-self: stretch;
+
+  @media -moz-pref("browser.nova.enabled") {
+    gap: var(--space-medium);
+  }
+}
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-large);
+  align-self: stretch;
+
+  @media -moz-pref("browser.nova.enabled") {
+    align-items: flex-start;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-small);
+  flex: 1 0 0;
+
+  .heading,
+  p {
+    margin: 0;
+  }
+
+  .heading {
+    font-size: unset;
+    font-weight: var(--font-weight-heading);
+  }
+}
+
+.fox-icon-legacy {
+  @media -moz-pref("browser.nova.enabled") {
+    display: none;
+  }
+}
+
+.shield-icon {
+  display: none;
+
+  @media -moz-pref("browser.nova.enabled") {
+    width: var(--size-image-medium);
+    display: revert;
+  }
+}
+
+.action-buttons {
+  @media -moz-pref("browser.nova.enabled") {
+    align-self: flex-start;
+  }
+}
