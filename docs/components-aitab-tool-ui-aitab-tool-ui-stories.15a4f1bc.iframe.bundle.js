@@ -517,7 +517,7 @@ CompleteCollapsed.args = {
 /***/ 42070:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "aitab-tool-ui.88c4d0efc138ee5e5bf4.css";
+module.exports = __webpack_require__.p + "aitab-tool-ui.47021b9692a311089061.css";
 
 /***/ }),
 
@@ -554,6 +554,9 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     title: {
       type: String
     },
+    viewerURL: {
+      type: String
+    },
     completeStateOpen: {
       type: Boolean
     }
@@ -562,7 +565,12 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     super();
     this.state = "creating";
     this.title = "";
+    this.viewerURL = "";
     this.completeStateOpen = true;
+  }
+  #handleTitleClick(event) {
+    event.preventDefault();
+    this.#requestOpen("new");
   }
   #handleKeyboardActivation(event) {
     if (event.key === "Enter" || event.key === " ") {
@@ -616,6 +624,23 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
       </div>
     </div>`;
   }
+  #renderTitle() {
+    const title = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+      <img
+        src="chrome://browser/skin/smart-window-mono-32.svg"
+        alt=""
+        width="16"
+        height="16"
+      />
+      ${this.title}
+    `;
+    return this.viewerURL ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+          href=${this.viewerURL}
+          class="title"
+          @click=${this.#handleTitleClick}
+          >${title}</a
+        >` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="title">${title}</p>`;
+  }
   #renderComplete() {
     const arrow = this.completeStateOpen ? "chrome://global/skin/icons/arrow-up-12.svg" : "chrome://global/skin/icons/arrow-down-12.svg";
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="complete card">
@@ -630,17 +655,7 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
         <span data-l10n-id="smartwindow-aitab-created-an-aitab"></span>
       </div>
 
-      ${this.completeStateOpen ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
-            <p class="title">
-              <img
-                src="chrome://browser/skin/smart-window-mono-32.svg"
-                alt=""
-                width="16"
-                height="16"
-              />
-              ${this.title}
-            </p>
-          ` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.completeStateOpen ? this.#renderTitle() : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
     </div>`;
   }
   #renderState() {
@@ -1202,4 +1217,4 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 /***/ })
 
 }]);
-//# sourceMappingURL=components-aitab-tool-ui-aitab-tool-ui-stories.e782c575.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-tool-ui-aitab-tool-ui-stories.15a4f1bc.iframe.bundle.js.map
