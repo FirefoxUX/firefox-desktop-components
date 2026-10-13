@@ -2836,6 +2836,9 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   get #monitorName() {
     return this.#draftName ?? this.agent?.monitorName ?? "";
   }
+  get #isAtMaxUrls() {
+    return this.pageUrls.length >= this.maxWatchUrls;
+  }
   focusName() {
     this.shadowRoot?.querySelector(".monitor-name-input")?.focus();
   }
@@ -2858,8 +2861,11 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   // focused. Returns the keys that failed.
   #validateForm() {
     // A URL left in the input has to be committed before submit, so a valid one
-    // isn't silently dropped and an invalid one sets pendingUrlError.
-    if (this.pendingUrl.trim()) {
+    // isn't silently dropped and an invalid one sets pendingUrlError. Once the
+    // cap is reached there's no room for it, so it's ignored instead.
+    if (this.#isAtMaxUrls) {
+      this.pendingUrlError = null;
+    } else if (this.pendingUrl.trim()) {
       this.#addUrl();
     }
     const errors = {
@@ -3019,7 +3025,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
       };
       return;
     }
-    if (this.pageUrls.length >= this.maxWatchUrls) {
+    if (this.#isAtMaxUrls) {
       this.pendingUrlError = {
         id: "ai-tasks-alert-error-max-urls",
         args: {
@@ -3033,6 +3039,14 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
     this.pendingUrlError = null;
     this.#clearFieldError("pages");
     this.#persistDraft();
+  }
+  async #handleAddUrl() {
+    this.#addUrl();
+    if (this.#isAtMaxUrls) {
+      await this.updateComplete;
+      // Give a fallback focus to the pages field if the add button is removed
+      this.#focusField("pages");
+    }
   }
   #removeUrl(url) {
     this.pageUrls = this.pageUrls.filter(u => u !== url);
@@ -3168,15 +3182,15 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
               @input=${this.#onPendingUrlInput}
               @keydown=${this.#onPendingUrlKeydown}
             ></moz-input-url>
-            <moz-button
-              size="small"
-              type="icon ghost"
-              class="add-page-btn"
-              iconsrc="chrome://global/skin/icons/plus.svg"
-              data-l10n-id="ai-tasks-alert-add-url"
-              data-l10n-attrs="aria-label"
-              @click=${() => this.#addUrl()}
-            ></moz-button>
+            ${this.#isAtMaxUrls ? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
+                  size="small"
+                  type="icon ghost"
+                  class="add-page-btn"
+                  iconsrc="chrome://global/skin/icons/plus.svg"
+                  data-l10n-id="ai-tasks-alert-add-url"
+                  data-l10n-attrs="aria-label"
+                  @click=${() => this.#handleAddUrl()}
+                ></moz-button>`}
           </div>
           ${this.#renderFieldError(this.pendingUrlError ?? this.fieldErrors.pages)}
           ${this.pageUrls.length ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="page-pills-row">
@@ -3592,4 +3606,4 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.7d7d373b.iframe.bundle.js.map
+//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.2bbd51e7.iframe.bundle.js.map

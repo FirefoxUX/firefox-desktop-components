@@ -2330,6 +2330,9 @@ const tokensTable = {
     value: "20px",
     name: "--toolbarbutton-badge-max-width"
   }, {
+    value: "14px",
+    name: "--toolbarbutton-badge-size"
+  }, {
     value: "var(--size-item-medium)",
     name: "--input-color-swatch-size"
   }, {
@@ -5393,6 +5396,7 @@ const variableLookupTable = {
   "toolbarbutton-badge-max-width": "20px",
   "toolbarbutton-badge-padding-inline": "2px",
   "toolbarbutton-badge-padding-block-end": "1px",
+  "toolbarbutton-badge-size": "14px",
   "toolbarbutton-padding-outer": "2px",
   "toolbarbutton-padding-outer-narrow": "1px",
   "toolbarbutton-padding-inner": "8px",
@@ -6910,4 +6914,4 @@ module.exports = __webpack_require__.p + "tokens-table.6a3b2c12601214b65cca.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.cb25492d.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.14a3cecd.iframe.bundle.js.map
