@@ -7,17 +7,11 @@
   background-color: var(--aitab-footer-background-color);
 
   --aitab-footer-background-color: var(--color-violet-desaturated-90, var(--color-violet-110));
-  --aitab-made-with-text-color: var(--color-violet-40);
-  --aitab-made-with-brand-text-color: var(--color-white);
-
-  @media (prefers-contrast) and (not (forced-colors)) {
-    --aitab-made-with-text-color: var(--color-violet-30);
-  }
+  --aitab-footer-brand-text-color: var(--color-white);
 
   @media (forced-colors) {
     --aitab-footer-background-color: var(--background-color-canvas);
-    --aitab-made-with-text-color: var(--text-color);
-    --aitab-made-with-brand-text-color: var(--text-color);
+    --aitab-footer-brand-text-color: var(--text-color);
   }
 }
 
@@ -25,23 +19,13 @@
   padding-block: var(--space-xlarge) var(--space-xxlarge);
 }
 
-.aitab-made-with {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: var(--space-xxsmall);
-  color: var(--aitab-made-with-text-color);
-  font-size: var(--font-size-small);
-  letter-spacing: 0.04em;
-}
-
-.aitab-made-with-brand {
+.aitab-footer-brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-small);
-  color: var(--aitab-made-with-brand-text-color);
+  color: var(--aitab-footer-brand-text-color);
   font-size: var(--font-size-xlarge);
-  letter-spacing: normal;
 
   &::before {
     content: "";

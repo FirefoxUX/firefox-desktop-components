@@ -2125,6 +2125,12 @@ const tokensTable = {
     },
     name: "--toolbarbutton-outline-color-selected"
   }, {
+    value: {
+      default: "var(--toolbarbutton-outline-color)",
+      forcedColors: "var(--button-border-color-disabled)"
+    },
+    name: "--toolbarbutton-outline-color-disabled"
+  }, {
     value: "calc(-1 * var(--border-width))",
     name: "--toolbarbutton-outline-offset"
   }, {
@@ -2957,7 +2963,10 @@ const tokensTable = {
     },
     name: "--button-text-color-menu-active"
   }, {
-    value: "var(--button-text-color-ghost-disabled)",
+    value: {
+      default: "var(--button-text-color-ghost-disabled)",
+      forcedColors: "var(--button-text-color-disabled)"
+    },
     name: "--button-text-color-menu-disabled"
   }, {
     value: {
@@ -3881,6 +3890,12 @@ const tokensTable = {
     name: "--toolbarbutton-icon-fill-active"
   }, {
     value: {
+      default: "var(--toolbarbutton-icon-fill)",
+      forcedColors: "var(--button-text-color-disabled)"
+    },
+    name: "--toolbarbutton-icon-fill-disabled"
+  }, {
+    value: {
       light: "var(--color-blue-60)",
       dark: "var(--color-cyan-30)",
       nativeTheme: "AccentColor",
@@ -3969,7 +3984,8 @@ const tokensTable = {
   }, {
     value: {
       default: "var(--button-opacity-disabled)",
-      prefersContrast: "0.3"
+      prefersContrast: "0.3",
+      forcedColors: "var(--button-opacity-disabled)"
     },
     name: "--toolbarbutton-opacity-disabled"
   }, {
@@ -4866,7 +4882,10 @@ const variableLookupTable = {
     default: "var(--button-text-color-ghost-active)",
     forcedColors: "var(--button-text-color-menu-hover)"
   },
-  "button-text-color-menu-disabled": "var(--button-text-color-ghost-disabled)",
+  "button-text-color-menu-disabled": {
+    default: "var(--button-text-color-ghost-disabled)",
+    forcedColors: "var(--button-text-color-disabled)"
+  },
   "button-text-color-menu-hover": {
     default: "var(--button-text-color-ghost-hover)",
     forcedColors: "-moz-menuhovertext"
@@ -5432,6 +5451,10 @@ const variableLookupTable = {
     default: "var(--toolbarbutton-icon-fill)",
     forcedColors: "var(--button-text-color-ghost-active)"
   },
+  "toolbarbutton-icon-fill-disabled": {
+    default: "var(--toolbarbutton-icon-fill)",
+    forcedColors: "var(--button-text-color-disabled)"
+  },
   "toolbarbutton-icon-fill-attention": {
     light: "var(--color-blue-60)",
     dark: "var(--color-cyan-30)",
@@ -5462,7 +5485,8 @@ const variableLookupTable = {
   },
   "toolbarbutton-opacity-disabled": {
     default: "var(--button-opacity-disabled)",
-    prefersContrast: "0.3"
+    prefersContrast: "0.3",
+    forcedColors: "var(--button-opacity-disabled)"
   },
   "toolbarbutton-border-radius": "var(--button-border-radius)",
   "toolbarbutton-background-color": {
@@ -5513,6 +5537,10 @@ const variableLookupTable = {
   "toolbarbutton-outline-color-selected": {
     default: "var(--toolbarbutton-outline-color-active)",
     forcedColors: "SelectedItem"
+  },
+  "toolbarbutton-outline-color-disabled": {
+    default: "var(--toolbarbutton-outline-color)",
+    forcedColors: "var(--button-border-color-disabled)"
   },
   "toolbarbutton-outline-offset": "calc(-1 * var(--border-width))",
   "toolbarseparator-color": "var(--text-color-deemphasized)",
@@ -6922,4 +6950,4 @@ module.exports = __webpack_require__.p + "tokens-table.6a3b2c12601214b65cca.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.1aa8e9bc.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.277fc612.iframe.bundle.js.map

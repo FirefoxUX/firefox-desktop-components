@@ -23,7 +23,7 @@ __webpack_require__.r(__webpack_exports__);
   component: "aitab-footer",
   parameters: {
     fluent: `
-aitab-page-made-with = Made with <span data-l10n-name="brand">Smart Window</span>
+aitab-page-footer-brand = Smart Window
     `
   }
 });
@@ -61,7 +61,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /**
- * "Made with Smart Window" credit at the bottom of a generated AI Tab page.
+ * Smart Window credit at the bottom of a generated Smart Page.
  */
 class AITabFooter extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   render() {
@@ -75,9 +75,10 @@ class AITabFooter extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
         href="${browser_components_aiwindow_ui_components_aitab_page_aitab_footer_aitab_footer_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <footer class="aitab-footer">
-        <p class="aitab-made-with" data-l10n-id="aitab-page-made-with">
-          <span class="aitab-made-with-brand" data-l10n-name="brand"></span>
-        </p>
+        <p
+          class="aitab-footer-brand"
+          data-l10n-id="aitab-page-footer-brand"
+        ></p>
       </footer>
     `;
   }
@@ -89,9 +90,9 @@ customElements.define("aitab-footer", AITabFooter);
 /***/ 84418:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "aitab-footer.f3a075ebf7e78bbad6c8.css";
+module.exports = __webpack_require__.p + "aitab-footer.659313cf0bc978f76900.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-aitab-page-aitab-footer-aitab-footer-stories.49f92766.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-page-aitab-footer-aitab-footer-stories.f44dbb40.iframe.bundle.js.map

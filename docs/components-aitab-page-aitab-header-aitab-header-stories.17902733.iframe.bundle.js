@@ -2342,7 +2342,7 @@ aitab-page-refreshing-sources =
 aitab-page-delete =
     .aria-label = Delete page
     .title = Delete page
-aitab-page-delete-dialog-title = Delete this [AI Tab]?
+aitab-page-delete-dialog-title = Delete this [Smart Page]?
 aitab-page-delete-dialog-message = This generated page will be removed. The sources it was built from aren't affected.
 aitab-page-delete-dialog-cancel =
     .label = Cancel
@@ -3544,4 +3544,4 @@ module.exports = __webpack_require__.p + "aitab-header.370a2477f0b2f93fdccc.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=components-aitab-page-aitab-header-aitab-header-stories.03e1330a.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-page-aitab-header-aitab-header-stories.17902733.iframe.bundle.js.map
