@@ -4211,7 +4211,7 @@ module.exports = __webpack_require__.p + "ai-website-chip.ff9fc9c51f7f8346c01c.c
 /***/ 42070:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "aitab-tool-ui.47021b9692a311089061.css";
+module.exports = __webpack_require__.p + "aitab-tool-ui.8cede25edf181b3b446f.css";
 
 /***/ }),
 
@@ -4237,9 +4237,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   AITabToolUI: () => (/* binding */ AITabToolUI)
 /* harmony export */ });
 /* harmony import */ var browser_components_aiwindow_ui_components_aitab_tool_ui_aitab_tool_ui_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(42070);
-/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(616);
-/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(82242);
-/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(79240);
+/* harmony import */ var browser_components_aiwindow_ui_components_ai_action_confirmation_ai_action_confirmation_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(67134);
+/* harmony import */ var chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(616);
+/* harmony import */ var chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(82242);
+/* harmony import */ var chrome_global_content_elements_moz_button_mjs__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(79240);
+
 
 /* This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this
@@ -4254,7 +4256,7 @@ __webpack_require__.r(__webpack_exports__);
  * Renders AITab creation progress state and options for
  * user to choose where to open the AITab.
  */
-class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
+class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_3__.MozLitElement {
   static properties = {
     state: {
       type: String
@@ -4299,14 +4301,14 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     }));
   }
   #renderCreating() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<p
       class="status"
       role="status"
       data-l10n-id="smartwindow-aitab-creating"
     ></p>`;
   }
   #renderChoose() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="card">
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="card">
       <p class="title">
         <img
           src="chrome://newtab/content/data/content/assets/firefox.svg"
@@ -4314,7 +4316,7 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
           width="16"
           height="16"
         />
-        ${this.title}
+        <span class="card-title">${this.title}</span>
       </p>
       <div class="actions">
         <moz-button
@@ -4333,7 +4335,7 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
     </div>`;
   }
   #renderTitle() {
-    const title = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+    const title = (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
       <img
         src="chrome://browser/skin/smart-window-mono-32.svg"
         alt=""
@@ -4342,16 +4344,16 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
       />
       ${this.title}
     `;
-    return this.viewerURL ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<a
+    return this.viewerURL ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<a
           href=${this.viewerURL}
           class="title"
           @click=${this.#handleTitleClick}
           >${title}</a
-        >` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p class="title">${title}</p>`;
+        >` : (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<p class="title">${title}</p>`;
   }
   #renderComplete() {
     const arrow = this.completeStateOpen ? "chrome://global/skin/icons/arrow-up-12.svg" : "chrome://global/skin/icons/arrow-down-12.svg";
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<div class="complete card">
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="complete card">
       <div
         class="complete-title"
         role="button"
@@ -4363,7 +4365,7 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
         <span data-l10n-id="smartwindow-aitab-created-an-aitab"></span>
       </div>
 
-      ${this.completeStateOpen ? this.#renderTitle() : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+      ${this.completeStateOpen ? this.#renderTitle() : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
     </div>`;
   }
   #renderState() {
@@ -4375,11 +4377,15 @@ class AITabToolUI extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
       case "complete":
         return this.#renderComplete();
       default:
-        return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing;
+        return chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing;
     }
   }
   render() {
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <link
+        rel="stylesheet"
+        href="${browser_components_aiwindow_ui_components_ai_action_confirmation_ai_action_confirmation_css__WEBPACK_IMPORTED_MODULE_1__}"
+      />
       <link
         rel="stylesheet"
         href="${browser_components_aiwindow_ui_components_aitab_tool_ui_aitab_tool_ui_css__WEBPACK_IMPORTED_MODULE_0__}"
@@ -11222,4 +11228,4 @@ customElements.define("ai-website-select", AIWebsiteSelect);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.1b8aeeb7.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-chat-content-ai-chat-content-stories.eab5c39f.iframe.bundle.js.map
