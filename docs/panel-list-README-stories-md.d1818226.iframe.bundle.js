@@ -1775,11 +1775,14 @@ function _createMdxContent(props) {
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "toggle"
-      }), " method takes the event you received on your anchor button and opens\nthe menu attached to that element."]
+      }), " method takes the event you received on your anchor button and opens\nthe menu attached to that element. The anchor button also needs to be\nregistered as the menu's popover invoker, see\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
+        href: "#showing-the-menu",
+        children: "Showing the menu"
+      }), " for the full setup."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-js",
-        children: "anchorButton.addEventListener(\"mousedown\", e => panelList.toggle(e));\n"
+        children: "anchorButton.popoverTargetElement = panelList;\nanchorButton.addEventListener(\"mousedown\", e => panelList.toggle(e));\nanchorButton.addEventListener(\"click\", e => e.preventDefault());\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["Accesskeys are activated with the bare accesskey letter when the menu is opened.\nSo for this example after opening the menu pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
@@ -1853,11 +1856,41 @@ function _createMdxContent(props) {
       }), " will be the click count which is ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "0"
       }), " when a\nclick is from the keyboard)."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Since the menu uses ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "popover=\"auto\""
+      }), ", its anchor must be registered as an\ninvoker via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "popoverTargetElement"
+      }), ", otherwise the mouse release after the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "mousedown"
+      }), " that opened the menu light-dismisses it. Call ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "preventDefault()"
+      }), " on\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "click"
+      }), " so ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), " handles toggling."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The invoker must be a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "<button>"
+      }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "<input type=\"button\">"
+      }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-js",
-        children: "function openMenu(event) {\n  if (\n    event.type == \"mousedown\" ||\n    event.inputSource == MouseEvent.MOZ_SOURCE_KEYBOARD ||\n    !event.detail\n  ) {\n    document.querySelector(\"panel-list\").toggle(event);\n  }\n}\n\nlet menuButton = document.getElementById(\"open-menu-button\");\nmenuButton.addEventListener(\"mousedown\", openMenu);\nmenuButton.addEventListener(\"click\", openMenu);\n"
+        children: "let panelList = document.querySelector(\"panel-list\");\n\nfunction openMenu(event) {\n  if (event.type == \"click\") {\n    event.preventDefault();\n  }\n  if (\n    event.type == \"mousedown\" ||\n    event.inputSource == MouseEvent.MOZ_SOURCE_KEYBOARD ||\n    !event.detail\n  ) {\n    panelList.toggle(event);\n  }\n}\n\nlet menuButton = document.getElementById(\"open-menu-button\");\nmenuButton.popoverTargetElement = panelList;\nmenuButton.addEventListener(\"mousedown\", openMenu);\nmenuButton.addEventListener(\"click\", openMenu);\n"
       })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-button"
+      }), " handles all of this when its ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "menuId"
+      }), " is set to the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "id"
+      }), " of the\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "panel-list"
+      }), "."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "checkbox",
       children: "Checkbox"
@@ -2128,4 +2161,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=panel-list-README-stories-md.84bf7a81.iframe.bundle.js.map
+//# sourceMappingURL=panel-list-README-stories-md.d1818226.iframe.bundle.js.map

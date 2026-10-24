@@ -964,7 +964,21 @@ class MozBoxGroup extends _lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElem
      */
     requestAnimationFrame(() => {
       this.listItems[targetIndex]?.focus();
+      this.announceReorder(targetIndex);
     });
+  }
+
+  /**
+   * Announces the new position of a reordered item to assistive technology.
+   *
+   * @param {number} index - The index the item was moved to.
+   */
+  async announceReorder(index) {
+    let message = await this.ownerDocument.l10n.formatValue("moz-box-group-reorder-announcement", {
+      position: index + 1,
+      total: this.listItems.length + this.staticItems.length
+    });
+    this.ownerDocument.ariaNotify(message);
   }
   handleKeydown(event) {
     let item = event.originalTarget;
@@ -2217,4 +2231,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.37562b14.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.6788f68d.iframe.bundle.js.map
