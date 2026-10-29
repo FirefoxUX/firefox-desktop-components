@@ -2229,6 +2229,13 @@ const tokensTable = {
     value: "var(--font-weight)",
     name: "--select-option-font-weight"
   }],
+  motion: [{
+    value: "cubic-bezier(0.2, 0, 0, 1)",
+    name: "--motion-easing-emphasized"
+  }, {
+    value: "cubic-bezier(0.2, 0.8, 0.2, 1)",
+    name: "--motion-easing-standard"
+  }],
   size: [{
     value: "40px",
     name: "--size-image-xsmall"
@@ -2891,28 +2898,28 @@ const tokensTable = {
     name: "--button-text-color-disabled"
   }, {
     value: {
-      default: "inherit",
+      default: "currentColor",
       prefersContrast: "var(--button-text-color)",
       forcedColors: "var(--button-text-color)"
     },
     name: "--button-text-color-ghost"
   }, {
     value: {
-      default: "inherit",
+      default: "currentColor",
       prefersContrast: "var(--button-text-color-active)",
       forcedColors: "var(--button-text-color-active)"
     },
     name: "--button-text-color-ghost-active"
   }, {
     value: {
-      default: "inherit",
-      prefersContrast: "inherit",
+      default: "currentColor",
+      prefersContrast: "currentColor",
       forcedColors: "var(--button-text-color-disabled)"
     },
     name: "--button-text-color-ghost-disabled"
   }, {
     value: {
-      default: "inherit",
+      default: "currentColor",
       prefersContrast: "var(--button-text-color-hover)",
       forcedColors: "var(--button-text-color-hover)"
     },
@@ -2946,7 +2953,7 @@ const tokensTable = {
   }, {
     value: {
       default: "var(--button-text-color-ghost)",
-      prefersContrast: "inherit",
+      prefersContrast: "currentColor",
       forcedColors: "MenuText"
     },
     name: "--button-text-color-menu"
@@ -4460,6 +4467,8 @@ const variableLookupTable = {
   "font-weight-semibold": "600",
   "font-weight-bold": "700",
   "font-weight-heading": "var(--font-weight-semibold)",
+  "motion-easing-emphasized": "cubic-bezier(0.2, 0, 0, 1)",
+  "motion-easing-standard": "cubic-bezier(0.2, 0.8, 0.2, 1)",
   "size-image-xsmall": "40px",
   "size-image-small": "48px",
   "size-image-medium": "56px",
@@ -4835,22 +4844,22 @@ const variableLookupTable = {
     forcedColors: "GrayText"
   },
   "button-text-color-ghost": {
-    default: "inherit",
+    default: "currentColor",
     prefersContrast: "var(--button-text-color)",
     forcedColors: "var(--button-text-color)"
   },
   "button-text-color-ghost-active": {
-    default: "inherit",
+    default: "currentColor",
     prefersContrast: "var(--button-text-color-active)",
     forcedColors: "var(--button-text-color-active)"
   },
   "button-text-color-ghost-disabled": {
-    default: "inherit",
-    prefersContrast: "inherit",
+    default: "currentColor",
+    prefersContrast: "currentColor",
     forcedColors: "var(--button-text-color-disabled)"
   },
   "button-text-color-ghost-hover": {
-    default: "inherit",
+    default: "currentColor",
     prefersContrast: "var(--button-text-color-hover)",
     forcedColors: "var(--button-text-color-hover)"
   },
@@ -4868,7 +4877,7 @@ const variableLookupTable = {
   },
   "button-text-color-menu": {
     default: "var(--button-text-color-ghost)",
-    prefersContrast: "inherit",
+    prefersContrast: "currentColor",
     forcedColors: "MenuText"
   },
   "button-text-color-menu-active": {
@@ -6666,6 +6675,7 @@ class TokensTable extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPO
     link: this.linkTemplate,
     margin: this.spaceAndSizeTemplate,
     "min-height": this.spaceAndSizeTemplate,
+    motion: this.motionTemplate,
     outline: this.outlineTemplate,
     padding: this.paddingTemplate,
     "box-shadow": this.shadowTemplate,
@@ -6823,6 +6833,13 @@ class TokensTable extends chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPO
       </div>
     `;
   }
+  motionTemplate(_, value) {
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+      <div class="motion-preview">
+        <div class="item" style="animation-timing-function: ${value};"></div>
+      </div>
+    `;
+  }
   paddingTemplate(_, value) {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
       <div class="space-size-background">
@@ -6935,9 +6952,9 @@ const Default = () => {
 /***/ 90383:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "tokens-table.6a3b2c12601214b65cca.css";
+module.exports = __webpack_require__.p + "tokens-table.8f21c73b9f78a65b7c0d.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.fe0cbd87.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.cd383aae.iframe.bundle.js.map

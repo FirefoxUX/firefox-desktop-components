@@ -113,17 +113,21 @@ class DeleteButton extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED
       disabled: {
         type: Boolean,
         reflect: true
+      },
+      perDeviceSyncEnabled: {
+        type: Boolean
       }
     };
   }
   constructor() {
     super();
     this.disabled = false;
+    this.perDeviceSyncEnabled = false;
   }
   render() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)` ${stylesTemplate()}
     ${LoginCommandButton({
-      buttonText: "about-logins-login-item-remove-button",
+      buttonText: this.perDeviceSyncEnabled ? "about-logins-login-item-delete-button" : "about-logins-login-item-remove-button",
       variant: "ghost-button",
       icon: "chrome://global/skin/icons/delete.svg",
       disabled: this.disabled
@@ -320,4 +324,4 @@ DisabledButton.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=login-command-button-stories.927c0263.iframe.bundle.js.map
+//# sourceMappingURL=login-command-button-stories.f38c40e3.iframe.bundle.js.map
