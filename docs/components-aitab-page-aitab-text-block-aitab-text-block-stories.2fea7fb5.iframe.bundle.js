@@ -566,9 +566,9 @@ class AITextBlock extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_
         href="${browser_components_aiwindow_ui_components_aitab_page_aitab_text_block_aitab_text_block_css__WEBPACK_IMPORTED_MODULE_0__}"
       />
       <section class="aitab-text-block">
-        <h2 class="aitab-text-block-heading aitab-heading-3">
-          ${this.heading}
-        </h2>
+        ${this.heading ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<h2 class="aitab-text-block-heading aitab-heading-3">
+              ${this.heading}
+            </h2>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
         <div class="aitab-text-block-content">
           ${this.paragraphs.map(p => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<p class="aitab-text-block-p">${p}</p>`)}
           ${this.#renderReferences()}
@@ -582,4 +582,4 @@ customElements.define("aitab-text-block", AITextBlock);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-aitab-page-aitab-text-block-aitab-text-block-stories.ed574b56.iframe.bundle.js.map
+//# sourceMappingURL=components-aitab-page-aitab-text-block-aitab-text-block-stories.2fea7fb5.iframe.bundle.js.map
