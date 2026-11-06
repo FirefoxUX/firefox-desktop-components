@@ -239,7 +239,9 @@ function _createMdxContent(props) {
         children: "size"
       }), " attribute. Content comes from a browser or iframe when ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "src"
-      }), " is set and otherwise from the default slot."]
+      }), " is set and otherwise from the default slot. The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "error"
+      }), " slot carries the message shown when a widget fails."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
       mdxSource: "<with-common-styles><moz-widget widget-id=\"weather\" size=\"medium\"><section style={{ padding: \"16px\" }}><h3>{\"Los Angeles\"}</h3><p>{\"72\\xB0F and sunny\"}</p></section></moz-widget></with-common-styles>",
@@ -540,6 +542,68 @@ function _createMdxContent(props) {
       }), " joins the extension's browsing context group, taken from ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
         children: "WebExtensionPolicy.browsingContextGroupId"
       }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.h3, {
+      id: "reporting-an-error",
+      children: "Reporting an error"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "moz-widget"
+      }), " watches its iframe. An iframe that fails to load puts the widget in its error state: it covers the content with the host's error content, sets the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "error"
+      }), " attribute and fires ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-error"
+      }), ". Set ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "ready-on-load"
+      }), " to have an iframe load fire ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-ready"
+      }), "; it is off by default and does not affect a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "browser"
+      }), " frame. Gecko fires ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "error"
+      }), " only where the load never starts, such as a blocked URL; a document that loads and then fails gets an error page, which counts as a successful load."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["A host calls ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "reportError()"
+      }), " to show its error content and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "reportReady()"
+      }), " to uncover the content and fire ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-ready"
+      }), " on every call. The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "error"
+      }), " property reads or sets the same state; turning it on fires ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-error"
+      }), ", and clearing it fires ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-ready"
+      }), " unless ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "src"
+      }), " changes in the same update. The content is covered rather than replaced, so the document keeps running and can recover. This also works for slotted content without ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "src"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "reportError(reason)"
+      }), " passes the reason on as ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "widget-error"
+      }), "'s ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "detail.reason"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["A host should always provide content in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "error"
+      }), " slot, since that is what covers the widget content. Without it a failing widget leaves an empty card."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-widget widget-id=\"weather\" title=\"Weather\" src=\"moz-extension://UUID/widget.html\">\n  <div slot=\"error\" class=\"my-error\">Widget unavailable. Check back later.</div>\n</moz-widget>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
+      children: ["A ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "browser"
+      }), " frame is a top-level browsing context, so it cannot report for itself. A chrome host calls ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "reportError()"
+      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
+        children: "reportReady()"
+      }), " for it."]
     })]
   });
 }
@@ -584,4 +648,4 @@ componentMeta.parameters.docs = {
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-widget-stories-md.ae1b2349.iframe.bundle.js.map
+//# sourceMappingURL=moz-widget-stories-md.cf9aea7b.iframe.bundle.js.map

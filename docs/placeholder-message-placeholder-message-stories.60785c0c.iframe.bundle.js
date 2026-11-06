@@ -171,7 +171,7 @@ const Template = ({
 `;
 const Default = Template.bind({});
 Default.args = {
-  imageSrc: "chrome://global/skin/illustrations/security-error.svg",
+  imageSrc: "resource://content-accessible/illustrations/security-error.svg",
   l10nId: "placeholder-message-label-description",
   supportPage: ""
 };
@@ -184,4 +184,4 @@ WithSupportPage.args = {
 /***/ })
 
 }]);
-//# sourceMappingURL=placeholder-message-placeholder-message-stories.c675ab20.iframe.bundle.js.map
+//# sourceMappingURL=placeholder-message-placeholder-message-stories.60785c0c.iframe.bundle.js.map

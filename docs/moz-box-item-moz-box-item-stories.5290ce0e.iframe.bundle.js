@@ -576,7 +576,7 @@ const Template = ({
     >
       ${slottedContent ? (0,_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<div class="slotted">
             <img
-              src="chrome://global/skin/illustrations/security-error.svg"
+              src="resource://content-accessible/illustrations/security-error.svg"
               alt="Confused Kit is looking at an orange exclamation mark"
             />
             <span>This is an example message</span>
@@ -999,4 +999,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-moz-box-item-stories.4224379f.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-moz-box-item-stories.5290ce0e.iframe.bundle.js.map

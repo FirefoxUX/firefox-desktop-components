@@ -468,22 +468,6 @@ function _createMdxContent(props) {
         }), "\n"]
       }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
         children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
-          children: ["Adding a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "script"
-          }), " tag to an ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "inc.xhtml"
-          }), " file. For example when using a new\ncomponent in the privacy section of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "about:preferences"
-          }), " the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "script"
-          }), " tag needs\nto be added to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "preferences.xhtml"
-          }), " rather than to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.code, {
-            children: "privacy.inc.xhtml"
-          }), "."]
-        }), "\n"]
-      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.li, {
-        children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsxs)(_components.p, {
           children: ["Trying to extend a built-in HTML element in Lit. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_3__.jsx)(_components.a, {
             href: "https://github.com/lit/lit-element/issues/879#issuecomment-1061892879",
             target: "_blank",
@@ -568,4 +552,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=docs-README-reusable-widgets-stories-md.5f3a4034.iframe.bundle.js.map
+//# sourceMappingURL=docs-README-reusable-widgets-stories-md.94b09638.iframe.bundle.js.map

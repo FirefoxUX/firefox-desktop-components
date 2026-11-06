@@ -190,7 +190,7 @@ function _createMdxContent(props) {
       }), ".\nYou can find an examples of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "moz-toggle"
       }), " in use in the Firefox codebase in both\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/firefox-main/source/browser/components/preferences/privacy.inc.xhtml#696",
+        href: "https://searchfox.org/firefox-main/source/browser/components/preferences/config/privacy.mjs",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "about:preferences"
@@ -1056,4 +1056,4 @@ function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-toggle-README-stories-md.bd457809.iframe.bundle.js.map
+//# sourceMappingURL=moz-toggle-README-stories-md.4e23646a.iframe.bundle.js.map

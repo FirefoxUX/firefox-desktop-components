@@ -4,7 +4,7 @@
 /***/ 7103:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-widget.06708682b9c60df07792.css";
+module.exports = __webpack_require__.p + "moz-widget.7c8aea5f5afd486eb2a0.css";
 
 /***/ }),
 
@@ -163,6 +163,38 @@ const Template = ({
     </section>
   </moz-widget>
 `;
+
+// Stand-in for the error content a host slots in; New Tab supplies its own.
+// A widget with no header passes its name, shown where the header would be.
+const errorTemplate = title => (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`
+  <div
+    slot="error"
+    role="alert"
+    style="block-size: 100%; box-sizing: border-box; padding: ${title ? "var(--space-medium)" : "0"}; display: flex; flex-direction: column; gap: var(--space-small);"
+  >
+    ${title ? (0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.html)`<p style="margin: 0; font-size: var(--font-size-small);">
+          ${title}
+        </p>` : ""}
+    <div
+      style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--space-small); text-align: center; color: var(--text-color-deemphasized);"
+    >
+      <svg
+        viewBox="0 0 16 16"
+        aria-hidden="true"
+        style="inline-size: var(--icon-size); block-size: var(--icon-size); flex-shrink: 0; fill: var(--icon-color-warning);"
+      >
+        <path
+          fill-rule="evenodd"
+          clip-rule="evenodd"
+          d="M7.975 1c1.024 0 2.05.514 2.622 1.542l4.386 7.888c1.074 1.932-.24 4.34-2.446 4.454a88 88 0 0 1-9.035 0c-2.218-.114-3.556-2.497-2.487-4.443l4.33-7.885A2.97 2.97 0 0 1 7.975 1M8 10.25A.875.875 0 1 0 8 12a.875.875 0 0 0 0-1.75M8 5a.75.75 0 0 0-.75.75v2.5a.75.75 0 0 0 1.5 0v-2.5A.75.75 0 0 0 8 5"
+        />
+      </svg>
+      <p style="margin: 0; font-size: var(--font-size-small);">
+        Widget unavailable. Check back later.
+      </p>
+    </div>
+  </div>
+`;
 const FramedTemplate = ({
   size,
   widgetId,
@@ -170,6 +202,7 @@ const FramedTemplate = ({
   l10nId,
   padded,
   src,
+  error,
   menu,
   menuLabel,
   ...header
@@ -182,11 +215,13 @@ const FramedTemplate = ({
     ?padded=${padded}
     menu-label=${(0,lit_all_mjs__WEBPACK_IMPORTED_MODULE_0__.ifDefined)(menuLabel)}
     src=${src}
+    ?error=${error}
   >
     ${headerTemplate({
   ...header,
   menuLabel
 })} ${menuTemplate(menu)}
+    ${error ? errorTemplate(header.headerTitle ? undefined : title) : ""}
   </moz-widget>
 `;
 const Default = Template.bind({});
@@ -207,7 +242,8 @@ Framed.args = {
   ...Default.args,
   title: "Framed widget",
   headerTitle: "Framed widget",
-  src: WIDGET_DOCUMENT
+  src: WIDGET_DOCUMENT,
+  error: false
 };
 const Padded = FramedTemplate.bind({});
 Padded.args = {
@@ -2815,17 +2851,30 @@ const FRAME_SLOT = "frame";
  * If `src` is set, the widget content is loaded in a `<browser>` child in chrome documents and an `<iframe>` in content documents.
  * Otherwise the default slot is used.
  *
+ * In its error state it draws the error slot over the content and fires
+ * `widget-error`. A ready widget fires `widget-ready`, whether it recovered or
+ * has just loaded. A host should always slot error content, or
+ * a failing widget leaves an empty card. An `<iframe>` that fails to load is an
+ * error, and one that loads is ready if `readyOnLoad` is set. Otherwise its
+ * host calls `reportError()` and `reportReady()` when appropriate.
+ * A `<browser>` widget cannot report for itself, because it
+ * is a top-level browsing context, so a chrome host calls both.
+ * `reportError(reason)` passes the reason on as `widget-error`'s `detail.reason`.
+ *
  * @property {string} widgetId - The widget's registered ID.
  * @property {string} title - The widget's accessible name, taken off the host element.
  * @property {string} size - `small`, `medium`, or `large`. Defaults to `large`.
  * @property {boolean} padded - Insets the header and content.
  * @property {string} menuLabel - The accessible name of the menu button drawn without a header. Defaults to "More options".
  * @property {string} src - A widget document URL.
+ * @property {boolean} readyOnLoad - Whether an iframe load reports ready. Defaults to false; attribute `ready-on-load`.
  * @property {string} remoteType - The remote type a `<browser>` frame loads in.
  * @property {number} browsingContextGroupId - The browsing context group a `<browser>` frame's initial load joins.
+ * @property {boolean} error - Whether the widget failed. Covers the content with the error content.
  * @slot header - A `moz-widget-header` shown above the content.
  * @slot menu - A `panel-list`, opened by the header's menu button, or by a menu button over the content without a header.
  * @slot default - Widget content used when `src` is not set.
+ * @slot error - Error content shown over the widget content while `error` is set.
  */
 class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_1__.MozLitElement {
   static properties = {
@@ -2859,6 +2908,14 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     src: {
       reflect: true
     },
+    readyOnLoad: {
+      type: Boolean,
+      attribute: "ready-on-load"
+    },
+    error: {
+      type: Boolean,
+      reflect: true
+    },
     _menuId: {
       state: true
     },
@@ -2869,6 +2926,8 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
 
   /** @type {MozBrowser|null} The `<browser>` frame if used. */
   #browser = null;
+  #errorReason;
+  #readyReported = false;
   constructor() {
     super();
     this.widgetId = null;
@@ -2877,11 +2936,51 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     this.padded = false;
     this.menuLabel = null;
     this.src = null;
+    this.readyOnLoad = false;
+    this.error = false;
     this.remoteType = null;
     this.browsingContextGroupId = null;
     this._menuId = null;
     this._hasHeader = false;
   }
+
+  /**
+   * Puts the widget into its error state, so the host's error content covers
+   * the widget content. A host that detects the failure itself calls this, and a
+   * `<browser>` host has to.
+   *
+   * @param {string} [reason]
+   */
+  reportError(reason) {
+    if (!this.error) {
+      this.#errorReason = reason;
+    }
+    this.error = true;
+  }
+
+  /**
+   * Takes the widget out of its error state and fires `widget-ready` on every
+   * call. A host that hears the widget report ready calls this.
+   */
+  reportReady() {
+    this.#errorReason = undefined;
+    this.#readyReported = true;
+    this.error = false;
+    this.dispatchEvent(new CustomEvent("widget-ready"));
+  }
+  #onFrameLoad = () => {
+    if (this.readyOnLoad) {
+      this.reportReady();
+    }
+  };
+
+  /**
+   * Gecko fires `error` only where the load never starts. A load that starts
+   * and then fails shows an error page and fires `load` instead.
+   */
+  #onFrameError = () => {
+    this.reportError();
+  };
 
   /**
    * The current frame.
@@ -2914,12 +3013,40 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     if (!this.hasUpdated || changes.has("_menuId")) {
       this.#updateHeader();
     }
+    // A different document gets a fresh go.
+    if (changes.has("src") && this.hasUpdated) {
+      this.error = false;
+    }
     if (!this.src) {
       this.#setBrowser(null);
       return;
     }
     if (this.supportsXULElements) {
       this.#updateBrowser(changes);
+    }
+  }
+  updated(changes) {
+    super.updated(changes);
+    // Setting `error` directly fires an event too. An undefined previous
+    // value means the first render rather than a change.
+    if (changes.has("error")) {
+      const reason = this.#errorReason;
+      const readyReported = this.#readyReported;
+      this.#errorReason = undefined;
+      this.#readyReported = false;
+      // A ready report followed by an error in the same tick leaves `error`
+      // unchanged, but the host has heard ready, so it needs the error too.
+      if (changes.get("error") !== undefined && (changes.get("error") !== this.error || this.error && readyReported)) {
+        if (this.error) {
+          this.dispatchEvent(new CustomEvent("widget-error", {
+            detail: {
+              reason
+            }
+          }));
+        } else if (!readyReported && !changes.has("src")) {
+          this.dispatchEvent(new CustomEvent("widget-ready"));
+        }
+      }
     }
   }
   #onMenuSlotChange(event) {
@@ -2979,17 +3106,29 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     return browser;
   }
   #renderContent() {
+    // inert is an HTML attribute and the frame can be a XUL browser, so the
+    // wrapper carries it.
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`
+      <div class="content" ?inert=${this.error}>${this.#renderFrame()}</div>
+      ${this.error ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<div class="error-overlay"><slot name="error"></slot></div>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+    `;
+  }
+  #renderFrame() {
     if (!this.src) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<slot></slot>`;
     }
     if (this.#browser) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<slot name=${FRAME_SLOT}></slot>`;
     }
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<iframe
-      src=${this.src}
-      sandbox=${WIDGET_SANDBOX}
-      title=${this.title ?? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
-    ></iframe>`;
+    // Keying the iframe on src gives each document its own window, so a
+    // message from the one before it no longer matches.
+    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.keyed)(this.src, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<iframe
+        src=${this.src}
+        sandbox=${WIDGET_SANDBOX}
+        title=${this.title ?? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
+        @load=${this.#onFrameLoad}
+        @error=${this.#onFrameError}
+      ></iframe>`);
   }
   #renderMenuButton() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-button
@@ -3032,4 +3171,4 @@ module.exports = __webpack_require__.p + "moz-widget-header.f600a47a2db0853787d6
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-widget-stories.d67d6302.iframe.bundle.js.map
+//# sourceMappingURL=moz-widget-stories.08f96483.iframe.bundle.js.map
