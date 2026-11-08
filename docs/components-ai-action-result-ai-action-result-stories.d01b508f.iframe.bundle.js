@@ -2463,6 +2463,8 @@ __webpack_require__.r(__webpack_exports__);
  * The parent is responsible for performing the actual reversal and updating
  * the action state.
  *
+ * @property {string} conversationId - Conversation owning an action-log entry
+ * @property {number} turnIndex - Turn owning an action-log entry
  * @attribute {string} label - Header label for plain text (e.g. "Closed tab", "Closed 3 tabs")
  * @attribute {string} labelL10nId - Fluent localization ID for the header label
  * @attribute {object} labelL10nArgs - Arguments for the label localization (e.g. { count: 3 })
@@ -2488,6 +2490,12 @@ __webpack_require__.r(__webpack_exports__);
  */
 class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MODULE_2__.MozLitElement {
   static properties = {
+    conversationId: {
+      type: String
+    },
+    turnIndex: {
+      type: Number
+    },
     label: {
       type: String
     },
@@ -2548,6 +2556,13 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
   // Fallback for finishing the sweep if the running animation can't be found
   // (e.g. reduced motion, where it isn't animating) — one cycle plus a buffer.
   static SWEEP_MAX_MS = 2200;
+
+  /**
+   * The action-log turn whose displayed label has been reported.
+   *
+   * @type {string | null}
+   */
+  #reportedActionLogTurn = null;
   #sweepTimer = null;
   #sweepAnim = null;
   #awaitingSweep = false;
@@ -2588,9 +2603,43 @@ class AIActionResult extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORT
     }
   }
   updated() {
+    this.#maybeReportActionLogDisplayed();
     if (this.#awaitingSweep && !this.#sweepAnim) {
       this.#finishCurrentSweep();
     }
+  }
+
+  /**
+   * Reports an action-log turn once its localized header is displayed.
+   *
+   * @returns {Promise<void>}
+   */
+  async #maybeReportActionLogDisplayed() {
+    const {
+      conversationId,
+      turnIndex
+    } = this;
+    if (!conversationId || turnIndex === undefined) {
+      return;
+    }
+    const turn = `${conversationId}:${turnIndex}`;
+    if (this.#reportedActionLogTurn === turn) {
+      return;
+    }
+    this.#reportedActionLogTurn = turn;
+    const label = this.renderRoot?.querySelector(".action-result-label");
+    await document.l10n.translateElements([label]);
+    if (!this.isConnected || this.conversationId !== conversationId || this.turnIndex !== turnIndex) {
+      return;
+    }
+    this.dispatchEvent(new CustomEvent("AIChatContent:FirstActionLogDisplayed", {
+      bubbles: true,
+      composed: true,
+      detail: {
+        conversationId,
+        turnIndex
+      }
+    }));
   }
 
   // Run one final sweep from the shimmer's current position to the end and hold
@@ -4448,4 +4497,4 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.11f8c173.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-action-result-ai-action-result-stories.d01b508f.iframe.bundle.js.map

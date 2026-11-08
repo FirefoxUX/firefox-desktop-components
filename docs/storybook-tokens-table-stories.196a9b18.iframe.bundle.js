@@ -2254,18 +2254,6 @@ const tokensTable = {
     value: "-4px",
     name: "--panel-motion-translate-y"
   }, {
-    value: "185ms",
-    name: "--panel-subview-motion-duration-enter"
-  }, {
-    value: "130ms",
-    name: "--panel-subview-motion-duration-exit"
-  }, {
-    value: "150ms",
-    name: "--panel-subview-motion-duration-parent-exit"
-  }, {
-    value: "120ms",
-    name: "--panel-subview-motion-duration-fade-reduced"
-  }, {
     value: "200ms",
     name: "--sidebar-motion-duration-enter"
   }, {
@@ -7035,4 +7023,4 @@ module.exports = __webpack_require__.p + "tokens-table.bca465a5466179990890.css"
 /***/ })
 
 }]);
-//# sourceMappingURL=storybook-tokens-table-stories.2c1598ad.iframe.bundle.js.map
+//# sourceMappingURL=storybook-tokens-table-stories.196a9b18.iframe.bundle.js.map

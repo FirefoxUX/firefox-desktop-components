@@ -1697,6 +1697,11 @@ chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.P
 }, {
   id: "services.sync.engine.prefs",
   type: "bool"
+},
+// Dismissable Migration Notification
+{
+  id: "services.sync.cwtsMigrationNotification.dismissed",
+  type: "bool"
 }]);
 
 /**
@@ -2126,6 +2131,34 @@ chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.P
 });
 chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.Preferences.addSetting({
   id: "syncStatus"
+});
+chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.Preferences.addSetting({
+  id: "syncCwtsMigrationNotification",
+  pref: "services.sync.cwtsMigrationNotification.dismissed",
+  deps: ["uiStateUpdate"],
+  _shownTelemetrySent: false,
+  visible(_deps, setting) {
+    const visible = perDeviceSyncEnabled && !setting.value;
+    if (visible && !this._shownTelemetrySent) {
+      this._shownTelemetrySent = true;
+      Glean.syncSettings.cwtsUpgradeNoticeShown.record({
+        surface: "settingsPage"
+      });
+    }
+    return visible;
+  },
+  onUserClick: event => {
+    const learnMoreLink = event?.target?.shadowRoot?.querySelector("[is='moz-support-link']");
+    if (learnMoreLink?.contains(event?.originalTarget)) {
+      Glean.syncSettings.cwtsUpgradeNoticeLinkClicked.record({
+        surface: "settingsPage"
+      });
+    }
+  },
+  onMessageBarDismiss: (_event, _deps, setting) => {
+    setting.value = true;
+    Glean.syncSettings.cwtsUpgradeNoticeDismissed.record();
+  }
 });
 chrome_global_content_preferences_Preferences_mjs__WEBPACK_IMPORTED_MODULE_0__.Preferences.addSetting({
   id: "syncNow",
@@ -2561,6 +2594,15 @@ chrome_browser_content_preferences_config_SettingGroupManager_mjs__WEBPACK_IMPOR
     hidden: !accountsEnabled,
     subcategory: "sync",
     items: [{
+      id: "syncCwtsMigrationNotification",
+      l10nId: "sync-cwts-migration-notification",
+      control: "moz-message-bar",
+      supportPage: "how-do-i-choose-what-information-sync-firefox",
+      controlAttrs: {
+        dismissable: true,
+        role: "status"
+      }
+    }, {
       id: "syncNoFxaSignIn",
       l10nId: "sync-signedout-account-signin-4",
       control: "moz-box-link",
@@ -3306,4 +3348,4 @@ class Preference extends EventEmitter {
 /***/ })
 
 }]);
-//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.b3702f5e.iframe.bundle.js.map
+//# sourceMappingURL=sync-engine-list-sync-engines-list-stories.35bdae09.iframe.bundle.js.map

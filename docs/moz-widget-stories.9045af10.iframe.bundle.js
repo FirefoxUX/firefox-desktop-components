@@ -4,7 +4,7 @@
 /***/ 7103:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-widget.7c8aea5f5afd486eb2a0.css";
+module.exports = __webpack_require__.p + "moz-widget.3450872e7ab09a21c96d.css";
 
 /***/ }),
 
@@ -2926,6 +2926,8 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
 
   /** @type {MozBrowser|null} The `<browser>` frame if used. */
   #browser = null;
+  /** @type {HTMLIFrameElement|null} The `<iframe>` if used. */
+  #iframe = null;
   #errorReason;
   #readyReported = false;
   constructor() {
@@ -2994,7 +2996,7 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     if (this.#browser) {
       return this.#browser;
     }
-    return this.renderRoot?.querySelector("iframe");
+    return this.#iframe;
   }
 
   /**
@@ -3017,6 +3019,7 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     if (changes.has("src") && this.hasUpdated) {
       this.error = false;
     }
+    this.#setupIframe();
     if (!this.src) {
       this.#setBrowser(null);
       return;
@@ -3064,6 +3067,26 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
       header.menuId = this._menuId;
     }
     this._hasHeader = !!header;
+  }
+  #setupIframe() {
+    if (this.supportsXULElements || !this.src) {
+      this.#iframe = null;
+      return;
+    }
+    // A new iframe for each src gives each document its own window, so a
+    // message from the one before it no longer matches.
+    if (this.#iframe?.getAttribute("src") != this.src) {
+      this.#iframe = this.ownerDocument.createElement("iframe");
+      this.#iframe.setAttribute("sandbox", WIDGET_SANDBOX);
+      this.#iframe.addEventListener("load", this.#onFrameLoad);
+      this.#iframe.addEventListener("error", this.#onFrameError);
+      this.#iframe.src = this.src;
+    }
+    if (this.title) {
+      this.#iframe.setAttribute("title", this.title);
+    } else {
+      this.#iframe.removeAttribute("title");
+    }
   }
   #updateBrowser(changes) {
     if (!this.src || !this.supportsXULElements) {
@@ -3120,15 +3143,9 @@ class MozWidget extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPORTED_MO
     if (this.#browser) {
       return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<slot name=${FRAME_SLOT}></slot>`;
     }
-    // Keying the iframe on src gives each document its own window, so a
-    // message from the one before it no longer matches.
-    return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.keyed)(this.src, (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<iframe
-        src=${this.src}
-        sandbox=${WIDGET_SANDBOX}
-        title=${this.title ?? chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.nothing}
-        @load=${this.#onFrameLoad}
-        @error=${this.#onFrameError}
-      ></iframe>`);
+    // Use the manually created iframe since we don't want Lit creating
+    // potentially dangerous elements.
+    return this.#iframe;
   }
   #renderMenuButton() {
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_2__.html)`<moz-button
@@ -3171,4 +3188,4 @@ module.exports = __webpack_require__.p + "moz-widget-header.f600a47a2db0853787d6
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-widget-stories.08f96483.iframe.bundle.js.map
+//# sourceMappingURL=moz-widget-stories.9045af10.iframe.bundle.js.map
