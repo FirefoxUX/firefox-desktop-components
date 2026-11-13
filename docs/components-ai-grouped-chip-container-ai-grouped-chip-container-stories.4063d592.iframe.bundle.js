@@ -2198,7 +2198,7 @@ function isTabGroupMember(mention) {
 /***/ 79439:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "tab.tokens.fac864ffcef7b9588b59.css";
+module.exports = __webpack_require__.p + "tab.tokens.5fdead72ff29256c77c8.css";
 
 /***/ }),
 
@@ -2265,4 +2265,4 @@ const WithTabGroup = () => (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_
 /***/ })
 
 }]);
-//# sourceMappingURL=components-ai-grouped-chip-container-ai-grouped-chip-container-stories.0b12ca3b.iframe.bundle.js.map
+//# sourceMappingURL=components-ai-grouped-chip-container-ai-grouped-chip-container-stories.4063d592.iframe.bundle.js.map

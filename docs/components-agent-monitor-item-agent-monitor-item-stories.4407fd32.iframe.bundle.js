@@ -887,7 +887,7 @@ module.exports = __webpack_require__.p + "moz-button.298a931ca5fde5f08ef2.css";
 /***/ 32984:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "agent-monitor-item.fb37b6e2241674bb594f.css";
+module.exports = __webpack_require__.p + "agent-monitor-item.e8df6386a8f9066fd59d.css";
 
 /***/ }),
 
@@ -2359,6 +2359,7 @@ ___CSS_LOADER_STYLE_SHEET___.replaceSync(___CSS_LOADER_EXPORT___.toString());
 
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   CheckNowHeldBackByBudget: () => (/* binding */ CheckNowHeldBackByBudget),
 /* harmony export */   Create: () => (/* binding */ Create),
 /* harmony export */   DisplayCollapsed: () => (/* binding */ DisplayCollapsed),
 /* harmony export */   DisplayExpanded: () => (/* binding */ DisplayExpanded),
@@ -2374,6 +2375,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
+window.MozXULElement.insertFTLIfNeeded("preview/aiWindow.ftl");
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   title: "Domain-specific UI Widgets/AI Window/Agent Monitor Item",
   component: "agent-monitor-item",
@@ -2530,6 +2532,18 @@ HistoryWithFailedChecks.args = {
   editing: false,
   showLastResult: true
 };
+const CheckNowHeldBackByBudget = Template.bind({});
+CheckNowHeldBackByBudget.args = {
+  ...DisplayExpanded.args,
+  agent: {
+    ...AGENT,
+    checkLimit: {
+      until: Date.now() + 3 * 24 * 60 * 60 * 1000,
+      reason: "budget",
+      errorCode: "budget_exceeded"
+    }
+  }
+};
 
 /***/ }),
 
@@ -2604,6 +2618,10 @@ const DEFAULT_MAX_WATCH_URLS = 5;
 
 // How long to coalesce typing before mirroring the form to the host
 const DRAFT_PERSIST_DELAY_MS = 250;
+
+// Poll rather than wait in one go, since a long setTimeout can
+// overshoot its deadline across a suspend or clock change.
+const MAX_REENABLE_DELAY_MS = 60_000;
 
 // Check times offered by the create card in 30-minute increments
 const TIME_OPTIONS = Array.from({
@@ -2847,9 +2865,11 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   #draftName;
   #draftPersistTimer = null;
   #requestedTitleUrls = new Set();
+  #checkLimitTimer = null;
   willUpdate(changed) {
     if (changed.has("agent")) {
       this.#seedFromAgent();
+      this.#armCheckLimitTimer();
     }
     if (changed.has("agent") || changed.has("draft")) {
       this.#applyDraft();
@@ -2876,11 +2896,51 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   #titleFor(url) {
     return this.resolvedTitles[url] || this.agent?.watchUrlTitles?.[url];
   }
+  connectedCallback() {
+    super.connectedCallback();
+    this.#armCheckLimitTimer();
+  }
   disconnectedCallback() {
     if (this.#draftPersistTimer) {
       this.#flushDraft();
     }
+    this.#clearCheckLimitTimer();
     super.disconnectedCallback();
+  }
+
+  /**
+   * The service's refusal that checks are waiting out, or null when they are
+   * available.
+   *
+   * @returns {?{until: number, reason: string, errorCode: string}}
+   */
+  get #activeCheckLimit() {
+    const limit = this.agent?.checkLimit;
+    return limit?.until > Date.now() ? limit : null;
+  }
+  #clearCheckLimitTimer() {
+    if (this.#checkLimitTimer) {
+      clearTimeout(this.#checkLimitTimer);
+      this.#checkLimitTimer = null;
+    }
+  }
+
+  // render again once the wait is over, so the button comes back on its own
+  #armCheckLimitTimer() {
+    this.#clearCheckLimitTimer();
+    const until = this.agent?.checkLimit?.until;
+    if (!this.isConnected || !(until > Date.now())) {
+      return;
+    }
+    const delay = Math.min(until - Date.now(), MAX_REENABLE_DELAY_MS);
+    this.#checkLimitTimer = setTimeout(() => {
+      this.#checkLimitTimer = null;
+      if (this.agent?.checkLimit?.until > Date.now()) {
+        this.#armCheckLimitTimer();
+      } else {
+        this.requestUpdate();
+      }
+    }, delay);
   }
   #seedFromAgent() {
     this.#draftName = null;
@@ -3691,6 +3751,7 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
   }
   #renderExpand() {
     const agent = this.agent ?? {};
+    const checkLimit = this.#activeCheckLimit;
     return (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`
       <div class="watch-expand" @click=${e => e.stopPropagation()}>
         ${this.editing ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`${this.#renderConditionField()} ${this.#renderPagesField()}
@@ -3718,6 +3779,11 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
                   </div>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
               <div class="monitor-row">${this.#renderScheduleSummary()}</div>`}
         ${!this.editing ? this.#renderHistory() : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
+        ${!this.editing && checkLimit ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<p
+              id="check-limit-reason"
+              class="check-limit-reason"
+              data-l10n-id=${(0,chrome_browser_content_aiwindow_components_monitor_error_copy_mjs__WEBPACK_IMPORTED_MODULE_11__.monitorErrorL10nId)(checkLimit.errorCode)}
+            ></p>` : chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.nothing}
 
         <div class="monitor-card-actions">
           ${!this.editing ? (0,chrome_global_content_vendor_lit_all_mjs__WEBPACK_IMPORTED_MODULE_1__.html)`<moz-button
@@ -3742,7 +3808,9 @@ class AgentMonitorItem extends chrome_global_content_lit_utils_mjs__WEBPACK_IMPO
                   data-l10n-attrs="label"
                 ></moz-button>
                 <moz-button
+                  id="check-now-button"
                   type="default"
+                  ?disabled=${!!checkLimit}
                   @click=${() => this.#dispatch("agent-monitor-item:check-now", {
       id: agent.id
     })}
@@ -3794,4 +3862,4 @@ customElements.define("agent-monitor-item", AgentMonitorItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.4a4679ca.iframe.bundle.js.map
+//# sourceMappingURL=components-agent-monitor-item-agent-monitor-item-stories.4407fd32.iframe.bundle.js.map

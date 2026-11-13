@@ -154,9 +154,9 @@ customElements.define("tab-group-icon", TabGroupIcon);
 /***/ 79439:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "tab.tokens.fac864ffcef7b9588b59.css";
+module.exports = __webpack_require__.p + "tab.tokens.5fdead72ff29256c77c8.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-tab-group-icon-tab-group-icon-stories.3ddd9afc.iframe.bundle.js.map
+//# sourceMappingURL=components-tab-group-icon-tab-group-icon-stories.b500eb6b.iframe.bundle.js.map

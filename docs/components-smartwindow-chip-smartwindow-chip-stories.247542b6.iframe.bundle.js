@@ -531,9 +531,9 @@ module.exports = __webpack_require__.p + "smartwindow-chip.a57410ecc765d111906c.
 /***/ 79439:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "tab.tokens.fac864ffcef7b9588b59.css";
+module.exports = __webpack_require__.p + "tab.tokens.5fdead72ff29256c77c8.css";
 
 /***/ })
 
 }]);
-//# sourceMappingURL=components-smartwindow-chip-smartwindow-chip-stories.5acdda9e.iframe.bundle.js.map
+//# sourceMappingURL=components-smartwindow-chip-smartwindow-chip-stories.247542b6.iframe.bundle.js.map
