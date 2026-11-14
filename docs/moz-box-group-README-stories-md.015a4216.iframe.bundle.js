@@ -1,5 +1,5 @@
 "use strict";
-(self["webpackChunk"] = self["webpackChunk"] || []).push([[1809,1970,6721],{
+(self["webpackChunk"] = self["webpackChunk"] || []).push([[1809,3430,6721],{
 
 /***/ 16721:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
@@ -20,7 +20,7 @@ __webpack_require__.r(__webpack_exports__);
 /***/ 23066:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.eec2be21217d4c36b8b2.css";
+module.exports = __webpack_require__.p + "moz-box-group.6a66bec7ee2d66a58a58.css";
 
 /***/ }),
 
@@ -624,32 +624,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ 70020:
-/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
-
-module.exports = __webpack_require__.p + "moz-box-item.f7883d24de72d17105c0.css";
-
-/***/ }),
-
-/***/ 85173:
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-/**
- * @license React
- * react-jsx-runtime.production.min.js
- *
- * Copyright (c) Facebook, Inc. and its affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- */
-var f=__webpack_require__(74407),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
-function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}exports.Fragment=l;exports.jsx=q;exports.jsxs=q;
-
-
-/***/ }),
-
-/***/ 88857:
+/***/ 57459:
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
 __webpack_require__.r(__webpack_exports__);
@@ -660,7 +635,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(74407);
 /* harmony import */ var _home_runner_work_firefox_desktop_components_firefox_desktop_components_firefox_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(57155);
 /* harmony import */ var _storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(95943);
-/* harmony import */ var toolkit_widgets_moz_box_item_moz_box_item_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(98102);
+/* harmony import */ var toolkit_widgets_moz_box_group_moz_box_group_mjs__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(30160);
 /* harmony import */ var react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(30911);
 
 
@@ -679,11 +654,15 @@ function _createMdxContent(props) {
     h2: "h2",
     a: "a",
     h3: "h3",
-    pre: "pre"
+    pre: "pre",
+    h4: "h4",
+    ul: "ul",
+    li: "li",
+    strong: "strong"
   }, (0,_home_runner_work_firefox_desktop_components_firefox_desktop_components_firefox_browser_components_storybook_node_modules_storybook_addon_docs_dist_shims_mdx_react_shim__WEBPACK_IMPORTED_MODULE_1__.useMDXComponents)(), props.components);
   return /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.Fragment, {
     children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Meta, {
-      title: "UI Widgets/ Box Item/README",
+      title: "UI Widgets/ Box Group/README",
       parameters: {
         previewTabs: {
           canvas: {
@@ -693,27 +672,35 @@ function _createMdxContent(props) {
         viewMode: "docs"
       }
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h1, {
-      id: "mozboxitem",
-      children: "MozBoxItem"
+      id: "mozboxgroup",
+      children: "MozBoxGroup"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " is a component that can be used separately or together with ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-button"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-link"
-      }), " as a part of a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "moz-box-group"
-      }), " to display related content and actions."]
+      }), " custom element is a flexible container used to group and manage combinations of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-item"
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-link"
+      }), ", and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-button"
+      }), " elements with consistent styles and interaction behaviors."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" /></with-common-styles>",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group><moz-box-item label=\"I am a box item\" /><moz-box-link label=\"I am a box link\" /><moz-box-button label=\"I am a box button\" /></moz-box-group></div></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           style: {
-            width: "400px"
+            width: "500px"
           },
-          label: "I'm a box item"
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I am a box item"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-link", {
+              label: "I am a box link"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-button", {
+              label: "I am a box button"
+            })]
+          })
         })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
@@ -721,277 +708,419 @@ function _createMdxContent(props) {
       children: "Code"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["The source for ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
+        children: "moz-box-group"
       }), " can be found under ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://searchfox.org/firefox-main/source/toolkit/content/widgets/moz-box-item",
+        href: "https://searchfox.org/firefox-main/source/toolkit/content/widgets/moz-box-group",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
-        children: "toolkit/content/widgets/moz-box-item/"
+        children: "toolkit/content/widgets/moz-box-group/"
       })]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h2, {
-      id: "how-to-use-moz-box-item",
+      id: "how-to-use-moz-box-group",
       children: ["How to use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
+        children: "moz-box-group"
       })]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
       id: "importing-the-element",
       children: "Importing the element"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["Like other custom elements, you should usually be able to rely on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
+        children: "moz-box-group"
       }), " getting lazy loaded at the time of first use.\nSee ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
         href: "https://firefox-source-docs.mozilla.org/browser/components/storybook/docs/README.reusable-widgets.stories.html#using-new-design-system-components",
         target: "_blank",
         rel: "nofollow noopener noreferrer",
         children: "this documentation"
       }), " for more information on using design system custom elements."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "setting-the-label-and-description",
-      children: ["Setting the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["In order to set a label and description, use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      }), " attributes.\nIn general, the label and description should be controlled by Fluent."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\" description=\"Some description of the item\"></moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item"
-        })
-      })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "setting-an-icon",
-      children: "Setting an icon"
+      id: "adding-items-to-the-group",
+      children: "Adding items to the group"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["In order to have an icon appear next to the label, use the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: ".iconSrc"
-      }), " property or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "iconsrc"
-      }), " attribute."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\"\n              description=\"Some description of the item\"\n              iconsrc=\"chrome://global/skin/icons/highlights.svg\">\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" iconsrc=\"chrome://global/skin/icons/highlights.svg\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item",
-          iconsrc: "chrome://global/skin/icons/highlights.svg"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "setting-the-layout-of-the-content",
-      children: "Setting the layout of the content"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["You can set a layout style for the box content using the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "layout"
-      }), " attribute.  There are 2 layout options: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "default"
-      }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "large-icon"
-      }), ".\nThe ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "default"
-      }), " layout will set a smaller icon next to the label. Use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "large-icon"
-      }), " layout to display a bigger, vertically centered icon."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\"\n              description=\"Some description of the item\"\n              layout=\"large-icon\"\n              iconsrc=\"chrome://global/skin/icons/info.svg\">\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\" description=\"Some description of the item\" layout=\"large-icon\" iconsrc=\"chrome://global/skin/icons/info.svg\" /></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          description: "Some description of the item",
-          layout: "large-icon",
-          iconsrc: "chrome://global/skin/icons/info.svg"
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.h3, {
-      id: "adding-actions-to-the-moz-box-item",
-      children: ["Adding actions to the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+      children: ["In order to group ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-*"
+      }), " elements (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "moz-box-item"
-      })]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " component supports 2 slots for actions: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions-start"
-      }), ". You should set the correct ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "aria-label"
-      }), " for any icon buttons that are included in actions using fluent, since we cannot programmatically associate the button with the label in the shadow DOM."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions"
-      }), " slot goes after the label/description/etc. Using this slot is a preferred way to ad actions to the component."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\">\n  <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n</moz-box-item>\n"
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
-      withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></with-common-styles>",
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
-          style: {
-            width: "400px"
-          },
-          label: "I'm a box item",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            label: "Click me!",
-            slot: "actions"
-          })
-        })
-      })
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Use ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "slot=\"actions-start\""
-      }), " if you need to place an action at the beginning of the container. If ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " is a part of the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-link"
+      }), ", and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-button"
+      }), "), place them directly inside the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         children: "moz-box-group"
-      }), ", the number of items in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "actions-start"
-      }), " slot should be consistent across the entire group."]
+      }), " element as its immediate children."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-box-item label=\"I'm a box item\">\n  <moz-button iconsrc=\"chrome://global/skin/icons/delete.svg\"\n              aria-label=\"Delete I'm a box item\"\n              slot=\"actions-start\">\n  </moz-button>\n</moz-box-item>\n"
+        children: "<moz-box-group>\n  <moz-box-item label=\"I am a box item\"></moz-box-item>\n  <moz-box-link label=\"I am a box link\"></moz-box-link>\n  <moz-box-button label=\"I am a box button\"></moz-box-button>\n</moz-box-group>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"400px\" }} label=\"I'm a box item\"><moz-button iconsrc=\"chrome://global/skin/icons/delete.svg\" aria-label=\"Delete I'm a box item\" slot=\"actions-start\" /></moz-box-item></with-common-styles>",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group><moz-box-item label=\"I am a box item\" /><moz-box-link label=\"I am a box link\" /><moz-box-button label=\"I am a box button\" /></moz-box-group></div></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           style: {
-            width: "400px"
+            width: "500px"
           },
-          label: "I'm a box item",
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
-            iconsrc: "chrome://global/skin/icons/delete.svg",
-            "aria-label": "Delete I'm a box item",
-            slot: "actions-start"
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I am a box item"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-link", {
+              label: "I am a box link"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-button", {
+              label: "I am a box button"
+            })]
           })
         })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "using-the-default-slot",
-      children: "Using the default slot"
+      id: "setting-the-type",
+      children: "Setting the type"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["Use the default slot if you need to place a custom content into the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type"
+      }), " attribute on ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " determines how its child elements are grouped, displayed, and interacted with. The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " supports following types: ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "default"
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "list"
+      }), ", ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "reorderable-list"
       }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h4, {
+      id: "no-type-default",
+      children: "No Type (Default)"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["When no ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type"
+      }), " is specified, ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " acts as a simple visual grouping container. Elements are rendered as-is, in document order, without being wrapped in a list."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Default ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " has the following keyboard navigation behavior:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Each interactive element (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-link"
+        }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-button"
+        }), ") or element with interactive children (e.g. a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-item"
+        }), " with a toggle or button in one of the actions slots) will be it's own tab stop."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Tabbing or using the left and right arrow keys in a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-item"
+        }), " with multiple interactive elements will navigate between those elements."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Up/Down arrow keys don't go between elements."
+      }), "\n"]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-box-item>\n  <div class=\"slotted\">\n    <img src=\"resource://content-accessible/illustrations/security-error.svg\"\n    alt=\"Confused Kit is looking at an orange exclamation mark\" />\n    <span>This is an example message</span>\n    <span class=\"text-deemphasized\">\n      Message description would go down here\n    </span>\n  </div>\n</moz-box-item>\n"
+        children: "<moz-box-group>\n  <moz-box-item label=\"I am a box item in a group\"></moz-box-item>\n  <moz-box-link label=\"I am a box link in a group\"></moz-box-link>\n  <moz-box-button label=\"I am a box button in a group\"></moz-box-button>\n</moz-box-group>\n"
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
       withSource: "none",
-      mdxSource: "<with-common-styles><moz-box-item style={{ width: \"280px\" }}><div style={{ display: \"flex\", justifyContent: \"center\", alignItems: \"center\", flexDirection: \"column\", textAlign: \"center\" }}><img src=\"resource://content-accessible/illustrations/security-error.svg\" style={{ width: \"150px\", marginBlockEnd: \"16px\" }} alt=\"Confused Kit is looking at an orange exclamation mark\" /><span>{\"This is an example message\"}</span><span class=\"text-deemphasized\"><p>{\"Message description would go down here\"}</p></span></div></moz-box-item></with-common-styles>",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group><moz-box-item label=\"I am a box item in a group\" /><moz-box-link label=\"I am a box link in a group\" /><moz-box-button label=\"I am a box button in a group\" /></moz-box-group></div></with-common-styles>",
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
-        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
           style: {
-            width: "280px"
+            width: "500px"
           },
-          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("div", {
-            style: {
-              display: "flex",
-              justifyContent: "center",
-              alignItems: "center",
-              flexDirection: "column",
-              textAlign: "center"
-            },
-            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("img", {
-              src: "resource://content-accessible/illustrations/security-error.svg",
-              style: {
-                width: "150px",
-                marginBlockEnd: "16px"
-              },
-              alt: "Confused Kit is looking at an orange exclamation mark"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              children: "This is an example message"
-            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("span", {
-              class: "text-deemphasized",
-              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-                children: "Message description would go down here"
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I am a box item in a group"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-link", {
+              label: "I am a box link in a group"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-button", {
+              label: "I am a box button in a group"
+            })]
+          })
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h4, {
+      id: "typelist",
+      children: "type=\"list\""
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["When ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type"
+      }), " is set to ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "\"list\""
+      }), ", the component wraps the grouped elements in an unordered list (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "ul"
+      }), "), with each item rendered inside an individual ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "li"
+      }), " list element. This improves accessibility and structure for similar items. ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type=\"list\""
+      }), " provides accessible keyboard navigation to move focus between interactive elements inside the group:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.strong, {
+        children: "Tab key:"
+      }), " Pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "Tab"
+      }), " moves focus into the list and lands on the first interactive element within the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.strong, {
+        children: "Arrow keys:"
+      }), " Once focus is inside the list:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "ArrowDown"
+        }), " moves focus to the next item in the list."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "ArrowUp"
+        }), " moves focus to the previous item."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "ArrowRight"
+        }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "ArrowLeft"
+        }), " or ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "Tab"
+        }), " when one of the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-item"
+        }), " interactive elements is in focus will navigate between those elements."]
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.strong, {
+        children: "Tab key (again):"
+      }), " After navigating through the list with arrow keys, pressing ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "Tab"
+      }), " again will move focus out of the list to the next focusable element outside the group."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-box-group type=\"list\">\n  <moz-box-item label=\"I'm the first item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"I'm the second item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"I'm the third item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n</moz-box-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group type=\"list\"><moz-box-item label=\"I'm the first item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"I'm the second item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"I'm the third item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></moz-box-group></div></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            width: "500px"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            type: "list",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the first item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the second item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the third item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            })]
+          })
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h4, {
+      id: "typereorderable-list",
+      children: "type=\"reorderable-list\""
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Setting ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type=\"reorderable-list\""
+      }), " enhances the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " with reordering capabilities. It behaves like ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "\"list\""
+      }), ", but:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Renders an ordered list (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "ol"
+        }), ")."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Wraps the list in a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-reorderable-list"
+        }), "."]
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.li, {
+        children: ["Enables drag-and-drop reordering using ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "handle"
+        }), " elements inside ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+          children: "moz-box-item"
+        }), "."]
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.strong, {
+        children: "Note:"
+      }), " Only ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-item"
+      }), " is currently supported in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "reorderable-list"
+      }), "."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["When focus is on the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-item"
+      }), "’s ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "handle"
+      }), ", you can reorder items in the list using the following keyboard shortcuts:"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.ul, {
+      children: ["\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Ctrl + Shift + ArrowDown: moves the focused item after the next item in the list."
+      }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.li, {
+        children: "Ctrl + Shift + ArrowUp: moves the focused item before the previous item."
+      }), "\n"]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
+      children: "Reordering updates the DOM and retains focus on the moved item, allowing for continuous reordering using the keyboard."
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-box-group type=\"reorderable-list\">\n  <moz-box-item label=\"I'm the first item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"I'm the second item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"I'm the third item in a list\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n</moz-box-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group type=\"reorderable-list\"><moz-box-item label=\"I'm the first item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"I'm the second item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"I'm the third item in a list\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></moz-box-group></div></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            width: "500px"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            type: "reorderable-list",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the first item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the second item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "I'm the third item in a list",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
               })
             })]
           })
         })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
-      id: "fluent-usage",
-      children: "Fluent usage"
+      id: "header-and-footer",
+      children: "Header and Footer"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
       children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "label"
-      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "description"
-      }), " attributes of ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " will generally be provided via ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.a, {
-        href: "https://mozilla-l10n.github.io/localizer-documentation/tools/fluent/basic_syntax.html#attributes",
-        target: "_blank",
-        rel: "nofollow noopener noreferrer",
-        children: "Fluent attributes"
-      }), ".\nThe relevant ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-attrs"
-      }), " are set automatically, so to get things working you just need to supply a ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "data-l10n-id"
-      }), " as you would with any other element."]
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.p, {
-      children: "For example, the following Fluent messages:"
-    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
-      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item-label =\n  .label = I'm a box item\nmoz-box-item-label-description =\n  .label = I'm a box item\n  .description = Some description of the item\n"
-      })
+        children: "moz-box-group"
+      }), " component supports optional header and footer content. To insert a header or footer, use the slot=\"header\" and slot=\"footer\" attributes on the first and last elements of the group. This allows you to consistently wrap groups of elements with contextual content without affecting the layout or behavior of the list."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
-      children: ["would be used to set attributes on the different ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
-        children: "moz-box-item"
-      }), " elements as follows:"]
+      children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.strong, {
+        children: "Note:"
+      }), " Header and footer elements are not included in list keyboard navigation (", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "ArrowUp"
+      }), " and ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "ArrowDown"
+      }), ") or reordering."]
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
       children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
         className: "language-html",
-        children: "<moz-box-item data-l10n-id=\"moz-box-item-label\"></moz-box-item>\n<moz-box-item data-l10n-id=\"moz-box-item-label-description\"></moz-box-item>\n"
+        children: "<moz-box-group type=\"list\">\n  <moz-box-item slot=\"header\" label=\"I am a header\"></moz-box-item>\n  <moz-box-button label=\"I am the first button in a list\"></moz-box-button>\n  <moz-box-button label=\"I am the second button in a list\"></moz-box-button>\n  <moz-box-item slot=\"footer\" label=\"I am a footer\"></moz-box-item>\n</moz-box-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group type=\"list\"><moz-box-item slot=\"header\" label=\"I am a header\" /><moz-box-button label=\"I am the first button in a list\" /><moz-box-button label=\"I am the second button in a list\" /><moz-box-item slot=\"footer\" label=\"I am a footer\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></moz-box-group></div></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            width: "500px"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            type: "list",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              slot: "header",
+              label: "I am a header"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-button", {
+              label: "I am the first button in a list"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-button", {
+              label: "I am the second button in a list"
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              slot: "footer",
+              label: "I am a footer",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            })]
+          })
+        })
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h3, {
+      id: "static-items",
+      children: "Static Items"
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["The ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "moz-box-group"
+      }), " component supports static (non-reorderable) items in reorderable lists. To mark an item as static, place it in the ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "static"
+      }), " named slot. Static items are positioned after regular items and cannot be reordered."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)(_components.p, {
+      children: ["Static items are only supported in ", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        children: "type=\"reorderable-list\""
+      }), ". They are included in keyboard navigation, and can contain interactive elements."]
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.pre, {
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.code, {
+        className: "language-html",
+        children: "<moz-box-group type=\"reorderable-list\">\n  <moz-box-item label=\"Reorderable item 1\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item label=\"Reorderable item 2\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n  <moz-box-item slot=\"static\" label=\"Static item (cannot be reordered)\">\n    <moz-button label=\"Click me!\" slot=\"actions\"></moz-button>\n  </moz-box-item>\n</moz-box-group>\n"
+      })
+    }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.Canvas, {
+      withSource: "none",
+      mdxSource: "<with-common-styles><div style={{ width: \"500px\" }}><moz-box-group type=\"reorderable-list\"><moz-box-item label=\"Reorderable item 1\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item label=\"Reorderable item 2\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item><moz-box-item slot=\"static\" label=\"Static item (cannot be reordered)\"><moz-button label=\"Click me!\" slot=\"actions\" /></moz-box-item></moz-box-group></div></with-common-styles>",
+      children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("with-common-styles", {
+        children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("div", {
+          style: {
+            width: "500px"
+          },
+          children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsxs)("moz-box-group", {
+            type: "reorderable-list",
+            children: [/*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "Reorderable item 1",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              label: "Reorderable item 2",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            }), /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-box-item", {
+              slot: "static",
+              label: "Static item (cannot be reordered)",
+              children: /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)("moz-button", {
+                label: "Click me!",
+                slot: "actions"
+              })
+            })]
+          })
+        })
       })
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_components.h2, {
       id: "args-table",
       children: "Args Table"
     }), "\n", /*#__PURE__*/(0,react_jsx_runtime__WEBPACK_IMPORTED_MODULE_4__.jsx)(_storybook_addon_docs__WEBPACK_IMPORTED_MODULE_2__.ArgTypes, {
-      of: "moz-box-item"
+      of: "moz-box-group"
     })]
   });
 }
@@ -1014,7 +1143,7 @@ __page.parameters = {
   docsOnly: true
 };
 const componentMeta = {
-  title: 'UI Widgets/ Box Item/README',
+  title: 'UI Widgets/ Box Group/README',
   parameters: {
     previewTabs: {
       canvas: {
@@ -1032,6 +1161,31 @@ componentMeta.parameters.docs = {
   page: MDXContent
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (componentMeta);
+
+/***/ }),
+
+/***/ 70020:
+/***/ ((module, __unused_webpack_exports, __webpack_require__) => {
+
+module.exports = __webpack_require__.p + "moz-box-item.f7883d24de72d17105c0.css";
+
+/***/ }),
+
+/***/ 85173:
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+/**
+ * @license React
+ * react-jsx-runtime.production.min.js
+ *
+ * Copyright (c) Facebook, Inc. and its affiliates.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+var f=__webpack_require__(74407),k=Symbol.for("react.element"),l=Symbol.for("react.fragment"),m=Object.prototype.hasOwnProperty,n=f.__SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED.ReactCurrentOwner,p={key:!0,ref:!0,__self:!0,__source:!0};
+function q(c,a,g){var b,d={},e=null,h=null;void 0!==g&&(e=""+g);void 0!==a.key&&(e=""+a.key);void 0!==a.ref&&(h=a.ref);for(b in a)m.call(a,b)&&!p.hasOwnProperty(b)&&(d[b]=a[b]);if(c&&c.defaultProps)for(b in a=c.defaultProps,a)void 0===d[b]&&(d[b]=a[b]);return{$$typeof:k,type:c,key:e,ref:h,props:d,_owner:n.current}}exports.Fragment=l;exports.jsx=q;exports.jsxs=q;
+
 
 /***/ }),
 
@@ -1349,4 +1503,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-README-stories-md.50fa91a3.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-README-stories-md.015a4216.iframe.bundle.js.map

@@ -4,7 +4,7 @@
 /***/ 23066:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.eec2be21217d4c36b8b2.css";
+module.exports = __webpack_require__.p + "moz-box-group.6a66bec7ee2d66a58a58.css";
 
 /***/ }),
 
@@ -999,4 +999,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-item-moz-box-item-stories.d3aecb07.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-item-moz-box-item-stories.f8fb6fc7.iframe.bundle.js.map

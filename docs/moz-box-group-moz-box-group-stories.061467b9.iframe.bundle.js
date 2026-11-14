@@ -688,7 +688,7 @@ customElements.define("moz-input-folder", MozInputFolder);
 /***/ 23066:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.eec2be21217d4c36b8b2.css";
+module.exports = __webpack_require__.p + "moz-box-group.6a66bec7ee2d66a58a58.css";
 
 /***/ }),
 
@@ -2235,4 +2235,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=moz-box-group-moz-box-group-stories.b77e5a83.iframe.bundle.js.map
+//# sourceMappingURL=moz-box-group-moz-box-group-stories.061467b9.iframe.bundle.js.map

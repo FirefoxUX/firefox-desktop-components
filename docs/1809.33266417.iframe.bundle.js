@@ -4,7 +4,7 @@
 /***/ 23066:
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
-module.exports = __webpack_require__.p + "moz-box-group.eec2be21217d4c36b8b2.css";
+module.exports = __webpack_require__.p + "moz-box-group.6a66bec7ee2d66a58a58.css";
 
 /***/ }),
 
@@ -778,4 +778,4 @@ customElements.define("moz-box-item", MozBoxItem);
 /***/ })
 
 }]);
-//# sourceMappingURL=1809.c71b6bf6.iframe.bundle.js.map
+//# sourceMappingURL=1809.33266417.iframe.bundle.js.map
