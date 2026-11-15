@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";function t(e){return a+e}function n(e){return e.startsWith(a)&&e.slice(6)||null}function r(e){return e.type!=i.TAB_GROUP&&!!e.groupId}var i,a;function o(){return(o=e((()=>{i=Object.freeze({TAB:`tab`,CURRENT_TAB:`currentTab`,TAB_GROUP:`tabGroup`}),a=`group:`})))()}export{n as a,r as i,t as n,o as r,i as t};

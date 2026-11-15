@@ -1,0 +1,5 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{f as t,u as n}from"./lit.all-BYVOqvrj.js";import{t as r}from"./chat-assistant-citations-BJKjzyGo.js";var i,a,o,s,c;function l(){return(l=e((()=>{t(),r(),i={title:`Domain-specific UI Widgets/AI Window/Chat Assistant Citations`,component:`chat-assistant-citations`,parameters:{fluent:`
+smartwindow-assistant-citations-more-label = +{ $count } more
+    `}},a=({citations:e})=>n`<chat-assistant-citations
+    .citations=${e}
+  ></chat-assistant-citations>`,o=a.bind({}),o.args={citations:[{url:`https://www.mozilla.org/`}]},s=a.bind({}),s.args={citations:[{url:`https://www.mozilla.org/`},{url:`https://developer.mozilla.org/en-US/docs/Web`,title:`Web technology for developers | MDN`},{url:`https://www.test.com/`}]},c=a.bind({}),c.args={citations:[{url:`https://www.mozilla.org/`},{url:`https://developer.mozilla.org/en-US/docs/Web`,title:`Web technology for developers | MDN`},{url:`https://www.test.com/`},{url:`https://support.mozilla.org/`},{url:`https://blog.mozilla.org/`}]}})))()}l();export{c as FiveSources,o as OneSource,s as ThreeSources,i as default};

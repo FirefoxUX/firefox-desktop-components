@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";function t(e){if(!document.querySelector(`link[href="${n}"]`)){let e=document.createElement(`link`);e.rel=`stylesheet`,e.href=n,document.head.append(e)}return e()}var n;function r(){return(r=e((()=>{n=`https://fonts.googleapis.com/css2?family=Mozilla+Headline:wdth,wght@87.5,600&display=swap`})))()}export{t as n,r as t};

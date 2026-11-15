@@ -1,0 +1,144 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";var t;function n(){return(n=e((()=>{t=`# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this
+# file, You can obtain one at http://mozilla.org/MPL/2.0/.
+
+## Permission Dialog
+## Variables:
+##  $host (string) - The hostname that is initiating the request
+##  $scheme (string) - The type of link that's being opened.
+##  $appName (string) - Name of the application that will be opened.
+##  $extension (string) - Name of extension that initiated the request
+
+permission-dialog-description =
+  Allow this site to open the { $scheme } link?
+
+permission-dialog-description-file =
+  Allow this file to open the { $scheme } link?
+
+permission-dialog-description-host =
+  Allow { $host } to open the { $scheme } link?
+
+permission-dialog-description-extension =
+  Allow the extension { $extension } to open the { $scheme } link?
+
+permission-dialog-description-app =
+  Allow this site to open the { $scheme } link with { $appName }?
+
+permission-dialog-description-host-app =
+  Allow { $host } to open the { $scheme } link with { $appName }?
+
+permission-dialog-description-file-app =
+  Allow this file to open the { $scheme } link with { $appName }?
+
+permission-dialog-description-extension-app =
+  Allow the extension { $extension } to open the { $scheme } link with { $appName }?
+
+permission-dialog-description-system-app =
+  Open the { $scheme } link with { $appName }?
+
+permission-dialog-description-system-noapp =
+  Open the { $scheme } link?
+
+# Header on a permission prompt, asking the user if they should allow the website to continue.
+wallet-custom-scheme-warning-heading =
+      .heading = Allow this site to open your digital wallet?
+
+# Warning given to the user that the current page is trying to open their digital wallet app
+wallet-custom-scheme-warning-host-app = Opening a <strong>{ $scheme }</strong> link allows <strong>{ $host }</strong> to request your real identity with <strong>{ $appName }</strong>. Only continue if you trust this site.
+
+# Warning given to the user that the current page is trying to open their digital wallet app
+wallet-custom-scheme-warning-app = Opening a <strong>{ $scheme }</strong> link allows this site to request your real identity with <strong>{ $appName }</strong>. Only continue if you trust this site.
+
+# Warning given to the user that the current page is trying to open their digital wallet app
+wallet-custom-scheme-warning-host = Opening a <strong>{ $scheme }</strong> link allows <strong>{ $host }</strong> to request your real identity from your digital wallet. Only continue if you trust this site.
+
+# Warning given to the user that the current page is trying to open their digital wallet app
+wallet-custom-scheme-warning = Opening a <strong>{ $scheme }</strong> link allows this site to request your real identity from your digital wallet. Only continue if you trust this site.
+
+## Please keep the emphasis around the hostname and scheme (ie the
+## \`<strong>\` HTML tags). Please also keep the hostname as close to the start
+## of the sentence as your language's grammar allows.
+## Variables:
+##  $host (string) - The hostname that is initiating the request
+##  $scheme (string) - The type of link that's being opened.
+
+permission-dialog-remember =
+  Always allow <strong>{ $host }</strong> to open <strong>{ $scheme }</strong> links
+
+permission-dialog-remember-file =
+  Always allow this file to open <strong>{ $scheme }</strong> links
+
+permission-dialog-remember-extension =
+  Always allow this extension to open <strong>{ $scheme }</strong> links
+
+##
+
+permission-dialog-btn-open-link =
+      .label = Open Link
+      .accessKey = O
+
+permission-dialog-btn-choose-app =
+      .label = Choose Application
+      .accessKey = A
+
+permission-dialog-unset-description = You’ll need to choose an application.
+
+permission-dialog-set-change-app-link = Choose a different application.
+
+## Chooser dialog
+## Variables:
+##  $scheme (string) - The type of link that's being opened.
+
+chooser-window =
+      .title = Choose Application
+      .style = min-width: 26em; min-height: 26em;
+
+chooser-dialog =
+      .buttonlabelaccept = Open Link
+      .buttonaccesskeyaccept = O
+
+chooser-dialog-description = Choose an application to open the { $scheme } link.
+
+# Please keep the emphasis around the scheme (ie the \`<strong>\` HTML tags).
+chooser-dialog-remember =
+  Always use this application to open <strong>{ $scheme }</strong> links
+
+chooser-dialog-remember-extra = {
+  PLATFORM() ->
+      [windows] This can be changed in { -brand-short-name }’s options.
+     *[other] This can be changed in { -brand-short-name }’s preferences.
+  }
+
+choose-other-app-description = Choose other Application
+choose-app-btn =
+      .label = Choose…
+      .accessKey = C
+choose-other-app-window-title = Another Application…
+
+# Displayed under the name of a protocol handler in the Launch Application dialog.
+choose-dialog-privatebrowsing-disabled = Disabled in Private Windows
+
+## Mailto handler picker
+## Shown when the user clicks a mailto: link and lets them pick which configured
+## web mail service (or the OS default app) should handle email links.
+
+mailto-handler-picker-window =
+      .title = Choose your email app
+      .style = min-width: 26em; min-height: 26em;
+
+mailto-handler-picker-subtitle = Pick the app you’d like to use for email links. You can change this later in Settings.
+
+# Checkbox letting the user keep being prompted with this picker each time they
+# click an email link, instead of remembering the chosen handler.
+mailto-handler-picker-always-ask = Always ask me when I click an email link
+
+# Confirms the picker: sets the selected app as the handler for email links.
+mailto-handler-picker-set-default =
+      .label = Set as default
+      .accesskey = S
+
+# Dismisses the picker without choosing an email app for now.
+mailto-handler-picker-not-now =
+      .label = Not now
+      .accesskey = N
+`})))()}n();export{t as default};

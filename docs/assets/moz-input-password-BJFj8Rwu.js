@@ -1,0 +1,1 @@
+import{n as e,r as t}from"./rolldown-runtime-sJBDdmOt.js";import{n,t as r}from"./moz-input-text-DD_a8E7c.js";var i=t({MozInputPassword:()=>a}),a;function o(){return(o=e((()=>{n(),a=class extends r{inputTemplate(){return super.inputTemplate({type:`password`})}},customElements.define(`moz-input-password`,a)})))()}export{i as n,o as t};

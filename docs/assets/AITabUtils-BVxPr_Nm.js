@@ -1,0 +1,1 @@
+import{n as e}from"./rolldown-runtime-sJBDdmOt.js";function t(e){let t=URL.parse(String(e??``).trim());return t?.protocol==`http:`||t?.protocol==`https:`?t:null}function n(){return(n=e((()=>{})))()}export{n,t};
