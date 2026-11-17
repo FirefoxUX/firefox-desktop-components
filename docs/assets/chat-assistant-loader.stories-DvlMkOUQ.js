@@ -1,3 +1,0 @@
-import{n as e}from"./rolldown-runtime-sJBDdmOt.js";import{f as t,u as n}from"./lit.all-BYVOqvrj.js";import{t as r}from"./chat-assistant-loader-Cd3Ip2SN.js";var i,a,o,s,c;function l(){return(l=e((()=>{t(),r(),i={title:`Domain-specific UI Widgets/AI Window/Chat Assistant Loader`,component:`chat-assistant-loader`,parameters:{fluent:`smartwindow-nl-thinking = Looking for matching tabs...`},argTypes:{mode:{control:{type:`select`},options:[`default`,`search`,`nl`]}}},a=({mode:e})=>n`
-  <chat-assistant-loader .mode=${e??`default`}></chat-assistant-loader>
-`,o=a.bind({}),s=a.bind({}),s.args={mode:`search`},c=a.bind({}),c.args={mode:`nl`}})))()}l();export{o as Default,c as NaturalLanguage,s as Search,i as default};
