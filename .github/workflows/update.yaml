@@ -21,6 +21,7 @@ jobs:
           cd firefox
           echo "git revision" && git log -1 --format='%H'
           ./mach --no-interactive bootstrap
+          ./mach --no-interactive clobber
           ./mach --no-interactive build
           ./mach storybook build
       - name: Delete old docs
