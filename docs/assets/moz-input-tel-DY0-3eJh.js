@@ -1,1 +1,0 @@
-import{n as e,r as t}from"./rolldown-runtime-sJBDdmOt.js";import{n,t as r}from"./moz-input-text-B-3Xz8EA.js";var i=t({MozInputTel:()=>a}),a;function o(){return(o=e((()=>{n(),a=class extends r{inputTemplate(){return super.inputTemplate({type:`tel`})}},customElements.define(`moz-input-tel`,a)})))()}export{i as n,o as t};

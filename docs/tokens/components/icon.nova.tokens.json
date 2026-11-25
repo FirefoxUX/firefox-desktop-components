@@ -1,0 +1,32 @@
+{
+  "color": {
+    "@base": {
+      "value": "{text.color.@base}"
+    },
+    "accent": {
+      "primary": {
+        "desaturated": {
+          "value": {
+            "light": "{color.violet-desaturated.60}",
+            "dark": "{color.violet-desaturated.40}",
+            "forcedColors": "CanvasText"
+          }
+        }
+      }
+    }
+  },
+  "size": {
+    "xsmall": {
+      "value": "{size.item.xsmall}"
+    },
+    "small": {
+      "value": "{size.item.small}"
+    },
+    "large": {
+      "value": "{size.item.medium}"
+    },
+    "xlarge": {
+      "value": "{size.item.large}"
+    }
+  }
+}

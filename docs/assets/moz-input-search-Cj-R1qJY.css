@@ -1,0 +1,73 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#input {
+  width: 100%;
+  max-width: var(--input-text-max-width, none);
+  min-height: var(--input-min-height);
+  padding-inline: var(--space-medium);
+  border: var(--input-border);
+  border-radius: var(--input-border-radius);
+  box-sizing: border-box;
+  background-color: var(--input-background-color);
+  color: var(--input-text-color);
+
+  @media (-moz-platform: macos) {
+    /* TODO(emilio, bug 1815264): The default macOS system font size is too
+     * small. Ensure some sane minimum. */
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    font-size: max(1em, 12px);
+  }
+
+  :host([invalid]) & {
+    border-color: var(--border-color-error);
+    accent-color: var(--border-color-error);
+  }
+
+  &:disabled {
+    border-color: var(--input-border-color-disabled);
+    background-color: var(--input-background-color-disabled);
+    color: var(--input-text-color-disabled);
+    opacity: var(--input-opacity-disabled);
+  }
+
+  &:focus-visible {
+    outline: var(--focus-outline);
+  }
+
+  &.with-icon {
+    padding-inline-start: calc(2 * var(--space-medium) + var(--input-icon-size));
+    background-repeat: no-repeat;
+    background-size: var(--input-icon-size);
+    background-position: var(--space-medium) center;
+    background-image: var(--input-background-icon);
+    -moz-context-properties: fill;
+    fill: var(--icon-color);
+
+    &:dir(rtl) {
+      background-position: center right var(--space-medium);
+    }
+  }
+
+  &::placeholder {
+    text-overflow: ellipsis;
+  }
+}/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#input[type="search"] {
+  --input-background-icon: url("data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'?%3e%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='12'%20height='12'%20viewBox='0%200%2012%2012'%3e%3cpath%20fill='%23939393'%20fill-rule='evenodd'%20d='M11.354,10.646l-0.707.707L7.295,8A4.483,4.483,0,1,1,9,4.5,4.458,4.458,0,0,1,8,7.295ZM4.5,1A3.5,3.5,0,1,0,8,4.5,3.5,3.5,0,0,0,4.5,1Z'%20transform='scale(-1,%201)%20translate(-12,%200)'/%3e%3c/svg%3e");
+  border-radius: var(--input-search-border-radius);
+  padding-inline-end: var(--space-xxsmall);
+
+  &.with-icon {
+    background-size: var(--input-search-icon-size);
+    padding-inline-start: calc(2 * var(--space-medium) + var(--input-search-icon-size));
+  }
+
+  &::-moz-search-clear-button {
+    border-radius: var(--input-search-border-radius);
+  }
+}

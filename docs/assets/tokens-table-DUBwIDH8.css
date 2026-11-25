@@ -1,0 +1,425 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  --border-color-tokens-table: var(--color-gray-50);
+  --table-border-outer: 2px solid var(--border-color-tokens-table);
+  --table-border-inner: var(--border-width) solid var(--border-color-tokens-table);
+  --table-background-color: color-mix(in srgb, var(--color-gray-50) 20%, transparent);
+  --outline-preview: 2px solid var(--color-gray-60);
+  --background-color-icon-demo: var(--color-gray-60);
+  --background-color-padding-demo: var(--color-blue-60);
+  --background-color-space-demo: var(--color-blue-0);
+  --background-image-space-demo: linear-gradient(
+    135deg,
+    var(--color-blue-30) 10%,
+    #0000 0,
+    #0000 50%,
+    var(--color-blue-30) 0,
+    var(--color-blue-30) 60%,
+    #0000 0,
+    #0000
+  );
+  --link-outline-demo: 2px solid var(--color-blue-50);
+}
+
+/* Wrapper and filter styles */
+
+.page-wrapper {
+  padding: 3rem;
+}
+
+.filters-wrapper,
+.top-filters {
+  display: flex;
+  align-items: center;
+  gap: var(--space-large);
+}
+
+.filters-wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--background-color-canvas);
+  padding: var(--space-small);
+  flex-direction: column;
+}
+
+.top-filters {
+  width: 100%;
+}
+
+.table-filter {
+  display: inline-flex;
+  flex-wrap: wrap;
+  border: var(--border-width) solid var(--border-color);
+
+  moz-button {
+    --button-border-radius: 0;
+    --button-border-color: var(--border-color);
+
+    min-width: fit-content;
+    flex: 1;
+    outline: 0.5px solid var(--border-color);
+  }
+}
+
+fieldset {
+  flex: 1;
+  margin: 0;
+  padding-block: var(--space-small);
+  box-sizing: border-box;
+  gap: var(--space-medium);
+}
+
+fieldset,
+.search-wrapper {
+  border: var(--table-border-inner);
+  border-radius: var(--border-radius-small);
+  height: var(--input-min-height);
+  display: inline-flex;
+  align-items: center;
+}
+
+.search-wrapper {
+  position: relative;
+}
+
+.search-icon,
+.clear-icon {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: var(--size-item-small);
+  fill: currentColor;
+  -moz-context-properties: fill;
+  height: var(--size-item-small);
+  width: var(--size-item-small);
+  position: absolute;
+  inset-block: 0;
+  margin: auto 0;
+  padding: var(--space-xxsmall);
+}
+
+.search-icon {
+  background-image: url("data:image/svg+xml,%3c?xml%20version='1.0'%20encoding='UTF-8'?%3e%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='12'%20height='12'%20viewBox='0%200%2012%2012'%3e%3cpath%20fill='%23939393'%20fill-rule='evenodd'%20d='M11.354,10.646l-0.707.707L7.295,8A4.483,4.483,0,1,1,9,4.5,4.458,4.458,0,0,1,8,7.295ZM4.5,1A3.5,3.5,0,1,0,8,4.5,3.5,3.5,0,0,0,4.5,1Z'%20transform='scale(-1,%201)%20translate(-12,%200)'/%3e%3c/svg%3e");
+  inset-inline-start: var(--space-small);
+}
+
+.clear-icon {
+  background-image: url(resource://content-accessible/close-12.svg);
+  inset-inline-end: var(--space-small);
+}
+
+input[type="search"] {
+  border: none;
+  padding-block: var(--space-small);
+  padding-inline: var(--space-xxlarge);
+  border-radius: var(--border-radius-small);
+}
+
+/* Table styles */
+
+.table-wrapper {
+  box-sizing: border-box;
+  border-radius: var(--border-radius-small);
+  border: var(--table-border-outer);
+  margin-block: var(--space-large);
+  width: 100%;
+
+  & > summary {
+    list-style-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m8.352%2010.999%205.466-5.465a.623.623%200%200%200-.001-.884.628.628%200%200%200-.885%200L7.998%209.585l-4.93-4.934a.626.626%200%200%200-.885.885L7.648%2011l.704-.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M12.72%204.883a.75.75%200%200%201%201.062%201.06l-4.544%204.545c-.33.33-.77.512-1.236.512H8c-.467%200-.907-.182-1.237-.512L2.22%205.944a.75.75%200%200%201%201.06-1.061l4.544%204.543a.25.25%200%200%200%20.354%200z'%20/%3e%3c/g%3e%3c/svg%3e");
+    display: flex;
+    align-items: center;
+    position: relative;
+
+    &::before {
+      content: "";
+      background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m8.352%2010.999%205.466-5.465a.623.623%200%200%200-.001-.884.628.628%200%200%200-.885%200L7.998%209.585l-4.93-4.934a.626.626%200%200%200-.885.885L7.648%2011l.704-.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M12.72%204.883a.75.75%200%200%201%201.062%201.06l-4.544%204.545c-.33.33-.77.512-1.236.512H8c-.467%200-.907-.182-1.237-.512L2.22%205.944a.75.75%200%200%201%201.06-1.061l4.544%204.543a.25.25%200%200%200%20.354%200z'%20/%3e%3c/g%3e%3c/svg%3e");
+      background-position: center;
+      background-repeat: no-repeat;
+      height: var(--size-item-small);
+      width: var(--size-item-small);
+      position: absolute;
+      inset-inline-start: var(--space-small);
+    }
+  }
+
+  &[open] > summary::before {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m8.352%205.001%205.466%205.465a.623.623%200%200%201-.001.884.628.628%200%200%201-.885%200L7.999%206.416l-4.932%204.933a.626.626%200%200%201-.885-.885L7.648%205l.704.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M8.002%205c.467%200%20.906.182%201.237.513l4.544%204.543a.751.751%200%200%201-1.062%201.061L8.178%206.574a.25.25%200%200%200-.354%200l-4.543%204.543a.75.75%200%201%201-1.061-1.061l4.543-4.543C7.093%205.182%207.533%205%208%205z'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+}
+
+.table-heading {
+  background-color: var(--table-background-color);
+  border-radius: var(--border-radius-small);
+  padding: 0 var(--space-xlarge);
+
+  & h3 {
+    margin: 0;
+    padding: var(--space-small);
+    font-size: var(--font-size-large);
+    font-weight: var(--font-weight-heading);
+    text-transform: uppercase;
+    color: var(--text-color);
+    display: inline-block;
+  }
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  text-align: start;
+  width: 100%;
+  table-layout: fixed;
+}
+
+thead {
+  background-color: var(--table-background-color);
+  border-bottom: var(--table-border-inner);
+
+  & tr {
+    border-block-end: var(--table-border);
+  }
+}
+
+tbody td {
+  vertical-align: top;
+  color: var(--text-color);
+  border-bottom: var(--table-border-inner);
+
+  &.hcm-theme {
+    border-inline-start: var(--table-border-inner);
+  }
+}
+
+tr td:last-of-type {
+  border-inline-end: 0;
+}
+
+tr td:first-of-type {
+  border-inline-start: 0;
+  color-scheme: light;
+}
+
+tbody tr:first-of-type td {
+  border-block-start: var(--table-border);
+}
+
+tbody tr:last-of-type {
+  & td {
+    border-block-end: 0;
+  }
+
+  & td:first-of-type {
+    border-radius: 0 0 0 2px;
+  }
+
+  & td:last-of-type {
+    border-radius: 0 0 2px 0;
+  }
+}
+
+th {
+  font-size: var(--font-size-small);
+  text-transform: uppercase;
+  font-weight: var(--font-weight);
+  text-align: center;
+}
+
+tr td,
+tr th {
+  padding: var(--space-small);
+}
+
+td {
+  background-color: var(--background-color-box);
+  text-align: center;
+}
+
+th:first-of-type,
+td:first-of-type {
+  text-align: start;
+}
+
+.light-theme {
+  color-scheme: light;
+}
+
+.dark-theme {
+  color-scheme: dark;
+}
+
+.hcm-theme {
+  background-color: black;
+  color: var(--color-white);
+}
+
+.preview-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-small);
+  height: 100%;
+}
+
+.value {
+  width: 100%;
+  margin: 0;
+}
+
+/* Preview cell styles */
+
+/** Default **/
+
+.default-preview,
+.shadow-preview {
+  height: 50px;
+  width: 100px;
+  background-color: var(--button-background-color);
+  color: var(--button-text-color);
+  border: var(--table-border-inner);
+  border-radius: var(--border-radius-small);
+}
+
+/** Outline **/
+
+.outline-preview {
+  height: 50px;
+  width: 100px;
+  background-color: color-mix(in srgb, currentColor 20%, transparent);
+  outline: var(--outline-preview);
+}
+
+/** Font **/
+
+.text-wrapper {
+  backdrop-filter: contrast(0.4);
+  padding: var(--space-small);
+  width: 100%;
+}
+
+/** Icon **/
+
+.icon-preview {
+  background-color: var(--background-color-icon-demo);
+  height: var(--size-item-large);
+  width: var(--size-item-large);
+  /* FIXME: our icons don't seem to work when used as a mask */
+  mask: url(https://upload.wikimedia.org/wikipedia/commons/c/c4/Globe_icon.svg) no-repeat center / contain;
+}
+
+/** Link **/
+
+.link-preview {
+  text-decoration: underline;
+
+  &.outline {
+    outline: var(--link-outline-demo);
+    outline-offset: var(--link-focus-outline-offset);
+  }
+}
+
+/** Motion **/
+
+.motion-preview {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 75%;
+  padding-inline: var(--space-small);
+  background-color: var(--background-color-space-demo);
+  border-radius: var(--border-radius-small);
+
+  & .item {
+    height: var(--size-item-small);
+    width: var(--size-item-small);
+    background-color: var(--background-color-padding-demo);
+    border-radius: var(--border-radius-circle);
+    animation: motion-preview-slide 1.5s infinite alternate;
+  }
+}
+
+@keyframes motion-preview-slide {
+  to {
+    margin-inline-start: calc(100% - var(--size-item-small));
+  }
+}
+
+/* The scale and translate tokens are the state a panel animates out of, so
+ * they preview as that transform being applied to a panel-like surface. */
+.motion-preview .surface {
+  height: var(--size-item-large);
+  width: 100%;
+  background-color: var(--background-color-padding-demo);
+  border-radius: var(--border-radius-small);
+  animation: motion-preview-transform 1.5s infinite alternate;
+}
+
+@keyframes motion-preview-transform {
+  to {
+    transform: var(--motion-preview-transform);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-preview .item,
+  .motion-preview .surface {
+    animation: none;
+  }
+}
+
+/** Space and size **/
+
+.space-size-preview {
+  display: flex;
+  height: 50px;
+  width: 75%;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+
+  & .item {
+    height: 50%;
+    width: 40%;
+    background-color: var(--background-color-padding-demo);
+    border-radius: var(--border-radius-small);
+  }
+}
+
+.space-size-background {
+  background-color: var(--background-color-space-demo);
+  background-image: var(--background-image-space-demo);
+  background-size: 8px 8px;
+  border-radius: var(--border-radius-small);
+  border: var(--table-border-inner);
+}
+
+/** Padding **/
+
+.padding-item {
+  min-height: calc(1.5 * var(--size-item-large));
+  width: calc(3 * var(--size-item-large));
+  border-radius: var(--border-radius-small);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  &.inner {
+    background-color: var(--background-color-padding-demo);
+    opacity: 0.5;
+    border-radius: 3px;
+  }
+}
+
+/* Shadow */
+
+.shadow-preview {
+  border: none;
+  background: var(--background-color-box);
+}
+
+.hcm-theme .shadow-preview {
+  background: black;
+}

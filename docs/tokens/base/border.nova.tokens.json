@@ -1,0 +1,41 @@
+{
+  "color": {
+    "interactive": {
+      "hover": {
+        "value": {
+          "light": "{color.gray.50}",
+          "dark": "{color.gray.20}",
+          "forcedColors": "SelectedItem"
+        }
+      },
+      "active": {
+        "value": {
+          "light": "{color.gray.50}",
+          "dark": "{color.gray.15}",
+          "forcedColors": "ButtonText"
+        }
+      },
+      "disabled": {
+        "value": {
+          "light": "{color.gray.25}",
+          "dark": "{color.gray.55}",
+          "forcedColors": "GrayText"
+        }
+      }
+    }
+  },
+  "radius": {
+    "xsmall": {
+      "value": "4px"
+    },
+    "small": {
+      "value": "8px"
+    },
+    "medium": {
+      "value": "12px"
+    },
+    "xlarge": {
+      "value": "24px"
+    }
+  }
+}

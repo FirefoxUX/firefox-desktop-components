@@ -1,0 +1,136 @@
+{
+  "color": {
+    "@base": {
+      "value": {
+        "brand": {
+          "light": "{color.gray.50}",
+          "dark": "{color.gray.70}"
+        },
+        "prefersContrast": "CanvasText",
+        "platform": {
+          "default": "color-mix(in srgb, currentColor 50%, transparent)"
+        },
+        "nova": {
+          "comment": "Maintain the brand/platform split and use prefersContrast over forcedColors",
+          "value": {
+            "brand": {
+              "light": "{color.gray.30}",
+              "dark": "{color.gray.40}"
+            }
+          }
+        }
+      }
+    },
+    "transparent": {
+      "ignoreFigma": "Use prefersContrast over forcedColors",
+      "value": {
+        "default": "transparent",
+        "prefersContrast": "CanvasText"
+      }
+    },
+    "deemphasized": {
+      "@base": {
+        "value": {
+          "default": "color-mix(in srgb, currentColor 24%, transparent)",
+          "prefersContrast": "currentColor",
+          "forcedColors": "ButtonText",
+          "nova": {
+            "comment": "Nova only changes forcedColors; Figma exports a missing color-mix as transparent",
+            "value": {
+              "default": "color-mix(in srgb, currentColor 24%, transparent)",
+              "forcedColors": "CanvasText"
+            }
+          }
+        }
+      }
+    },
+    "interactive": {
+      "@base": {
+        "value": {
+          "prefersContrast": "{text.color.@base}",
+          "forcedColors": "ButtonText",
+          "brand": {
+            "light": "{color.gray.60}",
+            "dark": "{color.gray.50}"
+          },
+          "platform": {
+            "default": "color-mix(in srgb, currentColor 15%, {color.gray.60})"
+          },
+          "nova": {
+            "comment": "Use prefersContrast over forcedColors",
+            "value": {
+              "light": "{color.gray.45}",
+              "dark": "{color.gray.40}"
+            }
+          }
+        }
+      },
+      "hover": {
+        "value": {
+          "default": "{border.color.interactive.@base}",
+          "forcedColors": "SelectedItem"
+        }
+      },
+      "active": {
+        "value": {
+          "default": "{border.color.interactive.@base}",
+          "forcedColors": "ButtonText"
+        }
+      },
+      "disabled": {
+        "value": {
+          "default": "{border.color.interactive.@base}",
+          "forcedColors": "GrayText"
+        }
+      }
+    },
+    "selected": {
+      "value": {
+        "default": "{color.accent.primary.@base}",
+        "forcedColors": "SelectedItem"
+      }
+    },
+    "error": {
+      "value": {
+        "light": "{color.red.70}",
+        "dark": "{color.red.20}",
+        "prefersContrast": "{border.color.@base}",
+        "nova": {
+          "comment": "Use prefersContrast over forcedColors",
+          "value": {
+            "light": "{color.red.50}",
+            "dark": "{color.red.20}"
+          }
+        }
+      }
+    }
+  },
+  "radius": {
+    "circle": {
+      "value": "9999px"
+    },
+    "xsmall": {
+      "value": "2px"
+    },
+    "small": {
+      "value": "4px"
+    },
+    "medium": {
+      "value": "8px"
+    },
+    "large": {
+      "value": "16px"
+    },
+    "xlarge": {
+      "override": true,
+      "value": "0"
+    },
+    "xxlarge": {
+      "override": true,
+      "value": "0"
+    }
+  },
+  "width": {
+    "value": "1px"
+  }
+}

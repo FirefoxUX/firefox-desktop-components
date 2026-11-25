@@ -1,0 +1,98 @@
+{
+  "color": {
+    "@base": {
+      "value": {
+        "light": "{color.gray.70}",
+        "dark": "{color.gray.0}",
+        "prefersContrast": "{text.color.@base}"
+      }
+    },
+    "accent": {
+      "primary": {
+        "desaturated": {
+          "override": true,
+          "value": "unset"
+        }
+      }
+    },
+    "information": {
+      "value": {
+        "light": "{color.blue.60}",
+        "dark": "{color.blue.20}",
+        "prefersContrast": "{icon.color.@base}",
+        "nova": {
+          "comment": "Use prefersContrast over forcedColors",
+          "value": {
+            "light": "{color.violet.50}",
+            "dark": "{color.violet.20}"
+          }
+        }
+      }
+    },
+    "success": {
+      "value": {
+        "light": "{color.green.60}",
+        "dark": "{color.green.20}",
+        "prefersContrast": "{icon.color.@base}",
+        "nova": {
+          "comment": "Use prefersContrast over forcedColors",
+          "value": {
+            "light": "{color.green.50}",
+            "dark": "{color.green.20}"
+          }
+        }
+      }
+    },
+    "warning": {
+      "value": {
+        "light": "{color.yellow.60}",
+        "dark": "{color.yellow.20}",
+        "prefersContrast": "{icon.color.@base}",
+        "nova": {
+          "comment": "Use prefersContrast over forcedColors",
+          "value": {
+            "light": "{color.yellow.50}",
+            "dark": "{color.yellow.20}"
+          }
+        }
+      }
+    },
+    "critical": {
+      "value": {
+        "light": "{color.red.60}",
+        "dark": "{color.red.20}",
+        "prefersContrast": "{icon.color.@base}",
+        "nova": {
+          "comment": "Use prefersContrast over forcedColors",
+          "value": {
+            "light": "{color.red.50}",
+            "dark": "{color.red.20}"
+          }
+        }
+      }
+    }
+  },
+  "size": {
+    "@base": {
+      "value": "{icon.size.small}"
+    },
+    "xsmall": {
+      "value": "12px"
+    },
+    "small": {
+      "value": "16px"
+    },
+    "medium": {
+      "value": "20px"
+    },
+    "large": {
+      "value": "24px"
+    },
+    "xlarge": {
+      "value": "32px"
+    },
+    "xxlarge": {
+      "value": "{size.item.xlarge}"
+    }
+  }
+}

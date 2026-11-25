@@ -1,0 +1,97 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host([layout$="-icon"]) {
+  .text-content.has-icon.has-description {
+    grid-template-areas:
+      "icon label"
+      "icon description";
+  }
+}
+
+:host([static]) {
+  /* Indent static items the width of the handle button + gap */
+  padding-inline-start: calc(var(--button-size-icon) + var(--space-small));
+}
+
+:host(:focus-visible) {
+  outline: var(--focus-outline);
+  outline-offset: var(--focus-outline-inset);
+}
+
+.text-content {
+  .label-wrapper {
+    grid-area: label;
+  }
+
+  .description-wrapper {
+    grid-area: description;
+    overflow-wrap: anywhere;
+  }
+
+  &.has-support-page .label,
+  &.has-support-page .description {
+    margin-inline-end: var(--space-xsmall);
+  }
+
+  &:not(.has-description) .description-wrapper,
+  &:not(.has-support-page) slot[name="support-link"] {
+    display: none;
+  }
+
+  .label,
+  .description,
+  .support-page {
+    display: inline;
+  }
+}
+
+.description + .support-page {
+  font-size: var(--font-size-small);
+}
+
+.box-container {
+  padding: var(--box-padding, var(--space-large));
+  font-size: inherit;
+  text-align: start;
+}
+
+.box-container,
+slot[name="actions"],
+slot[name="actions-start"] {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+}
+
+.box-content {
+  flex: 1 1 auto;
+}
+
+.handle {
+  width: var(--button-size-icon);
+  height: var(--button-size-icon);
+  cursor: grab;
+  background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%20xmlns='http://www.w3.org/2000/svg'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='M7%2014H5v-2h2v2zM11%2014H9v-2h2v2zM7%209H5V7h2v2zM11%209H9V7h2v2zM7%204H5V2h2v2zM11%202v2H9V2h2z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M6%2012a1%201%200%201%201%200%202%201%201%200%200%201%200-2m4%200a1%201%200%201%201%200%202%201%201%200%200%201%200-2M6%207a1%201%200%201%201%200%202%201%201%200%200%201%200-2m4%200a1%201%200%201%201%200%202%201%201%200%200%201%200-2M6%202a1%201%200%201%201%200%202%201%201%200%200%201%200-2m4%200a1%201%200%201%201%200%202%201%201%200%200%201%200-2'%20/%3e%3c/g%3e%3c/svg%3e");
+  background-color: var(--button-background-color-ghost);
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: var(--button-border-radius);
+  -moz-context-properties: fill;
+  /** Override the text color set by description-deemphasized for the handle.
+      This cannot be disabled, hence the color should remain the default. */
+  color: var(--button-text-color-ghost);
+  fill: var(--button-icon-fill);
+  flex-shrink: 0;
+}
+
+.actions {
+  word-wrap: normal;
+}
+
+/* Small subtree */
+/* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
+.actions:has(> slot:not(:has-slotted)) {
+  display: none;
+}

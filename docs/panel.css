@@ -1,0 +1,17 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:root {
+  /* Compact mode */
+  &[uidensity="compact"] {
+    --panel-menuitem-margin-inline: 4px;
+    --panel-menuitem-padding-block: 6px;
+    --panel-separator-padding-inline: 4px;
+
+    @media -moz-pref("browser.nova.enabled") {
+      --panel-border-radius: calc(var(--panel-menuitem-border-radius) + var(--panel-menuitem-margin-inline));
+      --panel-menuitem-border-radius: calc((var(--icon-size) + 2 * var(--panel-menuitem-padding-block)) / 2);
+    }
+  }
+}

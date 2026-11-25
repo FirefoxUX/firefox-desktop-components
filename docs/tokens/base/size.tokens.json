@@ -1,0 +1,64 @@
+{
+  "image": {
+    "xsmall": {
+      "value": "40px"
+    },
+    "small": {
+      "value": "48px"
+    },
+    "medium": {
+      "value": "56px"
+    },
+    "large": {
+      "value": "64px"
+    },
+    "xlarge": {
+      "value": "80px"
+    },
+    "xxlarge": {
+      "value": "96px"
+    }
+  },
+  "item": {
+    "xsmall": {
+      "value": "12px"
+    },
+    "small": {
+      "value": "16px"
+    },
+    "medium": {
+      "value": "24px"
+    },
+    "large": {
+      "value": "32px"
+    },
+    "xlarge": {
+      "value": "48px"
+    }
+  },
+  "layout": {
+    "xsmall": {
+      "value": "100px"
+    },
+    "small": {
+      "value": "200px"
+    },
+    "medium": {
+      "value": "300px"
+    },
+    "large": {
+      "value": "400px"
+    },
+    "xlarge": {
+      "value": "500px"
+    }
+  },
+  "sidebar": {
+    "@base": {
+      "value": "280px"
+    },
+    "narrow": {
+      "value": "118px"
+    }
+  }
+}

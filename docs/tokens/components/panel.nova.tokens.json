@@ -1,0 +1,22 @@
+{
+  "background": {
+    "color": {
+      "@base": {
+        "value": {
+          "nativeTheme": "Field",
+          "default": "{popup.background.color}"
+        }
+      }
+    }
+  },
+  "text": {
+    "color": {
+      "@base": {
+        "value": {
+          "nativeTheme": "FieldText",
+          "default": "{text.color.@base}"
+        }
+      }
+    }
+  }
+}

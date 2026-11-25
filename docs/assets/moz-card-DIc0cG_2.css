@@ -1,0 +1,191 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  display: flex;
+  flex-direction: column;
+  border: var(--card-border);
+  border-radius: var(--card-border-radius);
+  background-color: var(--card-background-color);
+  box-shadow: var(--card-box-shadow);
+  box-sizing: border-box;
+}
+
+:host([spacing="compact"]) {
+  --card-border-radius: var(--card-border-radius-compact);
+  --card-padding: var(--card-padding-compact);
+  --card-gap: var(--card-gap-compact);
+  --card-font-size: var(--card-font-size-compact);
+  --card-cover-image-padding: var(--card-cover-image-padding-compact);
+}
+
+:host([type="accordion"]) {
+  summary {
+    padding-block-start: var(--card-padding-block-start, var(--card-padding-block, var(--card-padding)));
+    padding-block-end: var(--card-padding-block-end, var(--card-padding-block, var(--card-padding)));
+  }
+  #content {
+    padding-block-end: var(--card-padding-block-end, var(--card-padding-block, var(--card-padding)));
+  }
+}
+
+:host(:not([type="accordion"])) {
+  .moz-card {
+    padding-block-start: var(--card-padding-block-start, var(--card-padding-block, var(--card-padding)));
+    padding-block-end: var(--card-padding-block-end, var(--card-padding-block, var(--card-padding)));
+  }
+  #moz-card-details {
+    display: flex;
+    flex-direction: column;
+    gap: var(--card-gap-article);
+  }
+}
+
+.moz-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--card-gap-article);
+  overflow-wrap: anywhere;
+}
+
+#moz-card-details,
+.moz-card-wrapper {
+  width: 100%;
+}
+
+.moz-card,
+#moz-card-details,
+.moz-card-wrapper,
+#content {
+  flex: 1;
+}
+
+summary {
+  cursor: pointer;
+}
+
+#heading-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: var(--card-gap);
+  padding-inline: var(--card-heading-padding-inline, var(--card-padding));
+  border-radius: var(--card-border-radius);
+
+  .chevron-icon {
+    background-image: var(--card-accordion-closed-icon, url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m8.352%2010.999%205.466-5.465a.623.623%200%200%200-.001-.884.628.628%200%200%200-.885%200L7.998%209.585l-4.93-4.934a.626.626%200%200%200-.885.885L7.648%2011l.704-.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M12.72%204.883a.75.75%200%200%201%201.062%201.06l-4.544%204.545c-.33.33-.77.512-1.236.512H8c-.467%200-.907-.182-1.237-.512L2.22%205.944a.75.75%200%200%201%201.06-1.061l4.544%204.543a.25.25%200%200%200%20.354%200z'%20/%3e%3c/g%3e%3c/svg%3e"));
+
+    details[open] & {
+      background-image: var(--card-accordion-open-icon, url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m8.352%205.001%205.466%205.465a.623.623%200%200%201-.001.884.628.628%200%200%201-.885%200L7.999%206.416l-4.932%204.933a.626.626%200%200%201-.885-.885L7.648%205l.704.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M8.002%205c.467%200%20.906.182%201.237.513l4.544%204.543a.751.751%200%200%201-1.062%201.061L8.178%206.574a.25.25%200%200%200-.354%200l-4.543%204.543a.75.75%200%201%201-1.061-1.061l4.543-4.543C7.093%205.182%207.533%205%208%205z'%20/%3e%3c/g%3e%3c/svg%3e"));
+    }
+  }
+
+  .chevron-icon {
+    background-position: center;
+    background-repeat: no-repeat;
+  }
+
+  .chevron-icon,
+  #heading-icon {
+    -moz-context-properties: fill;
+    fill: currentColor;
+    width: var(--icon-size);
+    height: var(--icon-size);
+    min-width: var(--icon-size);
+    min-height: var(--icon-size);
+    padding: 0;
+    flex-shrink: 0;
+  }
+}
+
+#heading {
+  font-size: var(--card-font-size);
+  font-weight: var(--card-heading-font-weight, var(--font-weight-heading));
+}
+
+#content {
+  align-self: stretch;
+  display: flex;
+  flex-direction: column;
+  font-size: var(--card-font-size);
+  padding-inline: var(--card-padding-inline, var(--card-padding));
+  border-end-start-radius: var(--card-border-radius);
+  border-end-end-radius: var(--card-border-radius);
+
+  @media (prefers-contrast) {
+    :host([type="accordion"]) & {
+      border-block-start: 0;
+      padding-block-start: var(--card-padding-block-start, var(--card-padding-block, var(--card-padding)));
+    }
+  }
+}
+
+details {
+  > summary {
+    background-color: var(--card-header-background-color);
+    border-color: var(--card-header-border-color);
+    color: var(--card-header-text-color);
+    list-style: none;
+    border-radius: var(--card-border-radius);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--card-header-background-color-hover);
+      border-color: var(--card-header-border-color-hover);
+      color: var(--card-header-text-color-hover);
+    }
+
+    &:active {
+      background-color: var(--card-header-background-color-active);
+      border-color: var(--card-header-border-color-active);
+      color: var(--card-header-text-color-active);
+    }
+
+    &:focus-visible {
+      outline: var(--card-focus-outline);
+    }
+  }
+
+  &[open] {
+    summary {
+      border-end-start-radius: 0;
+      border-end-end-radius: 0;
+    }
+    @media not (prefers-contrast) {
+      #content {
+        /*
+        There is a border shown above this element in prefers-contrast.
+        When there isn't a border, there's no need for the extra space.
+         */
+        padding-block-start: 0;
+      }
+    }
+  }
+}
+
+#cover-image {
+  display: none;
+  padding-inline: var(--card-cover-image-padding);
+}
+
+::slotted(img[slot="cover-image"]) {
+  width: 100%;
+  height: var(--card-cover-image-height, var(--card-cover-image-height-default));
+  object-fit: var(--card-cover-image-object-fit, var(--card-cover-image-object-fit-default));
+  object-position: var(--card-cover-image-object-position, var(--card-cover-image-object-position-default));
+  border-radius: var(--card-cover-image-border-radius);
+}
+
+/* TODO: Probably opt-into this instead with a class or something */
+/* stylelint-disable-next-line stylelint-plugin-mozilla/no-has-selector */
+:host(:has([slot="cover-image"]:is(img, :not(:empty)))) {
+  .moz-card {
+    padding-block-start: var(--card-cover-image-padding);
+  }
+
+  #cover-image {
+    display: block;
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "background": {
+    "color": {
+      "value": {
+        "light": "white",
+        "dark": "rgb(28, 27, 34)",
+        "nativeTheme": "-moz-sidebar"
+      }
+    }
+  },
+  "text": {
+    "color": {
+      "value": {
+        "light": "rgb(21, 20, 26)",
+        "dark": "rgb(249, 249, 250)",
+        "nativeTheme": "-moz-sidebartext"
+      }
+    }
+  },
+  "border": {
+    "color": {
+      "value": {
+        "default": "{card.border.color}",
+        "nativeTheme": "-moz-sidebarborder",
+        "prefersContrast": "{card.border.color}",
+        "nova": {
+          "value": {
+            "default": "var(--chrome-content-separator-color)",
+            "nativeTheme": "-moz-sidebarborder"
+          }
+        }
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "enter": {
+        "value": "200ms"
+      },
+      "exit": {
+        "value": "160ms"
+      }
+    },
+    "easing": {
+      "value": "{motion.easing.emphasized}"
+    }
+  },
+  "panel": {
+    "motion": {
+      "duration": {
+        "enter": {
+          "value": "230ms"
+        },
+        "exit": {
+          "value": "190ms"
+        }
+      }
+    },
+    "content": {
+      "motion": {
+        "duration": {
+          "fade": {
+            "value": "130ms"
+          }
+        },
+        "easing": {
+          "fade": {
+            "value": "{motion.easing.standard}"
+          }
+        }
+      }
+    }
+  }
+}

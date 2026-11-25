@@ -1,0 +1,139 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  --color-accent-primary: light-dark(var(--color-gray-50), var(--color-gray-70));
+}
+
+.monitors-section h3 {
+  margin-block: 0 var(--space-large);
+  font-size: var(--font-size-large);
+}
+
+.monitors-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+}
+
+.monitors-count {
+  font-size: var(--font-size-small);
+  color: var(--text-color-deemphasized);
+  margin-block-end: var(--space-large);
+}
+
+.monitors-group {
+  margin-block: var(--space-xxlarge);
+}
+
+.no-monitors-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  padding: var(--space-xlarge);
+}
+
+.no-monitors-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-xlarge);
+}
+
+.no-monitors-container {
+  h2 {
+    text-align: center;
+    margin-block-end: 0;
+  }
+  p {
+    color: var(--text-color-deemphasized);
+    font-size: var(--font-size-small);
+    text-align: center;
+    padding-inline: var(--space-xlarge);
+  }
+}
+
+:host(monitor-icon) {
+  --background-color: light-dark(var(--color-violet-10), var(--color-violet-50));
+  --icon-fill: light-dark(var(--color-violet-50), var(--color-violet-10));
+
+  /* Large is the default size. */
+  .icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    -moz-context-properties: fill;
+    fill: var(--icon-fill);
+    width: var(--size-image-xsmall);
+    height: var(--size-image-xsmall);
+    border-radius: var(--border-radius-small);
+    background-color: var(--background-color);
+  }
+
+  .icon {
+    width: var(--size-item-medium);
+    height: var(--size-item-medium);
+    flex: none;
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20https://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='18'%20height='18'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cpath%20d='M5.25%2015V6.73q0-.618.45-1.05.45-.43%201.07-.431H15q.62%200%201.06.44t.44%201.06v6l-3.75%203.75h-6q-.618%200-1.059-.44a1.44%201.44%200%200%201-.44-1.06M1.52%204.687a1.4%201.4%200%200%201%20.243-1.115%201.48%201.48%200%200%201%20.975-.61l8.137-1.443q.62-.112%201.116.243.496.357.61.975l.187%201.013H11.25L11.12%203%203%204.444l.75%204.237v5.231a1.7%201.7%200%200%201-.515-.45%201.4%201.4%200%200%201-.272-.637zM6.75%206.75V15H12v-3h3V6.75z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+  }
+}
+
+:host(monitor-icon[size="small"]) {
+  .icon-container {
+    width: var(--size-item-medium);
+    height: var(--size-item-medium);
+  }
+
+  .icon {
+    width: var(--size-item-small);
+    height: var(--size-item-small);
+  }
+}
+
+:host(monitor-status-chip) {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-xsmall);
+  flex: none;
+  font-weight: var(--font-weight-bold);
+  padding: var(--space-xsmall) var(--space-small);
+  border-radius: var(--border-radius-circle);
+  font-size: var(--font-size-small);
+  line-height: 1;
+  white-space: nowrap;
+  margin-inline-end: var(--space-small);
+  background: var(--monitor-status-chip-background-color);
+  color: var(--monitor-status-chip-text-color);
+}
+
+:host(monitor-status-chip[kind="watching"]) {
+  --monitor-status-chip-background-color: light-dark(var(--color-violet-desaturated-10), var(--color-violet-desaturated-70));
+  --monitor-status-chip-text-color: var(--smartwindow-text-color-accent-primary, light-dark(var(--color-violet-60), var(--color-violet-30)));
+}
+
+:host(monitor-status-chip[kind="paused"]) {
+  --monitor-status-chip-background-color: light-dark(var(--color-gray-10), var(--color-gray-60));
+  --monitor-status-chip-text-color: light-dark(var(--color-gray-60), var(--color-gray-10));
+}
+
+/* A status the chip has nothing to say about renders nothing, so it must not
+   leave an empty pill behind. */
+:host(monitor-status-chip:not([kind="watching"], [kind="paused"])) {
+  display: none;
+}
+
+@media (prefers-contrast) {
+  :host(monitor-status-chip) {
+    background: var(--background-color-canvas);
+    color: var(--text-color);
+    outline: var(--border-width) solid currentColor;
+  }
+}

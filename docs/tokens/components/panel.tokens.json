@@ -1,0 +1,146 @@
+{
+  "background": {
+    "color": {
+      "@base": {
+        "value": {
+          "light": "{color.white.@base}",
+          "dark": "rgb(66, 65, 77)",
+          "nativeTheme": "Field",
+          "forcedColors": "Menu"
+        }
+      }
+    }
+  },
+  "border": {
+    "color": {
+      "value": "{popup.border.color}"
+    },
+    "radius": {
+      "value": "{popup.border.radius}"
+    }
+  },
+  "box": {
+    "shadow": {
+      "@base": {
+        "value": "0 0 {panel.box.shadow.margin} hsla(0, 0%, 0%, 0.2)"
+      },
+      "margin": {
+        "value": "4px"
+      }
+    }
+  },
+  "footer": {
+    "background": {
+      "color": {
+        "value": {
+          "light": "color-mix(in srgb, currentColor 12%, transparent)",
+          "dark": "color-mix(in srgb, currentColor 17%, transparent)",
+          "nativeTheme": "color-mix(in srgb, currentColor 17%, transparent)"
+        }
+      }
+    },
+    "text": {
+      "color": {
+        "value": "inherit"
+      }
+    }
+  },
+  "motion": {
+    "duration": {
+      "enter": {
+        "value": "150ms"
+      },
+      "exit": {
+        "value": "120ms"
+      },
+      "fade": {
+        "value": "120ms"
+      }
+    },
+    "easing": {
+      "value": "{motion.easing.emphasized}"
+    },
+    "scale": {
+      "value": "0.96"
+    },
+    "translate": {
+      "y": {
+        "value": "-4px"
+      }
+    }
+  },
+  "padding": {
+    "@base": {
+      "value": "16px"
+    },
+    "block": {
+      "value": "4px"
+    }
+  },
+  "separator": {
+    "color": {
+      "ignoreFigma": "color-mix with currentColor cannot be expressed in Figma",
+      "value": {
+        "default": "color-mix(in srgb, currentColor 25%, transparent)",
+        "prefersContrast": "currentColor",
+        "forcedColors": "{border.color.@base}"
+      }
+    },
+    "padding": {
+      "@base": {
+        "value": "{panel.separator.padding.block} {panel.separator.padding.inline}"
+      },
+      "block": {
+        "value": "4px"
+      },
+      "inline": {
+        "value": "8px"
+      }
+    }
+  },
+  "subview": {
+    "motion": {
+      "duration": {
+        "enter": {
+          "value": "185ms"
+        },
+        "exit": {
+          "value": "130ms"
+        },
+        "fade": {
+          "reduced": {
+            "value": "120ms"
+          }
+        },
+        "parent": {
+          "exit": {
+            "value": "150ms"
+          }
+        }
+      },
+      "easing": {
+        "@base": {
+          "value": "{motion.easing.emphasized}"
+        },
+        "fade": {
+          "value": "{motion.easing.standard}"
+        }
+      }
+    }
+  },
+  "text": {
+    "color": {
+      "@base": {
+        "value": {
+          "light": "{color.black.@base}",
+          "dark": "rgb(251, 251, 254)",
+          "nativeTheme": "FieldText",
+          "forcedColors": "MenuText"
+        }
+      }
+    }
+  },
+  "width": {
+    "value": "initial"
+  }
+}

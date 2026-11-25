@@ -1,0 +1,461 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  display: block;
+}
+
+.monitor-card {
+  background: var(--background-color-box);
+  border: 1px solid var(--border-color-deemphasized);
+  border-radius: var(--border-radius-large);
+  padding: var(--space-large);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+}
+
+/* A host that frames the card itself only wants the contents. The padding stays
+   so the fields don't sit against the host's edge. */
+:host(:not([self-contained])) .monitor-card {
+  background: none;
+  border: none;
+  border-radius: 0;
+}
+
+.monitor-card-head {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+  justify-content: space-between;
+}
+
+.monitor-card-head-left {
+  display: flex;
+  gap: var(--space-small);
+  flex: 1;
+  min-width: 0;
+}
+
+.monitor-card-head-right {
+  display: flex;
+  gap: var(--space-small);
+  align-items: center;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.monitor-card-state-title {
+  font-size: var(--font-size-large);
+  margin-block: 0;
+}
+
+.title-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+}
+
+.create-top {
+  display: flex;
+  flex-direction: column;
+}
+
+/* The button drops under the title when the two don't fit on one row */
+.create-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-small);
+}
+
+.suggest-button {
+  margin-inline-start: auto;
+  max-width: 100%;
+}
+
+.suggest-status {
+  text-align: end;
+
+  > .error-message {
+    margin-block-start: var(--space-xsmall);
+    margin-inline-start: 0;
+    text-align: start;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .suggest-button.suggesting {
+    animation: pulse 1.2s ease-in-out infinite;
+  }
+}
+
+/* For screen readers only: what the status line says while generating */
+.sr-only {
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  height: 1px;
+  overflow: hidden;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+}
+
+.monitor-card-title {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  contain: inline-size;
+}
+
+.monitor-card-name {
+  display: block;
+  font-weight: var(--font-weight-semibold);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.monitor-name-field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxsmall);
+  flex: 1;
+  min-width: 0;
+}
+
+.monitor-name-input {
+  width: 100%;
+}
+
+.page-url-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xxsmall);
+  min-width: 0;
+  color: var(--text-color);
+}
+
+.page-url-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xsmall);
+}
+
+.field-label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-color-deemphasized);
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+}
+
+.schedule-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+}
+
+.form-section-half {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: var(--space-xsmall);
+  min-width: 0;
+}
+
+moz-input-url::part(label),
+moz-textarea::part(label),
+moz-input-text::part(label),
+.form-label {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-color-deemphasized);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xsmall);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  padding: var(--space-xsmall) var(--space-medium);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius-circle);
+  font-size: var(--font-size-small);
+  color: var(--text-color);
+  background: var(--background-color-box);
+
+  &:hover {
+    border-color: var(--color-accent-primary);
+    color: var(--color-accent-primary);
+  }
+
+  &.selected {
+    border-color: var(--color-accent-primary);
+    background: var(--background-color-information);
+    color: var(--color-accent-primary);
+  }
+}
+
+.pages-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-small);
+}
+
+.page-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+}
+
+.page-input-row {
+  display: flex;
+  align-items: end;
+  gap: var(--space-small);
+}
+
+.page-url-input {
+  flex: 1;
+  min-width: 0;
+}
+
+.error-message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  color: var(--text-color-error);
+  font-size: var(--font-size-small);
+  margin-inline-start: var(--space-small);
+
+  &::before {
+    content: "";
+    width: var(--icon-size-xsmall);
+    height: var(--icon-size-xsmall);
+    flex: none;
+    -moz-context-properties: fill;
+    fill: currentColor;
+    background: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20width='16'%20height='16'%20viewBox='0%200%2016%2016'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8%2010.25C8.48325%2010.25%208.875%2010.6418%208.875%2011.125C8.875%2011.6082%208.48325%2012%208%2012C7.51675%2012%207.125%2011.6082%207.125%2011.125C7.125%2010.6418%207.51675%2010.25%208%2010.25Z'/%3e%3cpath%20d='M8%204C8.414%204%208.75%204.336%208.75%204.75V8.25C8.75%208.664%208.414%209%208%209C7.586%209%207.25%208.664%207.25%208.25V4.75C7.25%204.336%207.586%204%208%204Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M8%200C12.4183%200%2016%203.58172%2016%208C16%2012.4183%2012.4183%2016%208%2016C3.58172%2016%200%2012.4183%200%208C0%203.58172%203.58172%200%208%200ZM8%201.5C4.41015%201.5%201.5%204.41015%201.5%208C1.5%2011.5899%204.41015%2014.5%208%2014.5C11.5899%2014.5%2014.5%2011.5899%2014.5%208C14.5%204.41015%2011.5899%201.5%208%201.5Z'/%3e%3c/svg%3e") no-repeat center / contain;
+  }
+}
+
+.monitor-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+  font-size: var(--font-size-small);
+
+  & .label {
+    color: var(--text-color-deemphasized);
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    min-width: 92px;
+  }
+
+  & .val {
+    color: var(--text-color);
+  }
+}
+
+.last-result {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  font-size: var(--font-size-small);
+  padding: var(--space-xxsmall) var(--space-small);
+  border-radius: var(--border-radius-circle);
+  white-space: nowrap;
+  flex: none;
+  color: var(--text-color-deemphasized);
+
+  &.match {
+    font-weight: var(--font-weight-semibold);
+  }
+}
+
+.chatcard {
+  cursor: pointer;
+
+  & .chev {
+    border: none;
+    padding: 0;
+    height: var(--icon-size);
+    width: var(--icon-size);
+    flex: none;
+    -moz-context-properties: fill;
+    fill: var(--icon-color);
+    background: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2012%2012'%20width='12'%20height='12'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m6.24%208.999%203.614-3.613a.498.498%200%200%200%200-.707.5.5%200%200%200-.707%200L5.999%207.826%202.854%204.68a.5.5%200%200%200-.707.707L5.759%209l.481-.001z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M9.933%204.369a.626.626%200%200%201%20.884.884L7.472%208.598c-.26.26-.605.403-.972.403s-.712-.143-.972-.403L2.183%205.253A.62.62%200%200%201%202%204.811a.623.623%200%200%201%201.066-.442l3.345%203.345c.042.042.135.042.177%200z'%20/%3e%3c/g%3e%3c/svg%3e") no-repeat center / contain;
+    transition: transform 150ms ease;
+  }
+
+  & .chev[aria-expanded="true"] {
+    transform: rotate(180deg);
+  }
+}
+
+.watch-expand {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-medium);
+  cursor: auto;
+}
+
+.required-note {
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+  margin: 0;
+}
+
+.monitor-card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-small);
+}
+
+.check-limit-reason {
+  margin: 0;
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+}
+
+.mono-dim {
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+}
+
+hr.rule {
+  border: 0;
+  border-block-start: 1px solid var(--border-color-deemphasized);
+  margin: var(--space-xsmall) 0;
+  width: 100%;
+}
+
+.section-toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-bold);
+}
+
+.history {
+  display: flex;
+  flex-direction: column;
+}
+
+.history-note {
+  font-size: var(--font-size-small);
+  color: var(--text-color-deemphasized);
+  border-block-start: 1px solid var(--border-color-deemphasized);
+}
+
+.history-item {
+  display: grid;
+  grid-template-columns: minmax(170px, 25%) minmax(110px, 18%) 1fr;
+  align-items: baseline;
+  gap: var(--space-medium);
+  padding: var(--space-small) 0;
+  border-block-start: 1px solid var(--border-color-deemphasized);
+  font-size: var(--font-size-small);
+
+  @media (max-width: 600px) {
+    grid-template-columns: auto auto;
+    grid-template-rows: auto auto;
+
+    & > span:last-child {
+      grid-column: 1 / -1;
+      margin-block-start: var(--space-xsmall);
+    }
+  }
+
+  & .when {
+    color: var(--text-color-deemphasized);
+  }
+}
+
+.delete-button {
+  &::part(button) {
+    width: auto;
+    padding: 0 var(--space-large);
+    --button-icon-fill: var(--button-background-color-destructive);
+
+    &:hover {
+      --button-icon-fill: var(--button-background-color-destructive-hover);
+    }
+
+    &:active {
+      --button-icon-fill: var(--button-background-color-destructive-active);
+    }
+
+    &:disabled {
+      --button-icon-fill: var(--button-background-color-destructive-disabled);
+    }
+  }
+}
+
+.task-section {
+  background: color-mix(in srgb, var(--background-color-information) 30%, transparent);
+  border: 1px solid var(--border-color-deemphasized);
+  border-radius: var(--border-radius-medium);
+  padding: var(--space-medium);
+  margin-block: var(--space-small);
+}
+
+.task-header {
+  font-size: var(--font-size-small);
+  font-weight: var(--font-weight-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-color-deemphasized);
+  margin-block-end: var(--space-small);
+}
+
+.task-content {
+  color: var(--text-color);
+  overflow-wrap: anywhere;
+}
+
+.url-section {
+  margin-block: var(--space-xsmall) var(--space-xsmall);
+}
+
+.url-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+  margin-block-start: var(--space-small);
+}
+
+.condition-badge {
+  white-space: nowrap;
+}
+
+.condition-badge.met {
+  color: var(--icon-color-success);
+}
+
+.condition-badge.could-not-check {
+  color: var(--text-color-deemphasized);
+}
+
+.monitor-condition-input {
+  --input-min-height: 90px;
+}

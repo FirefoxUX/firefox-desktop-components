@@ -1,0 +1,13 @@
+{
+  "border": {
+    "color": {
+      "value": {
+        "nativeTheme": "{border.color.deemphasized.@base}",
+        "default": "{border.color.deemphasized.@base}"
+      }
+    },
+    "radius": {
+      "value": "{border.radius.xlarge}"
+    }
+  }
+}

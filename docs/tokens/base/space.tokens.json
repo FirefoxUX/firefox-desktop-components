@@ -1,0 +1,23 @@
+{
+  "xxsmall": {
+    "value": "0.125rem"
+  },
+  "xsmall": {
+    "value": "0.25rem"
+  },
+  "small": {
+    "value": "0.5rem"
+  },
+  "medium": {
+    "value": "0.75rem"
+  },
+  "large": {
+    "value": "1rem"
+  },
+  "xlarge": {
+    "value": "1.5rem"
+  },
+  "xxlarge": {
+    "value": "2rem"
+  }
+}

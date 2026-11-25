@@ -1,0 +1,271 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  --button-border-width: var(--border-width);
+  display: inline-flex;
+  --split-button-with-icon-inline-start-padding: calc(var(--space-small) + var(--size-item-small) + var(--space-xsmall));
+
+  @media not (forced-colors) {
+    --button-background: linear-gradient(235deg, #d6b4fd -57%, #8341ca 219%);
+    --button-background-dark: linear-gradient(65deg, #4e2e9d -5%, #c1a9ff 135%);
+    --button-border-color: color-mix(in srgb, white 20%, transparent);
+    --button-box-shadow: inset 0 0 0 var(--button-border-width) var(--button-border-color);
+    --button-separator-color: color-mix(in srgb, white 60%, transparent);
+    --button-stop-color: light-dark(var(--color-violet-50), var(--color-violet-40));
+    --panel-icon-fill-color: light-dark(var(--color-violet-70), white);
+    --panel-icon-stroke-color: light-dark(var(--color-pink-0), var(--button-separator-color));
+  }
+}
+
+moz-button.input-cta {
+  border-radius: var(--button-border-radius);
+  --button-padding: 0 var(--space-small) 0 var(--space-large);
+  --button-border-radius: var(--border-radius-circle);
+
+  @media not (forced-colors) {
+    --button-background-color: transparent;
+    --button-background-color-active: color-mix(in srgb, black 25%, transparent);
+    --button-background-color-disabled: light-dark(var(--color-gray-20), var(--color-gray-60));
+    --button-background-color-hover: color-mix(in srgb, black 15%, transparent);
+    --button-background-color-selected: color-mix(in srgb, black 25%, transparent);
+    --button-icon-fill: light-dark(var(--color-gray-60), var(--color-white));
+    --button-text-color: var(--color-white);
+    --button-text-color-active: var(--color-white);
+    --button-text-color-disabled: var(--color-white);
+    --button-text-color-hover: var(--color-white);
+    --button-text-color-selected: var(--color-white);
+    --button-background-color-ghost: var(--button-background-color);
+    --button-background-color-ghost-active: var(--button-background-color-active);
+    --button-background-color-ghost-disabled: var(--button-background-color-disabled);
+    --button-background-color-ghost-hover: var(--button-background-color-hover);
+    --button-background-color-ghost-selected: var(--button-background-color-selected);
+    --button-text-color-ghost: var(--button-text-color);
+    --button-text-color-ghost-active: var(--button-text-color-active);
+    --button-text-color-ghost-disabled: var(--button-text-color-disabled);
+    --button-text-color-ghost-hover: var(--button-text-color-hover);
+    --button-text-color-ghost-selected: var(--button-text-color-selected);
+  }
+
+  @container smartbar-controls (max-width: 380px) {
+    --button-padding: var(--space-small);
+
+    &:dir(rtl) {
+      &::part(button) {
+        background-position: right var(--space-small) center;
+      }
+    }
+
+    &::part(button) {
+      background-position: left var(--space-small) center;
+      background-repeat: no-repeat;
+      background-size: var(--size-item-small);
+      fill: var(--button-icon-fill);
+      -moz-context-properties: fill;
+    }
+
+    /* Visually hide the label (matches .sr-only) but keep it for a11y */
+    &::part(moz-button-label) {
+      clip: rect(0, 0, 0, 0);
+      clip-path: inset(50%);
+      height: 1px;
+      overflow: hidden;
+      position: absolute;
+      white-space: nowrap;
+      width: 1px;
+    }
+  }
+}
+
+@container smartbar-controls (max-width: 380px) {
+  :host([action="chat"]) moz-button.input-cta::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%20viewBox='0%200%2016%2016'%3e%3cpath%20d='M7.865%205.162c.206-.525%201.062-.524%201.268%200l.46%201.17%201.225.515c.262.103.43.352.43.633a.68.68%200%200%201-.431.635l-1.167.461L9.133%209.8a.68.68%200%200%201-.634.43.68.68%200%200%201-.633-.43l-.46-1.17-1.225-.515a.68.68%200%200%201-.431-.635c0-.281.17-.53.432-.633l1.167-.461.056-.056z'%20/%3e%3cpath%20d='M8.5%200a7.5%207.5%200%201%201%200%2015%207.45%207.45%200%200%201-3.516-.88l-1.918.73c-1.926.732-3.741-1.292-2.804-3.126l1.055-2.065A7.5%207.5%200%200%201%208.5%200m0%201.5a6%206%200%200%200-5.665%207.975.75.75%200%200%201-.04.59l-1.197%202.341c-.312.612.292%201.287.934%201.043l2.246-.855a.75.75%200%200%201%20.652.057%205.96%205.96%200%200%200%203.07.849%206%206%200%201%200%200-12'%20/%3e%3c/svg%3e");
+  }
+  :host([action="navigate"]) moz-button.input-cta::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='M12.44%209H1V7.5h11.44L8.25%203.31l1.06-1.06%205.47%205.47a.75.75%200%200%201%200%201.06l-5.47%205.47-1.06-1.061L12.44%209z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M8.884%202.218a.75.75%200%200%201%201.061%200l4.543%204.543c.331.33.513.77.513%201.237s-.182.907-.513%201.238l-4.543%204.543a.75.75%200%200%201-.53.22V14a.751.751%200%200%201-.53-1.281L12.85%208.75H1.75a.75.75%200%200%201%200-1.5h11.105L8.884%203.28a.75.75%200%200%201%200-1.061'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+  :host([action="navigate"]:dir(rtl)) moz-button.input-cta::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='M6.69%202.25%201.22%207.72a.75.75%200%200%200%200%201.06l5.47%205.47%201.06-1.061L3.56%209H15V7.5H3.56l4.19-4.19-1.06-1.06z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M6.055%202.219a.75.75%200%200%201%201.061%201.06L3.145%207.25H14.25a.75.75%200%200%201%200%201.5H3.147l3.97%203.969a.75.75%200%200%201-1.061%201.063L1.513%209.238A1.74%201.74%200%200%201%201%208c0-.467.182-.907.513-1.237z'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+  :host(:not([action="stop"])) moz-button.input-cta:not([disabled])::part(button) {
+    padding-inline-start: var(--split-button-with-icon-inline-start-padding);
+  }
+}
+
+:host([action=""]) moz-button.input-cta::part(button) {
+  min-width: var(--size-item-xlarge);
+}
+
+:host([submit-disabled]) moz-button.input-cta::part(button) {
+  cursor: not-allowed;
+  opacity: var(--opacity-deemphasized-strong);
+}
+
+:host([action="stop"]) moz-button.input-cta {
+  --button-padding: 0;
+
+  @media not (forced-colors) {
+    --button-background-color-ghost-hover: light-dark(var(--color-violet-0), color-mix(in srgb, var(--color-violet-20) 24%, transparent));
+    --button-background-color-ghost-active: light-dark(var(--color-violet-10), color-mix(in srgb, var(--color-violet-0) 24%, transparent));
+    --button-icon-fill: light-dark(var(--color-violet-70), var(--color-violet-20));
+  }
+}
+
+:host([action="stop"]) moz-button.input-cta::part(button) {
+  border-style: solid;
+  border-width: var(--border-width);
+  width: var(--size-item-large);
+  height: var(--size-item-large);
+  min-width: var(--size-item-large);
+
+  @media not (forced-colors) {
+    border-color: var(--button-stop-color);
+  }
+}
+
+:host([action="search"]) moz-button.input-cta::part(button) {
+  background-image: var(--search-icon);
+  background-position: left var(--space-small) center;
+  background-repeat: no-repeat;
+  background-size: var(--size-item-small);
+  padding-inline-start: var(--split-button-with-icon-inline-start-padding);
+}
+
+:host([action="search"]:dir(rtl)) moz-button.input-cta::part(button) {
+  background-position-x: right var(--space-small);
+}
+
+moz-button[type="split"].input-cta {
+  gap: 0;
+
+  @media not (forced-colors) {
+    --button-icon-fill: var(--color-white);
+    /* TODO: Bug 2033070 - we probably won't need the background declaration now that
+    it doesn't require a gradient for Nova */
+    background: light-dark(var(--button-background), var(--button-background-dark));
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    box-shadow: var(--button-box-shadow);
+  }
+}
+
+moz-button[type="split"].input-cta::part(chevron-button) {
+  padding-inline-end: var(--space-xsmall);
+}
+
+moz-button[type="split"].input-cta::part(chevron-button)::before {
+  border-radius: var(--border-radius-circle);
+  content: "";
+  display: block;
+  height: var(--size-item-small);
+  inset-inline-start: 0;
+  position: absolute;
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  margin-inline-start: calc(-1 * var(--button-border-width));
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  width: var(--button-border-width);
+
+  @media not (forced-colors) {
+    background: var(--button-separator-color);
+  }
+}
+
+panel-item::part(button) {
+  -moz-context-properties: fill, stroke;
+  background-repeat: no-repeat;
+
+  @media not (forced-colors) {
+    fill: var(--panel-icon-fill-color);
+    stroke: var(--panel-icon-stroke-color);
+  }
+}
+
+panel-item {
+  &[icon="back"]::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m5.001%208.352%205.465%205.466a.626.626%200%200%200%20.884-.886L6.416%207.999l4.933-4.932a.626.626%200%200%200-.885-.885L5%207.647l.001.705z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M10.056%202.218a.75.75%200%200%201%201.061%201.06L6.574%207.824a.25.25%200%200%200%200%20.353l4.543%204.543a.75.75%200%200%201-1.061%201.062L5.513%209.237A1.74%201.74%200%200%201%205%208v-.002c0-.467.182-.906.513-1.237z'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+  &[icon="back"]::part(button):dir(rtl) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m10.999%208.352-5.465%205.466a.626.626%200%200%201-.884-.886l4.935-4.934-4.934-4.931a.626.626%200%200%201%20.885-.885L11%207.647l-.001.705z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M4.884%202.219a.75.75%200%200%201%201.061%200l4.543%204.543c.331.331.513.77.513%201.237L11%208c0%20.467-.182.907-.513%201.237L5.943%2013.78a.75.75%200%201%201-1.06-1.061l4.543-4.543a.25.25%200%200%200%200-.354L4.884%203.28a.75.75%200%200%201%200-1.061'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+
+  &[icon="chat"]::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%20viewBox='0%200%2016%2016'%3e%3cpath%20d='M7.865%205.162c.206-.525%201.062-.524%201.268%200l.46%201.17%201.225.515c.262.103.43.352.43.633a.68.68%200%200%201-.431.635l-1.167.461L9.133%209.8a.68.68%200%200%201-.634.43.68.68%200%200%201-.633-.43l-.46-1.17-1.225-.515a.68.68%200%200%201-.431-.635c0-.281.17-.53.432-.633l1.167-.461.056-.056z'%20/%3e%3cpath%20d='M8.5%200a7.5%207.5%200%201%201%200%2015%207.45%207.45%200%200%201-3.516-.88l-1.918.73c-1.926.732-3.741-1.292-2.804-3.126l1.055-2.065A7.5%207.5%200%200%201%208.5%200m0%201.5a6%206%200%200%200-5.665%207.975.75.75%200%200%201-.04.59l-1.197%202.341c-.312.612.292%201.287.934%201.043l2.246-.855a.75.75%200%200%201%20.652.057%205.96%205.96%200%200%200%203.07.849%206%206%200%201%200%200-12'%20/%3e%3c/svg%3e");
+  }
+
+  &[icon="engine"]::part(button) {
+    background-image: var(--engine-icon, var(--search-icon));
+  }
+
+  &[icon="navigate"]::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='M12.44%209H1V7.5h11.44L8.25%203.31l1.06-1.06%205.47%205.47a.75.75%200%200%201%200%201.06l-5.47%205.47-1.06-1.061L12.44%209z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20d='M8.884%202.218a.75.75%200%200%201%201.061%200l4.543%204.543c.331.33.513.77.513%201.237s-.182.907-.513%201.238l-4.543%204.543a.75.75%200%200%201-.53.22V14a.751.751%200%200%201-.53-1.281L12.85%208.75H1.75a.75.75%200%200%201%200-1.5h11.105L8.884%203.28a.75.75%200%200%201%200-1.061'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+
+  &[icon="search"]::part(button) {
+    background-image: var(--search-icon);
+  }
+
+  &[icon="search-with"]::part(button) {
+    background-image: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2016%2016'%20width='16'%20height='16'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%3e%3cstyle%3e%20.nova%20{%20display:%20none;%20}%20@media%20-moz-pref('browser.nova.enabled')%20{%20.proton%20{%20display:%20none;%20}%20.nova%20{%20display:%20revert;%20}%20}%20%3c/style%3e%3cg%20class='proton'%3e%3cpath%20d='m10.089%2010.973%203.845%203.844a.62.62%200%200%200%20.883-.001.625.625%200%200%200-.001-.884L10.983%2010.1l.006-.427A5.5%205.5%200%201%200%201%206.5%205.5%205.5%200%200%200%206.5%2012c1.189%200%202.288-.38%203.187-1.022l.402-.005zM6.5%2010.75c-2.343%200-4.25-1.907-4.25-4.25S4.157%202.25%206.5%202.25s4.25%201.907%204.25%204.25-1.907%204.25-4.25%204.25z'/%3e%3c/g%3e%3cg%20class='nova'%3e%3cpath%20fill-rule='evenodd'%20d='M7%201a6%206%200%200%201%204.738%209.677l3.043%203.042a.75.75%200%200%201-1.061%201.061l-3.042-3.043A5.97%205.97%200%200%201%207%2013%206%206%200%200%201%207%201m0%201.5a4.5%204.5%200%201%200%200%209%204.5%204.5%200%200%200%200-9'%20clip-rule='evenodd'%20/%3e%3c/g%3e%3c/svg%3e");
+  }
+}
+
+/* TODO: Bug 2033070 -  Nova tokens were implemented as the default value for the custom properties, and the fallbacks (and lint exceptions) will need to be removed after launch */
+@media -moz-pref("browser.nova.enabled") {
+  @media not (forced-colors) {
+    moz-button {
+      &[type="split"].input-cta {
+        --button-icon-fill: var(--button-text-color-primary);
+        --button-background-color: var(--button-background-color-primary);
+        --button-background-color-active: var(--button-background-color-primary-active);
+        --button-background-color-disabled: var(--button-background-color-primary-disabled);
+        --button-background-color-hover: var(--button-background-color-primary-hover);
+        --button-background-color-selected: var(--button-background-color-primary-selected);
+        --button-text-color: var(--button-text-color-primary);
+        --button-text-color-active: var(--button-text-color-primary-active);
+        --button-text-color-disabled: var(--button-text-color-primary-disabled);
+        --button-text-color-hover: var(--button-text-color-primary);
+        --button-text-color-selected: var(--button-text-color-primary-selected);
+        --button-border-color: var(--button-border-color-primary);
+        --button-border-color-active: var(--button-border-color-primary-active);
+        --button-border-color-disabled: var(--button-border-color-primary-disabled);
+        --button-border-color-hover: var(--button-border-color-primary-hover);
+        --button-border-color-selected: var(--button-border-color-primary-selected);
+        --button-separator-color: light-dark(var(--color-white-alpha-60), var(--color-gray-70));
+      }
+
+      &[type="ghost"].input-cta {
+        --button-background-color-ghost: transparent;
+        --button-background-color-ghost-active: color-mix(in srgb, var(--color-violet-desaturated-60) 30%, transparent);
+        --button-background-color-ghost-disabled: transparent;
+        --button-background-color-ghost-hover: color-mix(in srgb, var(--color-violet-desaturated-60) 16%, transparent);
+        --button-background-color-ghost-selected: var(--button-background-color-ghost-active);
+      }
+    }
+  }
+
+  panel-list {
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    min-width: 256px;
+    --panel-list-border-radius: var(--border-radius-large);
+
+    @media (not (forced-colors)) {
+      --panel-list-border-color: light-dark(var(--color-violet-desaturated-20), var(--color-violet-desaturated-50));
+      --button-background-color-hover: var(--smartwindow-panel-item-background-color-hover);
+    }
+  }
+
+  panel-item::part(button) {
+    background-position-x: var(--space-large);
+    /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+    border-radius: var(--smartwindow-panel-item-border-radius);
+    padding: var(--space-small) var(--space-large) var(--space-small) calc(var(--space-medium) + var(--space-xxlarge));
+
+    @media (not (forced-colors)) {
+      --panel-icon-fill-color: light-dark(var(--color-violet-50), var(--color-violet-20));
+
+      &:hover {
+        background-color: var(--button-background-color-hover);
+      }
+    }
+  }
+}
