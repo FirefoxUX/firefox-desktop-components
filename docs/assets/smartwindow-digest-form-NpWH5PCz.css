@@ -1,0 +1,154 @@
+/* This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+:host {
+  display: block;
+  box-sizing: border-box;
+  padding: var(--space-large);
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  border: var(--border-width) solid var(--smartwindow-card-border-color);
+  border-radius: var(--border-radius-large);
+  background-color: var(--background-color-box);
+  color: var(--text-color);
+  /* Scrolls inside the card when a host limits its height. */
+  overflow-y: auto;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-large);
+}
+
+header {
+  display: flex;
+  flex-direction: column;
+  /* stylelint-disable-next-line stylelint-plugin-mozilla/use-design-tokens */
+  gap: 6px;
+
+  h2 {
+    font-size: var(--font-size-root);
+    font-weight: var(--font-weight-semibold);
+    margin: 0;
+  }
+
+  p {
+    margin: 0;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xsmall);
+}
+
+.field-input {
+  display: flex;
+  align-items: center;
+  gap: var(--space-xxsmall);
+}
+
+.field-readonly {
+  color: var(--text-color-deemphasized);
+}
+
+.field-topic {
+  .memory-tooltip-trigger {
+    anchor-name: --memory-tooltip;
+    --button-icon-fill: var(--text-color-deemphasized);
+
+    @media not (forced-colors) {
+      --memory-tooltip-trigger-background: light-dark(var(--color-violet-desaturated-10), var(--color-violet-desaturated-60));
+      --button-background-color-ghost-hover: var(--memory-tooltip-trigger-background);
+      --button-background-color-ghost-active: var(--memory-tooltip-trigger-background);
+      --button-background-color-ghost-selected: var(--memory-tooltip-trigger-background);
+
+      @media not (-moz-pref("browser.nova.enabled")) {
+        --memory-tooltip-trigger-background: light-dark(var(--color-violet-0), var(--color-violet-80));
+      }
+    }
+
+    &::part(button) {
+      cursor: pointer;
+    }
+  }
+
+  .memory-tooltip {
+    position-anchor: --memory-tooltip;
+    position-area: block-end span-inline-end;
+    position-try-fallbacks: flip-block, flip-inline;
+    margin: var(--space-xxsmall) 0 0;
+    max-width: var(--size-layout-small);
+    padding: var(--space-small) var(--space-medium);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-medium);
+    background: var(--background-color-box);
+    color: var(--text-color);
+    box-shadow: var(--box-shadow-level-3);
+
+    > p {
+      margin: 0;
+    }
+
+    a {
+      color: var(--link-color);
+    }
+  }
+}
+
+.field-description {
+  .description-input {
+    --input-min-height: 85px;
+  }
+}
+
+.error-message {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xsmall);
+  color: var(--text-color-error);
+  font-size: var(--font-size-small);
+
+  &::before {
+    content: "";
+    width: var(--icon-size-xsmall);
+    height: var(--icon-size-xsmall);
+    flex: none;
+    -moz-context-properties: fill;
+    fill: currentColor;
+    background: url("data:image/svg+xml,%3c!--%20This%20Source%20Code%20Form%20is%20subject%20to%20the%20terms%20of%20the%20Mozilla%20Public%20-%20License,%20v.%202.0.%20If%20a%20copy%20of%20the%20MPL%20was%20not%20distributed%20with%20this%20-%20file,%20You%20can%20obtain%20one%20at%20http://mozilla.org/MPL/2.0/.%20--%3e%3csvg%20width='16'%20height='16'%20viewBox='0%200%2016%2016'%20fill='context-fill'%20fill-opacity='context-fill-opacity'%20xmlns='http://www.w3.org/2000/svg'%3e%3cpath%20d='M8%2010.25C8.48325%2010.25%208.875%2010.6418%208.875%2011.125C8.875%2011.6082%208.48325%2012%208%2012C7.51675%2012%207.125%2011.6082%207.125%2011.125C7.125%2010.6418%207.51675%2010.25%208%2010.25Z'/%3e%3cpath%20d='M8%204C8.414%204%208.75%204.336%208.75%204.75V8.25C8.75%208.664%208.414%209%208%209C7.586%209%207.25%208.664%207.25%208.25V4.75C7.25%204.336%207.586%204%208%204Z'/%3e%3cpath%20fill-rule='evenodd'%20clip-rule='evenodd'%20d='M8%200C12.4183%200%2016%203.58172%2016%208C16%2012.4183%2012.4183%2016%208%2016C3.58172%2016%200%2012.4183%200%208C0%203.58172%203.58172%200%208%200ZM8%201.5C4.41015%201.5%201.5%204.41015%201.5%208C1.5%2011.5899%204.41015%2014.5%208%2014.5C11.5899%2014.5%2014.5%2011.5899%2014.5%208C14.5%204.41015%2011.5899%201.5%208%201.5Z'/%3e%3c/svg%3e") no-repeat center / contain;
+  }
+}
+
+.field-sources {
+  gap: var(--space-small);
+
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-small);
+  }
+}
+
+.field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-small);
+
+  > moz-select {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+moz-select {
+  --select-font-weight: var(--font-weight);
+}
+
+.required-note {
+  color: var(--text-color-deemphasized);
+  font-size: var(--font-size-small);
+  margin: 0;
+}
